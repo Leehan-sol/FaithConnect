@@ -9,9 +9,23 @@ import SwiftUI
 
 @main
 struct FaithConnectApp: App {
+    @AppStorage(Constants.isLoggedIn) var isLoggedIn: Bool = false
+    @Environment(\.scenePhase) private var scenePhase
+    
     var body: some Scene {
         WindowGroup {
-            LoginView()
+            if isLoggedIn {
+                MainTabView()
+            } else {
+                LoginView()
+            }
+        }
+        .onChange(of: scenePhase) { newPhase in
+            if newPhase == .active {
+                
+            } else if newPhase == .background {
+                isLoggedIn = false
+            }
         }
     }
 }

@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct LoginView: View {
+    @AppStorage(Constants.isLoggedIn) var isLoggedIn = false
     @StateObject var viewModel: LoginViewModel = LoginViewModel()
     @State private var email: String = ""
     @State private var password: String = ""
@@ -17,14 +18,15 @@ struct LoginView: View {
         ZStack {
             NavigationStack {
                 VStack(alignment: .leading, spacing: 20) {
-                    Spacer().frame(height: 10)
+                    Spacer()
+                        .frame(height: 10)
                     
                     Image(systemName: "figure.and.child.holdinghands")
                         .resizable()
                         .scaledToFit()
                         .frame(width: 80, height: 80, alignment: .trailing)
-                        .foregroundColor(Color.white)
-                        .background(Color.customBlue1)
+                        .foregroundColor(.white)
+                        .background(.customBlue1)
                         .cornerRadius(10)
                     
                     Text("Faith Connect")
@@ -56,50 +58,50 @@ struct LoginView: View {
                             .bold()
                             .frame(maxWidth: .infinity)
                             .padding()
-                            .background(Color.customBlue1)
+                            .background(.customBlue1)
                             .cornerRadius(10)
                     }
                     
                     Button(action: {
                         showSignUp = true
                     }) {
-                        Text("계정이 없으신가요? 회원가입 >")
-                            .foregroundStyle(Color.accentColor)
-                            .frame(maxWidth: .infinity)
+                        HStack(spacing: 5) {
+                            Text("계정이 없으신가요? 회원가입")
+                                .foregroundStyle(Color.accentColor)
+                            
+                            Image(systemName: "chevron.forward")
+                        }
+                        .frame(maxWidth: .infinity)
                     }
                     
                     HStack {
                         Button(action: {
-                            // 아이디찾기
+                            viewModel.findId()
                         }) {
                             Text("아이디 찾기")
                                 .font(.caption2)
                     }
                         
                         Text("|")
-                            .foregroundColor(Color.accentColor)
+                            .foregroundColor(.accentColor)
                             .font(.caption2)
                         
                         Button(action: {
-                            // 비밀번호 찾기
+                            viewModel.findPassword()
                         }) {
                             Text("비밀번호 찾기")
                                 .font(.caption2)
                         }
                     }.frame(maxWidth: .infinity)
                     
-                    
                     Spacer()
                     
                     Text("교회 성도 전용 플랫폼")
                         .font(.subheadline)
-                        .foregroundColor(Color.gray)
+                        .foregroundColor(.gray)
                         .frame(maxWidth: .infinity)
                 }
                 .padding(EdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20))
-                .navigationDestination(isPresented: $viewModel.isLoggedIn) {
-                     MainView()
-                 }
                 .navigationDestination(isPresented: $showSignUp) {
                     SignUpView(viewModel: viewModel)
                  }
@@ -112,13 +114,6 @@ struct LoginView: View {
                 .navigationBarHidden(true)
             }
         }
-    }
-}
-
-
-struct MainView: View {
-    var body: some View {
-        Text("MainView")
     }
 }
 

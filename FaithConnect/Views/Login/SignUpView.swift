@@ -9,6 +9,8 @@ import SwiftUI
 
 struct SignUpView: View {
     @ObservedObject var viewModel: LoginViewModel
+//    @Environment(\.dismiss) private var dismiss
+    
     @State var memberID: String = ""
     @State var name: String = ""
     @State var email: String = ""
@@ -17,7 +19,8 @@ struct SignUpView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Spacer().frame(height: 10)
+            Spacer()
+                .frame(height: 10)
         
             Text("교회 성도 인증을 위해\n정보를 입력해 주세요")
                 .font(.headline)
