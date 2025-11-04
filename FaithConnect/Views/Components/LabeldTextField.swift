@@ -37,21 +37,3 @@ struct LabeledTextField: View {
         }
     }
 }
-
-
-//#Preview {
-//    struct PreviewWrapper: View {
-//        @State var text: String = "테스트 이메일"
-//        
-//        var body: some View {
-//            LabeledTextField(title: "이메일",
-//                             placeholder: "이메일을 입력하세요",
-//                             text: $text)
-//                .padding()
-//                .previewLayout(.sizeThatFits)
-//        }
-//    }
-//    
-//    PreviewWrapper()
-//}
-

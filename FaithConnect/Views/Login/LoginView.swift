@@ -17,7 +17,7 @@ struct LoginView: View {
     var body: some View {
         ZStack {
             NavigationStack {
-                VStack(alignment: .leading, spacing: 20) {
+                VStack(alignment: .center, spacing: 20) {
                     Spacer()
                         .frame(height: 10)
                     

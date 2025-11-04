@@ -18,7 +18,6 @@ struct MainTabView: View {
                     Image(systemName: "house")
                     Text("홈")
                 }
-                
             }
             .tag(0)
             

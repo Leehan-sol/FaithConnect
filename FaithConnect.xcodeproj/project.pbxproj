@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		180228912EBA08C300ABA95C /* PrayerRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180228902EBA08BD00ABA95C /* PrayerRowView.swift */; };
+		180228932EBA092A00ABA95C /* FloatingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180228922EBA091D00ABA95C /* FloatingButton.swift */; };
 		CC6C8F1B2E9B978300E43387 /* FaithConnectApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6C8F1A2E9B978300E43387 /* FaithConnectApp.swift */; };
 		CC6C8F1F2E9B978400E43387 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CC6C8F1E2E9B978400E43387 /* Assets.xcassets */; };
 		CC6C8F222E9B978400E43387 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CC6C8F212E9B978400E43387 /* Preview Assets.xcassets */; };
@@ -26,6 +28,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		180228902EBA08BD00ABA95C /* PrayerRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerRowView.swift; sourceTree = "<group>"; };
+		180228922EBA091D00ABA95C /* FloatingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingButton.swift; sourceTree = "<group>"; };
 		CC6C8F172E9B978300E43387 /* FaithConnect.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FaithConnect.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC6C8F1A2E9B978300E43387 /* FaithConnectApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaithConnectApp.swift; sourceTree = "<group>"; };
 		CC6C8F1E2E9B978400E43387 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -169,6 +173,8 @@
 		CCAD367E2EB72A720028D451 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				180228922EBA091D00ABA95C /* FloatingButton.swift */,
+				180228902EBA08BD00ABA95C /* PrayerRowView.swift */,
 				CCAD36862EB73F540028D451 /* LabeldTextField.swift */,
 			);
 			path = Components;
@@ -280,8 +286,10 @@
 			files = (
 				CCAD36852EB732FE0028D451 /* LoginViewModel.swift in Sources */,
 				CCAD36982EB7920C0028D451 /* HomeViewModel.swift in Sources */,
+				180228932EBA092A00ABA95C /* FloatingButton.swift in Sources */,
 				CCAD36892EB74F8F0028D451 /* SignUpView.swift in Sources */,
 				CCAD36872EB73F540028D451 /* LabeldTextField.swift in Sources */,
+				180228912EBA08C300ABA95C /* PrayerRowView.swift in Sources */,
 				CC6C8F1B2E9B978300E43387 /* FaithConnectApp.swift in Sources */,
 				CCAD36902EB7853B0028D451 /* Constants.swift in Sources */,
 				CCAD36942EB78D290028D451 /* MyPageView.swift in Sources */,
