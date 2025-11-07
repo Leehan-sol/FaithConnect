@@ -106,7 +106,7 @@ struct LoginView: View {
                     SignUpView(viewModel: viewModel)
                  }
                 .alert(isPresented: $viewModel.showAlert) {
-                    // enum 타입 확인 후 얼랏 띄우기
+                    // TODO: - enum 타입 확인 후 얼랏 띄우기
                     Alert(title: Text("로그인 실패"),
                           message: Text("아이디 또는 비밀번호를 확인하세요."),
                           dismissButton: .default(Text("확인")))

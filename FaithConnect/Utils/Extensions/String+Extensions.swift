@@ -18,24 +18,37 @@ extension String {
         
         let calendar = Calendar.current
         let now = Date()
-        let components = calendar.dateComponents([.year, .second, .minute, .hour, .day], from: date, to: now)
+        let components = calendar.dateComponents([.year, .day, .hour, .minute], from: date, to: now)
         
-        if let day = components.day, day > 1 {
-            let outputFormatter = DateFormatter()
-            if calendar.component(.year, from: date) == calendar.component(.year, from: now) {
-                outputFormatter.dateFormat = "MM-dd"
-            } else {
-                outputFormatter.dateFormat = "yy-MM-dd"
+        if let day = components.day {
+            switch day {
+            case 0:
+                // 오늘 내
+                if let hour = components.hour, hour >= 1 {
+                    return "\(hour)시간 전"
+                } else if let minute = components.minute, minute >= 1 {
+                    return "\(minute)분 전"
+                } else {
+                    return "방금 전"
+                }
+                
+            case 1:
+                return "어제"
+            case 2...6:
+                return "\(day)일 전"
+            case 7:
+                return "일주일 전"
+            default:
+                let outputFormatter = DateFormatter()
+                if calendar.component(.year, from: date) == calendar.component(.year, from: now) {
+                    outputFormatter.dateFormat = "MM-dd"
+                } else {
+                    outputFormatter.dateFormat = "yy-MM-dd"
+                }
+                return outputFormatter.string(from: date)
             }
-            return outputFormatter.string(from: date)
-        } else if let day = components.day, day == 1 {
-            return "어제"
-        } else if let hour = components.hour, hour >= 1 {
-            return "\(hour)시간 전"
-        } else if let minute = components.minute, minute >= 1 {
-            return "\(minute)분 전"
-        } else {
-            return "방금 전"
         }
+        
+        return "방금 전"
     }
 }

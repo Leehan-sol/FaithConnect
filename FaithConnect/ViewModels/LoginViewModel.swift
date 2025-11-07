@@ -11,6 +11,7 @@ class LoginViewModel: ObservableObject {
     @Published var showAlert: Bool = false
     
     // 로그인
+    // TODO: - 상태에 따라 enum으로 showAlert 처리
     func login(email: String, password: String) {
         print("로그인 email: \(email), password: \(password)")
         if (email != "" && password != "") {
