@@ -61,17 +61,10 @@ struct SignUpView: View {
             .background(Color(.systemGray6))
             .cornerRadius(10)
             .padding(.bottom, 20)
-          
-            Button(action: {
+            
+            ActionButton(title: "회원가입",
+                         backgroundColor: .customBlue1) {
                 viewModel.signUp()
-            }) {
-                Text("회원가입")
-                    .foregroundColor(.white)
-                    .bold()
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(Color.customBlue1)
-                    .cornerRadius(10)
             }
             
             Spacer()

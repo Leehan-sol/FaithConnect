@@ -18,7 +18,7 @@ struct PrayerRowView: View {
     let cellType: PrayerCellType
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: 15) {
             
             // MARK: - Participated 상단 타이틀
             if cellType == .participated {
@@ -36,15 +36,16 @@ struct PrayerRowView: View {
                     .lineLimit(1)
                 
                 Spacer()
+                Spacer()
                 
                 if shouldShowDateOnRight {
                     Text(prayer.createdAt.toTimeAgoDisplay())
-                        .font(.caption)
+                        .font(.caption2)
                         .foregroundColor(.gray)
                 }
             }
             
-            // MARK: - 본문 (others 전용)
+            // MARK: - 본문
             if cellType == .others {
                 Text(prayer.content)
                     .font(.subheadline)
@@ -62,7 +63,7 @@ struct PrayerRowView: View {
                 }
                 
                 Text(bottomText)
-                    .font(.caption)
+                    .font(.caption2)
             }
             .foregroundColor(.gray)
         }
@@ -80,7 +81,7 @@ private extension PrayerRowView {
     var mainTitle: String {
         switch cellType {
         case .participated:
-            return prayer.myResponse
+            return prayer.responses[0].message
         default:
             return prayer.title
         }

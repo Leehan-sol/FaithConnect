@@ -37,3 +37,8 @@ struct LabeledTextField: View {
         }
     }
 }
+
+#Preview {
+    LabeledTextField(title: "타이틀", placeholder: "입력하세요.", text: .constant("Initial Value"))
+        .padding()
+}

@@ -9,6 +9,7 @@ import Foundation
 
 struct Prayer: Identifiable {
     let id: Int // prayerRequestId
+    let prayerUserId: String
     let prayerUserName: String
     let categoryId: Int
     let categoryName: String
@@ -16,10 +17,24 @@ struct Prayer: Identifiable {
     let content: String
     let createdAt: String
     let participationCount: Int
-    let myResponse: String
+    let responses: [Response]
+//    let myResponse: String
+    let hasParticipated: Bool
     
-    init(prayerRequestId: Int, prayerUserName: String, categoryId: Int, categoryName: String, title: String, content: String, createdAt: String, participationCount: Int, myResponse: String) {
+    init(prayerRequestId: Int,
+         prayerUserId: String,
+         prayerUserName: String,
+         categoryId: Int,
+         categoryName: String,
+         title: String,
+         content: String,
+         createdAt: String,
+         participationCount: Int,
+         responses: [Response],
+//         myResponse: String,
+         hasParticipated: Bool) {
         self.id = prayerRequestId
+        self.prayerUserId = prayerUserId
         self.prayerUserName = prayerUserName
         self.categoryId = categoryId
         self.categoryName = categoryName
@@ -27,6 +42,9 @@ struct Prayer: Identifiable {
         self.content = content
         self.createdAt = createdAt
         self.participationCount = participationCount
-        self.myResponse = myResponse
+        self.responses = responses
+//        self.myResponse = myResponse
+        self.hasParticipated = hasParticipated
     }
 }
+

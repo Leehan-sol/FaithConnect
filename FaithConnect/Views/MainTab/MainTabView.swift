@@ -22,13 +22,23 @@ struct MainTabView: View {
             .tag(0)
             
             NavigationStack {
+                MyPrayerView()
+            }
+            .tabItem {
+//                Image(systemName: "list.clipboard.fill")
+                Image(systemName: "heart.text.square.fill")
+                Text("내 기도")
+            }
+            .tag(1)
+            
+            NavigationStack {
                 MyPageView()
             }
             .tabItem {
                 Image(systemName: "person")
                 Text("마이페이지")
             }
-            .tag(1)
+            .tag(2)
         }
         .accentColor(.customBlue1)
     }

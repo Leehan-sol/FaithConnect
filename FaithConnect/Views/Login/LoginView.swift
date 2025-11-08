@@ -13,6 +13,8 @@ struct LoginView: View {
     @State private var email: String = ""
     @State private var password: String = ""
     @State private var showSignUp: Bool = false
+    @State private var showFindID: Bool = false
+    @State private var showFindPW: Bool = false
     
     var body: some View {
         ZStack {
@@ -49,17 +51,10 @@ struct LoginView: View {
                                      isSecure: true,
                                      text: $password)
                     .padding(.bottom, 20)
-                    
-                    Button(action: {
+  
+                    ActionButton(title: "로그인",
+                                 backgroundColor: .customBlue1) {
                         viewModel.login(email: email, password: password)
-                    }) {
-                        Text("로그인")
-                            .foregroundColor(.white)
-                            .bold()
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                            .background(.customBlue1)
-                            .cornerRadius(10)
                     }
                     
                     Button(action: {
@@ -76,9 +71,9 @@ struct LoginView: View {
                     
                     HStack {
                         Button(action: {
-                            viewModel.findId()
+                            showFindID = true
                         }) {
-                            Text("아이디 찾기")
+                            Text("이메일 찾기")
                                 .font(.caption2)
                     }
                         
@@ -87,7 +82,7 @@ struct LoginView: View {
                             .font(.caption2)
                         
                         Button(action: {
-                            viewModel.findPassword()
+                            showFindPW = true
                         }) {
                             Text("비밀번호 찾기")
                                 .font(.caption2)
@@ -104,6 +99,12 @@ struct LoginView: View {
                 .padding(EdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20))
                 .navigationDestination(isPresented: $showSignUp) {
                     SignUpView(viewModel: viewModel)
+                 }
+                .navigationDestination(isPresented: $showFindID) {
+                    FindIDView(viewModel: viewModel)
+                 }
+                .navigationDestination(isPresented: $showFindPW) {
+                    FindPasswordView(viewModel: viewModel)
                  }
                 .alert(isPresented: $viewModel.showAlert) {
                     // TODO: - enum 타입 확인 후 얼랏 띄우기
