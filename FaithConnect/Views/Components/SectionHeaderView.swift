@@ -28,7 +28,5 @@ struct SectionHeaderView: View {
 }
 
 #Preview {
-    SectionHeaderView(title: "타이틀") {
-        
-    }
+    SectionHeaderView(title: "타이틀") { }
 }

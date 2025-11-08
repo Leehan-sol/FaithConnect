@@ -9,18 +9,19 @@ import SwiftUI
 
 struct MyPrayerView: View {
     @StateObject var viewModel = MyPrayerViewModel()
+    @State private var selectedPrayer: Prayer? = nil
     @State private var showPrayerDetail: Bool = false
     
     var body: some View {
         NavigationStack {
             ZStack {
-                ScrollView {
+                ScrollView(.vertical, showsIndicators: false) {
                     VStack {
                         SectionHeaderView(title: "내가 올린 기도 제목") {
                             
                         }
                         
-                        ForEach(viewModel.prayers.prefix(4)) { prayer in
+                        ForEach(viewModel.prayers.prefix(3)) { prayer in
                             PrayerRowView(prayer: prayer, cellType: .mine)
                                 .padding(.horizontal, 20)
                                 .padding(.vertical, 10)
@@ -36,12 +37,13 @@ struct MyPrayerView: View {
                             
                         }
                         
-                        ForEach(viewModel.prayers.prefix(4)) { prayer in
+                        ForEach(viewModel.prayers.prefix(3)) { prayer in
                             PrayerRowView(prayer: prayer, cellType: .participated)
                                 .padding(.horizontal, 20)
                                 .padding(.vertical, 10)
                                 .onTapGesture {
                                     print("Tapped: \(prayer.id), \(prayer.title)")
+                                    selectedPrayer = prayer
                                     showPrayerDetail = true
                                 }
                         }
@@ -50,7 +52,9 @@ struct MyPrayerView: View {
             }
             .navigationTitle("내 기도")
             .navigationDestination(isPresented: $showPrayerDetail) {
-                PrayerDetailView()
+                if let prayer = selectedPrayer {
+                    PrayerDetailView(viewModel: PrayerDetailViewModel(prayer: prayer))
+                }
             }
         }
     }

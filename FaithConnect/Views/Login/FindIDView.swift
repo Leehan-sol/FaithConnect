@@ -45,6 +45,10 @@ struct FindIDView: View {
         }
         .padding(EdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20))
         .navigationTitle("이메일 찾기")
+        .onTapGesture {
+            UIApplication.shared.endEditing()
+        }
+
     }
 }
 

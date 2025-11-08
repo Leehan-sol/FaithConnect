@@ -39,7 +39,7 @@ struct FindPasswordView: View {
                 Text("💡 이메일이 도착하지 않으면 스팸 메일함을 확인해주세요.")
             }
             .font(.footnote)
-            .padding(EdgeInsets(top: 17, leading: 8, bottom: 17, trailing: 0))
+            .padding(EdgeInsets(top: 18, leading: 8, bottom: 18, trailing: 0))
             .frame(maxWidth: .infinity, alignment: .leading)
             .foregroundColor(.customNavy)
             .background(Color(.customBlue1).opacity(0.2))
@@ -50,6 +50,10 @@ struct FindPasswordView: View {
         }
         .padding(EdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20))
         .navigationTitle("이메일 찾기")
+        .onTapGesture {
+            UIApplication.shared.endEditing()
+        }
+
     }
 }
 

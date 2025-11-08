@@ -50,8 +50,32 @@ struct LoginView: View {
                                      placeholder: "비밀번호를 입력하세요",
                                      isSecure: true,
                                      text: $password)
-                    .padding(.bottom, 20)
-  
+                    
+                    HStack {
+                        Button(action: {
+                            showFindID = true
+                        }) {
+                            Text("이메일 찾기")
+                                .font(.subheadline)
+                                .foregroundColor(.black)
+                        }
+                        
+                        Text("|")
+                            .font(.footnote)
+                            .foregroundColor(.gray)
+                        
+                        Button(action: {
+                            showFindPW = true
+                        }) {
+                            Text("비밀번호 찾기")
+                                .font(.subheadline)
+                                .foregroundColor(.black)
+                        }
+                        
+                        Spacer()
+                    }
+                    .frame(maxWidth: .infinity)
+                    
                     ActionButton(title: "로그인",
                                  backgroundColor: .customBlue1) {
                         viewModel.login(email: email, password: password)
@@ -69,26 +93,6 @@ struct LoginView: View {
                         .frame(maxWidth: .infinity)
                     }
                     
-                    HStack {
-                        Button(action: {
-                            showFindID = true
-                        }) {
-                            Text("이메일 찾기")
-                                .font(.caption2)
-                    }
-                        
-                        Text("|")
-                            .foregroundColor(.accentColor)
-                            .font(.caption2)
-                        
-                        Button(action: {
-                            showFindPW = true
-                        }) {
-                            Text("비밀번호 찾기")
-                                .font(.caption2)
-                        }
-                    }.frame(maxWidth: .infinity)
-                    
                     Spacer()
                     
                     Text("교회 성도 전용 플랫폼")
@@ -97,22 +101,25 @@ struct LoginView: View {
                         .frame(maxWidth: .infinity)
                 }
                 .padding(EdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20))
+                .navigationBarHidden(true)
                 .navigationDestination(isPresented: $showSignUp) {
                     SignUpView(viewModel: viewModel)
-                 }
+                }
                 .navigationDestination(isPresented: $showFindID) {
                     FindIDView(viewModel: viewModel)
-                 }
+                }
                 .navigationDestination(isPresented: $showFindPW) {
                     FindPasswordView(viewModel: viewModel)
-                 }
+                }
                 .alert(isPresented: $viewModel.showAlert) {
                     // TODO: - enum 타입 확인 후 얼랏 띄우기
                     Alert(title: Text("로그인 실패"),
                           message: Text("아이디 또는 비밀번호를 확인하세요."),
                           dismissButton: .default(Text("확인")))
                 }
-                .navigationBarHidden(true)
+                .onTapGesture {
+                    UIApplication.shared.endEditing()
+                }
             }
         }
     }

@@ -32,7 +32,5 @@ struct FloatingButton: View {
 }
 
 #Preview {
-    FloatingButton {
-        
-    }
+    FloatingButton { }
 }

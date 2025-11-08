@@ -18,7 +18,6 @@ struct Prayer: Identifiable {
     let createdAt: String
     let participationCount: Int
     let responses: [Response]
-//    let myResponse: String
     let hasParticipated: Bool
     
     init(prayerRequestId: Int,
@@ -31,7 +30,6 @@ struct Prayer: Identifiable {
          createdAt: String,
          participationCount: Int,
          responses: [Response],
-//         myResponse: String,
          hasParticipated: Bool) {
         self.id = prayerRequestId
         self.prayerUserId = prayerUserId
@@ -43,7 +41,6 @@ struct Prayer: Identifiable {
         self.createdAt = createdAt
         self.participationCount = participationCount
         self.responses = responses
-//        self.myResponse = myResponse
         self.hasParticipated = hasParticipated
     }
 }

@@ -41,9 +41,9 @@ extension String {
             default:
                 let outputFormatter = DateFormatter()
                 if calendar.component(.year, from: date) == calendar.component(.year, from: now) {
-                    outputFormatter.dateFormat = "MM-dd"
+                    outputFormatter.dateFormat = "MM/dd"
                 } else {
-                    outputFormatter.dateFormat = "yy-MM-dd"
+                    outputFormatter.dateFormat = "yy/MM/dd"
                 }
                 return outputFormatter.string(from: date)
             }

@@ -10,7 +10,18 @@ import Foundation
 class HomeViewModel: ObservableObject {
     
     // TODO: - 
-    // 1. 기도 목록 조회
+    // 1. 카테고리 목록 조회
+    // 2. 기도 목록 조회
+    @Published var category: [PrayerCategory] = [
+        PrayerCategory(categoryId: 0, categoryCode: 0, categoryName: "전체"),
+        PrayerCategory(categoryId: 1, categoryCode: 1, categoryName: "건강"),
+        PrayerCategory(categoryId: 2, categoryCode: 2, categoryName: "시험"),
+        PrayerCategory(categoryId: 3, categoryCode: 3, categoryName: "가정"),
+        PrayerCategory(categoryId: 4, categoryCode: 4, categoryName: "직장"),
+        PrayerCategory(categoryId: 5, categoryCode: 5, categoryName: "감사"),
+        PrayerCategory(categoryId: 6, categoryCode: 6, categoryName: "기타")
+    ]
+    
     @Published var prayers: [Prayer] = [
         Prayer(prayerRequestId: 1, prayerUserId: "a1", prayerUserName: "김철수", categoryId: 101, categoryName: "건강", title: "부모님 건강을 위해 매일매일 기도합니다 여러분도 기도해주세요", content: "다음 주 화요일에 어머니께서 큰 수술을 받으십니다. 어쩌구저쩌구", createdAt: "2025-11-07T12:55:00.000Z", participationCount: 5, responses: [Response(prayerResponseId: 0, prayerRequestId: "", message: "기도합니다 수술 잘되실거예요!!", createdAt: "")], hasParticipated: false),
         Prayer(prayerRequestId: 2, prayerUserId: "a2", prayerUserName: "이영희", categoryId: 102, categoryName: "시험", title: "시험 합격 기도해주세요 부탁드려요", content: "다가오는 국가고시에서 최선을 다해 좋은 결과를 얻을 수 있도록 기도합니다. 공부한 내용이 시험에서 잘 나오고, 긴장하지 않고 평정심을 유지할 수 있기를 바랍니다. 부족한 부분이 있더라도 포기하지 않고 끝까지 최선을 다할 수 있는 힘을 달라고 기도합니다. 또한 주위 사람들에게 감사한 마음을 잊지 않고 겸손하게 임할 수 있기를 바랍니다.", createdAt: "2025-11-02T13:25:49.384Z", participationCount: 3, responses: [Response(prayerResponseId: 0, prayerRequestId: "", message: "국가고시 꼭 합격하시길 바랍니다 어쩌궂 ㅓ쩌궂 가ㅜㅅㄷㅎㄱ누ㅏ누한", createdAt: "")], hasParticipated: false),

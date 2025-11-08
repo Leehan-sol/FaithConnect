@@ -19,33 +19,42 @@ struct PrayerRowView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 15) {
+            // MARK: - Header
+            if cellType != .participated {
+                HStack {
+                    Text(prayer.categoryName)
+                        .frame(width: 40, height: 30)
+                        .foregroundColor(.customNavy)
+                        .background(.customBlue1.opacity(0.2))
+                        .bold()
+                        .font(.caption)
+                        .cornerRadius(10)
+                    
+                    Spacer()
+                    
+                    if shouldShowDateOnRight {
+                        Text(prayer.createdAt.toTimeAgoDisplay())
+                            .font(.caption2)
+                            .foregroundColor(.gray)
+                    }
+                }
+            }
             
-            // MARK: - Participated 상단 타이틀
             if cellType == .participated {
                 Text("\"\(prayer.title)\"")
                     .font(.subheadline)
                     .foregroundColor(Color(.darkGray))
                     .lineLimit(1)
                     .padding(.trailing, 20)
+                    .frame(maxWidth: .infinity, alignment: .leading)
             }
             
-            // MARK: - 메인 타이틀 줄
-            HStack {
-                Text(mainTitle)
-                    .font(.headline)
-                    .lineLimit(1)
-                
-                Spacer()
-                Spacer()
-                
-                if shouldShowDateOnRight {
-                    Text(prayer.createdAt.toTimeAgoDisplay())
-                        .font(.caption2)
-                        .foregroundColor(.gray)
-                }
-            }
+            // MARK: - MainTitle
+            Text(mainTitle)
+                .font(.headline)
+                .lineLimit(1)
             
-            // MARK: - 본문
+            // MARK: - Content
             if cellType == .others {
                 Text(prayer.content)
                     .font(.subheadline)
@@ -53,7 +62,7 @@ struct PrayerRowView: View {
                     .lineLimit(3)
             }
             
-            // MARK: - 하단
+            // MARK: - Bottom
             HStack {
                 if cellType != .participated {
                     Image(systemName: "hands.clap")
@@ -100,3 +109,20 @@ private extension PrayerRowView {
         cellType != .participated
     }
 }
+
+#Preview {
+    PrayerRowView(prayer: Prayer(prayerRequestId: 0,
+                                 prayerUserId: "",
+                                 prayerUserName: "",
+                                 categoryId: 0,
+                                 categoryName: "건강",
+                                 title: "제목",
+                                 content: "내용",
+                                 createdAt: "날짜",
+                                 participationCount: 0,
+                                 responses: [Response(prayerResponseId: 0, prayerRequestId: "", message: "응답", createdAt: "")],
+                                 hasParticipated: false),
+                  cellType: .others)
+        .padding()
+}
+

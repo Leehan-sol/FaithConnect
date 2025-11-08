@@ -18,6 +18,10 @@
 		CC5B0E5A2EBF367900CE79A3 /* FindIDView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5B0E592EBF367900CE79A3 /* FindIDView.swift */; };
 		CC5B0E5C2EBF368900CE79A3 /* FindPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5B0E5B2EBF368900CE79A3 /* FindPasswordView.swift */; };
 		CC5B0E5E2EBF387000CE79A3 /* ActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5B0E5D2EBF387000CE79A3 /* ActionButton.swift */; };
+		CC5B0E602EBF567F00CE79A3 /* UIApplication+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5B0E5F2EBF567F00CE79A3 /* UIApplication+Extensions.swift */; };
+		CC5B0E642EBF8BA900CE79A3 /* PrayerCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5B0E632EBF8BA900CE79A3 /* PrayerCategory.swift */; };
+		CC5B0E662EBF990A00CE79A3 /* CategoryScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5B0E652EBF990A00CE79A3 /* CategoryScrollView.swift */; };
+		CC5B0E682EBFA5A800CE79A3 /* PrayerResponseRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5B0E672EBFA5A800CE79A3 /* PrayerResponseRow.swift */; };
 		CC6437D82EBE42820079ED24 /* PrayerDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6437D72EBE42820079ED24 /* PrayerDetailView.swift */; };
 		CC6437DA2EBE42C20079ED24 /* PrayerEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6437D92EBE42C20079ED24 /* PrayerEditorView.swift */; };
 		CC6C8F1B2E9B978300E43387 /* FaithConnectApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6C8F1A2E9B978300E43387 /* FaithConnectApp.swift */; };
@@ -50,6 +54,10 @@
 		CC5B0E592EBF367900CE79A3 /* FindIDView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindIDView.swift; sourceTree = "<group>"; };
 		CC5B0E5B2EBF368900CE79A3 /* FindPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindPasswordView.swift; sourceTree = "<group>"; };
 		CC5B0E5D2EBF387000CE79A3 /* ActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionButton.swift; sourceTree = "<group>"; };
+		CC5B0E5F2EBF567F00CE79A3 /* UIApplication+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extensions.swift"; sourceTree = "<group>"; };
+		CC5B0E632EBF8BA900CE79A3 /* PrayerCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerCategory.swift; sourceTree = "<group>"; };
+		CC5B0E652EBF990A00CE79A3 /* CategoryScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryScrollView.swift; sourceTree = "<group>"; };
+		CC5B0E672EBFA5A800CE79A3 /* PrayerResponseRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerResponseRow.swift; sourceTree = "<group>"; };
 		CC6437D72EBE42820079ED24 /* PrayerDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerDetailView.swift; sourceTree = "<group>"; };
 		CC6437D92EBE42C20079ED24 /* PrayerEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerEditorView.swift; sourceTree = "<group>"; };
 		CC6C8F172E9B978300E43387 /* FaithConnect.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FaithConnect.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -137,6 +145,7 @@
 				CC6437D72EBE42820079ED24 /* PrayerDetailView.swift */,
 				CC6437D92EBE42C20079ED24 /* PrayerEditorView.swift */,
 				180228902EBA08BD00ABA95C /* PrayerRowView.swift */,
+				CC5B0E672EBFA5A800CE79A3 /* PrayerResponseRow.swift */,
 			);
 			path = Prayer;
 			sourceTree = "<group>";
@@ -194,6 +203,7 @@
 			children = (
 				CCAD36952EB791110028D451 /* Prayer.swift */,
 				CC5B0E572EBF322400CE79A3 /* Response.swift */,
+				CC5B0E632EBF8BA900CE79A3 /* PrayerCategory.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -244,6 +254,7 @@
 			isa = PBXGroup;
 			children = (
 				CCAD369D2EB799B70028D451 /* String+Extensions.swift */,
+				CC5B0E5F2EBF567F00CE79A3 /* UIApplication+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -263,6 +274,7 @@
 				CC5B0E472EBF243000CE79A3 /* SectionHeaderView.swift */,
 				180228922EBA091D00ABA95C /* FloatingButton.swift */,
 				CC5B0E5D2EBF387000CE79A3 /* ActionButton.swift */,
+				CC5B0E652EBF990A00CE79A3 /* CategoryScrollView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -377,6 +389,7 @@
 				CC5B0E4B2EBF2DD000CE79A3 /* MyPrayerView.swift in Sources */,
 				CCAD36982EB7920C0028D451 /* HomeViewModel.swift in Sources */,
 				CC6437D82EBE42820079ED24 /* PrayerDetailView.swift in Sources */,
+				CC5B0E682EBFA5A800CE79A3 /* PrayerResponseRow.swift in Sources */,
 				180228932EBA092A00ABA95C /* FloatingButton.swift in Sources */,
 				CCAD36892EB74F8F0028D451 /* SignUpView.swift in Sources */,
 				CCAD36872EB73F540028D451 /* LabeldTextField.swift in Sources */,
@@ -389,10 +402,13 @@
 				CC5B0E5A2EBF367900CE79A3 /* FindIDView.swift in Sources */,
 				CC5B0E512EBF30D200CE79A3 /* PrayerEditorViewModel.swift in Sources */,
 				CC5B0E5E2EBF387000CE79A3 /* ActionButton.swift in Sources */,
+				CC5B0E662EBF990A00CE79A3 /* CategoryScrollView.swift in Sources */,
+				CC5B0E642EBF8BA900CE79A3 /* PrayerCategory.swift in Sources */,
 				CCAD369E2EB799B70028D451 /* String+Extensions.swift in Sources */,
 				CCAD36962EB791110028D451 /* Prayer.swift in Sources */,
 				CC5B0E482EBF243000CE79A3 /* SectionHeaderView.swift in Sources */,
 				CC5B0E4D2EBF2E5500CE79A3 /* MyPrayerViewModel.swift in Sources */,
+				CC5B0E602EBF567F00CE79A3 /* UIApplication+Extensions.swift in Sources */,
 				CCAD36922EB78D010028D451 /* HomeView.swift in Sources */,
 				CCAD36832EB731EF0028D451 /* LoginView.swift in Sources */,
 				CCAD368E2EB782A00028D451 /* MainTabView.swift in Sources */,

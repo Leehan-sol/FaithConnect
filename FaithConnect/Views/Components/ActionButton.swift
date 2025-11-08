@@ -26,7 +26,6 @@ struct ActionButton: View {
 }
 
 #Preview {
-    ActionButton(title: "버튼", backgroundColor: .customBlue1) {
-    
-    }
+    ActionButton(title: "버튼", backgroundColor: .customBlue1) {}
+        .padding()
 }
