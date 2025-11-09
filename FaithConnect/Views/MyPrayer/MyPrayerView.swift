@@ -18,7 +18,7 @@ struct MyPrayerView: View {
                 ScrollView(.vertical, showsIndicators: false) {
                     VStack {
                         SectionHeaderView(title: "내가 올린 기도 제목") {
-                            
+                            // 내가 올린 기도
                         }
                         
                         ForEach(viewModel.prayers.prefix(3)) { prayer in
@@ -34,7 +34,7 @@ struct MyPrayerView: View {
                     
                     VStack {
                         SectionHeaderView(title: "내가 기도한 기도 제목") {
-                            
+                            // 내가 기도한 기도
                         }
                         
                         ForEach(viewModel.prayers.prefix(3)) { prayer in

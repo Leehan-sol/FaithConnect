@@ -27,7 +27,6 @@ struct PrayerEditorView: View {
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 10) {
                         ForEach(viewModel.category, id: \.self) { category in
-                            let isSelected = category.id == selectedCategoryId
                             CategoryButtonView(
                                 category: category,
                                 isSelected: category.id == selectedCategoryId,

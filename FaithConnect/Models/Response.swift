@@ -8,7 +8,8 @@
 import Foundation
 
 struct Response: Identifiable {
-    let id: Int // prayerResponseId
+    let id = UUID()
+    let prayerResponseId: Int
     let prayerRequestId: String
     let message: String
     let createdAt: String
@@ -17,7 +18,7 @@ struct Response: Identifiable {
          prayerRequestId: String,
          message: String,
          createdAt: String) {
-        self.id = prayerResponseId
+        self.prayerResponseId = prayerResponseId
         self.prayerRequestId = prayerRequestId
         self.message = message
         self.createdAt = createdAt

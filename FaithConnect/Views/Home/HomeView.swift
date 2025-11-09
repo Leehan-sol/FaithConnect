@@ -20,8 +20,7 @@ struct HomeView: View {
                 VStack {
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 10) {
-                            ForEach(viewModel.category, id: \.self) { category in
-                                let isSelected = category.id == selectedCategoryId
+                            ForEach(viewModel.category) { category in
                                 CategoryButtonView(
                                     category: category,
                                     isSelected: category.id == selectedCategoryId,
