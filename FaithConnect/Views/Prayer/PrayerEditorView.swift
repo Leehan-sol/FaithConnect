@@ -51,7 +51,7 @@ struct PrayerEditorView: View {
                         .frame(height: 250)
                         .padding(EdgeInsets(top: 8, leading
                                             : 8, bottom: 8, trailing: 8))
-                        .background(Color(UIColor.systemGray6))
+                        .background(Color(.systemGray6))
                         .cornerRadius(10)
                         .scrollContentBackground(.hidden)
                     
