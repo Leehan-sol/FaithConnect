@@ -71,6 +71,7 @@ struct PrayerDetailView: View {
 struct DetailBottomSheetView: View {
     @ObservedObject var viewModel: PrayerDetailViewModel
     @State var content: String = ""
+    @State var wordCount: String = "0"
     
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
@@ -113,17 +114,15 @@ struct DetailBottomSheetView: View {
             }
             .padding(.bottom, 20)
             
-            HStack {
-                Text("💡 따뜻한 격려의 메시지를 보내주세요.")
-                    
-                Spacer()
-                
-                Text("0/500")
-            }.font(.callout)
-                .foregroundColor(Color(.lightGray))
-                
-            
-            
+            InfoBoxView(messages: [
+                "💡 따뜻한 격려의 메시지를 보내주세요."])
+            .overlay(
+                Text("\(wordCount) / 500")
+                    .font(.caption)
+                    .foregroundColor(.gray)
+                    .padding(.trailing, 8),
+                alignment: .trailing
+            )
             
             Spacer()
         }

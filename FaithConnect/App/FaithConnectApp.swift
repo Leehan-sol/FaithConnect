@@ -17,14 +17,15 @@ struct FaithConnectApp: App {
             if isLoggedIn {
                 MainTabView()
             } else {
-                LoginView()
+                let viewModel = LoginViewModel(APIService())
+                LoginView(viewModel: viewModel)
             }
         }
         .onChange(of: scenePhase) { newPhase in
             if newPhase == .active {
                 
             } else if newPhase == .background {
-//                isLoggedIn = false
+                isLoggedIn = false
             }
         }
     }

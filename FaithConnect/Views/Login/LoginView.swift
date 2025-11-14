@@ -8,13 +8,13 @@
 import SwiftUI
 
 struct LoginView: View {
-    @AppStorage(Constants.isLoggedIn) var isLoggedIn = false
-    @StateObject var viewModel: LoginViewModel = LoginViewModel()
+    @StateObject var viewModel: LoginViewModel
     @State private var email: String = ""
     @State private var password: String = ""
     @State private var showSignUp: Bool = false
     @State private var showFindID: Bool = false
     @State private var showFindPW: Bool = false
+    @AppStorage(Constants.isLoggedIn) var isLoggedIn: Bool = false
     
     var body: some View {
         ZStack {
@@ -78,7 +78,9 @@ struct LoginView: View {
                     
                     ActionButton(title: "로그인",
                                  backgroundColor: .customBlue1) {
-                        viewModel.login(email: email, password: password)
+                        Task {
+                            await viewModel.login(email: email, password: password)
+                        }
                     }
                     
                     Button(action: {
@@ -111,10 +113,9 @@ struct LoginView: View {
                 .navigationDestination(isPresented: $showFindPW) {
                     FindPasswordView(viewModel: viewModel)
                 }
-                .alert(isPresented: $viewModel.showAlert) {
-                    // TODO: - enum 타입 확인 후 얼랏 띄우기
-                    Alert(title: Text("로그인 실패"),
-                          message: Text("아이디 또는 비밀번호를 확인하세요."),
+                .alert(item: $viewModel.alertType) { alert in
+                    Alert(title: Text(alert.title),
+                          message: Text(alert.message),
                           dismissButton: .default(Text("확인")))
                 }
                 .onTapGesture {
@@ -126,5 +127,5 @@ struct LoginView: View {
 }
 
 #Preview {
-    LoginView()
+    LoginView(viewModel: LoginViewModel(APIService()))
 }

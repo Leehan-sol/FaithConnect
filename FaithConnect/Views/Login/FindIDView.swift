@@ -9,7 +9,7 @@ import SwiftUI
 
 struct FindIDView: View {
     @ObservedObject var viewModel: LoginViewModel
-    //    @Environment(\.dismiss) private var dismiss
+    @Environment(\.dismiss) private var dismiss
     
     @State var memberID: String = ""
     @State var name: String = ""
@@ -37,7 +37,7 @@ struct FindIDView: View {
             
             ActionButton(title: "이메일 찾기",
                          backgroundColor: .customBlue1) {
-                viewModel.signUp()
+        
             }
             
             Spacer()
@@ -53,5 +53,5 @@ struct FindIDView: View {
 }
 
 #Preview {
-    FindIDView(viewModel: LoginViewModel())
+    FindIDView(viewModel: LoginViewModel(APIService()))
 }

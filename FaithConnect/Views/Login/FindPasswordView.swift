@@ -9,7 +9,7 @@ import SwiftUI
 
 struct FindPasswordView: View {
     @ObservedObject var viewModel: LoginViewModel
-    //    @Environment(\.dismiss) private var dismiss
+    @Environment(\.dismiss) private var dismiss
 
     @State var email: String = ""
     
@@ -32,24 +32,16 @@ struct FindPasswordView: View {
             
             ActionButton(title: "재설정 링크 전송",
                          backgroundColor: .customBlue1) {
-                viewModel.signUp()
+                
             }.padding(.bottom, 20)
             
-            VStack(alignment: .leading, spacing:5) {
-                Text("💡 이메일이 도착하지 않으면 스팸 메일함을 확인해주세요.")
-            }
-            .font(.footnote)
-            .padding(EdgeInsets(top: 18, leading: 8, bottom: 18, trailing: 0))
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .foregroundColor(.customNavy)
-            .background(Color(.customBlue1).opacity(0.2))
-            .cornerRadius(10)
-            .padding(.bottom, 20)
+            InfoBoxView(messages: [
+                "💡 이메일이 도착하지 않으면 스팸 메일함을 확인해주세요."])
             
             Spacer()
         }
         .padding(EdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20))
-        .navigationTitle("이메일 찾기")
+        .navigationTitle("비밀번호 변경")
         .onTapGesture {
             UIApplication.shared.endEditing()
         }
@@ -58,5 +50,5 @@ struct FindPasswordView: View {
 }
 
 #Preview {
-    FindPasswordView(viewModel: LoginViewModel())
+    FindPasswordView(viewModel: LoginViewModel(APIService()))
 }

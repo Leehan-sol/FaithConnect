@@ -64,19 +64,11 @@ struct PrayerEditorView: View {
                     }
                 }
                 .padding(.bottom, 20)
-                
-                VStack(alignment: .leading, spacing:5) {
-                    Text("• 기도제목은 익명으로 공유됩니다.")
-                    Text("• 이름과 연락처 등 개인정보는 작성하지 말아주세요.")
-                    Text("• 모든 성도들이 함께 기도할 수 있도록 진솔하게 작성해 주세요.")
-                }
-                .font(.footnote)
-                .padding(EdgeInsets(top: 18, leading: 8, bottom: 18, trailing: 0))
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .foregroundColor(.customNavy)
-                .background(Color(.customBlue1).opacity(0.2))
-                .cornerRadius(10)
-                .padding(.bottom, 20)
+
+                InfoBoxView(messages: [
+                    "• 기도제목은 익명으로 공유됩니다.",
+                    "• 이름과 연락처 등 개인정보는 작성하지 말아주세요.",
+                    "• 모든 성도들이 함께 기도할 수 있도록 진솔하게 작성해 주세요."])
                 
                 Spacer()
                 
