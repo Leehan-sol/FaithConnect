@@ -52,18 +52,18 @@ class LoginViewModel: ObservableObject {
     // TODO: -
     // 1. 회원가입 v
     // 2. 로그인 v
-    // 3. 아이디 찾기
+    // 3. 아이디 찾기 v
     // 4. 비밀번호 찾기
     
     func login(email: String, password: String) async {
         print("로그인 email: \(email), password: \(password)")
         
-        if email == "" {
+        if email.isEmpty {
             alertType = .fieldEmpty(fieldName: "이메일")
             return
         }
         
-        if password == "" {
+        if password.isEmpty {
             alertType = .fieldEmpty(fieldName: "비밀번호")
             return
         }
@@ -77,36 +77,53 @@ class LoginViewModel: ObservableObject {
         }
     }
     
-    func findId() {
-        print("아이디 찾기")
+    func findID(memberID: Int, name: String) async -> String? {
+        if memberID == 0 {
+            alertType = .fieldEmpty(fieldName: "교번")
+            return nil
+        }
+        
+        if name.isEmpty {
+            alertType = .fieldEmpty(fieldName: "이름")
+            return nil
+        }
+        
+        do {
+            let foundEmail = try await apiService?.findID(memberID: memberID, name: name)
+            return foundEmail
+        } catch {
+            let error = error.localizedDescription
+            alertType = .loginFailure(message: error)
+            return nil
+        }
     }
     
     func findPassword() {
         print("비밀번호 찾기")
     }
     
-    func signUp(memberID: String, name: String, email: String, password: String, confirmPassword: String) async {
-        if memberID == "" {
+    func signUp(memberID: Int, name: String, email: String, password: String, confirmPassword: String) async {
+        if memberID == 0 {
             alertType = .fieldEmpty(fieldName: "교번")
             return
         }
         
-        if name == "" {
+        if name.isEmpty {
             alertType = .fieldEmpty(fieldName: "이름")
             return
         }
         
-        if email == "" {
+        if email.isEmpty {
             alertType = .fieldEmpty(fieldName: "이메일")
             return
         }
         
-        if password == "" {
+        if password.isEmpty {
             alertType = .fieldEmpty(fieldName: "비밀번호")
             return
         }
         
-        if confirmPassword == "" {
+        if confirmPassword.isEmpty {
             alertType = .fieldEmpty(fieldName: "비밀번호 확인")
             return
         }

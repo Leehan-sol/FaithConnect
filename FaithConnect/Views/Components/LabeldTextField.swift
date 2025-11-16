@@ -38,6 +38,29 @@ struct LabeledTextField: View {
     }
 }
 
+
+struct IntLabeledTextField: View {
+    let title: String
+    var placeholder: String
+    @Binding var value: Int?
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text(title)
+                .font(.subheadline)
+                .bold()
+                
+            TextField(placeholder, value: $value, format: .number)
+                .keyboardType(.numberPad)
+                .autocapitalization(.none)
+                .padding()
+                .background(Color(.systemGray6))
+                .cornerRadius(10)
+        }
+    }
+}
+
+
 #Preview {
     LabeledTextField(title: "타이틀", placeholder: "입력하세요.", text: .constant(""))
         .padding()

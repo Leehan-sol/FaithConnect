@@ -21,7 +21,7 @@ struct FaithConnectApp: App {
                 LoginView(viewModel: viewModel)
             }
         }
-        .onChange(of: scenePhase) { newPhase in
+        .onChange(of: scenePhase) { oldValue, newPhase in
             if newPhase == .active {
                 
             } else if newPhase == .background {

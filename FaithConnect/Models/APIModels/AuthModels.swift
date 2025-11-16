@@ -8,7 +8,7 @@
 import Foundation
 
 struct SignUpRequest: Codable {
-    let churchMemberId: String
+    let churchMemberId: Int
     let name: String
     let email: String
     let password: String
@@ -28,4 +28,14 @@ struct LoginRequest: Codable {
 struct LoginResponse: Decodable {
     let accessToken: String
     let refreshToken: String
+}
+
+struct FindIDRequest: Codable {
+    let name: String
+    let churchMemberId: Int
+}
+
+struct FindIDResponse: Decodable {
+    let email: String
+    let success: Bool
 }

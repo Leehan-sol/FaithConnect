@@ -11,8 +11,10 @@ struct FindIDView: View {
     @ObservedObject var viewModel: LoginViewModel
     @Environment(\.dismiss) private var dismiss
     
-    @State var memberID: String = ""
+    @State var memberID: Int? = nil
     @State var name: String = ""
+    @State var findingID: Bool = false
+    @State var foundIDResult: String?
     
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -26,19 +28,32 @@ struct FindIDView: View {
                 .fixedSize(horizontal: false, vertical: true)
                 .padding(.bottom, 20)
             
-            LabeledTextField(title: "교번",
+            IntLabeledTextField(title: "교번",
                              placeholder: "교번을 입력하세요",
-                             text: $memberID)
+                             value: $memberID)
             
             LabeledTextField(title: "이름",
                              placeholder: "이름을 입력하세요",
                              text: $name)
             .padding(.bottom, 20)
             
-            ActionButton(title: "이메일 찾기",
+            ActionButton(title: findingID ? "찾는 중..." : "이메일 찾기",
                          foregroundColor: .white,
-                         backgroundColor: .customBlue1) {
-        
+                         backgroundColor: findingID ? .gray : .customBlue1) {
+                Task {
+                    guard let id = memberID, !name.isEmpty else {
+                        return
+                    }
+                    
+                    let resultID = await viewModel.findID(memberID: id, name: name)
+                    
+                    if let id = resultID {
+                        foundIDResult = id
+                        findingID = false
+                    } else {
+                        findingID = false
+                    }
+                }
             }
             
             Spacer()
@@ -46,12 +61,24 @@ struct FindIDView: View {
         }
         .padding(EdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20))
         .navigationTitle("이메일 찾기")
+        .navigationDestination(item: $foundIDResult) { foundID in
+            FindIDResultView(foundID: foundID) {
+                dismiss()
+            }
+        }
+        .alert(item: $viewModel.alertType) { alert in
+            Alert(title: Text(alert.title),
+                  message: Text(alert.message),
+                  dismissButton: .default(Text("확인")))
+        }
         .onTapGesture {
             UIApplication.shared.endEditing()
         }
-
     }
 }
+
+
+
 
 #Preview {
     FindIDView(viewModel: LoginViewModel(APIService()))

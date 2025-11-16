@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		180228912EBA08C300ABA95C /* PrayerRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180228902EBA08BD00ABA95C /* PrayerRowView.swift */; };
 		180228932EBA092A00ABA95C /* FloatingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180228922EBA091D00ABA95C /* FloatingButton.swift */; };
+		CC4EA43E2EC9AC3E0097D09C /* PrayerDetailBottomSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4EA43D2EC9AC3D0097D09C /* PrayerDetailBottomSheetView.swift */; };
+		CC4EA4402EC9B7370097D09C /* FindIDResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4EA43F2EC9B7370097D09C /* FindIDResultView.swift */; };
 		CC5B0E482EBF243000CE79A3 /* SectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5B0E472EBF243000CE79A3 /* SectionHeaderView.swift */; };
 		CC5B0E4B2EBF2DD000CE79A3 /* MyPrayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5B0E4A2EBF2DD000CE79A3 /* MyPrayerView.swift */; };
 		CC5B0E4D2EBF2E5500CE79A3 /* MyPrayerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5B0E4C2EBF2E5500CE79A3 /* MyPrayerViewModel.swift */; };
@@ -48,6 +50,8 @@
 /* Begin PBXFileReference section */
 		180228902EBA08BD00ABA95C /* PrayerRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerRowView.swift; sourceTree = "<group>"; };
 		180228922EBA091D00ABA95C /* FloatingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingButton.swift; sourceTree = "<group>"; };
+		CC4EA43D2EC9AC3D0097D09C /* PrayerDetailBottomSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerDetailBottomSheetView.swift; sourceTree = "<group>"; };
+		CC4EA43F2EC9B7370097D09C /* FindIDResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindIDResultView.swift; sourceTree = "<group>"; };
 		CC5B0E472EBF243000CE79A3 /* SectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeaderView.swift; sourceTree = "<group>"; };
 		CC5B0E4A2EBF2DD000CE79A3 /* MyPrayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPrayerView.swift; sourceTree = "<group>"; };
 		CC5B0E4C2EBF2E5500CE79A3 /* MyPrayerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPrayerViewModel.swift; sourceTree = "<group>"; };
@@ -165,6 +169,7 @@
 			isa = PBXGroup;
 			children = (
 				CC6437D72EBE42820079ED24 /* PrayerDetailView.swift */,
+				CC4EA43D2EC9AC3D0097D09C /* PrayerDetailBottomSheetView.swift */,
 				CC6437D92EBE42C20079ED24 /* PrayerEditorView.swift */,
 				180228902EBA08BD00ABA95C /* PrayerRowView.swift */,
 				CC5B0E672EBFA5A800CE79A3 /* PrayerResponseRowView.swift */,
@@ -310,6 +315,7 @@
 				CCAD36822EB731EF0028D451 /* LoginView.swift */,
 				CCAD36882EB74F8F0028D451 /* SignUpView.swift */,
 				CC5B0E592EBF367900CE79A3 /* FindIDView.swift */,
+				CC4EA43F2EC9B7370097D09C /* FindIDResultView.swift */,
 				CC5B0E5B2EBF368900CE79A3 /* FindPasswordView.swift */,
 			);
 			path = Login;
@@ -410,6 +416,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CC4EA4402EC9B7370097D09C /* FindIDResultView.swift in Sources */,
 				CCAD36852EB732FE0028D451 /* LoginViewModel.swift in Sources */,
 				CC5B0E4B2EBF2DD000CE79A3 /* MyPrayerView.swift in Sources */,
 				CCAD36982EB7920C0028D451 /* HomeViewModel.swift in Sources */,
@@ -421,6 +428,7 @@
 				180228912EBA08C300ABA95C /* PrayerRowView.swift in Sources */,
 				CC6C8F1B2E9B978300E43387 /* FaithConnectApp.swift in Sources */,
 				CCAD36902EB7853B0028D451 /* Constants.swift in Sources */,
+				CC4EA43E2EC9AC3E0097D09C /* PrayerDetailBottomSheetView.swift in Sources */,
 				CC5B0E5C2EBF368900CE79A3 /* FindPasswordView.swift in Sources */,
 				CCAD36942EB78D290028D451 /* MyPageView.swift in Sources */,
 				CC5D79512EC760A600C1CEE4 /* AuthModels.swift in Sources */,
@@ -585,7 +593,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIStatusBarStyle = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -615,7 +623,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIStatusBarStyle = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

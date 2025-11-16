@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SignUpView: View {
     @ObservedObject var viewModel: LoginViewModel
-    @State var memberID: String = ""
+    @State var memberID: Int? = nil
     @State var name: String = ""
     @State var email: String = ""
     @State var password: String = ""
@@ -29,9 +29,9 @@ struct SignUpView: View {
                     .fixedSize(horizontal: false, vertical: true)
                     .padding(.bottom, 10)
                 
-                LabeledTextField(title: "교번",
+                IntLabeledTextField(title: "교번",
                                  placeholder: "교번을 입력하세요",
-                                 text: $memberID)
+                                 value: $memberID)
                 
                 LabeledTextField(title: "이름",
                                  placeholder: "이름을 입력하세요",
@@ -54,6 +54,7 @@ struct SignUpView: View {
                              foregroundColor: .white,
                              backgroundColor: .customBlue1) {
                     Task {
+                        guard let memberID = memberID else { return }
                         await viewModel.signUp(memberID: memberID,
                                                name: name,
                                                email: email,

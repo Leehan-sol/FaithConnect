@@ -46,7 +46,6 @@ struct FindPasswordView: View {
         .onTapGesture {
             UIApplication.shared.endEditing()
         }
-
     }
 }
 
