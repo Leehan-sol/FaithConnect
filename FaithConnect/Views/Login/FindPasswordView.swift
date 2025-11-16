@@ -31,6 +31,7 @@ struct FindPasswordView: View {
             .padding(.bottom, 20)
             
             ActionButton(title: "재설정 링크 전송",
+                         foregroundColor: .white,
                          backgroundColor: .customBlue1) {
                 
             }.padding(.bottom, 20)

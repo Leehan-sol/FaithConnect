@@ -9,13 +9,14 @@ import SwiftUI
 
 struct ActionButton: View {
     let title: String
+    let foregroundColor: Color
     let backgroundColor: Color
     let action: () -> Void
 
     var body: some View {
         Button(action: action) {
             Text(title)
-                .foregroundColor(.white)
+                .foregroundColor(foregroundColor)
                 .bold()
                 .frame(maxWidth: .infinity)
                 .padding()
@@ -26,6 +27,8 @@ struct ActionButton: View {
 }
 
 #Preview {
-    ActionButton(title: "버튼", backgroundColor: .customBlue1) {}
+    ActionButton(title: "버튼", 
+                 foregroundColor: .white,
+                 backgroundColor: .customBlue1) {}
         .padding()
 }

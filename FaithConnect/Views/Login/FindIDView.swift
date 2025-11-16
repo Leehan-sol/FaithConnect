@@ -36,6 +36,7 @@ struct FindIDView: View {
             .padding(.bottom, 20)
             
             ActionButton(title: "이메일 찾기",
+                         foregroundColor: .white,
                          backgroundColor: .customBlue1) {
         
             }

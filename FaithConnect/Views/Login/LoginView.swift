@@ -77,6 +77,7 @@ struct LoginView: View {
                     .frame(maxWidth: .infinity)
                     
                     ActionButton(title: "로그인",
+                                 foregroundColor: .white,
                                  backgroundColor: .customBlue1) {
                         Task {
                             await viewModel.login(email: email, password: password)

@@ -51,6 +51,7 @@ struct SignUpView: View {
                 .padding(.bottom, 20)
                 
                 ActionButton(title: "회원가입",
+                             foregroundColor: .white,
                              backgroundColor: .customBlue1) {
                     Task {
                         await viewModel.signUp(memberID: memberID,
