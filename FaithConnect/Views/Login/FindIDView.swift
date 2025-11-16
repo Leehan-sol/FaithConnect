@@ -66,6 +66,7 @@ struct FindIDView: View {
                 dismiss()
             }
         }
+        .customBackButtonStyle()
         .alert(item: $viewModel.alertType) { alert in
             Alert(title: Text(alert.title),
                   message: Text(alert.message),

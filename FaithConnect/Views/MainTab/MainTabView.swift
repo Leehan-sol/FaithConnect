@@ -11,7 +11,8 @@ struct MainTabView: View {
     var body: some View {
         TabView {
             NavigationStack {
-                HomeView()
+                let homeViewModel = HomeViewModel(APIService())
+                HomeView(viewModel: homeViewModel)
             }
             .tabItem {
                 VStack {
@@ -25,7 +26,6 @@ struct MainTabView: View {
                 MyPrayerView()
             }
             .tabItem {
-//                Image(systemName: "list.clipboard.fill")
                 Image(systemName: "heart.text.square.fill")
                 Text("내 기도")
             }

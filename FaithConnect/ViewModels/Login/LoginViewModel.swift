@@ -78,6 +78,7 @@ class LoginViewModel: ObservableObject {
     }
     
     func findID(memberID: Int, name: String) async -> String? {
+        print("아이디 찾기 memberID: \(memberID), name: \(name)")
         if memberID == 0 {
             alertType = .fieldEmpty(fieldName: "교번")
             return nil
@@ -103,6 +104,7 @@ class LoginViewModel: ObservableObject {
     }
     
     func signUp(memberID: Int, name: String, email: String, password: String, confirmPassword: String) async {
+        print("회원가입 memberID: \(memberID), name: \(name), email: \(email), password: \(password), confirmPassword: \(confirmPassword)")
         if memberID == 0 {
             alertType = .fieldEmpty(fieldName: "교번")
             return

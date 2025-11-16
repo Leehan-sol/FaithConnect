@@ -11,6 +11,7 @@ protocol APIServiceProtocol {
     func signUp(memberID: Int, name: String, email: String, password: String, confirmPassword: String) async throws -> Void
     func login(email: String, password: String) async throws -> Void
     func findID(memberID: Int, name: String) async throws -> String
+    func loadCategories() async throws -> [PrayerCategory]
 }
 
 enum APIError: Error {
@@ -137,4 +138,43 @@ struct APIService: APIServiceProtocol {
             return apiResponse.email
         }
     }
+    
+    
+    func loadCategories() async throws -> [PrayerCategory] {
+        let urlString = baseURL + "/api/prayer/categories"
+        
+        guard let url = URL(string: urlString) else {
+            throw APIError.invalidURL
+        }
+        
+        do {
+            let (data, response) = try await URLSession.shared.data(from: url)
+            
+            guard let httpResponse = response as? HTTPURLResponse,
+                  (200...299).contains(httpResponse.statusCode) else {
+                let statusCode = (response as? HTTPURLResponse)?.statusCode ?? 0
+                throw APIError.httpError(statusCode: statusCode)
+            }
+            
+            let decoder = JSONDecoder()
+            let categoryResponses = try decoder.decode([CategoryResponse].self, from: data)
+        
+            let prayerCategories = categoryResponses.map { response in
+                PrayerCategory(categoryId: response.categoryId,
+                               categoryCode: response.categoryCode,
+                               categoryName: response.categoryName)
+            }
+            
+            return prayerCategories
+            
+        } catch let decodingError as DecodingError {
+            print("카테고리 디코딩 실패: \(decodingError)")
+            throw APIError.decodingError
+        } catch {
+            print("카테고리 로드 중 에러 발생: \(error)")
+            throw error
+        }
+    }
+
+   
 }

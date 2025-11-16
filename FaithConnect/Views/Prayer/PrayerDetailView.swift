@@ -57,6 +57,7 @@ struct PrayerDetailView: View {
                      backgroundColor: .customBlue1) {
             showBottomSheet = true
         }.padding(EdgeInsets(top: 0, leading: 20, bottom: 10, trailing: 20))
+            .customBackButtonStyle()
             .sheet(isPresented: $showBottomSheet) {
                 PrayerDetailBottomSheetView(viewModel: viewModel)
                     .presentationDetents([.fraction(0.75)])

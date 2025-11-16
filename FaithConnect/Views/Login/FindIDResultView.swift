@@ -61,7 +61,7 @@ struct FindIDResultView: View {
 }
 
 #Preview {
-    FindIDResultView(foundID: "test1@naver.com") {
+    FindIDResultView(foundID: "test@test.com") {
         //        dismiss()
     }
 }

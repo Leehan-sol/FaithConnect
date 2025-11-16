@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct HomeView: View {
-    @StateObject var viewModel = HomeViewModel()
+    @StateObject var viewModel: HomeViewModel
     @State private var selectedCategoryId: Int = 0
     @State private var selectedPrayer: Prayer? = nil
     @State private var showPrayerDetail: Bool = false
@@ -20,7 +20,7 @@ struct HomeView: View {
                 VStack {
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 10) {
-                            ForEach(viewModel.category) { category in
+                            ForEach(viewModel.categories) { category in
                                 CategoryButtonView(
                                     category: category,
                                     isSelected: category.id == selectedCategoryId,
@@ -61,10 +61,19 @@ struct HomeView: View {
             .navigationDestination(isPresented: $showPrayerEditor) {
                 PrayerEditorView(viewModel: PrayerEditorViewModel())
             }
+        }.onAppear {
+            Task {
+                await viewModel.loadCategories()
+                print(viewModel.categories)
+                if let firstCategory = viewModel.categories.first {
+                    selectedCategoryId = firstCategory.id
+//                    await viewModel.loadPrayers(for: firstCategory.id)
+                }
+            }
         }
     }
 }
 
 #Preview {
-    HomeView()
+    HomeView(viewModel: HomeViewModel(APIService()))
 }
