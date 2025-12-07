@@ -18,14 +18,12 @@ struct CustomBackButtonStyle: ViewModifier {
                     Button(action: {
                         dismiss()
                     }) {
-                        HStack(spacing: 2) {
-                            Image(systemName: "chevron.backward")
-                              Text("뒤로")
-                        }
+                        Image(systemName: "chevron.backward")
                         .foregroundColor(.black)
                     }
                 }
             }
     }
 }
+
 

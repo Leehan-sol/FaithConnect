@@ -11,13 +11,13 @@ class HomeViewModel: ObservableObject {
     
     let apiService: APIServiceProtocol?
     @Published var categories: [PrayerCategory] = [
-//        PrayerCategory(categoryId: 0, categoryCode: 0, categoryName: "전체"),
-//        PrayerCategory(categoryId: 1, categoryCode: 1, categoryName: "건강"),
-//        PrayerCategory(categoryId: 2, categoryCode: 2, categoryName: "시험"),
-//        PrayerCategory(categoryId: 3, categoryCode: 3, categoryName: "가정"),
-//        PrayerCategory(categoryId: 4, categoryCode: 4, categoryName: "직장"),
-//        PrayerCategory(categoryId: 5, categoryCode: 5, categoryName: "감사"),
-//        PrayerCategory(categoryId: 6, categoryCode: 6, categoryName: "기타")
+        PrayerCategory(categoryId: 0, categoryCode: 0, categoryName: "전체"),
+        PrayerCategory(categoryId: 1, categoryCode: 1, categoryName: "건강"),
+        PrayerCategory(categoryId: 2, categoryCode: 2, categoryName: "시험"),
+        PrayerCategory(categoryId: 3, categoryCode: 3, categoryName: "가정"),
+        PrayerCategory(categoryId: 4, categoryCode: 4, categoryName: "직장"),
+        PrayerCategory(categoryId: 5, categoryCode: 5, categoryName: "감사"),
+        PrayerCategory(categoryId: 6, categoryCode: 6, categoryName: "기타")
     ]
     
     init(_ apiService: APIServiceProtocol?) {

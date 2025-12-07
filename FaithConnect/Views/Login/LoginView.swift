@@ -17,8 +17,8 @@ struct LoginView: View {
     @AppStorage(Constants.isLoggedIn) var isLoggedIn: Bool = false
     
     var body: some View {
-        ZStack {
-            NavigationStack {
+        NavigationStack {
+            ScrollView {
                 VStack(alignment: .center, spacing: 20) {
                     Spacer()
                         .frame(height: 10)
@@ -119,9 +119,9 @@ struct LoginView: View {
                           message: Text(alert.message),
                           dismissButton: .default(Text("확인")))
                 }
-                .onTapGesture {
-                    UIApplication.shared.endEditing()
-                }
+            }
+            .onTapGesture {
+                UIApplication.shared.endEditing()
             }
         }
     }

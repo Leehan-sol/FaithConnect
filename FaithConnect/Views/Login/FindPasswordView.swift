@@ -10,8 +10,7 @@ import SwiftUI
 struct FindPasswordView: View {
     @ObservedObject var viewModel: LoginViewModel
     @Environment(\.dismiss) private var dismiss
-
-    @State var email: String = ""
+    @State private var email: String = ""
     
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -33,7 +32,7 @@ struct FindPasswordView: View {
             ActionButton(title: "재설정 링크 전송",
                          foregroundColor: .white,
                          backgroundColor: .customBlue1) {
-                
+                // TODO: - 비밀번호 재설정
             }.padding(.bottom, 20)
             
             InfoBoxView(messages: [

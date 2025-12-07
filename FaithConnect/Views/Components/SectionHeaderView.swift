@@ -9,6 +9,7 @@ import SwiftUI
 
 struct SectionHeaderView: View {
     let title: String
+    let buttonHidden: Bool
     let action: () -> Void
     
     var body: some View {
@@ -16,8 +17,10 @@ struct SectionHeaderView: View {
             Text(title)
                 .font(.headline)
             
-            Button(action: action) {
-                Image(systemName: "chevron.forward")
+            if (!buttonHidden) {
+                Button(action: action) {
+                    Image(systemName: "chevron.forward")
+                }
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -28,5 +31,5 @@ struct SectionHeaderView: View {
 }
 
 #Preview {
-    SectionHeaderView(title: "타이틀") { }
+    SectionHeaderView(title: "타이틀", buttonHidden: false) { }
 }

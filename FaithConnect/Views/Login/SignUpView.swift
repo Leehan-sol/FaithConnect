@@ -9,11 +9,12 @@ import SwiftUI
 
 struct SignUpView: View {
     @ObservedObject var viewModel: LoginViewModel
-    @State var memberID: Int? = nil
-    @State var name: String = ""
-    @State var email: String = ""
-    @State var password: String = ""
-    @State var confirmPassword: String = ""
+    @State private var memberID: Int? = nil
+    @State private var name: String = ""
+    @State private var email: String = ""
+    @State private var password: String = ""
+    @State private var confirmPassword: String = ""
+    @State private var shouldDismiss: Bool = false
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
@@ -30,8 +31,8 @@ struct SignUpView: View {
                     .padding(.bottom, 10)
                 
                 IntLabeledTextField(title: "교번",
-                                 placeholder: "교번을 입력하세요",
-                                 value: $memberID)
+                                    placeholder: "교번을 입력하세요",
+                                    value: $memberID)
                 
                 LabeledTextField(title: "이름",
                                  placeholder: "이름을 입력하세요",
@@ -43,10 +44,12 @@ struct SignUpView: View {
                 
                 LabeledTextField(title: "비밀번호",
                                  placeholder: "비밀번호를 입력하세요",
+                                 isSecure: true,
                                  text: $password)
                 
                 LabeledTextField(title: "비밀번호 확인",
                                  placeholder: "비밀번호를 다시 입력하세요",
+                                 isSecure: true,
                                  text: $confirmPassword)
                 .padding(.bottom, 20)
                 
@@ -54,8 +57,7 @@ struct SignUpView: View {
                              foregroundColor: .white,
                              backgroundColor: .customBlue1) {
                     Task {
-                        guard let memberID = memberID else { return }
-                        await viewModel.signUp(memberID: memberID,
+                        await viewModel.signUp(memberID: memberID ?? 0,
                                                name: name,
                                                email: email,
                                                password: password,
@@ -77,15 +79,16 @@ struct SignUpView: View {
             .alert(item: $viewModel.alertType) { alert in
                 let dismissAction = {
                     if case .successRegister = alert {
-                        Task { @MainActor in
-                            dismiss()
-                        }
+                        shouldDismiss = true
                     }
                 }
                 return Alert(title: Text(alert.title),
                              message: Text(alert.message),
                              dismissButton: .default(Text("확인"), action: dismissAction))
             }
+        }
+        .onChange(of: shouldDismiss) {
+            if shouldDismiss { dismiss() }
         }
         .onTapGesture {
             UIApplication.shared.endEditing()

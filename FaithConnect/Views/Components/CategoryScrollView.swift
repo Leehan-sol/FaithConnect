@@ -22,3 +22,11 @@ struct CategoryButtonView: View {
             .onTapGesture(perform: action)
     }
 }
+
+#Preview {
+    CategoryButtonView(category: PrayerCategory(categoryId: 0,
+                                                categoryCode: 0,
+                                                categoryName: "전체"),
+                       isSelected: true) {}
+}
+

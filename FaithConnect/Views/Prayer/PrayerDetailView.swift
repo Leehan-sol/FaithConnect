@@ -52,6 +52,7 @@ struct PrayerDetailView: View {
                 }
             }
         }
+        
         ActionButton(title: "기도 응답하기",
                      foregroundColor: .white,
                      backgroundColor: .customBlue1) {
@@ -64,7 +65,9 @@ struct PrayerDetailView: View {
                     .presentationDragIndicator(.visible)
                     .interactiveDismissDisabled(true)
             }
+            .toolbar(.hidden, for: .tabBar)
     }
+        
 }
 
 

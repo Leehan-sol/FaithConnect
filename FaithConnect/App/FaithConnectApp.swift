@@ -25,7 +25,7 @@ struct FaithConnectApp: App {
             if newPhase == .active {
                 
             } else if newPhase == .background {
-                isLoggedIn = false
+//                isLoggedIn = false
             }
         }
     }

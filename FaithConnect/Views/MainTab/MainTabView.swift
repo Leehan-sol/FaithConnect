@@ -15,10 +15,8 @@ struct MainTabView: View {
                 HomeView(viewModel: homeViewModel)
             }
             .tabItem {
-                VStack {
-                    Image(systemName: "house")
-                    Text("홈")
-                }
+                Image(systemName: "house")
+                Text("홈")
             }
             .tag(0)
             

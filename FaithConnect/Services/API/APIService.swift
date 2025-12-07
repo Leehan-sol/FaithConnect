@@ -35,7 +35,7 @@ enum APIError: Error {
 }
 
 struct APIService: APIServiceProtocol {
-    let baseURL = "https://manchunggrouproom.duckdns.org/dev"
+    let baseURL = "http://prayer-app.duckdns.org/dev"
     
     func signUp(memberID: Int, name: String, email: String, password: String, confirmPassword: String) async throws -> Void {
         let urlString = baseURL + "/api/prayer/mock/signup"
@@ -94,7 +94,6 @@ struct APIService: APIServiceProtocol {
         
         guard let httpResponse = response as? HTTPURLResponse,
               (200...299).contains(httpResponse.statusCode) else {
-            
             let statusCode = (response as? HTTPURLResponse)?.statusCode ?? 0
             throw APIError.httpError(statusCode: statusCode)
         }
@@ -125,7 +124,6 @@ struct APIService: APIServiceProtocol {
         
         guard let httpResponse = response as? HTTPURLResponse,
               (200...299).contains(httpResponse.statusCode) else {
-            
             let statusCode = (response as? HTTPURLResponse)?.statusCode ?? 0
             throw APIError.httpError(statusCode: statusCode)
         }

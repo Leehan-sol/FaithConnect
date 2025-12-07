@@ -14,6 +14,7 @@
 		CC4EA4422EC9F64A0097D09C /* CustomBackButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4EA4412EC9F64A0097D09C /* CustomBackButtonStyle.swift */; };
 		CC4EA4442EC9F6C50097D09C /* View+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4EA4432EC9F6C50097D09C /* View+Extensions.swift */; };
 		CC4EA4462EC9FCD90097D09C /* PrayerModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4EA4452EC9FCD90097D09C /* PrayerModels.swift */; };
+		CC57ADB82EDC41BE0043A8D8 /* ChangePasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC57ADB72EDC41BE0043A8D8 /* ChangePasswordView.swift */; };
 		CC5B0E482EBF243000CE79A3 /* SectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5B0E472EBF243000CE79A3 /* SectionHeaderView.swift */; };
 		CC5B0E4B2EBF2DD000CE79A3 /* MyPrayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5B0E4A2EBF2DD000CE79A3 /* MyPrayerView.swift */; };
 		CC5B0E4D2EBF2E5500CE79A3 /* MyPrayerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5B0E4C2EBF2E5500CE79A3 /* MyPrayerViewModel.swift */; };
@@ -35,6 +36,7 @@
 		CC6C8F1B2E9B978300E43387 /* FaithConnectApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6C8F1A2E9B978300E43387 /* FaithConnectApp.swift */; };
 		CC6C8F1F2E9B978400E43387 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CC6C8F1E2E9B978400E43387 /* Assets.xcassets */; };
 		CC6C8F222E9B978400E43387 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CC6C8F212E9B978400E43387 /* Preview Assets.xcassets */; };
+		CC6E3DF82ED1A19500B0EF4D /* MyPageItemField.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6E3DF72ED1A19500B0EF4D /* MyPageItemField.swift */; };
 		CCAD36752EB726510028D451 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CCAD36742EB726510028D451 /* LaunchScreen.storyboard */; };
 		CCAD36832EB731EF0028D451 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAD36822EB731EF0028D451 /* LoginView.swift */; };
 		CCAD36852EB732FE0028D451 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAD36842EB732FE0028D451 /* LoginViewModel.swift */; };
@@ -58,6 +60,8 @@
 		CC4EA4412EC9F64A0097D09C /* CustomBackButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomBackButtonStyle.swift; sourceTree = "<group>"; };
 		CC4EA4432EC9F6C50097D09C /* View+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extensions.swift"; sourceTree = "<group>"; };
 		CC4EA4452EC9FCD90097D09C /* PrayerModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerModels.swift; sourceTree = "<group>"; };
+		CC57ADB62EDC3F980043A8D8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		CC57ADB72EDC41BE0043A8D8 /* ChangePasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordView.swift; sourceTree = "<group>"; };
 		CC5B0E472EBF243000CE79A3 /* SectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeaderView.swift; sourceTree = "<group>"; };
 		CC5B0E4A2EBF2DD000CE79A3 /* MyPrayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPrayerView.swift; sourceTree = "<group>"; };
 		CC5B0E4C2EBF2E5500CE79A3 /* MyPrayerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPrayerViewModel.swift; sourceTree = "<group>"; };
@@ -80,6 +84,7 @@
 		CC6C8F1A2E9B978300E43387 /* FaithConnectApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaithConnectApp.swift; sourceTree = "<group>"; };
 		CC6C8F1E2E9B978400E43387 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CC6C8F212E9B978400E43387 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		CC6E3DF72ED1A19500B0EF4D /* MyPageItemField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageItemField.swift; sourceTree = "<group>"; };
 		CCAD36742EB726510028D451 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CCAD36822EB731EF0028D451 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		CCAD36842EB732FE0028D451 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
@@ -203,6 +208,7 @@
 		CC6C8F192E9B978300E43387 /* FaithConnect */ = {
 			isa = PBXGroup;
 			children = (
+				CC57ADB62EDC3F980043A8D8 /* Info.plist */,
 				CCAD36762EB726750028D451 /* App */,
 				CCAD36772EB7285A0028D451 /* Models */,
 				CCAD36792EB7286D0028D451 /* Views */,
@@ -307,13 +313,14 @@
 		CCAD367E2EB72A720028D451 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				CC4EA4412EC9F64A0097D09C /* CustomBackButtonStyle.swift */,
 				CCAD36862EB73F540028D451 /* LabeldTextField.swift */,
 				CC5B0E472EBF243000CE79A3 /* SectionHeaderView.swift */,
 				180228922EBA091D00ABA95C /* FloatingButton.swift */,
 				CC5B0E5D2EBF387000CE79A3 /* ActionButton.swift */,
 				CC5B0E652EBF990A00CE79A3 /* CategoryScrollView.swift */,
 				CC5D79582EC76B6700C1CEE4 /* InfoBoxView.swift */,
-				CC4EA4412EC9F64A0097D09C /* CustomBackButtonStyle.swift */,
+				CC6E3DF72ED1A19500B0EF4D /* MyPageItemField.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -350,6 +357,7 @@
 			isa = PBXGroup;
 			children = (
 				CCAD36932EB78D290028D451 /* MyPageView.swift */,
+				CC57ADB72EDC41BE0043A8D8 /* ChangePasswordView.swift */,
 			);
 			path = MyPage;
 			sourceTree = "<group>";
@@ -432,6 +440,7 @@
 				CC6437D82EBE42820079ED24 /* PrayerDetailView.swift in Sources */,
 				CC5B0E682EBFA5A800CE79A3 /* PrayerResponseRowView.swift in Sources */,
 				180228932EBA092A00ABA95C /* FloatingButton.swift in Sources */,
+				CC57ADB82EDC41BE0043A8D8 /* ChangePasswordView.swift in Sources */,
 				CCAD36892EB74F8F0028D451 /* SignUpView.swift in Sources */,
 				CCAD36872EB73F540028D451 /* LabeldTextField.swift in Sources */,
 				180228912EBA08C300ABA95C /* PrayerRowView.swift in Sources */,
@@ -460,6 +469,7 @@
 				CCAD36832EB731EF0028D451 /* LoginView.swift in Sources */,
 				CC5D794F2EC757F600C1CEE4 /* APIService.swift in Sources */,
 				CCAD368E2EB782A00028D451 /* MainTabView.swift in Sources */,
+				CC6E3DF82ED1A19500B0EF4D /* MyPageItemField.swift in Sources */,
 				CC5B0E582EBF322400CE79A3 /* Response.swift in Sources */,
 				CC5B0E4F2EBF30A900CE79A3 /* PrayerDetailViewModel.swift in Sources */,
 				CCAD369A2EB792140028D451 /* MyPageViewModel.swift in Sources */,
@@ -600,6 +610,7 @@
 				DEVELOPMENT_TEAM = Y9U32NW3Q6;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = FaithConnect/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
@@ -610,7 +621,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = hansol.FaithConnect;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -625,11 +636,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"FaithConnect/Preview Content\"";
+				DEVELOPMENT_TEAM = Y9U32NW3Q6;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = FaithConnect/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
@@ -640,9 +654,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = hansol.FaithConnect;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

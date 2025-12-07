@@ -96,6 +96,7 @@ struct PrayerEditorView: View {
                     }
                 }
             }
+            .toolbar(.hidden, for: .tabBar)
             .onTapGesture {
                 UIApplication.shared.endEditing()
         }

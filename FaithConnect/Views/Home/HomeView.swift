@@ -15,7 +15,6 @@ struct HomeView: View {
     @State private var showPrayerEditor: Bool = false
     
     var body: some View {
-        NavigationStack {
             ZStack {
                 VStack {
                     ScrollView(.horizontal, showsIndicators: false) {
@@ -60,7 +59,6 @@ struct HomeView: View {
             }
             .navigationDestination(isPresented: $showPrayerEditor) {
                 PrayerEditorView(viewModel: PrayerEditorViewModel())
-            }
         }.onAppear {
             Task {
                 await viewModel.loadCategories()

@@ -10,6 +10,7 @@ import Foundation
 enum LoginAlert: Identifiable {
     case loginFailure(message: String)
     case fieldEmpty(fieldName: String)
+    case findIDFailure
     case passwordMismatch
     case successRegister
     
@@ -17,8 +18,9 @@ enum LoginAlert: Identifiable {
         switch self {
         case .loginFailure: return 0
         case .fieldEmpty: return 1
-        case .passwordMismatch: return 2
-        case .successRegister: return 3
+        case .findIDFailure: return 2
+        case .passwordMismatch: return 3
+        case .successRegister: return 4
         }
     }
     
@@ -26,6 +28,7 @@ enum LoginAlert: Identifiable {
         switch self {
         case .loginFailure: return "로그인 실패"
         case .fieldEmpty: return "입력 오류"
+        case .findIDFailure: return "아이디 찾기 실패"
         case .passwordMismatch: return "비밀번호 오류"
         case .successRegister: return "회원가입 성공"
         }
@@ -35,6 +38,7 @@ enum LoginAlert: Identifiable {
         switch self {
         case .loginFailure(let msg): return msg
         case .fieldEmpty(let fieldName): return "\(fieldName) 을(를) 입력해주세요."
+        case .findIDFailure: return "아이디 찾기를 실패했습니다."
         case .passwordMismatch: return "입력하신 비밀번호와 비밀번호 확인이 일치하지 않습니다. 다시 입력해주세요."
         case .successRegister: return "회원가입에 성공했습니다. 로그인 해주세요."
         }
@@ -94,7 +98,7 @@ class LoginViewModel: ObservableObject {
             return foundEmail
         } catch {
             let error = error.localizedDescription
-            alertType = .loginFailure(message: error)
+            alertType = .findIDFailure
             return nil
         }
     }

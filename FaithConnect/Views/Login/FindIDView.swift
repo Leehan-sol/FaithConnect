@@ -10,11 +10,11 @@ import SwiftUI
 struct FindIDView: View {
     @ObservedObject var viewModel: LoginViewModel
     @Environment(\.dismiss) private var dismiss
-    
-    @State var memberID: Int? = nil
-    @State var name: String = ""
-    @State var findingID: Bool = false
-    @State var foundIDResult: String?
+    @State private var memberID: Int? = nil
+    @State private var name: String = ""
+    @State private var findID: String = ""
+    @State private var findingID: Bool = false
+    @State private var showFindID: Bool = false
     
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -29,8 +29,8 @@ struct FindIDView: View {
                 .padding(.bottom, 20)
             
             IntLabeledTextField(title: "교번",
-                             placeholder: "교번을 입력하세요",
-                             value: $memberID)
+                                placeholder: "교번을 입력하세요",
+                                value: $memberID)
             
             LabeledTextField(title: "이름",
                              placeholder: "이름을 입력하세요",
@@ -41,28 +41,24 @@ struct FindIDView: View {
                          foregroundColor: .white,
                          backgroundColor: findingID ? .gray : .customBlue1) {
                 Task {
-                    guard let id = memberID, !name.isEmpty else {
-                        return
-                    }
+                    findingID = true
+                    defer { findingID = false }
                     
-                    let resultID = await viewModel.findID(memberID: id, name: name)
-                    
-                    if let id = resultID {
-                        foundIDResult = id
-                        findingID = false
-                    } else {
-                        findingID = false
+                    if let resultID = await viewModel.findID(memberID: memberID ?? 0,
+                                                             name: name) {
+                        findID = resultID
+                        showFindID = true
                     }
                 }
-            }
+            }.disabled(findingID)
             
             Spacer()
             
         }
         .padding(EdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20))
         .navigationTitle("이메일 찾기")
-        .navigationDestination(item: $foundIDResult) { foundID in
-            FindIDResultView(foundID: foundID) {
+        .navigationDestination(isPresented: $showFindID) {
+            FindIDResultView(foundID: findID) {
                 dismiss()
             }
         }
