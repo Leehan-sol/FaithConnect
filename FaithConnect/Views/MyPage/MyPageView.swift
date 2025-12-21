@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct MyPageView: View {
+    @StateObject var viewModel: MyPageViewModel
     @State private var showChangePassword: Bool = false
     @State var showAlert: Bool = false
     
@@ -122,6 +123,6 @@ struct MyPageView: View {
 }
 
 #Preview {
-    MyPageView()
+    MyPageView(viewModel: MyPageViewModel(APIService()))
 }
 

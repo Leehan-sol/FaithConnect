@@ -7,6 +7,12 @@
 
 import Foundation
 
+struct CategoryResponse: Decodable {
+    let categoryId: Int
+    let categoryCode: Int
+    let categoryName: String
+}
+
 struct PrayerCategory: Identifiable, Hashable {
     let id: Int // categoryId
     let categoryCode: Int

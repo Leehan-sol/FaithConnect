@@ -9,24 +9,32 @@ import SwiftUI
 
 @main
 struct FaithConnectApp: App {
-    @AppStorage(Constants.isLoggedIn) var isLoggedIn: Bool = false
     @Environment(\.scenePhase) private var scenePhase
+    @StateObject private var session = UserSession()
     
     var body: some Scene {
         WindowGroup {
-            if isLoggedIn {
-                MainTabView()
-            } else {
-                let viewModel = LoginViewModel(APIService())
-                LoginView(viewModel: viewModel)
-            }
+            RootView()
+                .environmentObject(session)
         }
-        .onChange(of: scenePhase) { oldValue, newPhase in
-            if newPhase == .active {
-                
-            } else if newPhase == .background {
-//                isLoggedIn = false
-            }
+        //        .onChange(of: scenePhase) { oldValue, newPhase in
+        //            if newPhase == .active {
+        //
+        //            } else if newPhase == .background {
+        //                isLoggedIn = false
+        //            }
+        //        }
+    }
+}
+
+struct RootView: View {
+    @EnvironmentObject var session: UserSession
+    
+    var body: some View {
+        if session.isLoggedIn {
+            MainTabView()
+        } else {
+            LoginView(viewModel: LoginViewModel(APIService(), session))
         }
     }
 }

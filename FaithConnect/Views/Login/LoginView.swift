@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct LoginView: View {
+    @EnvironmentObject private var session: UserSession
     @StateObject var viewModel: LoginViewModel
     @State private var email: String = ""
     @State private var password: String = ""
@@ -127,6 +128,6 @@ struct LoginView: View {
     }
 }
 
-#Preview {
-    LoginView(viewModel: LoginViewModel(APIService()))
-}
+//#Preview {
+//    LoginView(viewModel: LoginViewModel(APIService()))
+//}

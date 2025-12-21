@@ -8,5 +8,12 @@
 import Foundation
 
 class MyPageViewModel: ObservableObject {
-
+    let apiService: APIServiceProtocol
+    
+    init(_ apiService: APIServiceProtocol) {
+        self.apiService = apiService
+    }
+    
+    
+    
 }

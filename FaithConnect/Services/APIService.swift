@@ -9,9 +9,10 @@ import Foundation
 
 protocol APIServiceProtocol {
     func signUp(memberID: Int, name: String, email: String, password: String, confirmPassword: String) async throws -> Void
-    func login(email: String, password: String) async throws -> Void
+    func login(email: String, password: String) async throws -> LoginResponse
     func findID(memberID: Int, name: String) async throws -> String
     func loadCategories() async throws -> [PrayerCategory]
+    func loadPrayers(selectedCategory: Int, page: Int) async throws -> PrayerResponse
 }
 
 enum APIError: Error {
@@ -35,8 +36,11 @@ enum APIError: Error {
 }
 
 struct APIService: APIServiceProtocol {
+//    private let baseURL = "http://prayer-app.duckdns.org/dev"
     let baseURL = "http://prayer-app.duckdns.org/dev"
+
     
+    // MARK: - Auth
     func signUp(memberID: Int, name: String, email: String, password: String, confirmPassword: String) async throws -> Void {
         let urlString = baseURL + "/api/prayer/mock/signup"
         
@@ -73,7 +77,7 @@ struct APIService: APIServiceProtocol {
         }
     }
     
-    func login(email: String, password: String) async throws -> Void {
+    func login(email: String, password: String) async throws -> LoginResponse {
         let urlString = baseURL + "/api/prayer/mock/login"
         
         guard let url = URL(string: urlString) else {
@@ -98,11 +102,14 @@ struct APIService: APIServiceProtocol {
             throw APIError.httpError(statusCode: statusCode)
         }
         
-        let apiResponse = try JSONDecoder().decode(LoginResponse.self, from: data)
+        let loginResponse = try JSONDecoder().decode(LoginResponse.self, from: data)
         
-        if apiResponse.accessToken == "" || apiResponse.refreshToken == "" {
+        guard !loginResponse.accessToken.isEmpty,
+              !loginResponse.refreshToken.isEmpty else {
             throw APIError.failureLogin
         }
+        
+        return loginResponse
     }
     
     
@@ -137,9 +144,9 @@ struct APIService: APIServiceProtocol {
         }
     }
     
-    
+    // MARK: - Prayer
     func loadCategories() async throws -> [PrayerCategory] {
-        let urlString = baseURL + "/api/prayer/categories"
+        let urlString = baseURL + "/api/prayer/mock/categories"
         
         guard let url = URL(string: urlString) else {
             throw APIError.invalidURL
@@ -174,5 +181,33 @@ struct APIService: APIServiceProtocol {
         }
     }
 
-   
+    func loadPrayers(selectedCategory: Int, page: Int) async throws -> PrayerResponse {
+        let urlString = baseURL + "/api/prayer/mock/requests?page=\(page)&categoryId=\(selectedCategory)"
+        
+        guard let url = URL(string: urlString) else {
+            throw APIError.invalidURL
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        
+        let (data, response) = try await URLSession.shared.data(for: request)
+        
+        guard let httpResponse = response as? HTTPURLResponse,
+              (200...299).contains(httpResponse.statusCode) else {
+            let statusCode = (response as? HTTPURLResponse)?.statusCode ?? 0
+            throw APIError.httpError(statusCode: statusCode)
+        }
+        
+        do {
+            let decoded = try JSONDecoder().decode(PrayerResponse.self, from: data)
+            return decoded
+        } catch {
+            print("디코딩 실패: \(error)")
+            throw APIError.decodingError
+        }
+    }
+
+
+
 }

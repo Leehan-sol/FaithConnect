@@ -36,6 +36,6 @@ struct PrayerResponseRowView: View {
 }
 
 #Preview {
-    PrayerResponseRowView(response: Response(prayerResponseId: 0, prayerRequestId: "", message: "어머님의 수술이 잘 되시길 기도하겠습니다. 하나님께서 함께 하실 거예요.", createdAt: "2025-11-07T12:55:00.000Z"))
+    PrayerResponseRowView(response: Response(id: 0, prayerRequestId: "", message: "어머님의 수술이 잘 되시길 기도하겠습니다. 하나님께서 함께 하실 거예요.", createdAt: "2025-11-07T12:55:00.000Z"))
         .padding()
 }

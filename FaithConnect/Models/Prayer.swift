@@ -7,9 +7,19 @@
 
 import Foundation
 
-struct Prayer: Identifiable {
-    let id: Int // prayerRequestId
-    let prayerUserId: String
+struct PrayerResponse: Decodable {
+    let prayerRequests: [Prayer]
+    let currentPage: Int
+    let totalPages: Int
+    let totalElements: Int
+    let pageSize: Int
+    let hasNext: Bool
+    let hasPrevious: Bool
+}
+
+struct Prayer: Identifiable, Decodable {
+    let id: Int
+    let prayerUserId: Int
     let prayerUserName: String
     let categoryId: Int
     let categoryName: String
@@ -17,31 +27,21 @@ struct Prayer: Identifiable {
     let content: String
     let createdAt: String
     let participationCount: Int
-    let responses: [Response]
-    let hasParticipated: Bool
+    let responses: [Response]?
+    let hasParticipated: Bool?
     
-    init(prayerRequestId: Int,
-         prayerUserId: String,
-         prayerUserName: String,
-         categoryId: Int,
-         categoryName: String,
-         title: String,
-         content: String,
-         createdAt: String,
-         participationCount: Int,
-         responses: [Response],
-         hasParticipated: Bool) {
-        self.id = prayerRequestId
-        self.prayerUserId = prayerUserId
-        self.prayerUserName = prayerUserName
-        self.categoryId = categoryId
-        self.categoryName = categoryName
-        self.title = title
-        self.content = content
-        self.createdAt = createdAt
-        self.participationCount = participationCount
-        self.responses = responses
-        self.hasParticipated = hasParticipated
-    }
+    enum CodingKeys: String, CodingKey {
+          case id = "prayerRequestId"
+          case prayerUserId
+          case prayerUserName
+          case categoryId
+          case categoryName
+          case title
+          case content
+          case createdAt
+          case participationCount
+          case responses
+          case hasParticipated
+      }
 }
 

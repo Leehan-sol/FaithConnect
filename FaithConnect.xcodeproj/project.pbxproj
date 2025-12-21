@@ -13,7 +13,6 @@
 		CC4EA4402EC9B7370097D09C /* FindIDResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4EA43F2EC9B7370097D09C /* FindIDResultView.swift */; };
 		CC4EA4422EC9F64A0097D09C /* CustomBackButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4EA4412EC9F64A0097D09C /* CustomBackButtonStyle.swift */; };
 		CC4EA4442EC9F6C50097D09C /* View+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4EA4432EC9F6C50097D09C /* View+Extensions.swift */; };
-		CC4EA4462EC9FCD90097D09C /* PrayerModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4EA4452EC9FCD90097D09C /* PrayerModels.swift */; };
 		CC57ADB82EDC41BE0043A8D8 /* ChangePasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC57ADB72EDC41BE0043A8D8 /* ChangePasswordView.swift */; };
 		CC5B0E482EBF243000CE79A3 /* SectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5B0E472EBF243000CE79A3 /* SectionHeaderView.swift */; };
 		CC5B0E4B2EBF2DD000CE79A3 /* MyPrayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5B0E4A2EBF2DD000CE79A3 /* MyPrayerView.swift */; };
@@ -29,8 +28,10 @@
 		CC5B0E662EBF990A00CE79A3 /* CategoryScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5B0E652EBF990A00CE79A3 /* CategoryScrollView.swift */; };
 		CC5B0E682EBFA5A800CE79A3 /* PrayerResponseRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5B0E672EBFA5A800CE79A3 /* PrayerResponseRowView.swift */; };
 		CC5D794F2EC757F600C1CEE4 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5D794E2EC757F600C1CEE4 /* APIService.swift */; };
-		CC5D79512EC760A600C1CEE4 /* AuthModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5D79502EC760A600C1CEE4 /* AuthModels.swift */; };
+		CC5D79512EC760A600C1CEE4 /* Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5D79502EC760A600C1CEE4 /* Auth.swift */; };
 		CC5D79592EC76B6700C1CEE4 /* InfoBoxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5D79582EC76B6700C1CEE4 /* InfoBoxView.swift */; };
+		CC6194C62EF7E030005B79A7 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6194C52EF7E030005B79A7 /* User.swift */; };
+		CC6194CA2EF7F5BB005B79A7 /* UserSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6194C92EF7F5BB005B79A7 /* UserSession.swift */; };
 		CC6437D82EBE42820079ED24 /* PrayerDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6437D72EBE42820079ED24 /* PrayerDetailView.swift */; };
 		CC6437DA2EBE42C20079ED24 /* PrayerEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6437D92EBE42C20079ED24 /* PrayerEditorView.swift */; };
 		CC6C8F1B2E9B978300E43387 /* FaithConnectApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6C8F1A2E9B978300E43387 /* FaithConnectApp.swift */; };
@@ -59,7 +60,6 @@
 		CC4EA43F2EC9B7370097D09C /* FindIDResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindIDResultView.swift; sourceTree = "<group>"; };
 		CC4EA4412EC9F64A0097D09C /* CustomBackButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomBackButtonStyle.swift; sourceTree = "<group>"; };
 		CC4EA4432EC9F6C50097D09C /* View+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extensions.swift"; sourceTree = "<group>"; };
-		CC4EA4452EC9FCD90097D09C /* PrayerModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerModels.swift; sourceTree = "<group>"; };
 		CC57ADB62EDC3F980043A8D8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		CC57ADB72EDC41BE0043A8D8 /* ChangePasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordView.swift; sourceTree = "<group>"; };
 		CC5B0E472EBF243000CE79A3 /* SectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeaderView.swift; sourceTree = "<group>"; };
@@ -76,8 +76,10 @@
 		CC5B0E652EBF990A00CE79A3 /* CategoryScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryScrollView.swift; sourceTree = "<group>"; };
 		CC5B0E672EBFA5A800CE79A3 /* PrayerResponseRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerResponseRowView.swift; sourceTree = "<group>"; };
 		CC5D794E2EC757F600C1CEE4 /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
-		CC5D79502EC760A600C1CEE4 /* AuthModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthModels.swift; sourceTree = "<group>"; };
+		CC5D79502EC760A600C1CEE4 /* Auth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Auth.swift; sourceTree = "<group>"; };
 		CC5D79582EC76B6700C1CEE4 /* InfoBoxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoBoxView.swift; sourceTree = "<group>"; };
+		CC6194C52EF7E030005B79A7 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		CC6194C92EF7F5BB005B79A7 /* UserSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSession.swift; sourceTree = "<group>"; };
 		CC6437D72EBE42820079ED24 /* PrayerDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerDetailView.swift; sourceTree = "<group>"; };
 		CC6437D92EBE42C20079ED24 /* PrayerEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerEditorView.swift; sourceTree = "<group>"; };
 		CC6C8F172E9B978300E43387 /* FaithConnect.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FaithConnect.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -160,23 +162,6 @@
 			path = Prayer;
 			sourceTree = "<group>";
 		};
-		CC5D794D2EC757EA00C1CEE4 /* API */ = {
-			isa = PBXGroup;
-			children = (
-				CC5D794E2EC757F600C1CEE4 /* APIService.swift */,
-			);
-			path = API;
-			sourceTree = "<group>";
-		};
-		CC5D79522EC760AB00C1CEE4 /* APIModels */ = {
-			isa = PBXGroup;
-			children = (
-				CC5D79502EC760A600C1CEE4 /* AuthModels.swift */,
-				CC4EA4452EC9FCD90097D09C /* PrayerModels.swift */,
-			);
-			path = APIModels;
-			sourceTree = "<group>";
-		};
 		CC6437D62EBE422F0079ED24 /* Prayer */ = {
 			isa = PBXGroup;
 			children = (
@@ -241,10 +226,11 @@
 		CCAD36772EB7285A0028D451 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				CC5D79502EC760A600C1CEE4 /* Auth.swift */,
+				CC6194C52EF7E030005B79A7 /* User.swift */,
+				CC5B0E632EBF8BA900CE79A3 /* PrayerCategory.swift */,
 				CCAD36952EB791110028D451 /* Prayer.swift */,
 				CC5B0E572EBF322400CE79A3 /* Response.swift */,
-				CC5B0E632EBF8BA900CE79A3 /* PrayerCategory.swift */,
-				CC5D79522EC760AB00C1CEE4 /* APIModels */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -278,7 +264,8 @@
 		CCAD367A2EB728730028D451 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				CC5D794D2EC757EA00C1CEE4 /* API */,
+				CC5D794E2EC757F600C1CEE4 /* APIService.swift */,
+				CC6194C92EF7F5BB005B79A7 /* UserSession.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -436,6 +423,7 @@
 				CC4EA4402EC9B7370097D09C /* FindIDResultView.swift in Sources */,
 				CCAD36852EB732FE0028D451 /* LoginViewModel.swift in Sources */,
 				CC5B0E4B2EBF2DD000CE79A3 /* MyPrayerView.swift in Sources */,
+				CC6194CA2EF7F5BB005B79A7 /* UserSession.swift in Sources */,
 				CCAD36982EB7920C0028D451 /* HomeViewModel.swift in Sources */,
 				CC6437D82EBE42820079ED24 /* PrayerDetailView.swift in Sources */,
 				CC5B0E682EBFA5A800CE79A3 /* PrayerResponseRowView.swift in Sources */,
@@ -449,10 +437,9 @@
 				CC4EA43E2EC9AC3E0097D09C /* PrayerDetailBottomSheetView.swift in Sources */,
 				CC5B0E5C2EBF368900CE79A3 /* FindPasswordView.swift in Sources */,
 				CCAD36942EB78D290028D451 /* MyPageView.swift in Sources */,
-				CC5D79512EC760A600C1CEE4 /* AuthModels.swift in Sources */,
+				CC5D79512EC760A600C1CEE4 /* Auth.swift in Sources */,
 				CC6437DA2EBE42C20079ED24 /* PrayerEditorView.swift in Sources */,
 				CC5B0E5A2EBF367900CE79A3 /* FindIDView.swift in Sources */,
-				CC4EA4462EC9FCD90097D09C /* PrayerModels.swift in Sources */,
 				CC5B0E512EBF30D200CE79A3 /* PrayerEditorViewModel.swift in Sources */,
 				CC5D79592EC76B6700C1CEE4 /* InfoBoxView.swift in Sources */,
 				CC5B0E5E2EBF387000CE79A3 /* ActionButton.swift in Sources */,
@@ -462,6 +449,7 @@
 				CCAD369E2EB799B70028D451 /* String+Extensions.swift in Sources */,
 				CCAD36962EB791110028D451 /* Prayer.swift in Sources */,
 				CC5B0E482EBF243000CE79A3 /* SectionHeaderView.swift in Sources */,
+				CC6194C62EF7E030005B79A7 /* User.swift in Sources */,
 				CC5B0E4D2EBF2E5500CE79A3 /* MyPrayerViewModel.swift in Sources */,
 				CC5B0E602EBF567F00CE79A3 /* UIApplication+Extensions.swift in Sources */,
 				CC4EA4442EC9F6C50097D09C /* View+Extensions.swift in Sources */,

@@ -97,6 +97,6 @@ struct SignUpView: View {
     
 }
 
-#Preview {
-    SignUpView(viewModel: LoginViewModel(APIService()))
-}
+//#Preview {
+//    SignUpView(viewModel: LoginViewModel(APIService()))
+//}

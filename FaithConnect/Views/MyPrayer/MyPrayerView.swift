@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct MyPrayerView: View {
-    @StateObject var viewModel = MyPrayerViewModel()
+    @StateObject var viewModel: MyPrayerViewModel
     @State private var selectedPrayer: Prayer? = nil
     @State private var showPrayerDetail: Bool = false
     
@@ -58,5 +58,5 @@ struct MyPrayerView: View {
 }
 
 #Preview {
-    MyPrayerView()
+    MyPrayerView(viewModel: MyPrayerViewModel(APIService()))
 }

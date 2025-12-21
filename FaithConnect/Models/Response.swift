@@ -7,20 +7,16 @@
 
 import Foundation
 
-struct Response: Identifiable {
-    let id = UUID()
-    let prayerResponseId: Int
+struct Response: Identifiable, Decodable {
+    let id: Int
     let prayerRequestId: String
     let message: String
     let createdAt: String
     
-    init(prayerResponseId: Int, 
-         prayerRequestId: String,
-         message: String,
-         createdAt: String) {
-        self.prayerResponseId = prayerResponseId
-        self.prayerRequestId = prayerRequestId
-        self.message = message
-        self.createdAt = createdAt
+    enum CodingKeys: String, CodingKey {
+        case id = "prayerResponseId"
+        case prayerRequestId
+        case message
+        case createdAt
     }
 }

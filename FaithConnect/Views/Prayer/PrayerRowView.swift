@@ -90,7 +90,11 @@ private extension PrayerRowView {
     var mainTitle: String {
         switch cellType {
         case .participated:
-            return prayer.responses[0].message
+            if let firstResponse = prayer.responses?.first {
+                return firstResponse.message
+            } else {
+                return ""
+            }
         default:
             return prayer.title
         }
@@ -111,8 +115,8 @@ private extension PrayerRowView {
 }
 
 #Preview {
-    PrayerRowView(prayer: Prayer(prayerRequestId: 0,
-                                 prayerUserId: "",
+    PrayerRowView(prayer: Prayer(id: 0,
+                                 prayerUserId: 0,
                                  prayerUserName: "",
                                  categoryId: 0,
                                  categoryName: "건강",
@@ -120,7 +124,7 @@ private extension PrayerRowView {
                                  content: "내용",
                                  createdAt: "날짜",
                                  participationCount: 0,
-                                 responses: [Response(prayerResponseId: 0, prayerRequestId: "", message: "응답", createdAt: "")],
+                                 responses: [Response(id: 0, prayerRequestId: "", message: "응답", createdAt: "")],
                                  hasParticipated: false),
                   cellType: .others)
         .padding()

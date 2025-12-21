@@ -15,57 +15,63 @@ struct HomeView: View {
     @State private var showPrayerEditor: Bool = false
     
     var body: some View {
-            ZStack {
-                VStack {
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        HStack(spacing: 10) {
-                            ForEach(viewModel.categories) { category in
-                                CategoryButtonView(
-                                    category: category,
-                                    isSelected: category.id == selectedCategoryId,
-                                    action: {
-                                        selectedCategoryId = category.id
+        ZStack {
+            VStack {
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 10) {
+                        ForEach(viewModel.categories) { category in
+                            CategoryButtonView(
+                                category: category,
+                                isSelected: category.id == selectedCategoryId,
+                                action: {
+                                    selectedCategoryId = category.id
+                                    print("selectedCategoryId: \(selectedCategoryId)")
+                                    Task {
+                                        await viewModel.loadPrayers(selectedCategory: selectedCategoryId, reset: true)
                                     }
-                                )
-                            }
+                                }
+                            )
                         }
                     }
-                    .padding(EdgeInsets(top: 10, leading: 15, bottom: 10, trailing: 0))
-                    
-                    List(viewModel.prayers) { prayer in
-                        PrayerRowView(prayer: prayer, cellType: .others)
-                            .listRowInsets(EdgeInsets(top: 10, leading: 20, bottom: 20, trailing: 20))
-                            .listRowSeparator(.hidden)
-                            .listRowBackground(Color.clear)
-                            .onTapGesture {
-                                print("Tapped: \(prayer.id), \(prayer.title)")
-                                selectedPrayer = prayer
-                                showPrayerDetail = true
-                            }
-                    }
-                    .listStyle(PlainListStyle())
-                    .scrollIndicators(.hidden)
                 }
+                .padding(EdgeInsets(top: 10, leading: 15, bottom: 10, trailing: 0))
                 
-                FloatingButton(action: {
-                    showPrayerEditor = true
-                })
-            }
-            .navigationTitle("기도 모음")
-            .navigationDestination(isPresented: $showPrayerDetail) {
-                if let prayer = selectedPrayer {
-                    PrayerDetailView(viewModel: PrayerDetailViewModel(prayer: prayer))
+                List(viewModel.prayers) { prayer in
+                    PrayerRowView(prayer: prayer, cellType: .others)
+                        .listRowInsets(EdgeInsets(top: 10, leading: 20, bottom: 20, trailing: 20))
+                        .listRowSeparator(.hidden)
+                        .listRowBackground(Color.clear)
+                        .onTapGesture {
+                            print("Tapped: \(prayer.id), \(prayer.title)")
+                            selectedPrayer = prayer
+                            showPrayerDetail = true
+                        }
                 }
+                .refreshable {
+                    await viewModel.loadPrayers(selectedCategory: selectedCategoryId,
+                                                reset: true)
+                }
+                .listStyle(PlainListStyle())
+                .scrollIndicators(.hidden)
             }
-            .navigationDestination(isPresented: $showPrayerEditor) {
-                PrayerEditorView(viewModel: PrayerEditorViewModel())
+            
+            FloatingButton(action: {
+                showPrayerEditor = true
+            })
+        }
+        .navigationTitle("기도 모음")
+        .navigationDestination(isPresented: $showPrayerDetail) {
+            if let prayer = selectedPrayer {
+                PrayerDetailView(viewModel: PrayerDetailViewModel(prayer: prayer))
+            }
+        }
+        .navigationDestination(isPresented: $showPrayerEditor) {
+            PrayerEditorView(viewModel: PrayerEditorViewModel())
         }.onAppear {
             Task {
                 await viewModel.loadCategories()
-                print(viewModel.categories)
                 if let firstCategory = viewModel.categories.first {
                     selectedCategoryId = firstCategory.id
-//                    await viewModel.loadPrayers(for: firstCategory.id)
                 }
             }
         }

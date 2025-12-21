@@ -21,7 +21,8 @@ struct MainTabView: View {
             .tag(0)
             
             NavigationStack {
-                MyPrayerView()
+                let myPrayerViewModel = MyPrayerViewModel(APIService())
+                MyPrayerView(viewModel: myPrayerViewModel)
             }
             .tabItem {
                 Image(systemName: "heart.text.square.fill")
@@ -30,7 +31,8 @@ struct MainTabView: View {
             .tag(1)
             
             NavigationStack {
-                MyPageView()
+                let myPageViewModel = MyPageViewModel(APIService())
+                MyPageView(viewModel: myPageViewModel)
             }
             .tabItem {
                 Image(systemName: "person")

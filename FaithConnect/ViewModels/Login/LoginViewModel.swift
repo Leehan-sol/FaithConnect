@@ -46,18 +46,15 @@ enum LoginAlert: Identifiable {
 }
 
 class LoginViewModel: ObservableObject {
-    let apiService: APIServiceProtocol?
+    private let apiService: APIServiceProtocol
+    private let session: UserSession
     @Published var alertType: LoginAlert? = nil
     
-    init(_ apiService: APIServiceProtocol?) {
-        self.apiService = apiService
-    }
     
-    // TODO: -
-    // 1. 회원가입 v
-    // 2. 로그인 v
-    // 3. 아이디 찾기 v
-    // 4. 비밀번호 찾기
+    init(_ apiService: APIServiceProtocol, _ session: UserSession) {
+        self.apiService = apiService
+        self.session = session
+    }
     
     func login(email: String, password: String) async {
         print("로그인 email: \(email), password: \(password)")
@@ -73,8 +70,14 @@ class LoginViewModel: ObservableObject {
         }
         
         do {
-            try await apiService?.login(email: email, password: password)
-            UserDefaults.standard.set(true, forKey: Constants.isLoggedIn)
+            let loginResponse = try await apiService.login(email: email, password: password)
+            let user = User(id: "",
+                            name: "",
+                            email: "",
+                            accessToken: loginResponse.accessToken,
+                            refreshToken: loginResponse.refreshToken)
+            
+            await session.login(user: user)
         } catch {
             let error = error.localizedDescription
             alertType = .loginFailure(message: error)
@@ -94,7 +97,7 @@ class LoginViewModel: ObservableObject {
         }
         
         do {
-            let foundEmail = try await apiService?.findID(memberID: memberID, name: name)
+            let foundEmail = try await apiService.findID(memberID: memberID, name: name)
             return foundEmail
         } catch {
             let error = error.localizedDescription
@@ -140,7 +143,7 @@ class LoginViewModel: ObservableObject {
         }
         
         do {
-            try await apiService?.signUp(memberID: memberID,
+            try await apiService.signUp(memberID: memberID,
                                          name: name,
                                          email: email,
                                          password: password,
