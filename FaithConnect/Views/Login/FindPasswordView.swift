@@ -41,7 +41,7 @@ struct FindPasswordView: View {
             Spacer()
         }
         .padding(EdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20))
-        .navigationTitle("비밀번호 변경")
+        .navigationTitle("비밀번호 찾기")
         .customBackButtonStyle()
         .onTapGesture {
             UIApplication.shared.endEditing()

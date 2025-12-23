@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct PrayerEditorView: View {
+    @EnvironmentObject var session: UserSession
     @StateObject var viewModel: PrayerEditorViewModel
     @Environment(\.dismiss) var dismiss
     @State private var selectedCategoryId: Int = 0
@@ -26,7 +27,7 @@ struct PrayerEditorView: View {
                 
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 10) {
-                        ForEach(viewModel.category, id: \.self) { category in
+                        ForEach(session.category, id: \.self) { category in
                             CategoryButtonView(
                                 category: category,
                                 isSelected: category.id == selectedCategoryId,
@@ -56,7 +57,7 @@ struct PrayerEditorView: View {
                         .scrollContentBackground(.hidden)
                     
                     if content.isEmpty {
-                        Text(viewModel.contentPlaceholder)
+                        Text("기도 내용을 입력하세요")
                             .foregroundColor(Color(uiColor: .placeholderText))
                             .font(.body)
                             .padding(EdgeInsets(top: 15, leading: 15, bottom: 0, trailing: 15))
@@ -89,7 +90,19 @@ struct PrayerEditorView: View {
                 
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
-                        dismiss()
+                        // TODO: - 기도 작성
+                        if title.isEmpty {
+                            
+                            return
+                        }
+                        
+                        if content.isEmpty {
+
+                            return
+                        }
+                        
+//                        viewModel.
+                        
                     } label: {
                         Text("완료")
                             .bold()

@@ -11,10 +11,12 @@ import Foundation
 class UserSession: ObservableObject {
     @Published var user: User?
     @Published var isLoggedIn: Bool = false
+    @Published var prayerCategories: [PrayerCategory] = []
     
-    func login(user: User) {
+    func login(user: User, categories: [PrayerCategory]) {
         self.user = user
         self.isLoggedIn = true
+        self.prayerCategories = prayerCategories
     }
     
     func logout() {

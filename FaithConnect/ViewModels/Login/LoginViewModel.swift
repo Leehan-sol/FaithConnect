@@ -45,11 +45,11 @@ enum LoginAlert: Identifiable {
     }
 }
 
+@MainActor
 class LoginViewModel: ObservableObject {
     private let apiService: APIServiceProtocol
     private let session: UserSession
     @Published var alertType: LoginAlert? = nil
-    
     
     init(_ apiService: APIServiceProtocol, _ session: UserSession) {
         self.apiService = apiService
@@ -77,7 +77,8 @@ class LoginViewModel: ObservableObject {
                             accessToken: loginResponse.accessToken,
                             refreshToken: loginResponse.refreshToken)
             
-            await session.login(user: user)
+            let categories = try await apiService.loadCategories()
+            session.login(user: user, categories: categories)
         } catch {
             let error = error.localizedDescription
             alertType = .loginFailure(message: error)
@@ -110,6 +111,7 @@ class LoginViewModel: ObservableObject {
         print("비밀번호 찾기")
     }
     
+    @MainActor
     func signUp(memberID: Int, name: String, email: String, password: String, confirmPassword: String) async {
         print("회원가입 memberID: \(memberID), name: \(name), email: \(email), password: \(password), confirmPassword: \(confirmPassword)")
         if memberID == 0 {

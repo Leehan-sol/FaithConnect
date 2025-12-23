@@ -12,7 +12,7 @@ protocol APIServiceProtocol {
     func login(email: String, password: String) async throws -> LoginResponse
     func findID(memberID: Int, name: String) async throws -> String
     func loadCategories() async throws -> [PrayerCategory]
-    func loadPrayers(selectedCategory: Int, page: Int) async throws -> PrayerResponse
+    func loadPrayers(categoryId: Int, page: Int) async throws -> PrayerResponse
 }
 
 enum APIError: Error {
@@ -36,9 +36,7 @@ enum APIError: Error {
 }
 
 struct APIService: APIServiceProtocol {
-//    private let baseURL = "http://prayer-app.duckdns.org/dev"
-    let baseURL = "http://prayer-app.duckdns.org/dev"
-
+    private let baseURL = "http://prayer-app.duckdns.org/dev"
     
     // MARK: - Auth
     func signUp(memberID: Int, name: String, email: String, password: String, confirmPassword: String) async throws -> Void {
@@ -163,7 +161,7 @@ struct APIService: APIServiceProtocol {
             
             let decoder = JSONDecoder()
             let categoryResponses = try decoder.decode([CategoryResponse].self, from: data)
-        
+            
             let prayerCategories = categoryResponses.map { response in
                 PrayerCategory(categoryId: response.categoryId,
                                categoryCode: response.categoryCode,
@@ -180,34 +178,38 @@ struct APIService: APIServiceProtocol {
             throw error
         }
     }
-
-    func loadPrayers(selectedCategory: Int, page: Int) async throws -> PrayerResponse {
-        let urlString = baseURL + "/api/prayer/mock/requests?page=\(page)&categoryId=\(selectedCategory)"
+    
+    func loadPrayers(categoryId: Int, page: Int) async throws -> PrayerResponse {
+        var components = URLComponents(string: baseURL + "/api/prayer/requests")
+        components?.queryItems = [
+            URLQueryItem(name: "categoryId", value: "\(categoryId)"),
+            URLQueryItem(name: "page", value: "\(page)")
+        ]
         
-        guard let url = URL(string: urlString) else {
+        guard let url = components?.url else {
             throw APIError.invalidURL
         }
         
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        
-        let (data, response) = try await URLSession.shared.data(for: request)
-        
-        guard let httpResponse = response as? HTTPURLResponse,
-              (200...299).contains(httpResponse.statusCode) else {
-            let statusCode = (response as? HTTPURLResponse)?.statusCode ?? 0
-            throw APIError.httpError(statusCode: statusCode)
-        }
-        
         do {
-            let decoded = try JSONDecoder().decode(PrayerResponse.self, from: data)
-            return decoded
-        } catch {
-            print("디코딩 실패: \(error)")
+            let (data, response) = try await URLSession.shared.data(from: url)
+            
+            guard let httpResponse = response as? HTTPURLResponse,
+                  (200...299).contains(httpResponse.statusCode) else {
+                let statusCode = (response as? HTTPURLResponse)?.statusCode ?? 0
+                throw APIError.httpError(statusCode: statusCode)
+            }
+            
+            let decoder = JSONDecoder()
+            let prayerResponse = try decoder.decode(PrayerResponse.self, from: data)
+            return prayerResponse
+        } catch let decodingError as DecodingError {
+            print("기도 목록 디코딩 실패: \(decodingError)")
             throw APIError.decodingError
+        } catch {
+            print("기도 목록 로드 중 에러 발생: \(error)")
+            throw error
         }
     }
-
-
-
+    
+    
 }
