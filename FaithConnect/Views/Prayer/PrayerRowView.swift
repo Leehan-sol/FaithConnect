@@ -116,15 +116,15 @@ private extension PrayerRowView {
 
 #Preview {
     PrayerRowView(prayer: Prayer(id: 0,
-                                 prayerUserId: 0,
-                                 prayerUserName: "",
+                                 userId: 0,
+                                 userName: "",
                                  categoryId: 0,
                                  categoryName: "건강",
                                  title: "제목",
                                  content: "내용",
                                  createdAt: "날짜",
                                  participationCount: 0,
-                                 responses: [Response(id: 0, prayerRequestId: "", message: "응답", createdAt: "")],
+                                 responses: [Response(id: 0, prayerRequestId: 0, message: "응답", createdAt: "")],
                                  hasParticipated: false),
                   cellType: .others)
         .padding()

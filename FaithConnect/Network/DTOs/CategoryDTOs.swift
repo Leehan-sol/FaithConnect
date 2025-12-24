@@ -1,5 +1,5 @@
 //
-//  PrayerCategory.swift
+//  CategoryDTOs.swift
 //  FaithConnect
 //
 //  Created by hansol on 2025/11/08.
@@ -7,8 +7,9 @@
 
 import Foundation
 
-struct PrayerCategory: Identifiable, Hashable {
-    let id: Int // categoryId
+struct CategoryResponse: Decodable {
+    let categoryId: Int
     let categoryCode: Int
     let categoryName: String
 }
+

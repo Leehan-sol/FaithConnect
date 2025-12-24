@@ -14,8 +14,17 @@ struct PrayerEditorView: View {
     @State private var selectedCategoryId: Int = 0
     @State var title: String = ""
     @State var content: String = ""
+    @State var showAlert: Bool = false
+    var onDone: (Prayer) -> Void
+    
+    init(viewModel: @escaping () -> PrayerEditorViewModel, onDone: @escaping (Prayer) -> Void) {
+        _viewModel = StateObject(wrappedValue: viewModel())
+        self.onDone = onDone
+    }
     
     var body: some View {
+        let categories = session.prayerCategories
+    
         ScrollView(.vertical, showsIndicators: false) {
             Spacer()
                 .frame(height: 20)
@@ -27,7 +36,7 @@ struct PrayerEditorView: View {
                 
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 10) {
-                        ForEach(session.category, id: \.self) { category in
+                        ForEach(categories, id: \.self) { category in
                             CategoryButtonView(
                                 category: category,
                                 isSelected: category.id == selectedCategoryId,
@@ -65,7 +74,7 @@ struct PrayerEditorView: View {
                     }
                 }
                 .padding(.bottom, 20)
-
+                
                 InfoBoxView(messages: [
                     "• 기도제목은 익명으로 공유됩니다.",
                     "• 이름과 연락처 등 개인정보는 작성하지 말아주세요.",
@@ -90,19 +99,11 @@ struct PrayerEditorView: View {
                 
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
-                        // TODO: - 기도 작성
-                        if title.isEmpty {
-                            
-                            return
+                        Task {
+                            if let newPrayer = await viewModel.writePrayer(categoryId: selectedCategoryId, title: title, content: content) {
+                                onDone(newPrayer)
+                            }
                         }
-                        
-                        if content.isEmpty {
-
-                            return
-                        }
-                        
-//                        viewModel.
-                        
                     } label: {
                         Text("완료")
                             .bold()
@@ -112,11 +113,16 @@ struct PrayerEditorView: View {
             .toolbar(.hidden, for: .tabBar)
             .onTapGesture {
                 UIApplication.shared.endEditing()
-        }
+            }
+            .alert(item: $viewModel.alertType) { alert in
+                Alert(title: Text(alert.title),
+                      message: Text(alert.message),
+                      dismissButton: .default(Text("확인")))
+            }
         }
     }
 }
 
-#Preview {
-    PrayerEditorView(viewModel: PrayerEditorViewModel())
-}
+//#Preview {
+//    PrayerEditorView(viewModel: PrayerEditorViewModel())
+//}

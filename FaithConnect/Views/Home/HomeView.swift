@@ -9,18 +9,20 @@ import SwiftUI
 
 struct HomeView: View {
     @EnvironmentObject var session: UserSession
-    @StateObject var viewModel: HomeViewModel
+    @ObservedObject var viewModel: HomeViewModel
     @State private var selectedCategoryId: Int = 0
     @State private var selectedPrayer: Prayer? = nil
     @State private var showPrayerDetail: Bool = false
     @State private var showPrayerEditor: Bool = false
     
     var body: some View {
+        let categories = session.prayerCategories
+        
         ZStack {
             VStack {
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 10) {
-                        ForEach(session.categories) { category in
+                        ForEach(categories) { category in
                             CategoryButtonView(
                                 category: category,
                                 isSelected: category.id == selectedCategoryId,
@@ -40,7 +42,7 @@ struct HomeView: View {
                 
                 // TODO: - 로딩중 추가 구현 필요
                 if viewModel.prayers.isEmpty {
-                    EmptyPrayerView()
+                    PrayerEmptyView()
                 } else {
                     List(viewModel.prayers) { prayer in
                         PrayerRowView(prayer: prayer, cellType: .others)
@@ -73,10 +75,16 @@ struct HomeView: View {
             }
         }
         .navigationDestination(isPresented: $showPrayerEditor) {
-            PrayerEditorView(viewModel: PrayerEditorViewModel())
+            PrayerEditorView(
+                viewModel: { viewModel.makePrayerEditorViewModel() }, // 팩토리만 전달
+                onDone: { newPrayer in
+                    viewModel.addPrayer(prayer: newPrayer)
+                    showPrayerEditor = false
+                }
+            )
         }.onAppear {
             Task {
-                if let firstCategory = session.categories.first {
+                if let firstCategory = categories.first {
                     selectedCategoryId = firstCategory.id // 첫 카테고리 선택
                     await viewModel.loadPrayers(categoryId: firstCategory.id,
                                                 reset: true) // 카테고리 목록 조회
@@ -87,32 +95,6 @@ struct HomeView: View {
 }
 
 
-
-struct EmptyPrayerView: View {
-    var body: some View {
-        VStack(spacing: 10) {
-            Spacer()
-            
-            Image(systemName: "figure.and.child.holdinghands")
-                .resizable()
-                .scaledToFit()
-                .frame(width: 60, height: 60)
-                .foregroundColor(.white)
-                .background(Color(.systemGray4))
-                .cornerRadius(10)
-                .padding(.bottom)
-            
-            Text("아직 기도가 없습니다")
-                .font(.subheadline)
-                
-            Text("첫 번째 기도를 작성해보세요")
-                .font(.footnote)
-            
-            Spacer()
-        }
-        .foregroundColor(Color(.darkGray))
-    }
-}
 
 #Preview {
     HomeView(viewModel: HomeViewModel(APIService()))

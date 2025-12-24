@@ -7,20 +7,16 @@
 
 import Foundation
 
-struct PrayerResponse: Decodable {
-    let prayerRequests: [Prayer]
+struct PrayerPage {
+    let prayers: [Prayer]
     let currentPage: Int
-    let totalPages: Int
-    let totalElements: Int
-    let pageSize: Int
     let hasNext: Bool
-    let hasPrevious: Bool
 }
 
-struct Prayer: Identifiable, Decodable {
-    let id: Int
-    let prayerUserId: Int
-    let prayerUserName: String
+struct Prayer: Identifiable {
+    let id: Int // prayerRequestId
+    let userId: Int
+    let userName: String
     let categoryId: Int
     let categoryName: String
     let title: String
@@ -29,19 +25,22 @@ struct Prayer: Identifiable, Decodable {
     let participationCount: Int
     let responses: [Response]?
     let hasParticipated: Bool?
-    
-    enum CodingKeys: String, CodingKey {
-          case id = "prayerRequestId"
-          case prayerUserId
-          case prayerUserName
-          case categoryId
-          case categoryName
-          case title
-          case content
-          case createdAt
-          case participationCount
-          case responses
-          case hasParticipated
-      }
 }
 
+
+// MARK: - Extension
+extension Prayer {
+    init(from dto: PrayerDetailResponse) {
+        self.id = dto.prayerRequestId
+        self.userId = dto.prayerUserId
+        self.userName = dto.prayerUserName
+        self.categoryId = dto.categoryId
+        self.categoryName = dto.categoryName
+        self.title = dto.title
+        self.content = dto.content
+        self.createdAt = dto.createdAt
+        self.participationCount = dto.participationCount
+        self.responses = dto.responses?.map { Response(from: $0) }
+        self.hasParticipated = dto.hasParticipated ?? false
+    }
+}

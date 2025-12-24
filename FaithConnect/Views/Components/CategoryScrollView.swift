@@ -24,7 +24,7 @@ struct CategoryButtonView: View {
 }
 
 #Preview {
-    CategoryButtonView(category: PrayerCategory(categoryId: 0,
+    CategoryButtonView(category: PrayerCategory(id: 0,
                                                 categoryCode: 0,
                                                 categoryName: "전체"),
                        isSelected: true) {}

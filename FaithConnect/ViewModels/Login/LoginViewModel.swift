@@ -26,21 +26,31 @@ enum LoginAlert: Identifiable {
     
     var title: String {
         switch self {
-        case .loginFailure: return "로그인 실패"
-        case .fieldEmpty: return "입력 오류"
-        case .findIDFailure: return "아이디 찾기 실패"
-        case .passwordMismatch: return "비밀번호 오류"
-        case .successRegister: return "회원가입 성공"
+        case .loginFailure: 
+            return "로그인 실패"
+        case .fieldEmpty: 
+            return "입력 오류"
+        case .findIDFailure: 
+            return "아이디 찾기 실패"
+        case .passwordMismatch: 
+            return "비밀번호 오류"
+        case .successRegister: 
+            return "회원가입 성공"
         }
     }
     
     var message: String {
         switch self {
-        case .loginFailure(let msg): return msg
-        case .fieldEmpty(let fieldName): return "\(fieldName) 을(를) 입력해주세요."
-        case .findIDFailure: return "아이디 찾기를 실패했습니다."
-        case .passwordMismatch: return "입력하신 비밀번호와 비밀번호 확인이 일치하지 않습니다. 다시 입력해주세요."
-        case .successRegister: return "회원가입에 성공했습니다. 로그인 해주세요."
+        case .loginFailure(let msg):
+            return msg
+        case .fieldEmpty(let fieldName): 
+            return "\(fieldName) 을(를) 입력해주세요."
+        case .findIDFailure: 
+            return "아이디 찾기를 실패했습니다."
+        case .passwordMismatch: 
+            return "입력하신 비밀번호와 비밀번호 확인이 일치하지 않습니다. 다시 입력해주세요."
+        case .successRegister: 
+            return "회원가입에 성공했습니다. 로그인 해주세요."
         }
     }
 }
@@ -70,7 +80,8 @@ class LoginViewModel: ObservableObject {
         }
         
         do {
-            let loginResponse = try await apiService.login(email: email, password: password)
+            let loginResponse = try await apiService.login(email: email,
+                                                           password: password)
             let user = User(id: "",
                             name: "",
                             email: "",
@@ -98,10 +109,10 @@ class LoginViewModel: ObservableObject {
         }
         
         do {
-            let foundEmail = try await apiService.findID(memberID: memberID, name: name)
+            let foundEmail = try await apiService.findID(memberID: memberID,
+                                                         name: name)
             return foundEmail
         } catch {
-            let error = error.localizedDescription
             alertType = .findIDFailure
             return nil
         }
@@ -111,7 +122,6 @@ class LoginViewModel: ObservableObject {
         print("비밀번호 찾기")
     }
     
-    @MainActor
     func signUp(memberID: Int, name: String, email: String, password: String, confirmPassword: String) async {
         print("회원가입 memberID: \(memberID), name: \(name), email: \(email), password: \(password), confirmPassword: \(confirmPassword)")
         if memberID == 0 {

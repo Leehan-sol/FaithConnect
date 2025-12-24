@@ -7,16 +7,19 @@
 
 import Foundation
 
-struct Response: Identifiable, Decodable {
+struct Response: Identifiable {
     let id: Int
-    let prayerRequestId: String
+    let prayerRequestId: Int
     let message: String
     let createdAt: String
-    
-    enum CodingKeys: String, CodingKey {
-        case id = "prayerResponseId"
-        case prayerRequestId
-        case message
-        case createdAt
+}
+
+// MARK: - Extension
+extension Response {
+    init(from dto: PrayerResponse) {
+        self.id = dto.prayerResponseId
+        self.prayerRequestId = dto.prayerRequestId
+        self.message = dto.message
+        self.createdAt = dto.createdAt
     }
 }

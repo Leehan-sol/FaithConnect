@@ -8,10 +8,21 @@
 import SwiftUI
 
 struct MainTabView: View {
+    let apiService: APIServiceProtocol
+    @StateObject private var homeViewModel: HomeViewModel
+    @StateObject private var myPrayerViewModel: MyPrayerViewModel
+    @StateObject private var myPageViewModel: MyPageViewModel
+    
+    init(apiService: APIServiceProtocol) {
+        self.apiService = apiService
+        _homeViewModel = StateObject(wrappedValue: HomeViewModel(apiService))
+        _myPrayerViewModel = StateObject(wrappedValue: MyPrayerViewModel(apiService))
+        _myPageViewModel = StateObject(wrappedValue: MyPageViewModel(apiService))
+    }
+    
     var body: some View {
         TabView {
             NavigationStack {
-                let homeViewModel = HomeViewModel(APIService())
                 HomeView(viewModel: homeViewModel)
             }
             .tabItem {
@@ -21,7 +32,6 @@ struct MainTabView: View {
             .tag(0)
             
             NavigationStack {
-                let myPrayerViewModel = MyPrayerViewModel(APIService())
                 MyPrayerView(viewModel: myPrayerViewModel)
             }
             .tabItem {
@@ -31,7 +41,6 @@ struct MainTabView: View {
             .tag(1)
             
             NavigationStack {
-                let myPageViewModel = MyPageViewModel(APIService())
                 MyPageView(viewModel: myPageViewModel)
             }
             .tabItem {
@@ -45,5 +54,5 @@ struct MainTabView: View {
 }
 
 #Preview {
-    MainTabView()
+    MainTabView(apiService: APIService())
 }

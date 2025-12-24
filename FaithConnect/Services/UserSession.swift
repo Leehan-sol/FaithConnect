@@ -16,11 +16,12 @@ class UserSession: ObservableObject {
     func login(user: User, categories: [PrayerCategory]) {
         self.user = user
         self.isLoggedIn = true
-        self.prayerCategories = prayerCategories
+        self.prayerCategories = categories
     }
     
     func logout() {
         self.user = nil
         self.isLoggedIn = false
+        self.prayerCategories = []
     }
 }

@@ -12,7 +12,7 @@ class HomeViewModel: ObservableObject {
     let apiService: APIServiceProtocol
     @Published var categories: [PrayerCategory] = []
     @Published var prayers: [Prayer] = []
-    @Published var currentPage: Int = 1
+    @Published var currentPage: Int = 0
     @Published var hasNext: Bool = true
     @Published var isLoading: Bool = false
     
@@ -35,32 +35,31 @@ class HomeViewModel: ObservableObject {
         isLoading = true
         
         if reset {
-            currentPage = 1
+            currentPage = 0
             hasNext = true
             prayers.removeAll()
         }
         
         do {
-            let response = try await apiService.loadPrayers(categoryId: categoryId,
+            let prayerPage = try await apiService.loadPrayers(categoryId: categoryId,
                                                             page: currentPage)
-            prayers.append(contentsOf: response.prayerRequests)
+            prayers.append(contentsOf: prayerPage.prayers)
             currentPage += 1
-            hasNext = response.hasNext
+            hasNext = prayerPage.hasNext
         } catch {
             print("Error loading prayers: \(error)")
         }
         
         isLoading = false
     }
+ 
     
-//    func loadMoreIfNeeded(currentItem: Prayer, selectedCategory: Int) async {
-//        guard hasNext,
-//              !isLoading,
-//              currentItem.id == prayers.last?.id else {
-//            return
-//        }
-//        
-//        await loadPrayers(selectedCategory: selectedCategory, reset: false)
-//    }
+    func addPrayer(prayer: Prayer) {
+        prayers.insert(prayer, at:0)
+    }
+ 
+    func makePrayerEditorViewModel() -> PrayerEditorViewModel {
+        return PrayerEditorViewModel(apiService)
+    }
     
 }

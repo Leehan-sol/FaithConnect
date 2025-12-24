@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct MyPageView: View {
-    @StateObject var viewModel: MyPageViewModel
+    @ObservedObject var viewModel: MyPageViewModel
     @State private var showChangePassword: Bool = false
     @State var showAlert: Bool = false
     

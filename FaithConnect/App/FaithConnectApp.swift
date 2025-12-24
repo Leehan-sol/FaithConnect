@@ -11,10 +11,11 @@ import SwiftUI
 struct FaithConnectApp: App {
     @Environment(\.scenePhase) private var scenePhase
     @StateObject private var session = UserSession()
+    private let apiService: APIServiceProtocol = APIService()
     
     var body: some Scene {
         WindowGroup {
-            RootView()
+            RootView(apiService: apiService)
                 .environmentObject(session)
         }
         //        .onChange(of: scenePhase) { oldValue, newPhase in
@@ -29,12 +30,17 @@ struct FaithConnectApp: App {
 
 struct RootView: View {
     @EnvironmentObject var session: UserSession
+    let apiService: APIServiceProtocol
+    
+    init(apiService: APIServiceProtocol) {
+        self.apiService = apiService
+    }
     
     var body: some View {
         if session.isLoggedIn {
-            MainTabView()
+            MainTabView(apiService: apiService)
         } else {
-            LoginView(viewModel: LoginViewModel(APIService(), session))
+            LoginView(viewModel: LoginViewModel(apiService, session))
         }
     }
 }

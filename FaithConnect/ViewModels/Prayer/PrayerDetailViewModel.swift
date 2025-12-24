@@ -17,7 +17,6 @@ class PrayerDetailViewModel: ObservableObject {
     
     // TODO: -
     // 1. 기도 상세 조회
-    //
-    
+    // 2. 기도 응답 작성
     
 }

@@ -9,10 +9,12 @@ import Foundation
 
 extension String {
     func toTimeAgoDisplay() -> String {
-        let formatter = ISO8601DateFormatter()
-        formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        let trimmed = String(self.prefix(23))
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS"
+        formatter.timeZone = TimeZone(identifier: "Asia/Seoul")
         
-        guard let date = formatter.date(from: self) else {
+        guard let date = formatter.date(from: trimmed) else {
             return self
         }
         
