@@ -42,6 +42,7 @@
 		CC6C8F1F2E9B978400E43387 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CC6C8F1E2E9B978400E43387 /* Assets.xcassets */; };
 		CC6C8F222E9B978400E43387 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CC6C8F212E9B978400E43387 /* Preview Assets.xcassets */; };
 		CC6E3DF82ED1A19500B0EF4D /* MyPageItemField.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6E3DF72ED1A19500B0EF4D /* MyPageItemField.swift */; };
+		CC728A392EFEB13D00D93208 /* AlertType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC728A382EFEB13D00D93208 /* AlertType.swift */; };
 		CCAD36752EB726510028D451 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CCAD36742EB726510028D451 /* LaunchScreen.storyboard */; };
 		CCAD36832EB731EF0028D451 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAD36822EB731EF0028D451 /* LoginView.swift */; };
 		CCAD36852EB732FE0028D451 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAD36842EB732FE0028D451 /* LoginViewModel.swift */; };
@@ -95,6 +96,7 @@
 		CC6C8F1E2E9B978400E43387 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CC6C8F212E9B978400E43387 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		CC6E3DF72ED1A19500B0EF4D /* MyPageItemField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageItemField.swift; sourceTree = "<group>"; };
+		CC728A382EFEB13D00D93208 /* AlertType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertType.swift; sourceTree = "<group>"; };
 		CCAD36742EB726510028D451 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CCAD36822EB731EF0028D451 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		CCAD36842EB732FE0028D451 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
@@ -243,6 +245,14 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
+		CC728A3A2EFEB20F00D93208 /* Alert */ = {
+			isa = PBXGroup;
+			children = (
+				CC728A382EFEB13D00D93208 /* AlertType.swift */,
+			);
+			path = Alert;
+			sourceTree = "<group>";
+		};
 		CCAD36762EB726750028D451 /* App */ = {
 			isa = PBXGroup;
 			children = (
@@ -301,6 +311,7 @@
 		CCAD367B2EB7287B0028D451 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				CC728A3A2EFEB20F00D93208 /* Alert */,
 				CCAD367C2EB729DD0028D451 /* Extensions */,
 				CCAD367D2EB729E60028D451 /* Constants */,
 			);
@@ -470,6 +481,7 @@
 				CC5B0E5C2EBF368900CE79A3 /* FindPasswordView.swift in Sources */,
 				CCAD36942EB78D290028D451 /* MyPageView.swift in Sources */,
 				CC6437DA2EBE42C20079ED24 /* PrayerEditorView.swift in Sources */,
+				CC728A392EFEB13D00D93208 /* AlertType.swift in Sources */,
 				CC5B0E5A2EBF367900CE79A3 /* FindIDView.swift in Sources */,
 				CC5B0E512EBF30D200CE79A3 /* PrayerEditorViewModel.swift in Sources */,
 				CC5D79592EC76B6700C1CEE4 /* InfoBoxView.swift in Sources */,

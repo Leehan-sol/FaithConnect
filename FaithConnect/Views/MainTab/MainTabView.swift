@@ -8,10 +8,11 @@
 import SwiftUI
 
 struct MainTabView: View {
-    let apiService: APIServiceProtocol
     @StateObject private var homeViewModel: HomeViewModel
     @StateObject private var myPrayerViewModel: MyPrayerViewModel
     @StateObject private var myPageViewModel: MyPageViewModel
+    
+    private let apiService: APIServiceProtocol
     
     init(apiService: APIServiceProtocol) {
         self.apiService = apiService

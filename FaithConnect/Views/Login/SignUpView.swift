@@ -78,7 +78,7 @@ struct SignUpView: View {
             .customBackButtonStyle()
             .alert(item: $viewModel.alertType) { alert in
                 let dismissAction = {
-                    if case .successRegister = alert {
+                    if case .registerSuccess = alert {
                         shouldDismiss = true
                     }
                 }
@@ -97,6 +97,6 @@ struct SignUpView: View {
     
 }
 
-//#Preview {
-//    SignUpView(viewModel: LoginViewModel(APIService(), UserSession()))
-//}
+#Preview {
+    SignUpView(viewModel: LoginViewModel(APIService(), UserSession()))
+}

@@ -9,6 +9,16 @@ import SwiftUI
 
 extension View {
     func customBackButtonStyle() -> some View {
-        self.modifier(CustomBackButtonStyle())
+        modifier(CustomBackButtonStyle<EmptyView>(trailingButton: nil))
     }
+    
+    func customBackButtonStyle<Trailing: View>(
+          @ViewBuilder trailingButton: () -> Trailing
+      ) -> some View {
+          modifier(
+              CustomBackButtonStyle(
+                  trailingButton: trailingButton()
+              )
+          )
+      }
 }

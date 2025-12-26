@@ -7,59 +7,12 @@
 
 import Foundation
 
-enum LoginAlert: Identifiable {
-    case loginFailure(message: String)
-    case fieldEmpty(fieldName: String)
-    case findIDFailure
-    case passwordMismatch
-    case successRegister
-    
-    var id: Int {
-        switch self {
-        case .loginFailure: return 0
-        case .fieldEmpty: return 1
-        case .findIDFailure: return 2
-        case .passwordMismatch: return 3
-        case .successRegister: return 4
-        }
-    }
-    
-    var title: String {
-        switch self {
-        case .loginFailure: 
-            return "로그인 실패"
-        case .fieldEmpty: 
-            return "입력 오류"
-        case .findIDFailure: 
-            return "아이디 찾기 실패"
-        case .passwordMismatch: 
-            return "비밀번호 오류"
-        case .successRegister: 
-            return "회원가입 성공"
-        }
-    }
-    
-    var message: String {
-        switch self {
-        case .loginFailure(let msg):
-            return msg
-        case .fieldEmpty(let fieldName): 
-            return "\(fieldName) 을(를) 입력해주세요."
-        case .findIDFailure: 
-            return "아이디 찾기를 실패했습니다."
-        case .passwordMismatch: 
-            return "입력하신 비밀번호와 비밀번호 확인이 일치하지 않습니다. 다시 입력해주세요."
-        case .successRegister: 
-            return "회원가입에 성공했습니다. 로그인 해주세요."
-        }
-    }
-}
-
 @MainActor
 class LoginViewModel: ObservableObject {
+    @Published var alertType: LoginAlert? = nil
+    
     private let apiService: APIServiceProtocol
     private let session: UserSession
-    @Published var alertType: LoginAlert? = nil
     
     init(_ apiService: APIServiceProtocol, _ session: UserSession) {
         self.apiService = apiService
@@ -82,9 +35,10 @@ class LoginViewModel: ObservableObject {
         do {
             let loginResponse = try await apiService.login(email: email,
                                                            password: password)
-            let user = User(id: "",
-                            name: "",
-                            email: "",
+            // TODO: - 수정 필요
+            let user = User(id: 2,
+                            name: "한솔",
+                            email: email,
                             accessToken: loginResponse.accessToken,
                             refreshToken: loginResponse.refreshToken)
             
@@ -160,10 +114,10 @@ class LoginViewModel: ObservableObject {
                                          email: email,
                                          password: password,
                                          confirmPassword: confirmPassword)
-            alertType = .successRegister
+            alertType = .registerSuccess
         } catch {
             let error = error.localizedDescription
-            alertType = .loginFailure(message: error)
+            alertType = .registerFailure(message: error)
         }
     }
     

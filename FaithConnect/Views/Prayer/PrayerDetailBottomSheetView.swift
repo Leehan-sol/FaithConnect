@@ -30,7 +30,7 @@ struct PrayerDetailBottomSheetView: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                     
                     VStack(alignment: .leading, spacing: 15) {
-                        Text(viewModel.prayer.categoryName)
+                        Text(viewModel.prayer?.categoryName ?? "")
                             .frame(width: 40, height: 30)
                             .foregroundColor(.customNavy)
                             .background(.customBlue1.opacity(0.2))
@@ -38,7 +38,7 @@ struct PrayerDetailBottomSheetView: View {
                             .font(.caption)
                             .cornerRadius(10)
                         
-                        Text(viewModel.prayer.title)
+                        Text(viewModel.prayer?.title ?? "")
                             .bold()
                     }.padding()
                         .frame(maxWidth: .infinity, alignment: .leading)
@@ -64,7 +64,7 @@ struct PrayerDetailBottomSheetView: View {
                             }
                         
                         if content.isEmpty {
-                            Text(viewModel.contentPlaceholder)
+                            Text("이 기도제목에 응답하는 메세지를 작성해주세요. \r \r익명으로 전송되며, 작성자에게 알림이 전달됩니다.")
                                 .foregroundColor(Color(uiColor: .placeholderText))
                                 .font(.body)
                                 .padding(EdgeInsets(top: 15, leading: 15, bottom: 0, trailing: 15))
@@ -103,7 +103,12 @@ struct PrayerDetailBottomSheetView: View {
                              foregroundColor: isSendButtonActive ? .white : .gray,
                              backgroundColor: isSendButtonActive ? .customBlue1 : Color(.systemGray6)) {
                     if isSendButtonActive {
-                        // TODO: - 응답 전송 로직 호출
+                        Task {
+                            let result = await viewModel.writePrayerResponse(message: content)
+                            if result {
+                                dismiss()
+                            }
+                        }
                     }
                 }
             }
@@ -123,15 +128,6 @@ struct PrayerDetailBottomSheetView: View {
 }
 
 #Preview {
-    PrayerDetailBottomSheetView(viewModel: PrayerDetailViewModel(prayer: Prayer(id: 1,
-                                                                                userId: 1,
-                                                                                userName: "김철수",
-                                                                                categoryId: 101,
-                                                                                categoryName: "건강",
-                                                                                title: "부모님 건강을 위해 기도합니다",
-                                                                                content: "다음 주 화요일에 어머니께서 큰 수술을 받으십니다. 어쩌구저쩌구 \r\r어쩌구저쩌구어쩌구저쩌 구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어 쩌구저쩌구어쩌구저쩌구 \r어쩌구저쩌구 \r\r어쩌구저쩌구 기도해주세요.",
-                                                                                createdAt: "2025-11-07T12:55:00.000Z",
-                                                                                participationCount: 5,
-                                                                                responses: [Response(id: 0, prayerRequestId: 0, message: "어머님의 수술이 잘 되시길 기도하겠습니다. 하나님께서 함께 하실 거예요.", createdAt: "2025-11-02T13:25:49.384Z"), Response(id: 0, prayerRequestId: 0, message: "함께 기도합니다. 빠른 회복 기도할게요!", createdAt: "2025-11-01T09:15:30.000Z"), Response(id: 0, prayerRequestId: 0, message: "기도합니다 수술 잘되실거예요!!", createdAt: "2025-10-30T18:45:10.500Z"), Response(id: 0, prayerRequestId: 0, message: "어머님과 가족 모두에게 평안이 함께하시길 기도합니다.", createdAt: "2025-10-25T07:55:40.250Z"), Response(id: 0, prayerRequestId: 0, message: "기도합니다 수술 잘되실거예요!!", createdAt: "2024-10-25T07:55:40.250Z")],
-                                                                                hasParticipated: false)))
+    PrayerDetailBottomSheetView(viewModel: PrayerDetailViewModel(APIService(),
+                                                                 prayerRequestId: 1))
 }

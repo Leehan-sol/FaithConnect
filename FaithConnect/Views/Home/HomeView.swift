@@ -8,9 +8,8 @@
 import SwiftUI
 
 struct HomeView: View {
-    @EnvironmentObject var session: UserSession
+    @EnvironmentObject private var session: UserSession
     @ObservedObject var viewModel: HomeViewModel
-    @State private var selectedCategoryId: Int = 0
     @State private var selectedPrayer: Prayer? = nil
     @State private var showPrayerDetail: Bool = false
     @State private var showPrayerEditor: Bool = false
@@ -25,13 +24,10 @@ struct HomeView: View {
                         ForEach(categories) { category in
                             CategoryButtonView(
                                 category: category,
-                                isSelected: category.id == selectedCategoryId,
+                                isSelected: category.id == viewModel.selectedCategoryId,
                                 action: {
-                                    selectedCategoryId = category.id
-                                    print("selectedCategoryId: \(selectedCategoryId)")
-                                    Task {
-                                        await viewModel.loadPrayers(categoryId: selectedCategoryId,
-                                                                    reset: true)
+                        기            Task {
+                                        await viewModel.selectCategory(id:category.id)
                                     }
                                 }
                             )
@@ -40,62 +36,67 @@ struct HomeView: View {
                 }
                 .padding(EdgeInsets(top: 10, leading: 15, bottom: 10, trailing: 0))
                 
-                // TODO: - 로딩중 추가 구현 필요
                 if viewModel.prayers.isEmpty {
                     PrayerEmptyView()
                 } else {
-                    List(viewModel.prayers) { prayer in
-                        PrayerRowView(prayer: prayer, cellType: .others)
-                            .listRowInsets(EdgeInsets(top: 10, leading: 20, bottom: 20, trailing: 20))
-                            .listRowSeparator(.hidden)
-                            .listRowBackground(Color.clear)
-                            .onTapGesture {
-                                print("Tapped: \(prayer.id), \(prayer.title)")
-                                selectedPrayer = prayer
-                                showPrayerDetail = true
-                            }
+                    List {
+                        ForEach(viewModel.prayers) { prayer in
+                            PrayerRowView(prayer: prayer, cellType: .others)
+                                .listRowInsets(EdgeInsets(top: 10, leading: 20, bottom: 20, trailing: 20))
+                                .listRowSeparator(.hidden)
+                                .listRowBackground(Color.clear)
+                                .onTapGesture {
+                                    selectedPrayer = prayer
+                                    showPrayerDetail = true
+                                }
+                        }
                     }
                     .refreshable {
-                        await viewModel.loadPrayers(categoryId: selectedCategoryId,
-                                                    reset: true)
+                        await viewModel.refreshPrayers()
                     }
                     .listStyle(PlainListStyle())
                     .scrollIndicators(.hidden)
                 }
+                
             }
-            
             FloatingButton(action: {
                 showPrayerEditor = true
             })
+            
+            if !viewModel.isRefreshing
+                && viewModel.isLoading {
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle(tint: .blue))
+                    .scaleEffect(1.5)
+            }
         }
         .navigationTitle("기도 모음")
         .navigationDestination(isPresented: $showPrayerDetail) {
             if let prayer = selectedPrayer {
-                PrayerDetailView(viewModel: PrayerDetailViewModel(prayer: prayer))
+                PrayerDetailView(viewModel: { viewModel.makePrayerDetailVM(prayer: prayer) })
             }
         }
         .navigationDestination(isPresented: $showPrayerEditor) {
             PrayerEditorView(
-                viewModel: { viewModel.makePrayerEditorViewModel() }, // 팩토리만 전달
+                viewModel: { viewModel.makePrayerEditorVM() },
                 onDone: { newPrayer in
                     viewModel.addPrayer(prayer: newPrayer)
                     showPrayerEditor = false
                 }
             )
-        }.onAppear {
-            Task {
-                if let firstCategory = categories.first {
-                    selectedCategoryId = firstCategory.id // 첫 카테고리 선택
-                    await viewModel.loadPrayers(categoryId: firstCategory.id,
-                                                reset: true) // 카테고리 목록 조회
-                }
-            }
         }
+        .task {
+            guard !session.prayerCategories.isEmpty else { return }
+            await viewModel.initializeIfNeeded(
+                categories: session.prayerCategories
+            )
+        }
+        
     }
 }
 
 
-
 #Preview {
     HomeView(viewModel: HomeViewModel(APIService()))
+        .environmentObject(UserSession())
 }

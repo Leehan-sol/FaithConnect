@@ -23,8 +23,8 @@ struct Prayer: Identifiable {
     let content: String
     let createdAt: String
     let participationCount: Int
-    let responses: [Response]?
-    let hasParticipated: Bool?
+    var responses: [Response]?
+    var hasParticipated: Bool?
 }
 
 
@@ -42,5 +42,20 @@ extension Prayer {
         self.participationCount = dto.participationCount
         self.responses = dto.responses?.map { Response(from: $0) }
         self.hasParticipated = dto.hasParticipated ?? false
+    }
+    
+    init(from dto: PrayerWriteResponse) {
+//        self.id = dto.prayerRequestId
+        self.id = UUID().hashValue // TODO: - 테스트코드
+        self.userId = dto.prayerUserId
+        self.userName = dto.prayerUserName
+        self.categoryId = dto.categoryId
+        self.categoryName = dto.categoryName
+        self.title = dto.title
+        self.content = dto.content
+        self.createdAt = dto.createdAt
+        self.participationCount = dto.participationCount
+        self.responses = []
+        self.hasParticipated = false
     }
 }

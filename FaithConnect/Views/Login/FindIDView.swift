@@ -75,8 +75,6 @@ struct FindIDView: View {
 }
 
 
-
-
-//#Preview {
-//    FindIDView(viewModel: LoginViewModel(APIService(), session))
-//}
+#Preview {
+    FindIDView(viewModel: LoginViewModel(APIService(), UserSession()))
+}

@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct MyPageView: View {
+    @EnvironmentObject private var session: UserSession
     @ObservedObject var viewModel: MyPageViewModel
     @State private var showChangePassword: Bool = false
     @State var showAlert: Bool = false
@@ -25,9 +26,9 @@ struct MyPageView: View {
                         .frame(width: 30, height: 30)
                     
                     VStack(alignment: .leading, spacing: 5) {
-                        Text("이한솔")
+                        Text(session.user?.name ?? "")
                         
-                        Text(verbatim: "ho20128@naver.com")
+                        Text(verbatim: session.user?.email ?? "")
                             .foregroundColor(.gray)
                             .font(.footnote)
                     }

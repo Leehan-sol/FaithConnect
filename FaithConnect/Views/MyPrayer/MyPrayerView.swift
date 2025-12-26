@@ -50,9 +50,9 @@ struct MyPrayerView: View {
         }
         .navigationTitle("내 기도")
         .navigationDestination(isPresented: $showPrayerDetail) {
-            if let prayer = selectedPrayer {
-                PrayerDetailView(viewModel: PrayerDetailViewModel(prayer: prayer))
-            }
+//            if let prayer = selectedPrayer {
+//                PrayerDetailView(viewModel: PrayerDetailViewModel(<#APIServiceProtocol#>, prayer: prayer))
+//            }
         }
     }
 }

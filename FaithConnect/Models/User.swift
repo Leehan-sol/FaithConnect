@@ -8,7 +8,7 @@
 import Foundation
 
 struct User: Identifiable {
-    let id: String // churchMemberId
+    let id: Int // churchMemberId
     let name: String
     let email: String
     let accessToken: String

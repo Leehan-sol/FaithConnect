@@ -15,6 +15,7 @@ struct PrayerEditorView: View {
     @State var title: String = ""
     @State var content: String = ""
     @State var showAlert: Bool = false
+    
     var onDone: (Prayer) -> Void
     
     init(viewModel: @escaping () -> PrayerEditorViewModel, onDone: @escaping (Prayer) -> Void) {
@@ -94,19 +95,23 @@ struct PrayerEditorView: View {
                     } label: {
                         Text("취소")
                             .bold()
+                            .foregroundColor(.black)
                     }
                 }
                 
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
                         Task {
-                            if let newPrayer = await viewModel.writePrayer(categoryId: selectedCategoryId, title: title, content: content) {
+                            if let newPrayer = await viewModel.writePrayer(categoryId: selectedCategoryId,
+                                                                           title: title,
+                                                                           content: content) {
                                 onDone(newPrayer)
                             }
                         }
                     } label: {
                         Text("완료")
                             .bold()
+                            .foregroundColor(.black)
                     }
                 }
             }
@@ -123,6 +128,11 @@ struct PrayerEditorView: View {
     }
 }
 
-//#Preview {
-//    PrayerEditorView(viewModel: PrayerEditorViewModel())
-//}
+#Preview {
+    PrayerEditorView(
+               viewModel: { PrayerEditorViewModel(APIService()) },
+               onDone: { _ in
+               }
+           )
+           .environmentObject(UserSession())
+}

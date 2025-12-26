@@ -59,3 +59,8 @@ struct PrayerWriteResponse: Decodable {
     let participationCount: Int
 }
 
+// MARK: - 기도 응답 작성
+struct PrayerResponseWriteRequest: Codable {
+    let prayerRequestId: Int
+    let message: String
+}

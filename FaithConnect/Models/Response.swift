@@ -18,6 +18,7 @@ struct Response: Identifiable {
 extension Response {
     init(from dto: PrayerResponse) {
         self.id = dto.prayerResponseId
+//        self.id = UUID().hashValue // TODO: - 테스트코드
         self.prayerRequestId = dto.prayerRequestId
         self.message = dto.message
         self.createdAt = dto.createdAt

@@ -9,57 +9,88 @@ import Foundation
 
 @MainActor
 class HomeViewModel: ObservableObject {
-    let apiService: APIServiceProtocol
     @Published var categories: [PrayerCategory] = []
     @Published var prayers: [Prayer] = []
     @Published var currentPage: Int = 0
     @Published var hasNext: Bool = true
+    @Published var isRefreshing: Bool = false
     @Published var isLoading: Bool = false
+    @Published var selectedCategoryId: Int = 0
+    
+    private let apiService: APIServiceProtocol
+    private var hasInitialized = false
     
     init(_ apiService: APIServiceProtocol) {
         self.apiService = apiService
     }
     
-    func loadCategories() async {
-        do {
-            let loadCategory = try await apiService.loadCategories()
-            categories = loadCategory
-            print(categories)
-        } catch {
-            print("Error loading categories: \(error)")
-        }
+    func initializeIfNeeded(categories: [PrayerCategory]) async {
+        guard !hasInitialized else { return }
+        hasInitialized = true
+        
+        guard let first = categories.first else { return }
+        selectedCategoryId = first.id
+        
+        await loadPrayers(reset: true)
     }
     
-    func loadPrayers(categoryId: Int, reset: Bool) async {
+    func selectCategory(id: Int) async {
+        guard selectedCategoryId != id else { return }
+        selectedCategoryId = id
+        currentPage = 0
+        hasNext = true
+        prayers.removeAll()
+        
+        await loadPrayers(reset: true)
+    }
+    
+    func refreshPrayers() async {
+        guard !isLoading else { return }
+        isRefreshing = true
+        
+        await loadPrayers(reset: true)
+        isRefreshing = false
+    }
+    
+    func loadPrayers(reset: Bool) async {
         guard !isLoading else { return }
         isLoading = true
-        
-        if reset {
-            currentPage = 0
-            hasNext = true
-            prayers.removeAll()
-        }
+        defer { isLoading = false }
         
         do {
-            let prayerPage = try await apiService.loadPrayers(categoryId: categoryId,
-                                                            page: currentPage)
-            prayers.append(contentsOf: prayerPage.prayers)
-            currentPage += 1
+            let prayerPage = try await apiService.loadPrayers(
+                categoryId: selectedCategoryId,
+                page: reset ? 0 : currentPage
+            )
+            
+            if reset {
+                prayers = prayerPage.prayers
+                currentPage = 1
+            } else {
+                prayers.append(contentsOf: prayerPage.prayers)
+                currentPage += 1
+            }
+            
             hasNext = prayerPage.hasNext
         } catch {
-            print("Error loading prayers: \(error)")
+            print(error)
         }
-        
-        isLoading = false
     }
- 
     
     func addPrayer(prayer: Prayer) {
-        prayers.insert(prayer, at:0)
+        if selectedCategoryId == prayer.categoryId {
+            prayers.insert(prayer, at: 0)
+        }
     }
- 
-    func makePrayerEditorViewModel() -> PrayerEditorViewModel {
+    
+    func makePrayerDetailVM(prayer: Prayer) -> PrayerDetailViewModel {
+        return PrayerDetailViewModel(apiService,
+                                     prayerRequestId: prayer.id)
+    }
+
+    func makePrayerEditorVM() -> PrayerEditorViewModel {
         return PrayerEditorViewModel(apiService)
     }
     
+
 }
