@@ -26,7 +26,7 @@ struct HomeView: View {
                                 category: category,
                                 isSelected: category.id == viewModel.selectedCategoryId,
                                 action: {
-                        기            Task {
+                                    Task {
                                         await viewModel.selectCategory(id:category.id)
                                     }
                                 }
