@@ -19,8 +19,10 @@ protocol APIServiceProtocol {
     func loadPrayerDetail(prayerRequestId: Int) async throws -> Prayer
     func writePrayer(categoryId: Int, title: String, content: String) async throws -> Prayer
     func deletePrayer(prayerRequestId: Int) async throws
-    func writePrayerResponse(prayerRequsetId: Int, message: String) async throws -> Response
+    func writePrayerResponse(prayerRequsetId: Int, message: String) async throws -> PrayerResponse
     func deletePrayerResponse(prayerRequestId: Int) async throws
+    func loadWrittenPrayers(page: Int) async throws -> PrayerPage
+    func loadParticipatedPrayers(page: Int) async throws -> MyResponsePage
 }
 
 // MARK: - APIService
@@ -306,7 +308,7 @@ struct APIService: APIServiceProtocol {
         
     }
     
-    func writePrayerResponse(prayerRequsetId: Int, message: String) async throws -> Response {
+    func writePrayerResponse(prayerRequsetId: Int, message: String) async throws -> PrayerResponse {
         let urlString = baseURL + "/api/prayer/mock/responses"
         
         guard let url = URL(string: urlString) else {
@@ -329,9 +331,9 @@ struct APIService: APIServiceProtocol {
             throw APIError.httpError(statusCode: statusCode)
         }
         
-        let apiResponse = try JSONDecoder().decode(PrayerResponse.self,
+        let apiResponse = try JSONDecoder().decode(DetailResponseItem.self,
                                                    from: data)
-        let prayerResponse = Response(from: apiResponse)
+        let prayerResponse = PrayerResponse(from: apiResponse)
         return prayerResponse
     }
     
@@ -339,4 +341,108 @@ struct APIService: APIServiceProtocol {
  
     }
     
+    func loadWrittenPrayers(page: Int) async throws -> PrayerPage {
+        var components = URLComponents(string: baseURL + "/api/prayer/mock/my-requests")
+        components?.queryItems = [
+            URLQueryItem(name: "page", value: "\(page)")
+        ]
+        
+        guard let url = components?.url else {
+            throw APIError.invalidURL
+        }
+        
+        do {
+            let (data, response) = try await URLSession.shared.data(from: url)
+            
+            guard let httpResponse = response as? HTTPURLResponse,
+                  (200...299).contains(httpResponse.statusCode) else {
+                let statusCode = (response as? HTTPURLResponse)?.statusCode ?? 0
+                throw APIError.httpError(statusCode: statusCode)
+            }
+            
+            let decoder = JSONDecoder()
+            let prayerResponse = try decoder.decode(PrayerListResponse.self,
+                                                    from: data)
+            print("서버에서 받은 내 기도:", prayerResponse.prayerRequests.count)
+            prayerResponse.prayerRequests.forEach { prayer in
+                print("""
+                      ─────────────
+                      id: \(prayer.prayerRequestId)
+                      title: \(prayer.title)
+                      categoryId: \(prayer.categoryId)
+                      """)
+            }
+            let prayerPage = PrayerPage(prayers: prayerResponse.prayerRequests.map { Prayer(from: $0) },
+                                        currentPage: prayerResponse.currentPage,
+                                        hasNext: prayerResponse.hasNext)
+            
+            
+            return prayerPage
+        } catch let decodingError as DecodingError {
+            print("내 기도 목록 디코딩 실패: \(decodingError)")
+            throw APIError.decodingError
+        } catch {
+            let nsError = error as NSError
+            
+            if nsError.domain == NSURLErrorDomain &&
+                nsError.code == NSURLErrorCancelled {
+                throw CancellationError()
+            }
+            
+            print("내 기도 목록 로드 중 에러 발생:", error)
+            throw error
+        }
+    }
+    
+    func loadParticipatedPrayers(page: Int) async throws -> MyResponsePage {
+        var components = URLComponents(string: baseURL + "/api/prayer/mock/my-prayers")
+        components?.queryItems = [
+            URLQueryItem(name: "page", value: "\(page)")
+        ]
+        
+        guard let url = components?.url else {
+            throw APIError.invalidURL
+        }
+        
+        do {
+            let (data, response) = try await URLSession.shared.data(from: url)
+            
+            guard let httpResponse = response as? HTTPURLResponse,
+                  (200...299).contains(httpResponse.statusCode) else {
+                let statusCode = (response as? HTTPURLResponse)?.statusCode ?? 0
+                throw APIError.httpError(statusCode: statusCode)
+            }
+            
+            let decoder = JSONDecoder()
+            let responseList = try decoder.decode(MyResponseList.self,
+                                                    from: data)
+            print("서버에서 받은 내 응답:", responseList.responses.count)
+            responseList.responses.forEach { response in
+                print("""
+                      ─────────────
+                      id: \(response.prayerResponseId)
+                      title: \(response.message)
+                      categoryId: \(response.categoryId)
+                      """)
+            }
+            let responsePage = MyResponsePage(responses: responseList.responses.map { MyResponse(from: $0) },
+                                              currentPage: responseList.currentPage,
+                                              hasNext: responseList.hasNext)
+            
+            return responsePage
+        } catch let decodingError as DecodingError {
+            print("내 응답 목록 디코딩 실패: \(decodingError)")
+            throw APIError.decodingError
+        } catch {
+            let nsError = error as NSError
+            
+            if nsError.domain == NSURLErrorDomain &&
+                nsError.code == NSURLErrorCancelled {
+                throw CancellationError()
+            }
+            
+            print("내 응답 목록 로드 중 에러 발생:", error)
+            throw error
+        }
+    }
 }

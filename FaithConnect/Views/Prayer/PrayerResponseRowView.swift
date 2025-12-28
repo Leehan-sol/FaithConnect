@@ -11,8 +11,8 @@ struct PrayerResponseRowView: View {
     @EnvironmentObject private var session: UserSession
     @State private var showConfirmationDialog = false
     @State private var showDeleteAlert = false
-    let response: Response
-    let onDelete: (Response) -> Void
+    let response: PrayerResponse
+    let onDelete: (PrayerResponse) -> Void
     
     var body: some View {
         HStack(alignment: .top, spacing: 10) {
@@ -75,8 +75,8 @@ struct PrayerResponseRowView: View {
 }
 
 #Preview {
-    PrayerResponseRowView(response: Response(id: 0, 
-                                             prayerRequestId: 0,
+    PrayerResponseRowView(response: PrayerResponse(id: 0, 
+                                             prayerRequestId: 0, 
                                              message: "어머님의 수술이 잘 되시길 기도하겠습니다. 하나님께서 함께 하실 거예요.",
                                              createdAt: "2025-11-07T12:55:00.000Z"), 
                           onDelete: { _ in })

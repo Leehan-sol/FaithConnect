@@ -24,7 +24,7 @@
 		CC5B0E4D2EBF2E5500CE79A3 /* MyPrayerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5B0E4C2EBF2E5500CE79A3 /* MyPrayerViewModel.swift */; };
 		CC5B0E4F2EBF30A900CE79A3 /* PrayerDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5B0E4E2EBF30A900CE79A3 /* PrayerDetailViewModel.swift */; };
 		CC5B0E512EBF30D200CE79A3 /* PrayerEditorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5B0E502EBF30D200CE79A3 /* PrayerEditorViewModel.swift */; };
-		CC5B0E582EBF322400CE79A3 /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5B0E572EBF322400CE79A3 /* Response.swift */; };
+		CC5B0E582EBF322400CE79A3 /* PrayerResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5B0E572EBF322400CE79A3 /* PrayerResponse.swift */; };
 		CC5B0E5A2EBF367900CE79A3 /* FindIDView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5B0E592EBF367900CE79A3 /* FindIDView.swift */; };
 		CC5B0E5C2EBF368900CE79A3 /* FindPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5B0E5B2EBF368900CE79A3 /* FindPasswordView.swift */; };
 		CC5B0E5E2EBF387000CE79A3 /* ActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5B0E5D2EBF387000CE79A3 /* ActionButton.swift */; };
@@ -42,6 +42,8 @@
 		CC6C8F1F2E9B978400E43387 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CC6C8F1E2E9B978400E43387 /* Assets.xcassets */; };
 		CC6C8F222E9B978400E43387 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CC6C8F212E9B978400E43387 /* Preview Assets.xcassets */; };
 		CC6E3DF82ED1A19500B0EF4D /* MyPageItemField.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6E3DF72ED1A19500B0EF4D /* MyPageItemField.swift */; };
+		CC6EC0642F015711009D2E31 /* MyResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6EC0632F015711009D2E31 /* MyResponse.swift */; };
+		CC6EC0662F015FB2009D2E31 /* MyResponseRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6EC0652F015FB2009D2E31 /* MyResponseRowView.swift */; };
 		CC728A392EFEB13D00D93208 /* AlertType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC728A382EFEB13D00D93208 /* AlertType.swift */; };
 		CCAD36752EB726510028D451 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CCAD36742EB726510028D451 /* LaunchScreen.storyboard */; };
 		CCAD36832EB731EF0028D451 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAD36822EB731EF0028D451 /* LoginView.swift */; };
@@ -77,7 +79,7 @@
 		CC5B0E4C2EBF2E5500CE79A3 /* MyPrayerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPrayerViewModel.swift; sourceTree = "<group>"; };
 		CC5B0E4E2EBF30A900CE79A3 /* PrayerDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerDetailViewModel.swift; sourceTree = "<group>"; };
 		CC5B0E502EBF30D200CE79A3 /* PrayerEditorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerEditorViewModel.swift; sourceTree = "<group>"; };
-		CC5B0E572EBF322400CE79A3 /* Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
+		CC5B0E572EBF322400CE79A3 /* PrayerResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerResponse.swift; sourceTree = "<group>"; };
 		CC5B0E592EBF367900CE79A3 /* FindIDView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindIDView.swift; sourceTree = "<group>"; };
 		CC5B0E5B2EBF368900CE79A3 /* FindPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindPasswordView.swift; sourceTree = "<group>"; };
 		CC5B0E5D2EBF387000CE79A3 /* ActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionButton.swift; sourceTree = "<group>"; };
@@ -96,6 +98,8 @@
 		CC6C8F1E2E9B978400E43387 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CC6C8F212E9B978400E43387 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		CC6E3DF72ED1A19500B0EF4D /* MyPageItemField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageItemField.swift; sourceTree = "<group>"; };
+		CC6EC0632F015711009D2E31 /* MyResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyResponse.swift; sourceTree = "<group>"; };
+		CC6EC0652F015FB2009D2E31 /* MyResponseRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyResponseRowView.swift; sourceTree = "<group>"; };
 		CC728A382EFEB13D00D93208 /* AlertType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertType.swift; sourceTree = "<group>"; };
 		CCAD36742EB726510028D451 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CCAD36822EB731EF0028D451 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
@@ -198,6 +202,7 @@
 				CC4EA43D2EC9AC3D0097D09C /* PrayerDetailBottomSheetView.swift */,
 				CC6437D92EBE42C20079ED24 /* PrayerEditorView.swift */,
 				180228902EBA08BD00ABA95C /* PrayerRowView.swift */,
+				CC6EC0652F015FB2009D2E31 /* MyResponseRowView.swift */,
 				CC5B0E672EBFA5A800CE79A3 /* PrayerResponseRowView.swift */,
 				1862C53E2EFB74BE00B0DD70 /* PrayerEmptyView.swift */,
 			);
@@ -268,7 +273,8 @@
 				CC6194C52EF7E030005B79A7 /* User.swift */,
 				CC5B0E632EBF8BA900CE79A3 /* PrayerCategory.swift */,
 				CCAD36952EB791110028D451 /* Prayer.swift */,
-				CC5B0E572EBF322400CE79A3 /* Response.swift */,
+				CC5B0E572EBF322400CE79A3 /* PrayerResponse.swift */,
+				CC6EC0632F015711009D2E31 /* MyResponse.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -489,6 +495,7 @@
 				CC5B0E662EBF990A00CE79A3 /* CategoryScrollView.swift in Sources */,
 				CC5B0E642EBF8BA900CE79A3 /* PrayerCategory.swift in Sources */,
 				CC4EA4422EC9F64A0097D09C /* CustomBackButtonStyle.swift in Sources */,
+				CC6EC0642F015711009D2E31 /* MyResponse.swift in Sources */,
 				CCAD369E2EB799B70028D451 /* String+Extensions.swift in Sources */,
 				CCAD36962EB791110028D451 /* Prayer.swift in Sources */,
 				CC5B0E482EBF243000CE79A3 /* SectionHeaderView.swift in Sources */,
@@ -500,8 +507,9 @@
 				CCAD36832EB731EF0028D451 /* LoginView.swift in Sources */,
 				CC5D794F2EC757F600C1CEE4 /* APIService.swift in Sources */,
 				CCAD368E2EB782A00028D451 /* MainTabView.swift in Sources */,
+				CC6EC0662F015FB2009D2E31 /* MyResponseRowView.swift in Sources */,
 				CC6E3DF82ED1A19500B0EF4D /* MyPageItemField.swift in Sources */,
-				CC5B0E582EBF322400CE79A3 /* Response.swift in Sources */,
+				CC5B0E582EBF322400CE79A3 /* PrayerResponse.swift in Sources */,
 				CC5B0E4F2EBF30A900CE79A3 /* PrayerDetailViewModel.swift in Sources */,
 				CCAD369A2EB792140028D451 /* MyPageViewModel.swift in Sources */,
 				1862C53F2EFB74C900B0DD70 /* PrayerEmptyView.swift in Sources */,

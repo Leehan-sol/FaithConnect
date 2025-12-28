@@ -80,7 +80,7 @@ class PrayerDetailViewModel: ObservableObject {
         }
     }
     
-    func deletePrayerResponse(response: Response) async {
+    func deletePrayerResponse(response: PrayerResponse) async {
         do {
             print("응답 삭제 API 호출")
 //            guard let id = self.prayer?.id else { return }

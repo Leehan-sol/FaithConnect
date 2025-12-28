@@ -125,5 +125,6 @@ struct MyPageView: View {
 
 #Preview {
     MyPageView(viewModel: MyPageViewModel(APIService()))
+        .environmentObject(UserSession())
 }
 

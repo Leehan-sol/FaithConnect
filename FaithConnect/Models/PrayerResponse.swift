@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Response: Identifiable {
+struct PrayerResponse: Identifiable {
     let id: Int
     let prayerRequestId: Int
     let message: String
@@ -15,8 +15,8 @@ struct Response: Identifiable {
 }
 
 // MARK: - Extension
-extension Response {
-    init(from dto: PrayerResponse) {
+extension PrayerResponse {
+    init(from dto: DetailResponseItem) {
         self.id = dto.prayerResponseId
 //        self.id = UUID().hashValue // TODO: - 테스트코드
         self.prayerRequestId = dto.prayerRequestId

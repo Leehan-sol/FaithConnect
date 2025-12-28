@@ -34,6 +34,7 @@ struct HomeView: View {
                         }
                     }
                 }
+                 
                 .padding(EdgeInsets(top: 10, leading: 15, bottom: 10, trailing: 0))
                 
                 if viewModel.prayers.isEmpty {
@@ -41,7 +42,8 @@ struct HomeView: View {
                 } else {
                     List {
                         ForEach(viewModel.prayers) { prayer in
-                            PrayerRowView(prayer: prayer, cellType: .others)
+                            PrayerRowView(prayer: prayer,
+                                          cellType: .others)
                                 .listRowInsets(EdgeInsets(top: 10, leading: 20, bottom: 20, trailing: 20))
                                 .listRowSeparator(.hidden)
                                 .listRowBackground(Color.clear)
@@ -90,8 +92,7 @@ struct HomeView: View {
             await viewModel.initializeIfNeeded(
                 categories: session.prayerCategories
             )
-        }
-        
+        }   
     }
 }
 

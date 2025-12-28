@@ -23,7 +23,7 @@ struct Prayer: Identifiable {
     let content: String
     let createdAt: String
     let participationCount: Int
-    var responses: [Response]?
+    var responses: [PrayerResponse]?
     var hasParticipated: Bool?
 }
 
@@ -40,7 +40,7 @@ extension Prayer {
         self.content = dto.content
         self.createdAt = dto.createdAt
         self.participationCount = dto.participationCount
-        self.responses = dto.responses?.map { Response(from: $0) }
+        self.responses = dto.responses?.map { PrayerResponse(from: $0) }
         self.hasParticipated = dto.hasParticipated ?? false
     }
     

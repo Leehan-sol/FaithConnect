@@ -8,5 +8,9 @@
 import Foundation
 
 enum Constants {
-    static let isLoggedIn = "isLoggedIn"
+    
+}
+
+enum APIConstants {
+    
 }

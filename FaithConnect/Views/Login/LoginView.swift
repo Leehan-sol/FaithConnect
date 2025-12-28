@@ -14,7 +14,6 @@ struct LoginView: View {
     @State private var showSignUp: Bool = false
     @State private var showFindID: Bool = false
     @State private var showFindPW: Bool = false
-    @AppStorage(Constants.isLoggedIn) var isLoggedIn: Bool = false
     
     var body: some View {
         NavigationStack {

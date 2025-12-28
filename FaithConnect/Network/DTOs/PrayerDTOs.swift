@@ -29,13 +29,34 @@ struct PrayerDetailResponse: Decodable {
     let content: String
     let createdAt: String
     let participationCount: Int
-    let responses: [PrayerResponse]?
+    let responses: [DetailResponseItem]?
     let hasParticipated: Bool?
 }
 
-struct PrayerResponse: Decodable {
+struct DetailResponseItem: Decodable {
     let prayerResponseId: Int
     let prayerRequestId: Int
+    let prayerRequestTitle: String?
+    let message: String
+    let createdAt: String
+}
+
+// MARK: - 내 응답 목록
+struct MyResponseList: Decodable {
+    let responses: [MyResponseItem]
+    let currentPage: Int
+    let totalElements: Int
+    let pageSize: Int
+    let hasNext: Bool
+    let hasPrevious: Bool
+}
+
+struct MyResponseItem: Decodable {
+    let prayerRequestId: Int
+    let prayerResponseId: Int
+    let prayerRequestTitle: String
+    let categoryId: Int
+    let categoryName: String
     let message: String
     let createdAt: String
 }
