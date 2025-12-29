@@ -13,6 +13,18 @@ class UserSession: ObservableObject {
     @Published var isLoggedIn: Bool = false
     @Published var prayerCategories: [PrayerCategory] = []
     
+    var churchID: Int {
+        user?.id ?? 0
+    }
+    
+    var name: String {
+        user?.name ?? ""
+    }
+
+    var email: String {
+        user?.email ?? ""
+    }
+    
     func login(user: User, categories: [PrayerCategory]) {
         self.user = user
         self.isLoggedIn = true

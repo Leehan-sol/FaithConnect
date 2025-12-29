@@ -11,6 +11,7 @@ struct MyPrayerView: View {
     @EnvironmentObject private var session: UserSession
     @ObservedObject var viewModel: MyPrayerViewModel
     @State private var selectedPrayer: Prayer? = nil
+    @State private var selectedResponse: MyResponse? = nil
     @State private var showPrayerDetail: Bool = false
     @State private var showMyPrayerList: Bool = false
     @State private var showMyResponseList: Bool = false
@@ -46,7 +47,7 @@ struct MyPrayerView: View {
                         .padding(.vertical, 10)
                         .onTapGesture {
                             print("Tapped: \(response.id), \(response.message)")
-//                            selectedPrayer = prayer
+                            selectedResponse = response
                             showPrayerDetail = true
                         }
                 }
@@ -55,7 +56,9 @@ struct MyPrayerView: View {
         .navigationTitle("내 기도")
         .navigationDestination(isPresented: $showPrayerDetail) {
             if let prayer = selectedPrayer {
-                PrayerDetailView(viewModel: { viewModel.makePrayerDetailVM(prayer: prayer) })
+                PrayerDetailView(viewModel: { viewModel.makePrayerDetailVM(prayerRequestId: prayer.id) })
+            } else if let response = selectedResponse {
+                PrayerDetailView(viewModel: { viewModel.makePrayerDetailVM(prayerRequestId: response.id) })
             }
         }
         .navigationDestination(isPresented: $showMyPrayerList) {

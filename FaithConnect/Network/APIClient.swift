@@ -13,6 +13,8 @@ protocol APIClientProtocol {
     func signUp(memberID: Int, name: String, email: String, password: String, confirmPassword: String) async throws -> Void
     func login(email: String, password: String) async throws -> LoginResponse
     func findID(memberID: Int, name: String) async throws -> String
+    func changePassword(id: Int, name: String, email: String, newPassword: String) async throws -> Void
+    
     // Prayer
     func loadCategories() async throws -> [PrayerCategory]
     func loadPrayers(categoryId: Int, page: Int) async throws -> PrayerPage
@@ -27,7 +29,6 @@ protocol APIClientProtocol {
 
 // MARK: - APIClient
 struct APIClient: APIClientProtocol {
-    private let baseURL = "http://prayer-app.duckdns.org/dev"
     
     private func post<Request: Encodable, Response: Decodable>(
         urlString: String,
@@ -125,7 +126,6 @@ struct APIClient: APIClientProtocol {
         return apiResponse
     }
     
-    
     func findID(memberID: Int, name: String) async throws -> String {
         let urlString = APIEndpoint.findID.urlString
         
@@ -139,6 +139,22 @@ struct APIClient: APIClientProtocol {
             throw APIError.failureFindID
         } else {
             return apiResponse.email
+        }
+    }
+    
+    func changePassword(id: Int, name: String, email: String, newPassword: String) async throws {
+        let urlString = APIEndpoint.changePassword.urlString
+        
+        let requestBody = ChangePasswordRequest(name: name,
+                                                churchMemberId: id,
+                                                email: email,
+                                                newPassword: newPassword)
+        
+        let apiResponse: ChangePasswordResponse = try await post(urlString: urlString,
+                                                                 requestBody: requestBody)
+        
+        if apiResponse.success != true {
+            throw APIError.serverMessage(apiResponse.message)
         }
     }
     

@@ -10,7 +10,7 @@ import Foundation
 @MainActor
 class PrayerDetailViewModel: ObservableObject {
     @Published var prayer: Prayer?
-    @Published var alertType: PrayerAlert? = nil
+    @Published var alertType: AlertType? = nil
     
     private let apiClient: APIClientProtocol
     private let prayerRequestId: Int

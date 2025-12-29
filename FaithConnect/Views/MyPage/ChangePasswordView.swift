@@ -8,12 +8,14 @@
 import SwiftUI
 
 struct ChangePasswordView: View {
+    @EnvironmentObject private var session: UserSession
+    @ObservedObject var viewModel: MyPageViewModel
     @State var password: String = ""
     @State var newPassword: String = ""
     @State var confirmNewPassword: String = ""
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {     
+        VStack(alignment: .leading, spacing: 10) {
             Spacer()
                 .frame(height: 10)
             
@@ -43,21 +45,39 @@ struct ChangePasswordView: View {
             ActionButton(title: "비밀번호 변경",
                          foregroundColor: .white,
                          backgroundColor: .customBlue1) {
-                
+                Task {
+                    await viewModel.changePassword(id: session.churchID,
+                                                   name: session.name,
+                                                   email: session.email,
+                                                   currentPassword: password,
+                                                   newPassword: newPassword,
+                                                   confirmPassword: confirmNewPassword)
+                }
             }
             
             Spacer()
+        }
+        .alert(item: $viewModel.alertType) { alert in
+            let dismissAction = {
+                if case .successChangePassword = alert {
+                    session.logout()
+                }
+            }
+            return Alert(title: Text(alert.title),
+                         message: Text(alert.message),
+                         dismissButton: .default(Text("확인"),
+                                                 action: dismissAction))
         }
         .padding(EdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20))
         .navigationTitle("비밀번호 변경")
         .navigationBarTitleDisplayMode(.inline)
         .customBackButtonStyle()
     }
-        
-    
     
 }
 
+
 #Preview {
-    ChangePasswordView()
+    ChangePasswordView(viewModel: MyPageViewModel(APIClient()))
+        .environmentObject(UserSession())
 }

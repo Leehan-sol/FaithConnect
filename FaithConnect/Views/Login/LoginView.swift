@@ -79,7 +79,8 @@ struct LoginView: View {
                                  foregroundColor: .white,
                                  backgroundColor: .customBlue1) {
                         Task {
-                            await viewModel.login(email: email, password: password)
+                            await viewModel.login(email: email,
+                                                  password: password)
                         }
                     }
                     

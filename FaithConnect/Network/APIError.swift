@@ -28,7 +28,7 @@ enum APIError: Error {
             return "로그인에 실패했습니다. 다시 시도해주세요."
         case .failureFindID: 
             return "아이디를 찾을 수 없습니다. 다시 시도해주세요."
-        case .failureDelete: 
+        case .failureDelete:
             return "삭제를 실패했습니다. 다시 시도해주세요."
         }
     }

@@ -56,4 +56,5 @@ struct MainTabView: View {
 
 #Preview {
     MainTabView(apiClient: APIClient())
+        .environmentObject(UserSession())
 }

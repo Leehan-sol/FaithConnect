@@ -11,6 +11,7 @@ enum APIEndpoint {
     case signup
     case login
     case findID
+    case changePassword
     case categories
     case prayers
     case prayerDetail(id: Int)
@@ -20,15 +21,26 @@ enum APIEndpoint {
     
     var path: String {
         switch self {
-        case .signup: return "/api/prayer/mock/signup"
-        case .login: return "/api/prayer/mock/login"
-        case .findID: return "/api/prayer/mock/find-email"
-        case .categories: return "/api/prayer/mock/categories"
-        case .prayers: return "/api/prayer/mock/requests"
-        case .prayerDetail(let id): return "/api/prayer/mock/requests/\(id)"
-        case .responses: return "/api/prayer/mock/responses"
-        case .myRequests: return "/api/prayer/mock/my-requests"
-        case .myPrayers: return "/api/prayer/mock/my-prayers"
+        case .signup: 
+            return "/api/prayer/mock/signup"
+        case .login: 
+            return "/api/prayer/mock/login"
+        case .findID: 
+            return "/api/prayer/mock/find-email"
+        case .changePassword:
+            return "/api/prayer/mock/change-password"
+        case .categories:
+            return "/api/prayer/mock/categories"
+        case .prayers: 
+            return "/api/prayer/mock/requests"
+        case .prayerDetail(let id): 
+            return "/api/prayer/mock/requests/\(id)"
+        case .responses: 
+            return "/api/prayer/mock/responses"
+        case .myRequests: 
+            return "/api/prayer/mock/my-requests"
+        case .myPrayers: 
+            return "/api/prayer/mock/my-prayers"
         }
     }
     

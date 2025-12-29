@@ -63,9 +63,9 @@ class MyPrayerViewModel: ObservableObject {
         }
     }
     
-    func makePrayerDetailVM(prayer: Prayer) -> PrayerDetailViewModel {
+    func makePrayerDetailVM(prayerRequestId: Int) -> PrayerDetailViewModel {
         return PrayerDetailViewModel(apiClient,
-                                     prayerRequestId: prayer.id)
+                                     prayerRequestId: prayerRequestId)
     }
     
 }

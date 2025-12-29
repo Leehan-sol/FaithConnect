@@ -26,9 +26,9 @@ struct MyPageView: View {
                         .frame(width: 30, height: 30)
                     
                     VStack(alignment: .leading, spacing: 5) {
-                        Text(session.user?.name ?? "")
+                        Text(session.name)
                         
-                        Text(verbatim: session.user?.email ?? "")
+                        Text(verbatim: session.email)
                             .foregroundColor(.gray)
                             .font(.footnote)
                     }
@@ -109,7 +109,8 @@ struct MyPageView: View {
                 .foregroundColor(.gray)
                 
             }.navigationTitle("마이페이지")
-                .navigationDestination(isPresented: $showChangePassword) { ChangePasswordView()
+                .navigationDestination(isPresented: $showChangePassword) {
+                    ChangePasswordView(viewModel: viewModel)
                 }
                 .alert("로그아웃", isPresented: $showAlert) {
                     Button("취소", role: .cancel) { }

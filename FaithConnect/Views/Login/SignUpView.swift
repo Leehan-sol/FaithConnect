@@ -84,7 +84,8 @@ struct SignUpView: View {
                 }
                 return Alert(title: Text(alert.title),
                              message: Text(alert.message),
-                             dismissButton: .default(Text("확인"), action: dismissAction))
+                             dismissButton: .default(Text("확인"),
+                                                     action: dismissAction))
             }
         }
         .onChange(of: shouldDismiss) {

@@ -43,3 +43,15 @@ struct FindIDResponse: Decodable {
     let success: Bool
 }
 
+// MARK: - 비밀번호 변경
+struct ChangePasswordRequest: Codable {
+    let name: String
+    let churchMemberId: Int
+    let email: String
+    let newPassword: String
+}
+
+struct ChangePasswordResponse: Decodable {
+    let message: String
+    let success: Bool
+}

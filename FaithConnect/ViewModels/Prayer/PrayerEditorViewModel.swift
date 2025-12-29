@@ -9,7 +9,7 @@ import Foundation
 
 @MainActor
 class PrayerEditorViewModel: ObservableObject {
-    @Published var alertType: PrayerAlert? = nil
+    @Published var alertType: AlertType? = nil
     
     private let apiClient: APIClientProtocol
     var didWritePrayer: ((Prayer) -> Void)?

@@ -9,7 +9,7 @@ import Foundation
 
 @MainActor
 class LoginViewModel: ObservableObject {
-    @Published var alertType: LoginAlert? = nil
+    @Published var alertType: AlertType? = nil
     
     private let apiClient: APIClientProtocol
     private let session: UserSession
