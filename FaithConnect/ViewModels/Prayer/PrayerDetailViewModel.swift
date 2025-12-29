@@ -7,6 +7,7 @@
 
 import Foundation
 
+@MainActor
 class PrayerDetailViewModel: ObservableObject {
     @Published var prayer: Prayer?
     @Published var alertType: PrayerAlert? = nil

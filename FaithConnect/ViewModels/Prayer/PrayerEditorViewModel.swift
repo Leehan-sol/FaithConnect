@@ -7,6 +7,7 @@
 
 import Foundation
 
+@MainActor
 class PrayerEditorViewModel: ObservableObject {
     @Published var alertType: PrayerAlert? = nil
     
@@ -17,7 +18,6 @@ class PrayerEditorViewModel: ObservableObject {
         self.apiService = apiService
     }
     
-    @MainActor
     func writePrayer(categoryId: Int, title: String, content: String) async -> Prayer? {
         if categoryId == 0 {
             alertType = .categoryNotSelected

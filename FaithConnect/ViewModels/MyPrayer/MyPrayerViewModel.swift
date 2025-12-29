@@ -7,6 +7,7 @@
 
 import Foundation
 
+@MainActor
 class MyPrayerViewModel: ObservableObject {
     @Published var writtenPrayers: [Prayer] = []
     @Published var participatedPrayers: [MyResponse] = []
