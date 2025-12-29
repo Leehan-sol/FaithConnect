@@ -71,6 +71,6 @@ struct MyPrayerView: View {
 }
 
 #Preview {
-    MyPrayerView(viewModel: MyPrayerViewModel(APIService()))
+    MyPrayerView(viewModel: MyPrayerViewModel(APIClient()))
         .environmentObject(UserSession())
 }

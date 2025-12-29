@@ -50,5 +50,5 @@ struct FindPasswordView: View {
 }
 
 #Preview {
-    FindPasswordView(viewModel: LoginViewModel(APIService(), UserSession()))
+    FindPasswordView(viewModel: LoginViewModel(APIClient(), UserSession()))
 }

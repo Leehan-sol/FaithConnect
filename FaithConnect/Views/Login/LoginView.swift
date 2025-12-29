@@ -127,5 +127,5 @@ struct LoginView: View {
 }
 
 #Preview {
-    LoginView(viewModel: LoginViewModel(APIService(), UserSession()))
+    LoginView(viewModel: LoginViewModel(APIClient(), UserSession()))
 }

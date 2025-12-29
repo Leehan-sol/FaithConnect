@@ -14,6 +14,7 @@
 		1862C5462EFBA77D00B0DD70 /* AuthDTOs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1862C5402EFBA77D00B0DD70 /* AuthDTOs.swift */; };
 		1862C5472EFBA77D00B0DD70 /* PrayerDTOs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1862C5422EFBA77D00B0DD70 /* PrayerDTOs.swift */; };
 		1862C5492EFBA89C00B0DD70 /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1862C5482EFBA89600B0DD70 /* APIError.swift */; };
+		18948E742F024C9300C9C75C /* APIEndPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18948E732F024C8B00C9C75C /* APIEndPoint.swift */; };
 		CC4EA43E2EC9AC3E0097D09C /* PrayerDetailBottomSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4EA43D2EC9AC3D0097D09C /* PrayerDetailBottomSheetView.swift */; };
 		CC4EA4402EC9B7370097D09C /* FindIDResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4EA43F2EC9B7370097D09C /* FindIDResultView.swift */; };
 		CC4EA4422EC9F64A0097D09C /* CustomBackButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4EA4412EC9F64A0097D09C /* CustomBackButtonStyle.swift */; };
@@ -32,7 +33,7 @@
 		CC5B0E642EBF8BA900CE79A3 /* PrayerCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5B0E632EBF8BA900CE79A3 /* PrayerCategory.swift */; };
 		CC5B0E662EBF990A00CE79A3 /* CategoryScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5B0E652EBF990A00CE79A3 /* CategoryScrollView.swift */; };
 		CC5B0E682EBFA5A800CE79A3 /* PrayerResponseRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5B0E672EBFA5A800CE79A3 /* PrayerResponseRowView.swift */; };
-		CC5D794F2EC757F600C1CEE4 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5D794E2EC757F600C1CEE4 /* APIService.swift */; };
+		CC5D794F2EC757F600C1CEE4 /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5D794E2EC757F600C1CEE4 /* APIClient.swift */; };
 		CC5D79592EC76B6700C1CEE4 /* InfoBoxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5D79582EC76B6700C1CEE4 /* InfoBoxView.swift */; };
 		CC6194C62EF7E030005B79A7 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6194C52EF7E030005B79A7 /* User.swift */; };
 		CC6194CA2EF7F5BB005B79A7 /* UserSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6194C92EF7F5BB005B79A7 /* UserSession.swift */; };
@@ -68,6 +69,7 @@
 		1862C5412EFBA77D00B0DD70 /* CategoryDTOs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryDTOs.swift; sourceTree = "<group>"; };
 		1862C5422EFBA77D00B0DD70 /* PrayerDTOs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerDTOs.swift; sourceTree = "<group>"; };
 		1862C5482EFBA89600B0DD70 /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
+		18948E732F024C8B00C9C75C /* APIEndPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIEndPoint.swift; sourceTree = "<group>"; };
 		CC4EA43D2EC9AC3D0097D09C /* PrayerDetailBottomSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerDetailBottomSheetView.swift; sourceTree = "<group>"; };
 		CC4EA43F2EC9B7370097D09C /* FindIDResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindIDResultView.swift; sourceTree = "<group>"; };
 		CC4EA4412EC9F64A0097D09C /* CustomBackButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomBackButtonStyle.swift; sourceTree = "<group>"; };
@@ -87,7 +89,7 @@
 		CC5B0E632EBF8BA900CE79A3 /* PrayerCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerCategory.swift; sourceTree = "<group>"; };
 		CC5B0E652EBF990A00CE79A3 /* CategoryScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryScrollView.swift; sourceTree = "<group>"; };
 		CC5B0E672EBFA5A800CE79A3 /* PrayerResponseRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerResponseRowView.swift; sourceTree = "<group>"; };
-		CC5D794E2EC757F600C1CEE4 /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
+		CC5D794E2EC757F600C1CEE4 /* APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
 		CC5D79582EC76B6700C1CEE4 /* InfoBoxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoBoxView.swift; sourceTree = "<group>"; };
 		CC6194C52EF7E030005B79A7 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		CC6194C92EF7F5BB005B79A7 /* UserSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSession.swift; sourceTree = "<group>"; };
@@ -140,8 +142,10 @@
 		1862C5442EFBA77D00B0DD70 /* Network */ = {
 			isa = PBXGroup;
 			children = (
-				1862C5432EFBA77D00B0DD70 /* DTOs */,
+				CC5D794E2EC757F600C1CEE4 /* APIClient.swift */,
 				1862C5482EFBA89600B0DD70 /* APIError.swift */,
+				18948E732F024C8B00C9C75C /* APIEndPoint.swift */,
+				1862C5432EFBA77D00B0DD70 /* DTOs */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -230,10 +234,10 @@
 			children = (
 				CC57ADB62EDC3F980043A8D8 /* Info.plist */,
 				CCAD36762EB726750028D451 /* App */,
-				CCAD36772EB7285A0028D451 /* Models */,
-				1862C5442EFBA77D00B0DD70 /* Network */,
 				CCAD36792EB7286D0028D451 /* Views */,
 				CCAD36782EB728620028D451 /* ViewModels */,
+				CCAD36772EB7285A0028D451 /* Models */,
+				1862C5442EFBA77D00B0DD70 /* Network */,
 				CCAD367A2EB728730028D451 /* Services */,
 				CCAD367B2EB7287B0028D451 /* Utils */,
 				CC6C8F1E2E9B978400E43387 /* Assets.xcassets */,
@@ -308,7 +312,6 @@
 		CCAD367A2EB728730028D451 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				CC5D794E2EC757F600C1CEE4 /* APIService.swift */,
 				CC6194C92EF7F5BB005B79A7 /* UserSession.swift */,
 			);
 			path = Services;
@@ -499,13 +502,14 @@
 				CCAD369E2EB799B70028D451 /* String+Extensions.swift in Sources */,
 				CCAD36962EB791110028D451 /* Prayer.swift in Sources */,
 				CC5B0E482EBF243000CE79A3 /* SectionHeaderView.swift in Sources */,
+				18948E742F024C9300C9C75C /* APIEndPoint.swift in Sources */,
 				CC6194C62EF7E030005B79A7 /* User.swift in Sources */,
 				CC5B0E4D2EBF2E5500CE79A3 /* MyPrayerViewModel.swift in Sources */,
 				CC5B0E602EBF567F00CE79A3 /* UIApplication+Extensions.swift in Sources */,
 				CC4EA4442EC9F6C50097D09C /* View+Extensions.swift in Sources */,
 				CCAD36922EB78D010028D451 /* HomeView.swift in Sources */,
 				CCAD36832EB731EF0028D451 /* LoginView.swift in Sources */,
-				CC5D794F2EC757F600C1CEE4 /* APIService.swift in Sources */,
+				CC5D794F2EC757F600C1CEE4 /* APIClient.swift in Sources */,
 				CCAD368E2EB782A00028D451 /* MainTabView.swift in Sources */,
 				CC6EC0662F015FB2009D2E31 /* MyResponseRowView.swift in Sources */,
 				CC6E3DF82ED1A19500B0EF4D /* MyPageItemField.swift in Sources */,

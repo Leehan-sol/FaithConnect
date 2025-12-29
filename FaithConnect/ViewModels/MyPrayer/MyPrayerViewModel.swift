@@ -14,21 +14,17 @@ class MyPrayerViewModel: ObservableObject {
     @Published var isLoadingWrittenPrayers: Bool = false
     @Published var isLoadingParticipatedPrayers: Bool = false
     
-    private let apiService: APIServiceProtocol
+    private let apiClient: APIClientProtocol
     private var hasInitialized = false
     private var currentWrittenPage: Int = 0
     private var currentParticipatedPage: Int = 0
     private var hasNextWrittenPage: Bool = false
     private var hasNextParticipatedPage: Bool = false
     
-    init(_ apiService: APIServiceProtocol) {
-        self.apiService = apiService
+    init(_ apiClient: APIClientProtocol) {
+        self.apiClient = apiClient
     }
-    
-    // TODO: -
-    // 1. 내 기도 조회
-    // 2. 내가 기도한 기도 조회
-    
+
     func initializeIfNeeded() async {
         guard !hasInitialized else { return }
         hasInitialized = true
@@ -43,7 +39,7 @@ class MyPrayerViewModel: ObservableObject {
         defer { isLoadingWrittenPrayers = false }
         
         do {
-            let prayerPage = try await apiService.loadWrittenPrayers(page: page)
+            let prayerPage = try await apiClient.loadWrittenPrayers(page: page)
             writtenPrayers.append(contentsOf: prayerPage.prayers)
             currentWrittenPage += 1
             hasNextWrittenPage = prayerPage.hasNext
@@ -58,7 +54,7 @@ class MyPrayerViewModel: ObservableObject {
         defer { isLoadingParticipatedPrayers = false }
         
         do {
-            let responsePage = try await apiService.loadParticipatedPrayers(page: page)
+            let responsePage = try await apiClient.loadParticipatedPrayers(page: page)
             participatedPrayers.append(contentsOf: responsePage.responses)
             currentParticipatedPage += 1
             hasNextParticipatedPage = responsePage.hasNext
@@ -68,7 +64,7 @@ class MyPrayerViewModel: ObservableObject {
     }
     
     func makePrayerDetailVM(prayer: Prayer) -> PrayerDetailViewModel {
-        return PrayerDetailViewModel(apiService,
+        return PrayerDetailViewModel(apiClient,
                                      prayerRequestId: prayer.id)
     }
     

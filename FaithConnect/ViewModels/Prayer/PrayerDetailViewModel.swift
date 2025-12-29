@@ -12,27 +12,21 @@ class PrayerDetailViewModel: ObservableObject {
     @Published var prayer: Prayer?
     @Published var alertType: PrayerAlert? = nil
     
-    private let apiService: APIServiceProtocol
+    private let apiClient: APIClientProtocol
     private let prayerRequestId: Int
     private var hasInitialized = false
     
-    init(_ apiService: APIServiceProtocol, prayerRequestId: Int) {
-        self.apiService = apiService
+    init(_ apiClient: APIClientProtocol, prayerRequestId: Int) {
+        self.apiClient = apiClient
         self.prayerRequestId = prayerRequestId
     }
-    
-    // TODO: -
-    // 1. 기도 상세 조회 v
-    // 2. 기도 삭제
-    // 3. 기도 응답 작성 v
-    // 4. 기도 응답 삭제
     
     func initializeIfNeeded() async {
         guard !hasInitialized else { return }
         hasInitialized = true
         
         do {
-            let prayer = try await apiService.loadPrayerDetail(prayerRequestId: prayerRequestId)
+            let prayer = try await apiClient.loadPrayerDetail(prayerRequestId: prayerRequestId)
             self.prayer = prayer
         } catch {
             print(error)
@@ -44,7 +38,7 @@ class PrayerDetailViewModel: ObservableObject {
         do {
             print("삭제 API 호출")
             guard let id = self.prayer?.id else { return }
-            try await apiService.deletePrayer(prayerRequestId: id)
+            try await apiClient.deletePrayer(prayerRequestId: id)
         } catch {
             let error = error.localizedDescription
             alertType = .deleteFailure(message: error)
@@ -62,7 +56,7 @@ class PrayerDetailViewModel: ObservableObject {
                 return false
             }
             
-            let response = try await apiService.writePrayerResponse(prayerRequsetId: id,
+            let response = try await apiClient.writePrayerResponse(prayerRequsetId: id,
                                                      message: message)
             
             self.prayer?.responses?.append(response)
@@ -85,7 +79,7 @@ class PrayerDetailViewModel: ObservableObject {
         do {
             print("응답 삭제 API 호출")
 //            guard let id = self.prayer?.id else { return }
-         //   try await apiService.deletePrayerResponse(prayerRequestId: id)
+         //   try await apiClient.deletePrayerResponse(prayerRequestId: id)
         } catch {
             let error = error.localizedDescription
             alertType = .deleteFailure(message: error)

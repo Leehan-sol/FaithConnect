@@ -98,5 +98,5 @@ struct SignUpView: View {
 }
 
 #Preview {
-    SignUpView(viewModel: LoginViewModel(APIService(), UserSession()))
+    SignUpView(viewModel: LoginViewModel(APIClient(), UserSession()))
 }

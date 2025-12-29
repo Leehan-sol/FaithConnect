@@ -11,11 +11,11 @@ import Foundation
 class PrayerEditorViewModel: ObservableObject {
     @Published var alertType: PrayerAlert? = nil
     
-    private let apiService: APIServiceProtocol
+    private let apiClient: APIClientProtocol
     var didWritePrayer: ((Prayer) -> Void)?
     
-    init(_ apiService: APIServiceProtocol) {
-        self.apiService = apiService
+    init(_ apiClient: APIClientProtocol) {
+        self.apiClient = apiClient
     }
     
     func writePrayer(categoryId: Int, title: String, content: String) async -> Prayer? {
@@ -35,7 +35,7 @@ class PrayerEditorViewModel: ObservableObject {
         }
         
         do {
-            let prayer = try await apiService.writePrayer(categoryId: categoryId, 
+            let prayer = try await apiClient.writePrayer(categoryId: categoryId, 
                                                           title: title,
                                                           content: content)
             return prayer

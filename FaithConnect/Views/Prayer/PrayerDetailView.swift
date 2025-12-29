@@ -147,7 +147,7 @@ struct DetailView: View {
 
 
 #Preview {
-    PrayerDetailView(viewModel: { PrayerDetailViewModel(APIService(),
+    PrayerDetailView(viewModel: { PrayerDetailViewModel(APIClient(),
                                                         prayerRequestId: 1) })
     .environmentObject(UserSession())
 }

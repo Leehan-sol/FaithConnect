@@ -130,7 +130,7 @@ struct PrayerEditorView: View {
 
 #Preview {
     PrayerEditorView(
-               viewModel: { PrayerEditorViewModel(APIService()) },
+               viewModel: { PrayerEditorViewModel(APIClient()) },
                onDone: { _ in
                }
            )

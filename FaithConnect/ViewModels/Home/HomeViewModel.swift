@@ -15,13 +15,13 @@ class HomeViewModel: ObservableObject {
     @Published var isLoading: Bool = false
     @Published var selectedCategoryId: Int = 0
     
-    private let apiService: APIServiceProtocol
+    private let apiClient: APIClientProtocol
     private var hasInitialized = false
     private var currentPage: Int = 0
     private var hasNext: Bool = true
     
-    init(_ apiService: APIServiceProtocol) {
-        self.apiService = apiService
+    init(_ apiClient: APIClientProtocol) {
+        self.apiClient = apiClient
     }
     
     func initializeIfNeeded(categories: [PrayerCategory]) async {
@@ -56,7 +56,7 @@ class HomeViewModel: ObservableObject {
         defer { isLoading = false }
         
         do {
-            let prayerPage = try await apiService.loadPrayers(
+            let prayerPage = try await apiClient.loadPrayers(
                 categoryId: selectedCategoryId,
                 page: reset ? 0 : currentPage
             )
@@ -83,12 +83,12 @@ class HomeViewModel: ObservableObject {
     }
     
     func makePrayerDetailVM(prayer: Prayer) -> PrayerDetailViewModel {
-        return PrayerDetailViewModel(apiService,
+        return PrayerDetailViewModel(apiClient,
                                      prayerRequestId: prayer.id)
     }
 
     func makePrayerEditorVM() -> PrayerEditorViewModel {
-        return PrayerEditorViewModel(apiService)
+        return PrayerEditorViewModel(apiClient)
     }
     
 

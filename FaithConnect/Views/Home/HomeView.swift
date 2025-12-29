@@ -98,6 +98,6 @@ struct HomeView: View {
 
 
 #Preview {
-    HomeView(viewModel: HomeViewModel(APIService()))
+    HomeView(viewModel: HomeViewModel(APIClient()))
         .environmentObject(UserSession())
 }

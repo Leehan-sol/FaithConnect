@@ -11,11 +11,11 @@ import Foundation
 class LoginViewModel: ObservableObject {
     @Published var alertType: LoginAlert? = nil
     
-    private let apiService: APIServiceProtocol
+    private let apiClient: APIClientProtocol
     private let session: UserSession
     
-    init(_ apiService: APIServiceProtocol, _ session: UserSession) {
-        self.apiService = apiService
+    init(_ apiClient: APIClientProtocol, _ session: UserSession) {
+        self.apiClient = apiClient
         self.session = session
     }
     
@@ -33,7 +33,7 @@ class LoginViewModel: ObservableObject {
         }
         
         do {
-            let loginResponse = try await apiService.login(email: email,
+            let loginResponse = try await apiClient.login(email: email,
                                                            password: password)
             // TODO: - 수정 필요
             let user = User(id: 2,
@@ -42,7 +42,7 @@ class LoginViewModel: ObservableObject {
                             accessToken: loginResponse.accessToken,
                             refreshToken: loginResponse.refreshToken)
             
-            let categories = try await apiService.loadCategories()
+            let categories = try await apiClient.loadCategories()
             session.login(user: user, categories: categories)
         } catch {
             let error = error.localizedDescription
@@ -63,7 +63,7 @@ class LoginViewModel: ObservableObject {
         }
         
         do {
-            let foundEmail = try await apiService.findID(memberID: memberID,
+            let foundEmail = try await apiClient.findID(memberID: memberID,
                                                          name: name)
             return foundEmail
         } catch {
@@ -109,7 +109,7 @@ class LoginViewModel: ObservableObject {
         }
         
         do {
-            try await apiService.signUp(memberID: memberID,
+            try await apiClient.signUp(memberID: memberID,
                                          name: name,
                                          email: email,
                                          password: password,

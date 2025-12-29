@@ -1,5 +1,5 @@
 //
-//  APIService.swift
+//  apiClient.swift
 //  FaithConnect
 //
 //  Created by hansol on 2025/11/14.
@@ -8,7 +8,7 @@
 import Foundation
 
 // MARK: - Protocol
-protocol APIServiceProtocol {
+protocol APIClientProtocol {
     // Auth
     func signUp(memberID: Int, name: String, email: String, password: String, confirmPassword: String) async throws -> Void
     func login(email: String, password: String) async throws -> LoginResponse
@@ -25,8 +25,8 @@ protocol APIServiceProtocol {
     func loadParticipatedPrayers(page: Int) async throws -> MyResponsePage
 }
 
-// MARK: - APIService
-struct APIService: APIServiceProtocol {
+// MARK: - APIClient
+struct APIClient: APIClientProtocol {
     private let baseURL = "http://prayer-app.duckdns.org/dev"
     
     private func post<Request: Encodable, Response: Decodable>(
@@ -54,7 +54,7 @@ struct APIService: APIServiceProtocol {
         
         do {
             return try JSONDecoder().decode(Response.self, from: data)
-        } catch let error as DecodingError {
+        } catch _ as DecodingError {
             throw APIError.decodingError
         }
     }
@@ -81,14 +81,14 @@ struct APIService: APIServiceProtocol {
         
         do {
             return try JSONDecoder().decode(Response.self, from: data)
-        } catch let error as DecodingError {
+        } catch _ as DecodingError {
             throw APIError.decodingError
         }
     }
     
     // MARK: - Auth
     func signUp(memberID: Int, name: String, email: String, password: String, confirmPassword: String) async throws -> Void {
-        let urlString = baseURL + "/api/prayer/mock/signup"
+        let urlString = APIEndpoint.signup.urlString
         
         let requestBody = SignUpRequest(
             churchMemberId: memberID,
@@ -107,7 +107,7 @@ struct APIService: APIServiceProtocol {
     }
     
     func login(email: String, password: String) async throws -> LoginResponse {
-        let urlString = baseURL + "/api/prayer/mock/login"
+        let urlString = APIEndpoint.login.urlString
         
         let requestBody = LoginRequest(
             email: email,
@@ -121,14 +121,13 @@ struct APIService: APIServiceProtocol {
               !apiResponse.refreshToken.isEmpty else {
             throw APIError.failureLogin
         }
-        
-        // TODO: - API 변경 후 User 정보 반환하도록 수정 필요
+
         return apiResponse
     }
     
     
     func findID(memberID: Int, name: String) async throws -> String {
-        let urlString = baseURL + "/api/prayer/mock/find-email"
+        let urlString = APIEndpoint.findID.urlString
         
         let requestBody = FindIDRequest(name: name,
                                         churchMemberId: memberID)
@@ -145,7 +144,7 @@ struct APIService: APIServiceProtocol {
     
     // MARK: - Prayer
     func loadCategories() async throws -> [PrayerCategory] {
-        let urlString = baseURL + "/api/prayer/mock/categories"
+        let urlString = APIEndpoint.categories.urlString
         
         let apiResponse: [CategoryResponse] = try await get(path: urlString)
         
@@ -168,7 +167,7 @@ struct APIService: APIServiceProtocol {
     }
     
     func loadPrayers(categoryId: Int, page: Int) async throws -> PrayerPage {
-        let urlString = baseURL + "/api/prayer/mock/requests"
+        let urlString = APIEndpoint.prayers.urlString
         
         let apiResponse: PrayerListResponse = try await get(
             path: urlString,
@@ -193,7 +192,7 @@ struct APIService: APIServiceProtocol {
     }
     
     func loadPrayerDetail(prayerRequestId: Int) async throws -> Prayer {
-        let urlString = baseURL + "/api/prayer/mock/requests/\(prayerRequestId)"
+        let urlString = APIEndpoint.prayerDetail(id: prayerRequestId).urlString
         
         let apiResponse: PrayerDetailResponse = try await get(path: urlString)
     
@@ -201,7 +200,7 @@ struct APIService: APIServiceProtocol {
     }
     
     func writePrayer(categoryId: Int, title: String, content: String) async throws -> Prayer {
-        let urlString = baseURL + "/api/prayer/mock/requests"
+        let urlString = APIEndpoint.prayers.urlString
         
         let requestBody = PrayerWriteRequest(
             categoryId: categoryId,
@@ -220,7 +219,7 @@ struct APIService: APIServiceProtocol {
     }
     
     func writePrayerResponse(prayerRequsetId: Int, message: String) async throws -> PrayerResponse {
-        let urlString = baseURL + "/api/prayer/mock/responses"
+        let urlString = APIEndpoint.responses.urlString
         
         let requestBody = PrayerResponseWriteRequest(prayerRequestId: prayerRequsetId,
                                                      message: message)
@@ -236,7 +235,7 @@ struct APIService: APIServiceProtocol {
     }
     
     func loadWrittenPrayers(page: Int) async throws -> PrayerPage {
-        let urlString = baseURL + "/api/prayer/mock/my-requests"
+        let urlString = APIEndpoint.myRequests.urlString
         
         let apiResponse: PrayerListResponse = try await get(path: urlString,
                                         queryItems: [URLQueryItem(name: "page", value: "\(page)")])
@@ -257,7 +256,7 @@ struct APIService: APIServiceProtocol {
     }
     
     func loadParticipatedPrayers(page: Int) async throws -> MyResponsePage {
-        let urlString = baseURL + "/api/prayer/mock/my-prayers"
+        let urlString = APIEndpoint.myPrayers.urlString
         
         let apiResponse: MyResponseList = try await get(path: urlString,
                                         queryItems: [URLQueryItem(name: "page", value: "\(page)")])

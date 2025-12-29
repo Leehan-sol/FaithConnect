@@ -12,13 +12,13 @@ struct MainTabView: View {
     @StateObject private var myPrayerViewModel: MyPrayerViewModel
     @StateObject private var myPageViewModel: MyPageViewModel
     
-    private let apiService: APIServiceProtocol
+    private let apiClient: APIClientProtocol
     
-    init(apiService: APIServiceProtocol) {
-        self.apiService = apiService
-        _homeViewModel = StateObject(wrappedValue: HomeViewModel(apiService))
-        _myPrayerViewModel = StateObject(wrappedValue: MyPrayerViewModel(apiService))
-        _myPageViewModel = StateObject(wrappedValue: MyPageViewModel(apiService))
+    init(apiClient: APIClientProtocol) {
+        self.apiClient = apiClient
+        _homeViewModel = StateObject(wrappedValue: HomeViewModel(apiClient))
+        _myPrayerViewModel = StateObject(wrappedValue: MyPrayerViewModel(apiClient))
+        _myPageViewModel = StateObject(wrappedValue: MyPageViewModel(apiClient))
     }
     
     var body: some View {
@@ -55,5 +55,5 @@ struct MainTabView: View {
 }
 
 #Preview {
-    MainTabView(apiService: APIService())
+    MainTabView(apiClient: APIClient())
 }
