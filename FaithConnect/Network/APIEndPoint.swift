@@ -12,6 +12,7 @@ enum APIEndpoint {
     case login
     case findID
     case changePassword
+    case logout
     case categories
     case prayers
     case prayerDetail(id: Int)
@@ -29,6 +30,8 @@ enum APIEndpoint {
             return "/api/prayer/mock/find-email"
         case .changePassword:
             return "/api/prayer/mock/change-password"
+        case .logout:
+            return "/api/prayer/mock/logout"
         case .categories:
             return "/api/prayer/mock/categories"
         case .prayers: 

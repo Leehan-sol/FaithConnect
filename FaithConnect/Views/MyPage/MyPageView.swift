@@ -11,6 +11,7 @@ struct MyPageView: View {
     @EnvironmentObject private var session: UserSession
     @ObservedObject var viewModel: MyPageViewModel
     @State private var showChangePassword: Bool = false
+    @State private var selectedPolicy: PolicyType?
     @State var showAlert: Bool = false
     
     private let versionNumber = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
@@ -73,7 +74,7 @@ struct MyPageView: View {
                     MyPageItemField(imageName: "book.pages",
                                     color: .black,
                                     titleName: "이용약관") {
-                        
+                        selectedPolicy = .terms
                     }
                     
                     Divider()
@@ -82,7 +83,7 @@ struct MyPageView: View {
                     MyPageItemField(imageName: "shield",
                                     color: .black,
                                     titleName: "개인정보 처리방침") {
-                        
+                        selectedPolicy = .privacy
                     }
                 }.padding(5)
                     .background()
@@ -98,7 +99,7 @@ struct MyPageView: View {
                     Text("FaithConnect v\(versionNumber ?? "1.0.0") © \(churchName ?? "우리교회")")
                     
                     Button {
-                        print("회원탈퇴 버튼 클릭")
+                        // 회원탈퇴
                     } label: {
                         Text("회원탈퇴")
                             .underline()
@@ -108,18 +109,35 @@ struct MyPageView: View {
                 .font(.footnote)
                 .foregroundColor(.gray)
                 
-            }.navigationTitle("마이페이지")
-                .navigationDestination(isPresented: $showChangePassword) {
-                    ChangePasswordView(viewModel: viewModel)
-                }
-                .alert("로그아웃", isPresented: $showAlert) {
-                    Button("취소", role: .cancel) { }
-                    Button("확인", role: .destructive) {
-                        // 로그아웃
+            }
+            .navigationTitle("마이페이지")
+            .navigationDestination(isPresented: $showChangePassword) {
+                ChangePasswordView(viewModel: viewModel)
+            }
+            .navigationDestination(item: $selectedPolicy) { policy in
+                PolicyWebView(viewType: selectedPolicy ?? .privacy)
+            }
+            .alert("로그아웃", isPresented: $showAlert) {
+                Button("취소", role: .cancel) { }
+                Button("확인", role: .destructive) {
+                    Task {
+                        await viewModel.logout()
                     }
-                } message: {
-                    Text("로그아웃 하시겠습니까?")
                 }
+            } message: {
+                Text("로그아웃 하시겠습니까?")
+            }
+            .alert(item: $viewModel.alertType) { alert in
+                let dismissAction = {
+                    if alert == .successLogout || alert == .successChangePassword {
+                        session.logout()
+                    }
+                }
+                return Alert(title: Text(alert.title),
+                             message: Text(alert.message),
+                             dismissButton: .default(Text("확인"),
+                                                     action: dismissAction))
+            }
         }
     }
 }

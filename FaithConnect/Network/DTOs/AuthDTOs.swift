@@ -32,6 +32,12 @@ struct LoginResponse: Decodable {
     let refreshToken: String
 }
 
+// MARK: - 로그아웃
+struct LogoutResponse: Decodable {
+    let message: String
+    let success: Bool
+}
+
 // MARK: - 아이디 찾기
 struct FindIDRequest: Codable {
     let name: String
@@ -55,3 +61,5 @@ struct ChangePasswordResponse: Decodable {
     let message: String
     let success: Bool
 }
+
+

@@ -38,7 +38,7 @@ struct HomeView: View {
                 .padding(EdgeInsets(top: 10, leading: 15, bottom: 10, trailing: 0))
                 
                 if viewModel.prayers.isEmpty {
-                    PrayerEmptyView()
+                    PrayerEmptyView(prayerContextType: .prayer)
                 } else {
                     List {
                         ForEach(viewModel.prayers) { prayer in

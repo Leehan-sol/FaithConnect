@@ -16,6 +16,7 @@ enum AlertType: Identifiable, Hashable {
     case failureChangePassword(message: String)
     case registerFailure(message: String)
     case registerSuccess
+    case successLogout
     case categoryNotSelected
     case deleteFailure(message: String)
     case writeError(message: String)
@@ -41,6 +42,8 @@ enum AlertType: Identifiable, Hashable {
             return "회원가입 실패"
         case .registerSuccess:
             return "회원가입 성공"
+        case .successLogout:
+            return "로그아웃"
         case .categoryNotSelected:
             return "카테고리를 선택해 주세요."
         case .deleteFailure:
@@ -70,6 +73,8 @@ enum AlertType: Identifiable, Hashable {
             return "회원가입에 실패했습니다. 다시 시도해주세요. \n \(message)"
         case .registerSuccess:
             return "회원가입에 성공했습니다. 로그인 해주세요."
+        case .successLogout:
+            return "로그아웃되었습니다."
         case .categoryNotSelected:
             return "카테고리를 선택해 주세요."
         case .deleteFailure(let message):

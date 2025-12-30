@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct PrayerEmptyView: View {
+    let prayerContextType: PrayerContextType
+    
     var body: some View {
         VStack(spacing: 10) {
             Spacer()
@@ -19,11 +21,21 @@ struct PrayerEmptyView: View {
                 .foregroundColor(Color(.systemGray4))
                 .padding(.bottom)
             
-            Text("아직 기도가 없습니다")
-                .font(.subheadline)
-                
-            Text("첫 번째 기도를 작성해보세요")
-                .font(.footnote)
+            if prayerContextType == .prayer {
+                Text("아직 기도가 없어요")
+                    .font(.subheadline)
+                    
+                Text("첫 번째 기도를 작성해보세요")
+                    .font(.footnote)
+            }
+            
+            if prayerContextType == .response {
+                Text("아직 함께한 기도가 없어요")
+                    .font(.subheadline)
+                    
+                Text("다른 사람의 기도에 함께 기도해보세요")
+                    .font(.footnote)
+            }
             
             Spacer()
         }
@@ -32,5 +44,5 @@ struct PrayerEmptyView: View {
 }
 
 #Preview {
-    PrayerEmptyView()
+    PrayerEmptyView(prayerContextType: .prayer)
 }

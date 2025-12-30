@@ -10,6 +10,7 @@ import SwiftUI
 struct ChangePasswordView: View {
     @EnvironmentObject private var session: UserSession
     @ObservedObject var viewModel: MyPageViewModel
+
     @State var password: String = ""
     @State var newPassword: String = ""
     @State var confirmNewPassword: String = ""
@@ -56,17 +57,6 @@ struct ChangePasswordView: View {
             }
             
             Spacer()
-        }
-        .alert(item: $viewModel.alertType) { alert in
-            let dismissAction = {
-                if case .successChangePassword = alert {
-                    session.logout()
-                }
-            }
-            return Alert(title: Text(alert.title),
-                         message: Text(alert.message),
-                         dismissButton: .default(Text("확인"),
-                                                 action: dismissAction))
         }
         .padding(EdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20))
         .navigationTitle("비밀번호 변경")

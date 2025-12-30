@@ -23,16 +23,24 @@ struct MyPrayerView: View {
                     showMyPrayerList = true
                 }
                 
-                ForEach(viewModel.writtenPrayers.prefix(3)) { prayer in
-                    PrayerRowView(prayer: prayer, 
-                                  cellType: .mine)
-                        .padding(.horizontal, 20)
-                        .padding(.vertical, 10)
-                        .onTapGesture {
-                            print("Tapped: \(prayer.id), \(prayer.title)")
-                            selectedPrayer = prayer
-                            showPrayerDetail = true
-                        }
+                if viewModel.writtenPrayers.isEmpty {
+                    VStack {
+                         Spacer(minLength: 30)
+                         PrayerEmptyView(prayerContextType: .prayer)
+                        Spacer(minLength: 30)
+                     }
+                } else {
+                    ForEach(viewModel.writtenPrayers.prefix(3)) { prayer in
+                        PrayerRowView(prayer: prayer,
+                                      cellType: .mine)
+                            .padding(.horizontal, 20)
+                            .padding(.vertical, 10)
+                            .onTapGesture {
+                                print("Tapped: \(prayer.id), \(prayer.title)")
+                                selectedPrayer = prayer
+                                showPrayerDetail = true
+                            }
+                    }
                 }
             }.padding(.bottom, 30)
             
@@ -41,15 +49,23 @@ struct MyPrayerView: View {
                     showMyResponseList = true
                 }
                 
-                ForEach(viewModel.participatedPrayers.prefix(3)) { response in
-                    MyResponseRowView(response:response)
-                        .padding(.horizontal, 20)
-                        .padding(.vertical, 10)
-                        .onTapGesture {
-                            print("Tapped: \(response.id), \(response.message)")
-                            selectedResponse = response
-                            showPrayerDetail = true
-                        }
+                if viewModel.writtenPrayers.isEmpty {
+                    VStack {
+                        Spacer(minLength: 30)
+                        PrayerEmptyView(prayerContextType: .response)
+                        Spacer(minLength: 30)
+                     }
+                } else {
+                    ForEach(viewModel.participatedPrayers.prefix(3)) { response in
+                        MyResponseRowView(response:response)
+                            .padding(.horizontal, 20)
+                            .padding(.vertical, 10)
+                            .onTapGesture {
+                                print("Tapped: \(response.id), \(response.message)")
+                                selectedResponse = response
+                                showPrayerDetail = true
+                            }
+                    }
                 }
             }
         }
@@ -62,10 +78,12 @@ struct MyPrayerView: View {
             }
         }
         .navigationDestination(isPresented: $showMyPrayerList) {
-            // 내가 기도한 기도 페이지
+            MyPrayerListView(viewModel: viewModel,
+                             prayerContextType: .prayer)
         }
         .navigationDestination(isPresented: $showMyResponseList) {
-            // 내가 응답한 기도 페이지
+            MyPrayerListView(viewModel: viewModel,
+                             prayerContextType: .response)
         }
         .task {
             await viewModel.initializeIfNeeded()

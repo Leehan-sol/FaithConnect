@@ -12,7 +12,9 @@ class MyPrayerViewModel: ObservableObject {
     @Published var writtenPrayers: [Prayer] = []
     @Published var participatedPrayers: [MyResponse] = []
     @Published var isLoadingWrittenPrayers: Bool = false
+    @Published var isRefreshingWrittenPrayers: Bool = false
     @Published var isLoadingParticipatedPrayers: Bool = false
+    @Published var isRefreshingParticipatedPrayers: Bool = false
     
     private let apiClient: APIClientProtocol
     private var hasInitialized = false
@@ -33,6 +35,15 @@ class MyPrayerViewModel: ObservableObject {
         await loadParticipatedPrayers(page: currentParticipatedPage)
     }
     
+    // MARK: - 내가 올린 기도
+    func refreshWrittenPrayers() async {
+        guard !isLoadingWrittenPrayers else { return }
+        isRefreshingWrittenPrayers = true
+        
+        await loadWrittenPrayers(page: 0)
+        isRefreshingWrittenPrayers = false
+    }
+    
     func loadWrittenPrayers(page: Int) async {
         guard !isLoadingWrittenPrayers else { return }
         isLoadingWrittenPrayers = true
@@ -46,6 +57,15 @@ class MyPrayerViewModel: ObservableObject {
         } catch {
             print(error)
         }
+    }
+    
+    // MARK: - 내가 응답한 기도
+    func refreshParticipatedPrayers() async {
+        guard !isLoadingParticipatedPrayers else { return }
+        isRefreshingParticipatedPrayers = true
+        
+        await loadParticipatedPrayers(page: 0)
+        isRefreshingParticipatedPrayers = false
     }
     
     func loadParticipatedPrayers(page: Int) async {

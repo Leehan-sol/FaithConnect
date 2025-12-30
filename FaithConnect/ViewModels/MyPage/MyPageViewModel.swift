@@ -39,4 +39,14 @@ class MyPageViewModel: ObservableObject {
         }
     }
     
+    func logout() async {
+        do {
+            try await apiClient.logout()
+            alertType = .successLogout
+        } catch {
+            let error = error.localizedDescription
+//            alertType = .serverError(action: <#T##String#>, message: <#T##String#>)
+        }
+    }
+
 }

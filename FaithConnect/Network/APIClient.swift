@@ -12,6 +12,7 @@ protocol APIClientProtocol {
     // Auth
     func signUp(memberID: Int, name: String, email: String, password: String, confirmPassword: String) async throws -> Void
     func login(email: String, password: String) async throws -> LoginResponse
+    func logout() async throws
     func findID(memberID: Int, name: String) async throws -> String
     func changePassword(id: Int, name: String, email: String, newPassword: String) async throws -> Void
     
@@ -29,63 +30,6 @@ protocol APIClientProtocol {
 
 // MARK: - APIClient
 struct APIClient: APIClientProtocol {
-    
-    private func post<Request: Encodable, Response: Decodable>(
-        urlString: String,
-        requestBody: Request
-    ) async throws -> Response {
-        
-        guard let url = URL(string: urlString) else {
-            throw APIError.invalidURL
-        }
-        
-        var request = URLRequest(url:url)
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpBody = try JSONEncoder().encode(requestBody)
-        
-        let (data, response) = try await URLSession.shared.data(for: request)
-        
-        guard let httpResponse = response as? HTTPURLResponse,
-              (200...299).contains(httpResponse.statusCode) else {
-            
-            let statusCode = (response as? HTTPURLResponse)?.statusCode ?? 0
-            throw APIError.httpError(statusCode: statusCode)
-        }
-        
-        do {
-            return try JSONDecoder().decode(Response.self, from: data)
-        } catch _ as DecodingError {
-            throw APIError.decodingError
-        }
-    }
-    
-    private func get<Response: Decodable>(
-        path: String,
-        queryItems: [URLQueryItem] = []
-    ) async throws -> Response {
-        
-        var components = URLComponents(string: path)
-        components?.queryItems = queryItems
-        
-        guard let url = components?.url else {
-            throw APIError.invalidURL
-        }
-        
-        let (data, response) = try await URLSession.shared.data(from: url)
-        
-        guard let httpResponse = response as? HTTPURLResponse,
-              (200...299).contains(httpResponse.statusCode) else {
-            let statusCode = (response as? HTTPURLResponse)?.statusCode ?? 0
-            throw APIError.httpError(statusCode: statusCode)
-        }
-        
-        do {
-            return try JSONDecoder().decode(Response.self, from: data)
-        } catch _ as DecodingError {
-            throw APIError.decodingError
-        }
-    }
     
     // MARK: - Auth
     func signUp(memberID: Int, name: String, email: String, password: String, confirmPassword: String) async throws -> Void {
@@ -124,6 +68,16 @@ struct APIClient: APIClientProtocol {
         }
 
         return apiResponse
+    }
+    
+    func logout() async throws {
+        let urlString = APIEndpoint.logout.urlString
+        
+        let apiResponse: LogoutResponse = try await post(urlString: urlString)
+        
+        if apiResponse.success != true {
+            throw APIError.serverMessage(apiResponse.message)
+        }
     }
     
     func findID(memberID: Int, name: String) async throws -> String {
@@ -275,7 +229,7 @@ struct APIClient: APIClientProtocol {
         let urlString = APIEndpoint.myPrayers.urlString
         
         let apiResponse: MyResponseList = try await get(path: urlString,
-                                        queryItems: [URLQueryItem(name: "page", value: "\(page)")])
+                                                        queryItems: [URLQueryItem(name: "page", value: "\(page)")])
         
         print("서버에서 받은 내 응답:", apiResponse.responses.count)
         apiResponse.responses.forEach { response in
@@ -292,5 +246,91 @@ struct APIClient: APIClientProtocol {
                               hasNext: apiResponse.hasNext)
     }
     
+}
+
+// MARK: - Extension
+extension APIClient {
+    private func post<Request: Encodable, Response: Decodable>(
+        urlString: String,
+        requestBody: Request
+    ) async throws -> Response {
+        
+        guard let url = URL(string: urlString) else {
+            throw APIError.invalidURL
+        }
+        
+        var request = URLRequest(url:url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = try JSONEncoder().encode(requestBody)
+        
+        let (data, response) = try await URLSession.shared.data(for: request)
+        
+        guard let httpResponse = response as? HTTPURLResponse,
+              (200...299).contains(httpResponse.statusCode) else {
+            
+            let statusCode = (response as? HTTPURLResponse)?.statusCode ?? 0
+            throw APIError.httpError(statusCode: statusCode)
+        }
+        
+        do {
+            return try JSONDecoder().decode(Response.self, from: data)
+        } catch _ as DecodingError {
+            throw APIError.decodingError
+        }
+    }
     
+    private func post<Response: Decodable>(
+        urlString: String
+    ) async throws -> Response {
+        guard let url = URL(string: urlString) else {
+            throw APIError.invalidURL
+        }
+        
+        var request = URLRequest(url:url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let (data, response) = try await URLSession.shared.data(for: request)
+        
+        guard let httpResponse = response as? HTTPURLResponse,
+              (200...299).contains(httpResponse.statusCode) else {
+            
+            let statusCode = (response as? HTTPURLResponse)?.statusCode ?? 0
+            throw APIError.httpError(statusCode: statusCode)
+        }
+        
+        do {
+            return try JSONDecoder().decode(Response.self, from: data)
+        } catch _ as DecodingError {
+            throw APIError.decodingError
+        }
+    }
+    
+    private func get<Response: Decodable>(
+        path: String,
+        queryItems: [URLQueryItem] = []
+    ) async throws -> Response {
+        
+        var components = URLComponents(string: path)
+        components?.queryItems = queryItems
+        
+        guard let url = components?.url else {
+            throw APIError.invalidURL
+        }
+        
+        let (data, response) = try await URLSession.shared.data(from: url)
+        
+        guard let httpResponse = response as? HTTPURLResponse,
+              (200...299).contains(httpResponse.statusCode) else {
+            let statusCode = (response as? HTTPURLResponse)?.statusCode ?? 0
+            throw APIError.httpError(statusCode: statusCode)
+        }
+        
+        do {
+            return try JSONDecoder().decode(Response.self, from: data)
+        } catch _ as DecodingError {
+            throw APIError.decodingError
+        }
+    }
 }

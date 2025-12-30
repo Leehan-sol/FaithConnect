@@ -8,9 +8,7 @@
 import Foundation
 
 enum Constants {
-    
+    static let accessToken = "accessToken"
+    static let refreshToken = "refreshToken"
 }
 
-enum APIConstants {
-    
-}
