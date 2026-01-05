@@ -5,7 +5,9 @@
 //  Created by Apple on 12/24/25.
 //
 
-enum APIError: Error {
+import Foundation
+
+enum APIError: LocalizedError {
     case invalidURL
     case decodingError
     case httpError(statusCode: Int)
@@ -14,20 +16,22 @@ enum APIError: Error {
 }
 
 extension APIError {
-    var localizedDescription: String {
+    var errorDescription: String? {
         switch self {
         case .invalidURL:
             return "유효하지 않은 URL입니다."
         case .decodingError:
             return "데이터 형식을 알 수 없습니다."
         case .httpError(let code):
-            return "네트워크 오류 발생 (Status: \(code))."
+            return "네트워크 오류 발생 (Status: \(code))"
         case .emptyResponse:
             return "네트워크 응답이 없습니다."
         case .serverMessage(let code):
             switch code {
+            case .expiredAccessToken:
+                return "시간이 만료되었습니다. 다시 로그인해주세요."
             case .userNotFoundByEmail:
-                return "해당 이메일의 사용자가 없습니다."
+                return "해당 이메일의 사용자가 있습니다."
             case .passwordMismatch:
                 return "비밀번호가 일치하지 않습니다."
             case .invalidUserInformation:

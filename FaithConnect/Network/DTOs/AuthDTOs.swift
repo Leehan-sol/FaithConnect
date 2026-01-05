@@ -55,6 +55,8 @@ struct FindIDRequest: Codable {
 struct FindIDResponse: Decodable {
     let email: String
     let success: Bool
+    let errorCode: APIErrorCode?
+    let status: Int?
 }
 
 // MARK: - 비밀번호 변경
@@ -68,13 +70,8 @@ struct ChangePasswordRequest: Codable {
 struct ChangePasswordResponse: Decodable {
     let message: String
     let success: Bool
+    let errorCode: APIErrorCode?
+    let status: Int?
 }
 
-// MARK: -
-struct EmptyRequest: Codable {
-    
-}
 
-struct EmptyResponse: Decodable {
-    
-}

@@ -7,6 +7,7 @@
 
 enum APIErrorCode: Int, Decodable {
     // MARK: - Auth
+    case expiredAccessToken = 50001 // Access Token이 만료되었습니다.
     case userNotFoundByEmail = 51002 // 해당 이메일의 사용자가 없습니다.
     case passwordMismatch = 51003 // 비밀번호가 일치하지 않습니다.
     case invalidUserInformation = 51004 // 입력하신 정보가 올바르지 않습니다.

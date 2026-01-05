@@ -49,7 +49,8 @@ struct APIClient: APIClientProtocol {
         )
         
         let apiResponse: SignUpResponse = try await post(urlString: urlString,
-                                                         requestBody: requestBody)
+                                                         requestBody: requestBody,
+                                                         auth: .none)
         
         guard apiResponse.success == true else {
             let code = apiResponse.errorCode ?? .unknown
@@ -59,14 +60,15 @@ struct APIClient: APIClientProtocol {
     
     func login(email: String, password: String) async throws -> LoginResponse {
         let urlString = APIEndpoint.login.urlString
-        
+        print("\(urlString)")
         let requestBody = LoginRequest(
             email: email,
             password: password
         )
         
         let apiResponse: LoginResponse = try await post(urlString: urlString,
-                                                        requestBody: requestBody)
+                                                        requestBody: requestBody,
+                                                        auth: .none)
         
         guard !apiResponse.accessToken.isEmpty,
               !apiResponse.refreshToken.isEmpty else {
@@ -103,10 +105,12 @@ struct APIClient: APIClientProtocol {
                                         churchMemberId: memberID)
         
         let apiResponse: FindIDResponse = try await post(urlString: urlString,
-                                         requestBody: requestBody)
+                                                         requestBody: requestBody,
+                                                         auth: .none)
         
         if apiResponse.success != true {
-            throw APIError.decodingError
+            let code = apiResponse.errorCode ?? .unknown
+            throw APIError.serverMessage(code: code)
         } else {
             return apiResponse.email
         }
@@ -121,10 +125,12 @@ struct APIClient: APIClientProtocol {
                                                 newPassword: newPassword)
         
         let apiResponse: ChangePasswordResponse = try await post(urlString: urlString,
-                                                                 requestBody: requestBody)
+                                                                 requestBody: requestBody,
+                                                                 auth: .none)
         
-        if !apiResponse.success {
-//            throw APIError.serverMessage(apiResponse.message)
+        if apiResponse.success != true {
+            let code = apiResponse.errorCode ?? .unknown
+            throw APIError.serverMessage(code: code)
         }
     }
     
@@ -181,7 +187,7 @@ struct APIClient: APIClientProtocol {
         let urlString = APIEndpoint.prayerDetail(id: prayerRequestId).urlString
         
         let apiResponse: PrayerDetailResponse = try await get(path: urlString)
-    
+        
         return Prayer(from: apiResponse)
     }
     
@@ -195,7 +201,7 @@ struct APIClient: APIClientProtocol {
         )
         
         let apiResponse: PrayerWriteResponse = try await post(urlString: urlString,
-                                         requestBody: requestBody)
+                                                              requestBody: requestBody)
         
         return Prayer(from: apiResponse)
     }
@@ -205,13 +211,13 @@ struct APIClient: APIClientProtocol {
         
         let apiResponse: PrayerDeleteResponse = try await delete(path: urlString)
         
-//        if apiResponse.errorCode != nil {
-//            throw APIError.serverMessage(apiResponse.message)
-//        }
-//        
-//        if apiResponse.success != nil && apiResponse.success == false {
-//            throw APIError.serverMessage(apiResponse.message)
-//        }
+        //        if apiResponse.errorCode != nil {
+        //            throw APIError.serverMessage(apiResponse.message)
+        //        }
+        //
+        //        if apiResponse.success != nil && apiResponse.success == false {
+        //            throw APIError.serverMessage(apiResponse.message)
+        //        }
     }
     
     func writePrayerResponse(prayerRequsetId: Int, message: String) async throws -> PrayerResponse {
@@ -221,7 +227,7 @@ struct APIClient: APIClientProtocol {
                                                      message: message)
         
         let apiResponse: DetailResponseItem = try await post(urlString: urlString,
-                                         requestBody: requestBody)
+                                                             requestBody: requestBody)
         
         return PrayerResponse(from: apiResponse)
     }
@@ -231,20 +237,20 @@ struct APIClient: APIClientProtocol {
         
         let apiResponse: PrayerDeleteResponse = try await delete(path: urlString)
         
-//        if apiResponse.errorCode != nil {
-//            throw APIError.serverMessage(apiResponse.message)
-//        }
-//        
-//        if apiResponse.success != nil && apiResponse.success == false {
-//            throw APIError.serverMessage(apiResponse.message)
-//        }
+        //        if apiResponse.errorCode != nil {
+        //            throw APIError.serverMessage(apiResponse.message)
+        //        }
+        //
+        //        if apiResponse.success != nil && apiResponse.success == false {
+        //            throw APIError.serverMessage(apiResponse.message)
+        //        }
     }
     
     func loadWrittenPrayers(page: Int) async throws -> PrayerPage {
         let urlString = APIEndpoint.myRequests.urlString
         
         let apiResponse: PrayerListResponse = try await get(path: urlString,
-                                        queryItems: [URLQueryItem(name: "page", value: "\(page)")])
+                                                            queryItems: [URLQueryItem(name: "page", value: "\(page)")])
         
         print("서버에서 받은 내 기도:", apiResponse.prayerRequests.count)
         apiResponse.prayerRequests.forEach { prayer in
@@ -288,7 +294,8 @@ struct APIClient: APIClientProtocol {
 extension APIClient {
     private func post<Req: Encodable, Res: Decodable>(
         urlString: String,
-        requestBody: Req? = nil
+        requestBody: Req? = nil,
+        auth: AuthRequirement = .required
     ) async throws -> Res {
         
         guard let url = URL(string: urlString) else { throw APIError.invalidURL }
@@ -300,39 +307,50 @@ extension APIClient {
             request.httpBody = try JSONEncoder().encode(body)
         }
         
-        return try await performRequest(request)
+        return try await performRequest(request,
+                                        auth: auth)
     }
     
-    private func get<Res: Decodable>(path: String, queryItems: [URLQueryItem] = []) async throws -> Res {
+    private func get<Res: Decodable>(
+        path: String,
+        queryItems: [URLQueryItem] = [],
+        auth: AuthRequirement = .required
+    ) async throws -> Res {
         var components = URLComponents(string: path)
         components?.queryItems = queryItems
         guard let url = components?.url else { throw APIError.invalidURL }
         
         let request = URLRequest(url: url)
-        return try await performRequest(request)
+        return try await performRequest(request,
+                                        auth: auth)
     }
     
-    private func delete<Res: Decodable>(path: String, queryItems: [URLQueryItem] = []) async throws -> Res {
+    private func delete<Res: Decodable>(
+        path: String,
+        queryItems: [URLQueryItem] = [],
+        auth: AuthRequirement = .required
+    ) async throws -> Res {
         var components = URLComponents(string: path)
         components?.queryItems = queryItems
         guard let url = components?.url else { throw APIError.invalidURL }
         
         var request = URLRequest(url: url)
         request.httpMethod = "DELETE"
-        return try await performRequest(request)
+        return try await performRequest(request,
+                                        auth: auth)
     }
     
     private func performRequest<Response: Decodable>(
         _ request: URLRequest,
-        isRetry: Bool = false
+        isRetry: Bool = false,
+        auth: AuthRequirement = .required
     ) async throws -> Response {
         
         var request = request
         
-        // 1. 헤더에 토큰 주입
-//        if let token = tokenStorage.accessToken {
-//            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-//        }
+        if auth == .required, let token = tokenStorage.accessToken {
+            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        }
         
         let (data, response) = try await URLSession.shared.data(for: request)
         
@@ -341,29 +359,44 @@ extension APIClient {
         }
         
         if httpResponse.statusCode == 401 {
-            if isRetry {
-                // 재발급 후 다시 시도했는데도 401이면 refreshToken도 만료
-                handleSessionExpiration()
-                throw APIError.httpError(statusCode: 401)
+            // 토큰만료
+            if auth == .required, tokenStorage.accessToken != nil {
+                if isRetry {
+                    handleSessionExpiration()
+                    throw APIError.serverMessage(code: .expiredAccessToken)
+                }
+                
+                let success = await refreshAccessToken()
+                if success {
+                    return try await performRequest(request,
+                                                    isRetry: true,
+                                                    auth: auth)
+                } else {
+                    handleSessionExpiration()
+                    throw APIError.serverMessage(code: .expiredAccessToken)
+                }
             }
             
-            // 토큰 갱신
-            let success = await refreshAccessToken()
-            if success {
-                return try await performRequest(request, isRetry: true)
-            } else {
-                handleSessionExpiration()
-                throw APIError.httpError(statusCode: 401)
+            if let errorResponse = try? JSONDecoder().decode(APIErrorResponse.self, from: data) {
+                throw APIError.serverMessage(code: errorResponse.errorCode)
             }
+            
+            throw APIError.serverMessage(code: .unknown)
         }
         
-        // 4. 일반적인 에러 및 성공 처리
         guard (200...299).contains(httpResponse.statusCode) else {
+            if let errorResponse = try? JSONDecoder().decode(APIErrorResponse.self, from: data) {
+                throw APIError.serverMessage(code: errorResponse.errorCode)
+            }
+            
             throw APIError.httpError(statusCode: httpResponse.statusCode)
         }
         
-        if data.isEmpty && Response.self == EmptyResponse.self { // 빈 응답 대응
-            return try JSONDecoder().decode(Response.self, from: "{}".data(using: .utf8)!)
+        if data.isEmpty, Response.self == EmptyResponse.self {
+            return try JSONDecoder().decode(
+                Response.self,
+                from: "{}".data(using: .utf8)!
+            )
         }
         
         do {
@@ -373,12 +406,13 @@ extension APIClient {
         }
     }
     
+    
     private func refreshAccessToken() async -> Bool {
         guard let refreshToken = tokenStorage.refreshToken else { return false }
         // TODO: - RefreshToken으로 AccessToken 생성하는 API 호출
         return true
     }
-
+    
     private func handleSessionExpiration() {
         // TODO: - NotificationCenter를 통해 UserSession에 알림, 로그아웃
     }

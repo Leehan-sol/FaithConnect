@@ -62,7 +62,7 @@ enum AlertType: Identifiable, Hashable {
         case .fieldEmpty(let fieldName):
             return "\(fieldName)을(를) 입력해주세요."
         case .findIDFailure:
-            return "아이디 찾기를 실패했습니다."
+            return "아이디 찾기를 실패했습니다. 다시 시도해주세요."
         case .passwordMismatch:
             return "입력하신 비밀번호와 비밀번호 확인이 일치하지 않습니다. 다시 입력해주세요."
         case .successChangePassword:

@@ -53,6 +53,8 @@
 		CC6EC0642F015711009D2E31 /* MyResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6EC0632F015711009D2E31 /* MyResponse.swift */; };
 		CC6EC0662F015FB2009D2E31 /* MyResponseRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6EC0652F015FB2009D2E31 /* MyResponseRowView.swift */; };
 		CC728A392EFEB13D00D93208 /* AlertType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC728A382EFEB13D00D93208 /* AlertType.swift */; };
+		CC7A00D32F0BE529005CB132 /* AuthRequirement.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC7A00D22F0BE529005CB132 /* AuthRequirement.swift */; };
+		CC7A00D52F0BEF14005CB132 /* APIDTOs.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC7A00D42F0BEF14005CB132 /* APIDTOs.swift */; };
 		CCAD36752EB726510028D451 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CCAD36742EB726510028D451 /* LaunchScreen.storyboard */; };
 		CCAD36832EB731EF0028D451 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAD36822EB731EF0028D451 /* LoginView.swift */; };
 		CCAD36852EB732FE0028D451 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAD36842EB732FE0028D451 /* LoginViewModel.swift */; };
@@ -117,6 +119,8 @@
 		CC6EC0632F015711009D2E31 /* MyResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyResponse.swift; sourceTree = "<group>"; };
 		CC6EC0652F015FB2009D2E31 /* MyResponseRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyResponseRowView.swift; sourceTree = "<group>"; };
 		CC728A382EFEB13D00D93208 /* AlertType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertType.swift; sourceTree = "<group>"; };
+		CC7A00D22F0BE529005CB132 /* AuthRequirement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthRequirement.swift; sourceTree = "<group>"; };
+		CC7A00D42F0BEF14005CB132 /* APIDTOs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIDTOs.swift; sourceTree = "<group>"; };
 		CCAD36742EB726510028D451 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CCAD36822EB731EF0028D451 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		CCAD36842EB732FE0028D451 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
@@ -146,6 +150,7 @@
 		1862C5432EFBA77D00B0DD70 /* DTOs */ = {
 			isa = PBXGroup;
 			children = (
+				CC7A00D42F0BEF14005CB132 /* APIDTOs.swift */,
 				1862C5402EFBA77D00B0DD70 /* AuthDTOs.swift */,
 				1862C5412EFBA77D00B0DD70 /* CategoryDTOs.swift */,
 				1862C5422EFBA77D00B0DD70 /* PrayerDTOs.swift */,
@@ -157,6 +162,7 @@
 			isa = PBXGroup;
 			children = (
 				CC5D794E2EC757F600C1CEE4 /* APIClient.swift */,
+				CC7A00D22F0BE529005CB132 /* AuthRequirement.swift */,
 				1862C5482EFBA89600B0DD70 /* APIError.swift */,
 				180939752F0B7CE200CC1BAE /* APIErrorCode.swift */,
 				18948E732F024C8B00C9C75C /* APIEndPoint.swift */,
@@ -535,10 +541,12 @@
 				CC4EA4422EC9F64A0097D09C /* CustomBackButtonStyle.swift in Sources */,
 				CC6EC0642F015711009D2E31 /* MyResponse.swift in Sources */,
 				CCAD369E2EB799B70028D451 /* String+Extensions.swift in Sources */,
+				CC7A00D52F0BEF14005CB132 /* APIDTOs.swift in Sources */,
 				CCAD36962EB791110028D451 /* Prayer.swift in Sources */,
 				CC5B0E482EBF243000CE79A3 /* SectionHeaderView.swift in Sources */,
 				18948E742F024C9300C9C75C /* APIEndPoint.swift in Sources */,
 				CC6194C62EF7E030005B79A7 /* User.swift in Sources */,
+				CC7A00D32F0BE529005CB132 /* AuthRequirement.swift in Sources */,
 				CC5B0E4D2EBF2E5500CE79A3 /* MyPrayerViewModel.swift in Sources */,
 				CC5B0E602EBF567F00CE79A3 /* UIApplication+Extensions.swift in Sources */,
 				CC4EA4442EC9F6C50097D09C /* View+Extensions.swift in Sources */,
