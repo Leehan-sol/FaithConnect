@@ -16,9 +16,9 @@ struct PrayerEditorView: View {
     @State var content: String = ""
     @State var showAlert: Bool = false
     
-    var onDone: (Prayer) -> Void
+    var onDone: ((Prayer) -> Void)?
     
-    init(viewModel: @escaping () -> PrayerEditorViewModel, onDone: @escaping (Prayer) -> Void) {
+    init(viewModel: @escaping () -> PrayerEditorViewModel, onDone: ((Prayer) -> Void)?) {
         _viewModel = StateObject(wrappedValue: viewModel())
         self.onDone = onDone
     }
@@ -105,7 +105,7 @@ struct PrayerEditorView: View {
                             if let newPrayer = await viewModel.writePrayer(categoryId: selectedCategoryId,
                                                                            title: title,
                                                                            content: content) {
-                                onDone(newPrayer)
+                                onDone?(newPrayer)
                             }
                         }
                     } label: {
@@ -130,7 +130,7 @@ struct PrayerEditorView: View {
 
 #Preview {
     PrayerEditorView(
-               viewModel: { PrayerEditorViewModel(APIClient()) },
+               viewModel: { PrayerEditorViewModel(APIClient(tokenStorage: TokenStorage())) },
                onDone: { _ in
                }
            )

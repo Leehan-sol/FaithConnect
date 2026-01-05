@@ -128,5 +128,6 @@ struct LoginView: View {
 }
 
 #Preview {
-    LoginView(viewModel: LoginViewModel(APIClient(), UserSession()))
+    LoginView(viewModel: LoginViewModel(APIClient(tokenStorage: TokenStorage()),
+                                        UserSession()))
 }

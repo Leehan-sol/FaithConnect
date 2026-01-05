@@ -18,7 +18,9 @@ struct SignUpRequest: Codable {
 
 struct SignUpResponse: Decodable {
     let message: String
-    let success: Bool
+    let success: Bool?
+    let errorCode: APIErrorCode?
+    let status: Int?
 }
 
 // MARK: - 로그인
@@ -28,14 +30,20 @@ struct LoginRequest: Codable {
 }
 
 struct LoginResponse: Decodable {
+    let name: String
+    let email: String
     let accessToken: String
     let refreshToken: String
+    let errorCode: APIErrorCode?
+    let status: Int?
 }
 
 // MARK: - 로그아웃
 struct LogoutResponse: Decodable {
     let message: String
     let success: Bool
+    let errorCode: APIErrorCode?
+    let status: Int?
 }
 
 // MARK: - 아이디 찾기
@@ -62,4 +70,11 @@ struct ChangePasswordResponse: Decodable {
     let success: Bool
 }
 
+// MARK: -
+struct EmptyRequest: Codable {
+    
+}
 
+struct EmptyResponse: Decodable {
+    
+}

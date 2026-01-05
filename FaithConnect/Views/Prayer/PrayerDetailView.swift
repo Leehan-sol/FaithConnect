@@ -15,8 +15,12 @@ struct PrayerDetailView: View {
     @State private var showPrayerEditor = false
     @State private var showDeleteAlert = false
     
-    init(viewModel: @escaping () -> PrayerDetailViewModel) {
+    var onDeletePrayer: ((Int) -> Void)?
+    
+    init(viewModel: @escaping () -> PrayerDetailViewModel,
+         onDeletePrayer: ((Int) -> Void)?) {
         _viewModel = StateObject(wrappedValue: viewModel())
+        self.onDeletePrayer = onDeletePrayer
     }
     
     var body: some View {
@@ -70,7 +74,9 @@ struct PrayerDetailView: View {
                isPresented: $showDeleteAlert) {
             Button("삭제", role: .destructive) {
                 Task {
-                    await viewModel.deletePrayer()
+                    if let deleteId = await viewModel.deletePrayer() {
+                        onDeletePrayer?(deleteId)
+                    }
                 }
             }
             Button("취소", role: .cancel) { }
@@ -135,7 +141,7 @@ struct DetailView: View {
                 PrayerResponseRowView(response: response, 
                                       onDelete: { response in
                     Task {
-                        await self.viewModel.deletePrayerResponse(response: response)
+                        await viewModel.deletePrayerResponse(response: response)
                     }
                 })
                     .padding(.horizontal, 20)
@@ -147,7 +153,9 @@ struct DetailView: View {
 
 
 #Preview {
-    PrayerDetailView(viewModel: { PrayerDetailViewModel(APIClient(),
-                                                        prayerRequestId: 1) })
+    PrayerDetailView(viewModel: { PrayerDetailViewModel(APIClient(tokenStorage: TokenStorage()),
+                                                        prayerRequestId: 1) },
+                     onDeletePrayer: { _ in
+                     })
     .environmentObject(UserSession())
 }

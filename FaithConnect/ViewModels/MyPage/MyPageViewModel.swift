@@ -9,8 +9,9 @@ import Foundation
 
 @MainActor
 class MyPageViewModel: ObservableObject {
-    let apiClient: APIClientProtocol
     @Published var alertType: AlertType? = nil
+    
+    private let apiClient: APIClientProtocol
     
     init(_ apiClient: APIClientProtocol) {
         self.apiClient = apiClient

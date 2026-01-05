@@ -143,7 +143,7 @@ struct MyPageView: View {
 }
 
 #Preview {
-    MyPageView(viewModel: MyPageViewModel(APIClient()))
+    MyPageView(viewModel: MyPageViewModel(APIClient(tokenStorage: TokenStorage())))
         .environmentObject(UserSession())
 }
 

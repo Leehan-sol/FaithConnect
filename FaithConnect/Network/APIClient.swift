@@ -10,11 +10,11 @@ import Foundation
 // MARK: - Protocol
 protocol APIClientProtocol {
     // Auth
-    func signUp(memberID: Int, name: String, email: String, password: String, confirmPassword: String) async throws -> Void
+    func signUp(memberID: Int, name: String, email: String, password: String, confirmPassword: String) async throws
     func login(email: String, password: String) async throws -> LoginResponse
     func logout() async throws
     func findID(memberID: Int, name: String) async throws -> String
-    func changePassword(id: Int, name: String, email: String, newPassword: String) async throws -> Void
+    func changePassword(id: Int, name: String, email: String, newPassword: String) async throws
     
     // Prayer
     func loadCategories() async throws -> [PrayerCategory]
@@ -30,9 +30,14 @@ protocol APIClientProtocol {
 
 // MARK: - APIClient
 struct APIClient: APIClientProtocol {
+    private let tokenStorage: TokenStorageProtocol
+    
+    init(tokenStorage: TokenStorageProtocol) {
+        self.tokenStorage = tokenStorage
+    }
     
     // MARK: - Auth
-    func signUp(memberID: Int, name: String, email: String, password: String, confirmPassword: String) async throws -> Void {
+    func signUp(memberID: Int, name: String, email: String, password: String, confirmPassword: String) async throws {
         let urlString = APIEndpoint.signup.urlString
         
         let requestBody = SignUpRequest(
@@ -44,10 +49,11 @@ struct APIClient: APIClientProtocol {
         )
         
         let apiResponse: SignUpResponse = try await post(urlString: urlString,
-                                         requestBody: requestBody)
+                                                         requestBody: requestBody)
         
-        if !apiResponse.success {
-            throw APIError.serverMessage(apiResponse.message)
+        guard apiResponse.success == true else {
+            let code = apiResponse.errorCode ?? .unknown
+            throw APIError.serverMessage(code: code)
         }
     }
     
@@ -60,23 +66,33 @@ struct APIClient: APIClientProtocol {
         )
         
         let apiResponse: LoginResponse = try await post(urlString: urlString,
-                                         requestBody: requestBody)
+                                                        requestBody: requestBody)
         
         guard !apiResponse.accessToken.isEmpty,
               !apiResponse.refreshToken.isEmpty else {
-            throw APIError.failureLogin
+            let errorCode = apiResponse.errorCode ?? .unknown
+            throw APIError.serverMessage(code: errorCode)
         }
-
+        
+        await MainActor.run {
+            tokenStorage.save(
+                accessToken: apiResponse.accessToken,
+                refreshToken: apiResponse.refreshToken
+            )
+        }
+        
         return apiResponse
     }
     
     func logout() async throws {
         let urlString = APIEndpoint.logout.urlString
         
-        let apiResponse: LogoutResponse = try await post(urlString: urlString)
+        let apiResponse: LogoutResponse = try await post(urlString: urlString,
+                                                         requestBody: EmptyRequest())
         
-        if apiResponse.success != true {
-            throw APIError.serverMessage(apiResponse.message)
+        guard apiResponse.success == true else {
+            let code = apiResponse.errorCode ?? .unknown
+            throw APIError.serverMessage(code: code)
         }
     }
     
@@ -90,7 +106,7 @@ struct APIClient: APIClientProtocol {
                                          requestBody: requestBody)
         
         if apiResponse.success != true {
-            throw APIError.failureFindID
+            throw APIError.decodingError
         } else {
             return apiResponse.email
         }
@@ -107,8 +123,8 @@ struct APIClient: APIClientProtocol {
         let apiResponse: ChangePasswordResponse = try await post(urlString: urlString,
                                                                  requestBody: requestBody)
         
-        if apiResponse.success != true {
-            throw APIError.serverMessage(apiResponse.message)
+        if !apiResponse.success {
+//            throw APIError.serverMessage(apiResponse.message)
         }
     }
     
@@ -185,7 +201,17 @@ struct APIClient: APIClientProtocol {
     }
     
     func deletePrayer(prayerRequestId: Int) async throws {
+        let urlString = APIEndpoint.prayerDetail(id: prayerRequestId).urlString
         
+        let apiResponse: PrayerDeleteResponse = try await delete(path: urlString)
+        
+//        if apiResponse.errorCode != nil {
+//            throw APIError.serverMessage(apiResponse.message)
+//        }
+//        
+//        if apiResponse.success != nil && apiResponse.success == false {
+//            throw APIError.serverMessage(apiResponse.message)
+//        }
     }
     
     func writePrayerResponse(prayerRequsetId: Int, message: String) async throws -> PrayerResponse {
@@ -201,7 +227,17 @@ struct APIClient: APIClientProtocol {
     }
     
     func deletePrayerResponse(prayerRequestId: Int) async throws {
+        let urlString = APIEndpoint.responseDetail(id: prayerRequestId).urlString
         
+        let apiResponse: PrayerDeleteResponse = try await delete(path: urlString)
+        
+//        if apiResponse.errorCode != nil {
+//            throw APIError.serverMessage(apiResponse.message)
+//        }
+//        
+//        if apiResponse.success != nil && apiResponse.success == false {
+//            throw APIError.serverMessage(apiResponse.message)
+//        }
     }
     
     func loadWrittenPrayers(page: Int) async throws -> PrayerPage {
@@ -250,87 +286,100 @@ struct APIClient: APIClientProtocol {
 
 // MARK: - Extension
 extension APIClient {
-    private func post<Request: Encodable, Response: Decodable>(
+    private func post<Req: Encodable, Res: Decodable>(
         urlString: String,
-        requestBody: Request
-    ) async throws -> Response {
+        requestBody: Req? = nil
+    ) async throws -> Res {
         
-        guard let url = URL(string: urlString) else {
-            throw APIError.invalidURL
-        }
-        
-        var request = URLRequest(url:url)
+        guard let url = URL(string: urlString) else { throw APIError.invalidURL }
+        var request = URLRequest(url: url)
         request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpBody = try JSONEncoder().encode(requestBody)
         
-        let (data, response) = try await URLSession.shared.data(for: request)
-        
-        guard let httpResponse = response as? HTTPURLResponse,
-              (200...299).contains(httpResponse.statusCode) else {
-            
-            let statusCode = (response as? HTTPURLResponse)?.statusCode ?? 0
-            throw APIError.httpError(statusCode: statusCode)
+        if let body = requestBody, !(body is EmptyRequest) {
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.httpBody = try JSONEncoder().encode(body)
         }
         
-        do {
-            return try JSONDecoder().decode(Response.self, from: data)
-        } catch _ as DecodingError {
-            throw APIError.decodingError
-        }
+        return try await performRequest(request)
     }
     
-    private func post<Response: Decodable>(
-        urlString: String
-    ) async throws -> Response {
-        guard let url = URL(string: urlString) else {
-            throw APIError.invalidURL
-        }
-        
-        var request = URLRequest(url:url)
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        
-        let (data, response) = try await URLSession.shared.data(for: request)
-        
-        guard let httpResponse = response as? HTTPURLResponse,
-              (200...299).contains(httpResponse.statusCode) else {
-            
-            let statusCode = (response as? HTTPURLResponse)?.statusCode ?? 0
-            throw APIError.httpError(statusCode: statusCode)
-        }
-        
-        do {
-            return try JSONDecoder().decode(Response.self, from: data)
-        } catch _ as DecodingError {
-            throw APIError.decodingError
-        }
-    }
-    
-    private func get<Response: Decodable>(
-        path: String,
-        queryItems: [URLQueryItem] = []
-    ) async throws -> Response {
-        
+    private func get<Res: Decodable>(path: String, queryItems: [URLQueryItem] = []) async throws -> Res {
         var components = URLComponents(string: path)
         components?.queryItems = queryItems
+        guard let url = components?.url else { throw APIError.invalidURL }
         
-        guard let url = components?.url else {
-            throw APIError.invalidURL
+        let request = URLRequest(url: url)
+        return try await performRequest(request)
+    }
+    
+    private func delete<Res: Decodable>(path: String, queryItems: [URLQueryItem] = []) async throws -> Res {
+        var components = URLComponents(string: path)
+        components?.queryItems = queryItems
+        guard let url = components?.url else { throw APIError.invalidURL }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "DELETE"
+        return try await performRequest(request)
+    }
+    
+    private func performRequest<Response: Decodable>(
+        _ request: URLRequest,
+        isRetry: Bool = false
+    ) async throws -> Response {
+        
+        var request = request
+        
+        // 1. 헤더에 토큰 주입
+//        if let token = tokenStorage.accessToken {
+//            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+//        }
+        
+        let (data, response) = try await URLSession.shared.data(for: request)
+        
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw APIError.serverMessage(code: .unknown)
         }
         
-        let (data, response) = try await URLSession.shared.data(from: url)
+        if httpResponse.statusCode == 401 {
+            if isRetry {
+                // 재발급 후 다시 시도했는데도 401이면 refreshToken도 만료
+                handleSessionExpiration()
+                throw APIError.httpError(statusCode: 401)
+            }
+            
+            // 토큰 갱신
+            let success = await refreshAccessToken()
+            if success {
+                return try await performRequest(request, isRetry: true)
+            } else {
+                handleSessionExpiration()
+                throw APIError.httpError(statusCode: 401)
+            }
+        }
         
-        guard let httpResponse = response as? HTTPURLResponse,
-              (200...299).contains(httpResponse.statusCode) else {
-            let statusCode = (response as? HTTPURLResponse)?.statusCode ?? 0
-            throw APIError.httpError(statusCode: statusCode)
+        // 4. 일반적인 에러 및 성공 처리
+        guard (200...299).contains(httpResponse.statusCode) else {
+            throw APIError.httpError(statusCode: httpResponse.statusCode)
+        }
+        
+        if data.isEmpty && Response.self == EmptyResponse.self { // 빈 응답 대응
+            return try JSONDecoder().decode(Response.self, from: "{}".data(using: .utf8)!)
         }
         
         do {
             return try JSONDecoder().decode(Response.self, from: data)
-        } catch _ as DecodingError {
+        } catch {
             throw APIError.decodingError
         }
+    }
+    
+    private func refreshAccessToken() async -> Bool {
+        guard let refreshToken = tokenStorage.refreshToken else { return false }
+        // TODO: - RefreshToken으로 AccessToken 생성하는 API 호출
+        return true
+    }
+
+    private func handleSessionExpiration() {
+        // TODO: - NotificationCenter를 통해 UserSession에 알림, 로그아웃
     }
 }

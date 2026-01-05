@@ -128,6 +128,6 @@ struct PrayerDetailBottomSheetView: View {
 }
 
 #Preview {
-    PrayerDetailBottomSheetView(viewModel: PrayerDetailViewModel(APIClient(),
+    PrayerDetailBottomSheetView(viewModel: PrayerDetailViewModel(APIClient(tokenStorage: TokenStorage()),
                                                                  prayerRequestId: 1))
 }

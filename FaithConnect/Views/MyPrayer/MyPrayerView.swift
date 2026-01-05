@@ -25,21 +25,21 @@ struct MyPrayerView: View {
                 
                 if viewModel.writtenPrayers.isEmpty {
                     VStack {
-                         Spacer(minLength: 30)
-                         PrayerEmptyView(prayerContextType: .prayer)
                         Spacer(minLength: 30)
-                     }
+                        PrayerEmptyView(prayerContextType: .prayer)
+                        Spacer(minLength: 30)
+                    }
                 } else {
                     ForEach(viewModel.writtenPrayers.prefix(3)) { prayer in
                         PrayerRowView(prayer: prayer,
                                       cellType: .mine)
-                            .padding(.horizontal, 20)
-                            .padding(.vertical, 10)
-                            .onTapGesture {
-                                print("Tapped: \(prayer.id), \(prayer.title)")
-                                selectedPrayer = prayer
-                                showPrayerDetail = true
-                            }
+                        .padding(.horizontal, 20)
+                        .padding(.vertical, 10)
+                        .onTapGesture {
+                            print("Tapped: \(prayer.id), \(prayer.title)")
+                            selectedPrayer = prayer
+                            showPrayerDetail = true
+                        }
                     }
                 }
             }.padding(.bottom, 30)
@@ -54,7 +54,7 @@ struct MyPrayerView: View {
                         Spacer(minLength: 30)
                         PrayerEmptyView(prayerContextType: .response)
                         Spacer(minLength: 30)
-                     }
+                    }
                 } else {
                     ForEach(viewModel.participatedPrayers.prefix(3)) { response in
                         MyResponseRowView(response:response)
@@ -72,9 +72,15 @@ struct MyPrayerView: View {
         .navigationTitle("내 기도")
         .navigationDestination(isPresented: $showPrayerDetail) {
             if let prayer = selectedPrayer {
-                PrayerDetailView(viewModel: { viewModel.makePrayerDetailVM(prayerRequestId: prayer.id) })
+                PrayerDetailView(viewModel: { viewModel.makePrayerDetailVM(prayerRequestId: prayer.id) },
+                                 onDeletePrayer: { deleteId in
+                    
+                })
             } else if let response = selectedResponse {
-                PrayerDetailView(viewModel: { viewModel.makePrayerDetailVM(prayerRequestId: response.id) })
+                PrayerDetailView(viewModel: { viewModel.makePrayerDetailVM(prayerRequestId: response.id) },
+                                 onDeletePrayer: { deleteId in
+                    
+                })
             }
         }
         .navigationDestination(isPresented: $showMyPrayerList) {
@@ -92,6 +98,6 @@ struct MyPrayerView: View {
 }
 
 #Preview {
-    MyPrayerView(viewModel: MyPrayerViewModel(APIClient()))
+    MyPrayerView(viewModel: MyPrayerViewModel(APIClient(tokenStorage: TokenStorage())))
         .environmentObject(UserSession())
 }

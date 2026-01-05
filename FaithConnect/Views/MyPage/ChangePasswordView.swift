@@ -68,6 +68,6 @@ struct ChangePasswordView: View {
 
 
 #Preview {
-    ChangePasswordView(viewModel: MyPageViewModel(APIClient()))
+    ChangePasswordView(viewModel: MyPageViewModel(APIClient(tokenStorage: TokenStorage())))
         .environmentObject(UserSession())
 }

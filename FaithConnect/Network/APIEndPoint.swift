@@ -5,9 +5,19 @@
 //  Created by Apple on 12/29/25.
 //
 
-enum APIEndpoint {
-    static let baseURL = "http://prayer-app.duckdns.org/dev"
+import Foundation
+
+enum APIEnvironment: String {
+    case mock
+    case production
     
+    static var current: APIEnvironment {
+        let value = Bundle.main.infoDictionary?["APIEnvironment"] as? String
+        return APIEnvironment(rawValue: value ?? "") ?? .production
+    }
+}
+
+enum APIEndpoint {
     case signup
     case login
     case findID
@@ -17,33 +27,47 @@ enum APIEndpoint {
     case prayers
     case prayerDetail(id: Int)
     case responses
+    case responseDetail(id: Int)
     case myRequests
     case myPrayers
     
+    private static let baseURL = "http://prayer-app.duckdns.org/dev"
+    
+    private var basePath: String {
+        switch APIEnvironment.current {
+        case .mock:
+            return "/api/prayer/mock"
+        case .production:
+            return "/api/prayer"
+        }
+    }
+    
     var path: String {
         switch self {
-        case .signup: 
-            return "/api/prayer/mock/signup"
-        case .login: 
-            return "/api/prayer/mock/login"
-        case .findID: 
-            return "/api/prayer/mock/find-email"
+        case .signup:
+            return "\(basePath)/signup"
+        case .login:
+            return "\(basePath)/login"
+        case .findID:
+            return "\(basePath)/find-email"
         case .changePassword:
-            return "/api/prayer/mock/change-password"
+            return "\(basePath)/change-password"
         case .logout:
-            return "/api/prayer/mock/logout"
+            return "\(basePath)/logout"
         case .categories:
-            return "/api/prayer/mock/categories"
-        case .prayers: 
-            return "/api/prayer/mock/requests"
-        case .prayerDetail(let id): 
-            return "/api/prayer/mock/requests/\(id)"
-        case .responses: 
-            return "/api/prayer/mock/responses"
-        case .myRequests: 
-            return "/api/prayer/mock/my-requests"
-        case .myPrayers: 
-            return "/api/prayer/mock/my-prayers"
+            return "\(basePath)/categories"
+        case .prayers:
+            return "\(basePath)/requests"
+        case .prayerDetail(let id):
+            return "\(basePath)/requests/\(id)"
+        case .responses:
+            return "\(basePath)/responses"
+        case .responseDetail(let id):
+            return "\(basePath)/responses/\(id)"
+        case .myRequests:
+            return "\(basePath)/my-requests"
+        case .myPrayers:
+            return "\(basePath)/my-prayers"
         }
     }
     

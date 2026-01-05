@@ -82,6 +82,10 @@ class HomeViewModel: ObservableObject {
         }
     }
     
+    func deletePrayer(id: Int) {
+        prayers.removeAll { $0.id == id }
+    }
+    
     func makePrayerDetailVM(prayer: Prayer) -> PrayerDetailViewModel {
         return PrayerDetailViewModel(apiClient,
                                      prayerRequestId: prayer.id)

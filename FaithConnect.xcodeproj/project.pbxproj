@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		180228912EBA08C300ABA95C /* PrayerRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180228902EBA08BD00ABA95C /* PrayerRowView.swift */; };
 		180228932EBA092A00ABA95C /* FloatingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180228922EBA091D00ABA95C /* FloatingButton.swift */; };
+		180939762F0B7CE600CC1BAE /* APIErrorCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180939752F0B7CE200CC1BAE /* APIErrorCode.swift */; };
+		180939782F0B894500CC1BAE /* TokenStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180939772F0B894200CC1BAE /* TokenStorage.swift */; };
 		1862C53F2EFB74C900B0DD70 /* PrayerEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1862C53E2EFB74BE00B0DD70 /* PrayerEmptyView.swift */; };
 		1862C5452EFBA77D00B0DD70 /* CategoryDTOs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1862C5412EFBA77D00B0DD70 /* CategoryDTOs.swift */; };
 		1862C5462EFBA77D00B0DD70 /* AuthDTOs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1862C5402EFBA77D00B0DD70 /* AuthDTOs.swift */; };
@@ -69,6 +71,8 @@
 /* Begin PBXFileReference section */
 		180228902EBA08BD00ABA95C /* PrayerRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerRowView.swift; sourceTree = "<group>"; };
 		180228922EBA091D00ABA95C /* FloatingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingButton.swift; sourceTree = "<group>"; };
+		180939752F0B7CE200CC1BAE /* APIErrorCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIErrorCode.swift; sourceTree = "<group>"; };
+		180939772F0B894200CC1BAE /* TokenStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenStorage.swift; sourceTree = "<group>"; };
 		1862C53E2EFB74BE00B0DD70 /* PrayerEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerEmptyView.swift; sourceTree = "<group>"; };
 		1862C5402EFBA77D00B0DD70 /* AuthDTOs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthDTOs.swift; sourceTree = "<group>"; };
 		1862C5412EFBA77D00B0DD70 /* CategoryDTOs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryDTOs.swift; sourceTree = "<group>"; };
@@ -154,6 +158,7 @@
 			children = (
 				CC5D794E2EC757F600C1CEE4 /* APIClient.swift */,
 				1862C5482EFBA89600B0DD70 /* APIError.swift */,
+				180939752F0B7CE200CC1BAE /* APIErrorCode.swift */,
 				18948E732F024C8B00C9C75C /* APIEndPoint.swift */,
 				1862C5432EFBA77D00B0DD70 /* DTOs */,
 			);
@@ -335,6 +340,7 @@
 			isa = PBXGroup;
 			children = (
 				CC6194C92EF7F5BB005B79A7 /* UserSession.swift */,
+				180939772F0B894200CC1BAE /* TokenStorage.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -498,7 +504,9 @@
 				CC5B0E4B2EBF2DD000CE79A3 /* MyPrayerView.swift in Sources */,
 				CC6194CA2EF7F5BB005B79A7 /* UserSession.swift in Sources */,
 				CCAD36982EB7920C0028D451 /* HomeViewModel.swift in Sources */,
+				180939762F0B7CE600CC1BAE /* APIErrorCode.swift in Sources */,
 				CC6437D82EBE42820079ED24 /* PrayerDetailView.swift in Sources */,
+				180939782F0B894500CC1BAE /* TokenStorage.swift in Sources */,
 				CC5B0E682EBFA5A800CE79A3 /* PrayerResponseRowView.swift in Sources */,
 				180228932EBA092A00ABA95C /* FloatingButton.swift in Sources */,
 				1862C5492EFBA89C00B0DD70 /* APIError.swift in Sources */,

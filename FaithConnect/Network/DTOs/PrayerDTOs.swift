@@ -41,6 +41,14 @@ struct DetailResponseItem: Decodable {
     let createdAt: String
 }
 
+// MARK: - 기도 삭제
+struct PrayerDeleteResponse: Decodable {
+    let message: String
+    let success: Bool?
+    let errorCode: Int?
+    let status: Int?
+}
+
 // MARK: - 내 응답 목록
 struct MyResponseList: Decodable {
     let responses: [MyResponseItem]

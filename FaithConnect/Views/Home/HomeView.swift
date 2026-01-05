@@ -75,7 +75,11 @@ struct HomeView: View {
         .navigationTitle("기도 모음")
         .navigationDestination(isPresented: $showPrayerDetail) {
             if let prayer = selectedPrayer {
-                PrayerDetailView(viewModel: { viewModel.makePrayerDetailVM(prayer: prayer) })
+                PrayerDetailView(viewModel: { viewModel.makePrayerDetailVM(prayer: prayer) },
+                                 onDeletePrayer: { deleteId in
+                    viewModel.deletePrayer(id: deleteId)
+                    showPrayerDetail = false
+                })
             }
         }
         .navigationDestination(isPresented: $showPrayerEditor) {
@@ -98,6 +102,6 @@ struct HomeView: View {
 
 
 #Preview {
-    HomeView(viewModel: HomeViewModel(APIClient()))
+    HomeView(viewModel: HomeViewModel(APIClient(tokenStorage: TokenStorage())))
         .environmentObject(UserSession())
 }

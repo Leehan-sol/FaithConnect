@@ -34,39 +34,36 @@ class PrayerDetailViewModel: ObservableObject {
         
     }
     
-    func deletePrayer() async {
+    func deletePrayer() async -> Int? {
         do {
             print("삭제 API 호출")
-            guard let id = self.prayer?.id else { return }
+            guard let id = prayer?.id else { return nil }
             try await apiClient.deletePrayer(prayerRequestId: id)
+            return id
         } catch {
             let error = error.localizedDescription
             alertType = .deleteFailure(message: error)
+            return nil
         }
     }
     
     func writePrayerResponse(message: String) async -> Bool {
+        if message.isEmpty {
+            alertType = .fieldEmpty(fieldName: "응답")
+        }
+        
+        guard let id = prayer?.id else {
+            return false
+        }
+        
         do {
             print("기도 응답 API 호출")
-            if message.isEmpty {
-                alertType = .fieldEmpty(fieldName: "응답")
-            }
-            
-            guard let id = self.prayer?.id else {
-                return false
-            }
-            
             let response = try await apiClient.writePrayerResponse(prayerRequsetId: id,
-                                                     message: message)
-            
-            self.prayer?.responses?.append(response)
-            self.prayer?.hasParticipated = true
-            if let responses = self.prayer?.responses {
-                   for (index, resp) in responses.enumerated() {
-                       print("responses[\(index)]: \(resp.message)")
-                   }
-               }
-            
+                                                                   message: message)
+            guard var prayer = prayer else { return false }
+            prayer.responses?.append(response)
+            prayer.hasParticipated = true
+            self.prayer = prayer
             return true
         } catch {
             let error = error.localizedDescription
@@ -78,8 +75,11 @@ class PrayerDetailViewModel: ObservableObject {
     func deletePrayerResponse(response: PrayerResponse) async {
         do {
             print("응답 삭제 API 호출")
-//            guard let id = self.prayer?.id else { return }
-         //   try await apiClient.deletePrayerResponse(prayerRequestId: id)
+            try await apiClient.deletePrayerResponse(prayerRequestId: response.id)
+            
+            guard var prayer = prayer else { return }
+            prayer.responses?.removeAll { $0.id == response.id }
+            self.prayer = prayer
         } catch {
             let error = error.localizedDescription
             alertType = .deleteFailure(message: error)

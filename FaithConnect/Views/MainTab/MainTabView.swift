@@ -14,7 +14,7 @@ struct MainTabView: View {
     
     private let apiClient: APIClientProtocol
     
-    init(apiClient: APIClientProtocol) {
+    init(_ apiClient: APIClientProtocol) {
         self.apiClient = apiClient
         _homeViewModel = StateObject(wrappedValue: HomeViewModel(apiClient))
         _myPrayerViewModel = StateObject(wrappedValue: MyPrayerViewModel(apiClient))
@@ -55,6 +55,6 @@ struct MainTabView: View {
 }
 
 #Preview {
-    MainTabView(apiClient: APIClient())
+    MainTabView(APIClient(tokenStorage: TokenStorage()))
         .environmentObject(UserSession())
 }
