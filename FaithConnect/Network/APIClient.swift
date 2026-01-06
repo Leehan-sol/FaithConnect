@@ -96,6 +96,10 @@ struct APIClient: APIClientProtocol {
             let code = apiResponse.errorCode ?? .unknown
             throw APIError.serverMessage(code: code)
         }
+        
+        await MainActor.run {
+            tokenStorage.clear()
+        }
     }
     
     func findID(memberID: Int, name: String) async throws -> String {

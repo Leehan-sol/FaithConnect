@@ -129,8 +129,14 @@ struct MyPageView: View {
             }
             .alert(item: $viewModel.alertType) { alert in
                 let dismissAction = {
-                    if alert == .successLogout || alert == .successChangePassword {
+                    if alert == .successLogout {
                         session.logout()
+                    }
+                    
+                    if alert == .successChangePassword {
+                        Task {
+                            await viewModel.logout()
+                        }
                     }
                 }
                 return Alert(title: Text(alert.title),
