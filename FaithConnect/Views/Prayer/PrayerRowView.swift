@@ -15,10 +15,10 @@ enum PrayerCellType {
 struct PrayerRowView: View {
     let prayer: Prayer
     let cellType: PrayerCellType
-
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 15) {
-
+            
             // MARK: - Header
             HStack {
                 Text(prayer.categoryName)
@@ -28,19 +28,19 @@ struct PrayerRowView: View {
                     .bold()
                     .font(.caption)
                     .cornerRadius(10)
-
+                
                 Spacer()
-
+                
                 Text(prayer.createdAt.toTimeAgoDisplay())
                     .font(.caption2)
                     .foregroundColor(.gray)
             }
-
+            
             // MARK: - Title
             Text(prayer.title)
                 .font(.headline)
                 .lineLimit(1)
-
+            
             // MARK: - Content
             if cellType == .others {
                 Text(prayer.content)
@@ -48,14 +48,14 @@ struct PrayerRowView: View {
                     .foregroundColor(Color(.darkGray))
                     .lineLimit(3)
             }
-
+            
             // MARK: - Bottom
             HStack {
                 Image(systemName: "hands.clap")
                     .resizable()
                     .scaledToFit()
                     .frame(width: 15, height: 15)
-
+                
                 Text("\(prayer.participationCount)명이 기도했습니다.")
                     .font(.caption2)
             }
@@ -81,11 +81,12 @@ struct PrayerRowView: View {
                                  createdAt: "날짜",
                                  participationCount: 0,
                                  responses: [PrayerResponse(id: 0,
-                                                      prayerRequestId: 0,
-                                                      message: "응답",
-                                                      createdAt: "")],
-                                 hasParticipated: false),
+                                                            prayerRequestId: 0,
+                                                            message: "응답",
+                                                            createdAt: "",
+                                                            isMine: false)],
+                                 isMine: false),
                   cellType: .others)
-        .padding()
+    .padding()
 }
 

@@ -31,7 +31,7 @@ struct PrayerResponseRowView: View {
                     .foregroundColor(.gray)
             }
             
-            if response.id == session.user?.id {
+            if response.isMine == true {
                 Button {
                     showConfirmationDialog = true
                 } label: {
@@ -46,15 +46,15 @@ struct PrayerResponseRowView: View {
         .background(
             RoundedRectangle(cornerRadius: 12)
                 .fill(Color(.systemGray6))
-            )
+        )
         .confirmationDialog(
             "",
             isPresented: $showConfirmationDialog,
             titleVisibility: .hidden
         ) {
-//            Button("수정") {
-//                showPrayerEditor = true
-//            }
+            //            Button("수정") {
+            //                showPrayerEditor = true
+            //            }
             
             Button("삭제", role: .destructive) {
                 showDeleteAlert = true
@@ -75,11 +75,12 @@ struct PrayerResponseRowView: View {
 }
 
 #Preview {
-    PrayerResponseRowView(response: PrayerResponse(id: 0, 
-                                             prayerRequestId: 0, 
-                                             message: "어머님의 수술이 잘 되시길 기도하겠습니다. 하나님께서 함께 하실 거예요.",
-                                             createdAt: "2025-11-07T12:55:00.000Z"), 
+    PrayerResponseRowView(response: PrayerResponse(id: 0,
+                                                   prayerRequestId: 0,
+                                                   message: "어머님의 수술이 잘 되시길 기도하겠습니다. 하나님께서 함께 하실 거예요.",
+                                                   createdAt: "2025-11-07T12:55:00.000Z",
+                                                   isMine: false),
                           onDelete: { _ in })
-        .padding()
-        .environmentObject(UserSession())
+    .padding()
+    .environmentObject(UserSession())
 }

@@ -18,8 +18,8 @@ class MyPrayerViewModel: ObservableObject {
     
     private let apiClient: APIClientProtocol
     private var hasInitialized = false
-    private var currentWrittenPage: Int = 0
-    private var currentParticipatedPage: Int = 0
+    private var currentWrittenPage: Int = 1
+    private var currentParticipatedPage: Int = 1
     private var hasNextWrittenPage: Bool = false
     private var hasNextParticipatedPage: Bool = false
     
@@ -40,7 +40,7 @@ class MyPrayerViewModel: ObservableObject {
         guard !isLoadingWrittenPrayers else { return }
         isRefreshingWrittenPrayers = true
         
-        await loadWrittenPrayers(page: 0)
+        await loadWrittenPrayers(page: 1)
         isRefreshingWrittenPrayers = false
     }
     
@@ -64,7 +64,7 @@ class MyPrayerViewModel: ObservableObject {
         guard !isLoadingParticipatedPrayers else { return }
         isRefreshingParticipatedPrayers = true
         
-        await loadParticipatedPrayers(page: 0)
+        await loadParticipatedPrayers(page: 1)
         isRefreshingParticipatedPrayers = false
     }
     

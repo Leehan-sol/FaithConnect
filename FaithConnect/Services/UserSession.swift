@@ -13,10 +13,6 @@ class UserSession: ObservableObject {
     @Published var isLoggedIn: Bool = false
     @Published var prayerCategories: [PrayerCategory] = []
     
-    var churchID: Int {
-        user?.id ?? 0
-    }
-    
     var name: String {
         user?.name ?? ""
     }
@@ -35,5 +31,11 @@ class UserSession: ObservableObject {
         self.user = nil
         self.isLoggedIn = false
         self.prayerCategories = []
+    }
+    
+    func restore() {
+        self.user = user
+        self.isLoggedIn = true
+//        self.prayerCategories = categories
     }
 }

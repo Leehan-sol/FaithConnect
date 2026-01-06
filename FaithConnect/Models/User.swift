@@ -7,8 +7,7 @@
 
 import Foundation
 
-struct User: Identifiable {
-    let id: Int // churchMemberId
+struct User {
     let name: String
     let email: String
     let accessToken: String

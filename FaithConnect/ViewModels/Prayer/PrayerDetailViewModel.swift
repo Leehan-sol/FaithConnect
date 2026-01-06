@@ -62,7 +62,7 @@ class PrayerDetailViewModel: ObservableObject {
                                                                    message: message)
             guard var prayer = prayer else { return false }
             prayer.responses?.append(response)
-            prayer.hasParticipated = true
+//            prayer.hasParticipated = true
             self.prayer = prayer
             return true
         } catch {

@@ -11,6 +11,7 @@ struct ChangePasswordView: View {
     @EnvironmentObject private var session: UserSession
     @ObservedObject var viewModel: MyPageViewModel
 
+    @State var churchId: Int?
     @State var password: String = ""
     @State var newPassword: String = ""
     @State var confirmNewPassword: String = ""
@@ -26,6 +27,10 @@ struct ChangePasswordView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .fixedSize(horizontal: false, vertical: true)
                 .padding(.bottom, 20)
+            
+            IntLabeledTextField(title: "교번",
+                                placeholder: "교번을 입력하세요",
+                                value: $churchId)
             
             LabeledTextField(title: "현재 비밀번호",
                              placeholder: "현재 비밀번호를 입력하세요",
@@ -47,7 +52,7 @@ struct ChangePasswordView: View {
                          foregroundColor: .white,
                          backgroundColor: .customBlue1) {
                 Task {
-                    await viewModel.changePassword(id: session.churchID,
+                    await viewModel.changePassword(id: churchId ?? 0,
                                                    name: session.name,
                                                    email: session.email,
                                                    currentPassword: password,

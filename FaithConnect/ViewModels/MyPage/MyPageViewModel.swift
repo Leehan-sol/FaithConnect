@@ -18,6 +18,11 @@ class MyPageViewModel: ObservableObject {
     }
     
     func changePassword(id: Int, name: String, email: String, currentPassword: String, newPassword: String, confirmPassword: String) async {
+        if id == 0 {
+            alertType = .fieldEmpty(fieldName: "교번")
+            return
+        }
+        
         if currentPassword.isEmpty || newPassword.isEmpty || confirmPassword.isEmpty {
             alertType = .fieldEmpty(fieldName: "비밀번호")
             return

@@ -38,7 +38,7 @@ struct PrayerDetailView: View {
             await viewModel.initializeIfNeeded()
         }
         .customBackButtonStyle {
-            if viewModel.prayer?.userId == session.user?.id {
+            if viewModel.prayer?.isMine == true {
                 Button {
                     showBottomSheet = false
                     showConfirmationDialog = true

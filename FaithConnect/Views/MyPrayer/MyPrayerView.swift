@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct MyPrayerView: View {
-    @EnvironmentObject private var session: UserSession
     @ObservedObject var viewModel: MyPrayerViewModel
     @State private var selectedPrayer: Prayer? = nil
     @State private var selectedResponse: MyResponse? = nil
@@ -99,5 +98,4 @@ struct MyPrayerView: View {
 
 #Preview {
     MyPrayerView(viewModel: MyPrayerViewModel(APIClient(tokenStorage: TokenStorage())))
-        .environmentObject(UserSession())
 }

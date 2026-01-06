@@ -58,12 +58,12 @@ class HomeViewModel: ObservableObject {
         do {
             let prayerPage = try await apiClient.loadPrayers(
                 categoryId: selectedCategoryId,
-                page: reset ? 0 : currentPage
+                page: reset ? 1 : currentPage
             )
             
             if reset {
                 prayers = prayerPage.prayers
-                currentPage = 0
+                currentPage = 1
                 hasNext = true
             } else {
                 prayers.append(contentsOf: prayerPage.prayers)

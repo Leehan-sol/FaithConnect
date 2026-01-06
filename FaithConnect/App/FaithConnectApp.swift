@@ -11,10 +11,13 @@ import SwiftUI
 struct FaithConnectApp: App {
     @Environment(\.scenePhase) private var scenePhase
     @StateObject private var session = UserSession()
-    private let tokenStorage = TokenStorage()
+    
+    private let tokenStorage: TokenStorageProtocol
     private let apiClient: APIClientProtocol
     
     init() {
+        let tokenStorage = TokenStorage()
+        self.tokenStorage = tokenStorage
         self.apiClient = APIClient(tokenStorage: tokenStorage)
     }
  
@@ -45,7 +48,8 @@ struct RootView: View {
         if session.isLoggedIn {
             MainTabView(apiClient)
         } else {
-            LoginView(viewModel: LoginViewModel(apiClient, session))
+            LoginView(viewModel: LoginViewModel(apiClient,
+                                                session))
         }
     }
 }

@@ -146,7 +146,7 @@ struct APIClient: APIClientProtocol {
                            categoryName: response.categoryName)
         }
         
-        print("서버에서 받은 카테고리:", category.count)
+        print("카테고리:", category.count)
         category.forEach { category in
             print("""
                       ─────────────
@@ -168,7 +168,7 @@ struct APIClient: APIClientProtocol {
                 URLQueryItem(name: "page", value: "\(page)")
             ])
         
-        print("서버에서 받은 기도:", apiResponse.prayerRequests.count)
+        print("기도:", apiResponse.prayerRequests.count)
         apiResponse.prayerRequests.forEach { prayer in
             print("""
                   ─────────────
@@ -211,13 +211,10 @@ struct APIClient: APIClientProtocol {
         
         let apiResponse: PrayerDeleteResponse = try await delete(path: urlString)
         
-        //        if apiResponse.errorCode != nil {
-        //            throw APIError.serverMessage(apiResponse.message)
-        //        }
-        //
-        //        if apiResponse.success != nil && apiResponse.success == false {
-        //            throw APIError.serverMessage(apiResponse.message)
-        //        }
+        if apiResponse.success != true {
+            let code = apiResponse.errorCode ?? .unknown
+            throw APIError.serverMessage(code: code)
+        }
     }
     
     func writePrayerResponse(prayerRequsetId: Int, message: String) async throws -> PrayerResponse {
@@ -237,13 +234,10 @@ struct APIClient: APIClientProtocol {
         
         let apiResponse: PrayerDeleteResponse = try await delete(path: urlString)
         
-        //        if apiResponse.errorCode != nil {
-        //            throw APIError.serverMessage(apiResponse.message)
-        //        }
-        //
-        //        if apiResponse.success != nil && apiResponse.success == false {
-        //            throw APIError.serverMessage(apiResponse.message)
-        //        }
+        if apiResponse.success != true {
+            let code = apiResponse.errorCode ?? .unknown
+            throw APIError.serverMessage(code: code)
+        }
     }
     
     func loadWrittenPrayers(page: Int) async throws -> PrayerPage {
@@ -252,7 +246,7 @@ struct APIClient: APIClientProtocol {
         let apiResponse: PrayerListResponse = try await get(path: urlString,
                                                             queryItems: [URLQueryItem(name: "page", value: "\(page)")])
         
-        print("서버에서 받은 내 기도:", apiResponse.prayerRequests.count)
+        print("내 기도:", apiResponse.prayerRequests.count)
         apiResponse.prayerRequests.forEach { prayer in
             print("""
                   ─────────────
@@ -273,7 +267,7 @@ struct APIClient: APIClientProtocol {
         let apiResponse: MyResponseList = try await get(path: urlString,
                                                         queryItems: [URLQueryItem(name: "page", value: "\(page)")])
         
-        print("서버에서 받은 내 응답:", apiResponse.responses.count)
+        print("내 응답:", apiResponse.responses.count)
         apiResponse.responses.forEach { response in
             print("""
                   ─────────────
@@ -393,10 +387,7 @@ extension APIClient {
         }
         
         if data.isEmpty, Response.self == EmptyResponse.self {
-            return try JSONDecoder().decode(
-                Response.self,
-                from: "{}".data(using: .utf8)!
-            )
+            return try JSONDecoder().decode(Response.self, from: "{}".data(using: .utf8)!)
         }
         
         do {

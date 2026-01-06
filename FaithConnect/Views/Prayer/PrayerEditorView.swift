@@ -24,7 +24,7 @@ struct PrayerEditorView: View {
     }
     
     var body: some View {
-        let categories = session.prayerCategories
+        let categories = session.prayerCategories.filter { $0.id != 1 }
     
         ScrollView(.vertical, showsIndicators: false) {
             Spacer()

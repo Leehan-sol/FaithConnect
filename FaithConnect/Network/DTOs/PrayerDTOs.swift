@@ -16,6 +16,8 @@ struct PrayerListResponse: Decodable {
     let pageSize: Int
     let hasNext: Bool
     let hasPrevious: Bool
+    let errorCode: APIErrorCode?
+    let status: Int?
 }
 
 // MARK: - 기도 상세
@@ -30,7 +32,9 @@ struct PrayerDetailResponse: Decodable {
     let createdAt: String
     let participationCount: Int
     let responses: [DetailResponseItem]?
-    let hasParticipated: Bool?
+    let isMine: Bool
+    let errorCode: APIErrorCode?
+    let status: Int?
 }
 
 struct DetailResponseItem: Decodable {
@@ -39,13 +43,16 @@ struct DetailResponseItem: Decodable {
     let prayerRequestTitle: String?
     let message: String
     let createdAt: String
+    let isMine: Bool
+    let errorCode: APIErrorCode?
+    let status: Int?
 }
 
 // MARK: - 기도 삭제
 struct PrayerDeleteResponse: Decodable {
     let message: String
     let success: Bool?
-    let errorCode: Int?
+    let errorCode: APIErrorCode?
     let status: Int?
 }
 
@@ -86,6 +93,9 @@ struct PrayerWriteResponse: Decodable {
     let content: String
     let createdAt: String
     let participationCount: Int
+    let isMine: Bool
+    let errorCode: APIErrorCode?
+    let status: Int?
 }
 
 // MARK: - 기도 응답 작성
