@@ -51,7 +51,7 @@ class MyPageViewModel: ObservableObject {
             alertType = .successLogout
         } catch {
             let error = error.localizedDescription
-//            alertType = .serverError(action: <#T##String#>, message: <#T##String#>)
+            alertType = .serverError(action: "로그아웃", message: error)
         }
     }
 

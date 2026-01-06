@@ -75,3 +75,14 @@ struct ChangePasswordResponse: Decodable {
 }
 
 
+// MARK: - 토큰 요청
+struct AccessTokenRequest: Codable {
+    let refreshToken: String
+}
+
+struct AccessTokenResponse: Decodable {
+    let accessToken: String
+    let refreshToken: String
+    let errorCode: APIErrorCode?
+    let status: Int?
+}

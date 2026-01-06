@@ -356,20 +356,20 @@ extension APIClient {
             throw APIError.serverMessage(code: .unknown)
         }
         
+        // 토큰만료
         if httpResponse.statusCode == 401 {
-            // 토큰만료
             if auth == .required, tokenStorage.accessToken != nil {
                 if isRetry {
                     handleSessionExpiration()
                     throw APIError.serverMessage(code: .expiredAccessToken)
                 }
                 
-                let success = await refreshAccessToken()
-                if success {
+                do {
+                    try await refreshAccessToken()
                     return try await performRequest(request,
                                                     isRetry: true,
                                                     auth: auth)
-                } else {
+                } catch {
                     handleSessionExpiration()
                     throw APIError.serverMessage(code: .expiredAccessToken)
                 }
@@ -402,13 +402,35 @@ extension APIClient {
     }
     
     
-    private func refreshAccessToken() async -> Bool {
-        guard let refreshToken = tokenStorage.refreshToken else { return false }
-        // TODO: - RefreshToken으로 AccessToken 생성하는 API 호출
-        return true
+    private func refreshAccessToken() async throws {
+        let urlString = APIEndpoint.refreshToken.urlString
+        
+        guard let refreshToken = tokenStorage.refreshToken else { return }
+        let requestBody: AccessTokenRequest = AccessTokenRequest(refreshToken: refreshToken)
+        
+        let apiResponse: AccessTokenResponse = try await post(urlString:urlString,
+                                                              requestBody: requestBody)
+        
+        guard !apiResponse.accessToken.isEmpty,
+              !apiResponse.refreshToken.isEmpty else {
+            let errorCode = apiResponse.errorCode ?? .unknown
+            throw APIError.serverMessage(code: errorCode)
+        }
+        
+        await MainActor.run {
+            tokenStorage.save(
+                accessToken: apiResponse.accessToken,
+                refreshToken: apiResponse.refreshToken
+            )
+        }
     }
     
     private func handleSessionExpiration() {
-        // TODO: - NotificationCenter를 통해 UserSession에 알림, 로그아웃
+        tokenStorage.clear()
+        DispatchQueue.main.async {
+            NotificationCenter.default.post(name: .logoutRequired, object: nil)
+        }
     }
+    
+    
 }

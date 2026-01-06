@@ -23,6 +23,7 @@ enum APIEndpoint {
     case findID
     case changePassword
     case logout
+    case refreshToken
     case categories
     case prayers
     case prayerDetail(id: Int)
@@ -54,6 +55,8 @@ enum APIEndpoint {
             return "\(basePath)/change-password"
         case .logout:
             return "\(basePath)/logout"
+        case .refreshToken:
+            return "\(basePath)/refresh-token"
         case .categories:
             return "\(basePath)/categories"
         case .prayers:

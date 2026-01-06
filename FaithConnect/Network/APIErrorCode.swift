@@ -5,9 +5,15 @@
 //  Created by Apple on 1/5/26.
 //
 
+import Foundation
+
 enum APIErrorCode: Int, Decodable {
-    // MARK: - Auth
+    // MARK: - Token
     case expiredAccessToken = 50001 // Access Token이 만료되었습니다.
+    case expiredRefreshToken = 50002 // Refresh Token이 만료되었습니다.
+    case refreshTokenNotFound = 50003 // Refresh Token이 존재하지 않습니다.
+    
+    // MARK: - Auth
     case userNotFound = 51001 // 사용자를 찾을 수 없습니다.
     case userExistByEmail = 51002 // 해당 이메일의 사용자가 있습니다.
     case passwordMismatch = 51003 // 비밀번호가 일치하지 않습니다.

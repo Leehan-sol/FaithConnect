@@ -19,3 +19,4 @@ struct APIErrorResponse: Decodable {
     let errorCode: APIErrorCode
     let message: String
 }
+

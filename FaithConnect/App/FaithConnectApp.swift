@@ -20,19 +20,12 @@ struct FaithConnectApp: App {
         self.tokenStorage = tokenStorage
         self.apiClient = APIClient(tokenStorage: tokenStorage)
     }
- 
+    
     var body: some Scene {
         WindowGroup {
             RootView(apiClient: apiClient)
                 .environmentObject(session)
         }
-        //        .onChange(of: scenePhase) { oldValue, newPhase in
-        //            if newPhase == .active {
-        //
-        //            } else if newPhase == .background {
-        //                isLoggedIn = false
-        //            }
-        //        }
     }
 }
 
@@ -45,11 +38,16 @@ struct RootView: View {
     }
     
     var body: some View {
-        if session.isLoggedIn {
-            MainTabView(apiClient)
-        } else {
-            LoginView(viewModel: LoginViewModel(apiClient,
-                                                session))
+        Group {
+            if session.isLoggedIn {
+                MainTabView(apiClient)
+            } else {
+                LoginView(viewModel: LoginViewModel(apiClient,
+                                                    session))
+            }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .logoutRequired)) { _ in
+            session.logout()
         }
     }
 }

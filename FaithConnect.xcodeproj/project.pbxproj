@@ -21,6 +21,7 @@
 		186D4F732F03A59E005520FD /* PolicyWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 186D4F722F03A561005520FD /* PolicyWebView.swift */; };
 		186D4F762F03BC97005520FD /* privacy.html in Resources */ = {isa = PBXBuildFile; fileRef = 186D4F752F03BC8E005520FD /* privacy.html */; };
 		186D4F782F03BD02005520FD /* terms.html in Resources */ = {isa = PBXBuildFile; fileRef = 186D4F772F03BCFA005520FD /* terms.html */; };
+		187636062F0D1529005EF482 /* NotificationCenter+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 187636052F0D1523005EF482 /* NotificationCenter+Extensions.swift */; };
 		18948E742F024C9300C9C75C /* APIEndPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18948E732F024C8B00C9C75C /* APIEndPoint.swift */; };
 		CC4EA43E2EC9AC3E0097D09C /* PrayerDetailBottomSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4EA43D2EC9AC3D0097D09C /* PrayerDetailBottomSheetView.swift */; };
 		CC4EA4402EC9B7370097D09C /* FindIDResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4EA43F2EC9B7370097D09C /* FindIDResultView.swift */; };
@@ -85,6 +86,7 @@
 		186D4F722F03A561005520FD /* PolicyWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolicyWebView.swift; sourceTree = "<group>"; };
 		186D4F752F03BC8E005520FD /* privacy.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = privacy.html; sourceTree = "<group>"; };
 		186D4F772F03BCFA005520FD /* terms.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = terms.html; sourceTree = "<group>"; };
+		187636052F0D1523005EF482 /* NotificationCenter+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationCenter+Extensions.swift"; sourceTree = "<group>"; };
 		18948E732F024C8B00C9C75C /* APIEndPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIEndPoint.swift; sourceTree = "<group>"; };
 		CC4EA43D2EC9AC3D0097D09C /* PrayerDetailBottomSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerDetailBottomSheetView.swift; sourceTree = "<group>"; };
 		CC4EA43F2EC9B7370097D09C /* FindIDResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindIDResultView.swift; sourceTree = "<group>"; };
@@ -364,6 +366,7 @@
 		CCAD367C2EB729DD0028D451 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				187636052F0D1523005EF482 /* NotificationCenter+Extensions.swift */,
 				CCAD369D2EB799B70028D451 /* String+Extensions.swift */,
 				CC5B0E5F2EBF567F00CE79A3 /* UIApplication+Extensions.swift */,
 				CC4EA4432EC9F6C50097D09C /* View+Extensions.swift */,
@@ -558,6 +561,7 @@
 				CC6EC0662F015FB2009D2E31 /* MyResponseRowView.swift in Sources */,
 				CC6E3DF82ED1A19500B0EF4D /* MyPageItemField.swift in Sources */,
 				CC5B0E582EBF322400CE79A3 /* PrayerResponse.swift in Sources */,
+				187636062F0D1529005EF482 /* NotificationCenter+Extensions.swift in Sources */,
 				CC5B0E4F2EBF30A900CE79A3 /* PrayerDetailViewModel.swift in Sources */,
 				CCAD369A2EB792140028D451 /* MyPageViewModel.swift in Sources */,
 				1862C53F2EFB74C900B0DD70 /* PrayerEmptyView.swift in Sources */,
