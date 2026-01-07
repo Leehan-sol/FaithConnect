@@ -43,9 +43,6 @@ struct LabeledTextField: View {
                         .padding(),
                     alignment: .trailing
                 )
-                
-                
-                
             } else {
                 TextField(placeholder, text: $text)
                     .keyboardType(keyboardType)

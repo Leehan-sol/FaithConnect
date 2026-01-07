@@ -11,6 +11,7 @@
 		180228932EBA092A00ABA95C /* FloatingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180228922EBA091D00ABA95C /* FloatingButton.swift */; };
 		180939762F0B7CE600CC1BAE /* APIErrorCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180939752F0B7CE200CC1BAE /* APIErrorCode.swift */; };
 		180939782F0B894500CC1BAE /* TokenStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180939772F0B894200CC1BAE /* TokenStorage.swift */; };
+		1860F0422F0E3F5D00D8AB9A /* LoadingDialogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1860F0412F0E3F5A00D8AB9A /* LoadingDialogView.swift */; };
 		1862C53F2EFB74C900B0DD70 /* PrayerEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1862C53E2EFB74BE00B0DD70 /* PrayerEmptyView.swift */; };
 		1862C5452EFBA77D00B0DD70 /* CategoryDTOs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1862C5412EFBA77D00B0DD70 /* CategoryDTOs.swift */; };
 		1862C5462EFBA77D00B0DD70 /* AuthDTOs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1862C5402EFBA77D00B0DD70 /* AuthDTOs.swift */; };
@@ -76,6 +77,7 @@
 		180228922EBA091D00ABA95C /* FloatingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingButton.swift; sourceTree = "<group>"; };
 		180939752F0B7CE200CC1BAE /* APIErrorCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIErrorCode.swift; sourceTree = "<group>"; };
 		180939772F0B894200CC1BAE /* TokenStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenStorage.swift; sourceTree = "<group>"; };
+		1860F0412F0E3F5A00D8AB9A /* LoadingDialogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingDialogView.swift; sourceTree = "<group>"; };
 		1862C53E2EFB74BE00B0DD70 /* PrayerEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerEmptyView.swift; sourceTree = "<group>"; };
 		1862C5402EFBA77D00B0DD70 /* AuthDTOs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthDTOs.swift; sourceTree = "<group>"; };
 		1862C5412EFBA77D00B0DD70 /* CategoryDTOs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryDTOs.swift; sourceTree = "<group>"; };
@@ -385,6 +387,7 @@
 		CCAD367E2EB72A720028D451 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				1860F0412F0E3F5A00D8AB9A /* LoadingDialogView.swift */,
 				CC4EA4412EC9F64A0097D09C /* CustomBackButtonStyle.swift */,
 				CCAD36862EB73F540028D451 /* LabeldTextField.swift */,
 				CC5B0E472EBF243000CE79A3 /* SectionHeaderView.swift */,
@@ -549,6 +552,7 @@
 				CC5B0E482EBF243000CE79A3 /* SectionHeaderView.swift in Sources */,
 				18948E742F024C9300C9C75C /* APIEndPoint.swift in Sources */,
 				CC6194C62EF7E030005B79A7 /* User.swift in Sources */,
+				1860F0422F0E3F5D00D8AB9A /* LoadingDialogView.swift in Sources */,
 				CC7A00D32F0BE529005CB132 /* AuthRequirement.swift in Sources */,
 				CC5B0E4D2EBF2E5500CE79A3 /* MyPrayerViewModel.swift in Sources */,
 				CC5B0E602EBF567F00CE79A3 /* UIApplication+Extensions.swift in Sources */,

@@ -14,6 +14,7 @@ enum AlertType: Identifiable, Hashable {
     case passwordMismatch
     case successChangePassword
     case failureChangePassword(message: String)
+    case invalidPassword
     case registerFailure(message: String)
     case registerSuccess
     case successLogout
@@ -38,6 +39,8 @@ enum AlertType: Identifiable, Hashable {
             return "비밀번호 변경"
         case .failureChangePassword:
             return "비밀번호 변경 실패"
+        case .invalidPassword:
+            return "비밀번호 형식 오류"
         case .registerFailure:
             return "회원가입 실패"
         case .registerSuccess:
@@ -62,13 +65,15 @@ enum AlertType: Identifiable, Hashable {
         case .fieldEmpty(let fieldName):
             return "\(fieldName)을(를) 입력해주세요."
         case .findIDFailure:
-            return "아이디 찾기를 실패했습니다. 다시 시도해주세요."
+            return "해당 정보로 가입된 아이디가 없습니다. 다시 시도해주세요."
         case .passwordMismatch:
             return "입력하신 비밀번호와 비밀번호 확인이 일치하지 않습니다. 다시 입력해주세요."
         case .successChangePassword:
             return "비밀번호가 변경되었습니다. \n 다시 로그인해주세요."
         case .failureChangePassword(let message):
             return "비밀번호 변경에 실패했습니다. 다시 시도해주세요. \n \(message)"
+        case .invalidPassword:
+            return "비밀번호는 영문과 숫자를 포함하여 8자 이상으로 설정해 주세요."
         case .registerFailure(let message):
             return "회원가입에 실패했습니다. 다시 시도해주세요. \n \(message)"
         case .registerSuccess:

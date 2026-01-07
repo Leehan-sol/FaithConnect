@@ -43,7 +43,7 @@ struct SignUpView: View {
                                  text: $email)
                 
                 LabeledTextField(title: "비밀번호",
-                                 placeholder: "비밀번호를 입력하세요",
+                                 placeholder: "영문, 숫자 포함 8자 이상",
                                  isSecure: true,
                                  text: $password)
                 

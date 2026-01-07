@@ -10,6 +10,7 @@ import Foundation
 @MainActor
 class LoginViewModel: ObservableObject {
     @Published var alertType: AlertType? = nil
+    @Published var isLoading: Bool = false
     
     private let apiClient: APIClientProtocol
     private let session: UserSession
@@ -21,6 +22,9 @@ class LoginViewModel: ObservableObject {
     
     func login(email: String, password: String) async {
         print("로그인 email: \(email), password: \(password)")
+        
+        isLoading = true
+        defer { isLoading = false }
         
         if email.isEmpty {
             alertType = .fieldEmpty(fieldName: "이메일")
@@ -39,14 +43,14 @@ class LoginViewModel: ObservableObject {
                             email: loginResponse.email,
                             accessToken: loginResponse.accessToken,
                             refreshToken: loginResponse.refreshToken)
+            let categories = try? await apiClient.loadCategories()
+            session.login(user: user, categories: categories ?? [])
             // 테스트용 코드
 //            session.login(user:user, categories: [])
 //            TokenStorage().saveToken(accessToken: "invalid_token",
 //                                     refreshToken: "invalid_token")
 //            let categories = try await apiClient.loadCategories()
 //            session.prayerCategories = categories
-            let categories = try? await apiClient.loadCategories()
-            session.login(user: user, categories: categories ?? [])
         } catch {
             let error = error.localizedDescription
             alertType = .loginFailure(message: error)
@@ -111,6 +115,11 @@ class LoginViewModel: ObservableObject {
             return
         }
         
+        if !isValidPassword(password: password) {
+            alertType = .invalidPassword
+            return 
+        }
+        
         do {
             try await apiClient.signUp(memberID: memberID,
                                          name: name,
@@ -124,5 +133,10 @@ class LoginViewModel: ObservableObject {
         }
     }
     
+    func isValidPassword(password: String) -> Bool {
+        // 영문 + 숫자 포함, 8자 이상
+        let passwordRegex = "^(?=.*[A-Za-z])(?=.*\\d).{8,}$"
+        return NSPredicate(format: "SELF MATCHES %@", passwordRegex).evaluate(with: password)
+    }
     
 }
