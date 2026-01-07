@@ -18,12 +18,13 @@ enum APIEnvironment: String {
 }
 
 enum APIEndpoint {
+    // MARK: - Auth
     case signup
     case login
     case findID
     case changePassword
     case logout
-    case refreshToken
+    // MARK: - Prayer
     case categories
     case prayers
     case prayerDetail(id: Int)
@@ -31,6 +32,8 @@ enum APIEndpoint {
     case responseDetail(id: Int)
     case myRequests
     case myPrayers
+    // MARK: - Token
+    case refreshToken
     
     private static let baseURL = "http://prayer-app.duckdns.org/dev"
     
@@ -55,8 +58,6 @@ enum APIEndpoint {
             return "\(basePath)/change-password"
         case .logout:
             return "\(basePath)/logout"
-        case .refreshToken:
-            return "\(basePath)/refresh-token"
         case .categories:
             return "\(basePath)/categories"
         case .prayers:
@@ -71,6 +72,8 @@ enum APIEndpoint {
             return "\(basePath)/my-requests"
         case .myPrayers:
             return "\(basePath)/my-prayers"
+        case .refreshToken:
+            return "\(basePath)/refresh-token"
         }
     }
     

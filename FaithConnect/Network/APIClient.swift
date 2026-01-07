@@ -29,14 +29,137 @@ protocol APIClientProtocol {
 }
 
 // MARK: - APIClient
-struct APIClient: APIClientProtocol {
+final class APIClient: APIClientProtocol {
     private let tokenStorage: TokenStorageProtocol
+    @MainActor private var refreshTask: Task<Void, Error>?
     
     init(tokenStorage: TokenStorageProtocol) {
         self.tokenStorage = tokenStorage
     }
+}
+
+// MARK: - Network
+extension APIClient {
+    private func post<Req: Encodable, Res: Decodable>(
+        urlString: String,
+        requestBody: Req? = nil,
+        auth: AuthRequirement = .required
+    ) async throws -> Res {
+        
+        guard let url = URL(string: urlString) else { throw APIError.invalidURL }
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        
+        if let body = requestBody, !(body is EmptyRequest) {
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.httpBody = try JSONEncoder().encode(body)
+        }
+        
+        return try await performRequest(request: request,
+                                        auth: auth)
+    }
     
-    // MARK: - Auth
+    private func get<Res: Decodable>(
+        path: String,
+        queryItems: [URLQueryItem] = [],
+        auth: AuthRequirement = .required
+    ) async throws -> Res {
+        var components = URLComponents(string: path)
+        components?.queryItems = queryItems
+        guard let url = components?.url else { throw APIError.invalidURL }
+        
+        let request = URLRequest(url: url)
+        return try await performRequest(request: request,
+                                        auth: auth)
+    }
+    
+    private func delete<Res: Decodable>(
+        path: String,
+        queryItems: [URLQueryItem] = [],
+        auth: AuthRequirement = .required
+    ) async throws -> Res {
+        var components = URLComponents(string: path)
+        components?.queryItems = queryItems
+        guard let url = components?.url else { throw APIError.invalidURL }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "DELETE"
+        return try await performRequest(request: request,
+                                        auth: auth)
+    }
+    
+    private func performRequest<Response: Decodable>(
+        request: URLRequest,
+        isRetry: Bool = false,
+        auth: AuthRequirement = .required
+    ) async throws -> Response {
+        
+        var request = request
+        
+        if auth == .required, let token = tokenStorage.accessToken {
+            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        }
+        
+        let (data, response) = try await URLSession.shared.data(for: request)
+        
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw APIError.serverMessage(code: .unknown)
+        }
+        
+        // 토큰만료
+        if httpResponse.statusCode == 401 {
+            if auth == .required, tokenStorage.accessToken != nil {
+                if isRetry {
+                    await handleSessionExpiration()
+                    throw APIError.serverMessage(code: .expiredAccessToken)
+                }
+                
+                do {
+                    try await refreshAccessToken()
+                    return try await performRequest(request: request,
+                                                    isRetry: true,
+                                                    auth: auth)
+                } catch {
+                    throw error
+                }
+            }
+            
+            if let errorResponse = try? JSONDecoder().decode(APIErrorResponse.self, from: data) {
+                throw APIError.serverMessage(code: errorResponse.errorCode)
+            }
+            
+            throw APIError.serverMessage(code: .unknown)
+        }
+        
+        guard (200...299).contains(httpResponse.statusCode) else {
+            if let errorResponse = try? JSONDecoder().decode(APIErrorResponse.self, from: data) {
+                throw APIError.serverMessage(code: errorResponse.errorCode)
+            }
+            
+            throw APIError.httpError(statusCode: httpResponse.statusCode)
+        }
+        
+        if data.isEmpty, Response.self == EmptyResponse.self {
+            return try JSONDecoder().decode(Response.self, from: "{}".data(using: .utf8)!)
+        }
+        do {
+            return try JSONDecoder().decode(Response.self, from: data)
+        } catch {
+            throw APIError.decodingError
+        }
+    }
+    
+    private func parseError<T>(from data: Data, statusCode: Int) throws -> T {
+        if let errorResponse = try? JSONDecoder().decode(APIErrorResponse.self, from: data) {
+            throw APIError.serverMessage(code: errorResponse.errorCode)
+        }
+        throw APIError.httpError(statusCode: statusCode)
+    }
+    
+}
+
+// MARK: - Auth
+extension APIClient {
     func signUp(memberID: Int, name: String, email: String, password: String, confirmPassword: String) async throws {
         let urlString = APIEndpoint.signup.urlString
         
@@ -77,12 +200,11 @@ struct APIClient: APIClientProtocol {
         }
         
         await MainActor.run {
-            tokenStorage.save(
+            tokenStorage.saveToken(
                 accessToken: apiResponse.accessToken,
                 refreshToken: apiResponse.refreshToken
             )
         }
-        
         return apiResponse
     }
     
@@ -98,7 +220,7 @@ struct APIClient: APIClientProtocol {
         }
         
         await MainActor.run {
-            tokenStorage.clear()
+            tokenStorage.clearToken()
         }
     }
     
@@ -138,7 +260,10 @@ struct APIClient: APIClientProtocol {
         }
     }
     
-    // MARK: - Prayer
+}
+
+// MARK: - Prayer
+extension APIClient {
     func loadCategories() async throws -> [PrayerCategory] {
         let urlString = APIEndpoint.categories.urlString
         
@@ -285,152 +410,74 @@ struct APIClient: APIClientProtocol {
                               currentPage: apiResponse.currentPage,
                               hasNext: apiResponse.hasNext)
     }
-    
 }
 
-// MARK: - Extension
+// MARK: - Token
 extension APIClient {
-    private func post<Req: Encodable, Res: Decodable>(
-        urlString: String,
-        requestBody: Req? = nil,
-        auth: AuthRequirement = .required
-    ) async throws -> Res {
+    private func refreshAccessToken() async throws {
+        print("refreshAccessToken")
+        if let ongoingTask = await MainActor.run(body: { return refreshTask }) {
+            return try await ongoingTask.value
+        }
         
-        guard let url = URL(string: urlString) else { throw APIError.invalidURL }
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        
-        if let body = requestBody, !(body is EmptyRequest) {
+        let task = Task<Void, Error> {
+            defer {
+                Task { @MainActor in refreshTask = nil }
+            }
+            let urlString = APIEndpoint.refreshToken.urlString
+            guard let url = URL(string: urlString) else { throw APIError.invalidURL }
+            
+            guard let refreshToken = tokenStorage.refreshToken else {
+                await handleSessionExpiration()
+                throw APIError.serverMessage(code: .refreshTokenNotFound)
+            }
+            
+            let requestBody = AccessTokenRequest(refreshToken: refreshToken)
+            
+            var request = URLRequest(url: url)
+            request.httpMethod = "POST"
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-            request.httpBody = try JSONEncoder().encode(body)
-        }
-        
-        return try await performRequest(request,
-                                        auth: auth)
-    }
-    
-    private func get<Res: Decodable>(
-        path: String,
-        queryItems: [URLQueryItem] = [],
-        auth: AuthRequirement = .required
-    ) async throws -> Res {
-        var components = URLComponents(string: path)
-        components?.queryItems = queryItems
-        guard let url = components?.url else { throw APIError.invalidURL }
-        
-        let request = URLRequest(url: url)
-        return try await performRequest(request,
-                                        auth: auth)
-    }
-    
-    private func delete<Res: Decodable>(
-        path: String,
-        queryItems: [URLQueryItem] = [],
-        auth: AuthRequirement = .required
-    ) async throws -> Res {
-        var components = URLComponents(string: path)
-        components?.queryItems = queryItems
-        guard let url = components?.url else { throw APIError.invalidURL }
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "DELETE"
-        return try await performRequest(request,
-                                        auth: auth)
-    }
-    
-    private func performRequest<Response: Decodable>(
-        _ request: URLRequest,
-        isRetry: Bool = false,
-        auth: AuthRequirement = .required
-    ) async throws -> Response {
-        
-        var request = request
-        
-        if auth == .required, let token = tokenStorage.accessToken {
-            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-        }
-        
-        let (data, response) = try await URLSession.shared.data(for: request)
-        
-        guard let httpResponse = response as? HTTPURLResponse else {
-            throw APIError.serverMessage(code: .unknown)
-        }
-        
-        // 토큰만료
-        if httpResponse.statusCode == 401 {
-            if auth == .required, tokenStorage.accessToken != nil {
-                if isRetry {
-                    handleSessionExpiration()
-                    throw APIError.serverMessage(code: .expiredAccessToken)
+            request.httpBody = try JSONEncoder().encode(requestBody)
+            
+            do {
+                let (data, response) = try await URLSession.shared.data(for: request)
+                
+                guard let httpResponse = response as? HTTPURLResponse else {
+                    throw APIError.serverMessage(code: .unknown)
                 }
                 
-                do {
-                    try await refreshAccessToken()
-                    return try await performRequest(request,
-                                                    isRetry: true,
-                                                    auth: auth)
-                } catch {
-                    handleSessionExpiration()
-                    throw APIError.serverMessage(code: .expiredAccessToken)
+                guard (200...299).contains(httpResponse.statusCode) else {
+                    if let errorResponse = try? JSONDecoder().decode(APIErrorResponse.self, from: data) {
+                        throw APIError.serverMessage(code: errorResponse.errorCode)
+                    }
+                    throw APIError.httpError(statusCode: httpResponse.statusCode)
                 }
+                
+                let apiResponse = try JSONDecoder().decode(AccessTokenResponse.self, from: data)
+                
+                guard !apiResponse.accessToken.isEmpty, !apiResponse.refreshToken.isEmpty else {
+                    throw APIError.serverMessage(code: .unknown)
+                }
+                
+                await MainActor.run {
+                    tokenStorage.saveToken(accessToken: apiResponse.accessToken,
+                                           refreshToken: apiResponse.refreshToken)
+                }
+                
+            } catch {
+                // refresh Token 만료
+                await handleSessionExpiration()
+                throw error
             }
-            
-            if let errorResponse = try? JSONDecoder().decode(APIErrorResponse.self, from: data) {
-                throw APIError.serverMessage(code: errorResponse.errorCode)
-            }
-            
-            throw APIError.serverMessage(code: .unknown)
         }
-        
-        guard (200...299).contains(httpResponse.statusCode) else {
-            if let errorResponse = try? JSONDecoder().decode(APIErrorResponse.self, from: data) {
-                throw APIError.serverMessage(code: errorResponse.errorCode)
-            }
-            
-            throw APIError.httpError(statusCode: httpResponse.statusCode)
-        }
-        
-        if data.isEmpty, Response.self == EmptyResponse.self {
-            return try JSONDecoder().decode(Response.self, from: "{}".data(using: .utf8)!)
-        }
-        
-        do {
-            return try JSONDecoder().decode(Response.self, from: data)
-        } catch {
-            throw APIError.decodingError
-        }
+        await MainActor.run { self.refreshTask = task }
+        return try await task.value
     }
     
-    
-    private func refreshAccessToken() async throws {
-        let urlString = APIEndpoint.refreshToken.urlString
-        
-        guard let refreshToken = tokenStorage.refreshToken else { return }
-        let requestBody: AccessTokenRequest = AccessTokenRequest(refreshToken: refreshToken)
-        
-        let apiResponse: AccessTokenResponse = try await post(urlString:urlString,
-                                                              requestBody: requestBody)
-        
-        guard !apiResponse.accessToken.isEmpty,
-              !apiResponse.refreshToken.isEmpty else {
-            let errorCode = apiResponse.errorCode ?? .unknown
-            throw APIError.serverMessage(code: errorCode)
-        }
-        
+    private func handleSessionExpiration() async {
+        tokenStorage.clearToken()
         await MainActor.run {
-            tokenStorage.save(
-                accessToken: apiResponse.accessToken,
-                refreshToken: apiResponse.refreshToken
-            )
-        }
-    }
-    
-    private func handleSessionExpiration() {
-        tokenStorage.clear()
-        DispatchQueue.main.async {
             NotificationCenter.default.post(name: .logoutRequired, object: nil)
         }
     }
-    
-    
 }

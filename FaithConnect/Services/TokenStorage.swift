@@ -7,15 +7,16 @@
 
 import Foundation
 
+// MARK: - TokenStorageProtocol
 protocol TokenStorageProtocol {
     var accessToken: String? { get }
     var refreshToken: String? { get }
     
-    func save(accessToken: String, refreshToken: String)
-    func updateAccessToken(accessToken: String)
-    func clear()
+    func saveToken(accessToken: String, refreshToken: String)
+    func clearToken()
 }
 
+// MARK: - TokenStorage
 class TokenStorage: TokenStorageProtocol {
     private enum Key {
         static let accessToken = "accessToken"
@@ -30,16 +31,13 @@ class TokenStorage: TokenStorageProtocol {
         UserDefaults.standard.string(forKey: Key.refreshToken)
     }
 
-    func save(accessToken: String, refreshToken: String) {
+    func saveToken(accessToken: String, refreshToken: String) {
+        print("accessToken: \(accessToken), refreshToken: \(refreshToken)")
         UserDefaults.standard.set(accessToken, forKey: Key.accessToken)
         UserDefaults.standard.set(refreshToken, forKey: Key.refreshToken)
     }
 
-    func updateAccessToken(accessToken: String) {
-        UserDefaults.standard.set(accessToken, forKey: Key.accessToken)
-    }
-
-    func clear() {
+    func clearToken() {
         UserDefaults.standard.removeObject(forKey: Key.accessToken)
         UserDefaults.standard.removeObject(forKey: Key.refreshToken)
     }

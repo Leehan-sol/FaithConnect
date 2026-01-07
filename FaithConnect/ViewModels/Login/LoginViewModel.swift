@@ -39,9 +39,14 @@ class LoginViewModel: ObservableObject {
                             email: loginResponse.email,
                             accessToken: loginResponse.accessToken,
                             refreshToken: loginResponse.refreshToken)
-            
-            let categories = try await apiClient.loadCategories()
-            session.login(user: user, categories: categories)
+            // 테스트용 코드
+//            session.login(user:user, categories: [])
+//            TokenStorage().saveToken(accessToken: "invalid_token",
+//                                     refreshToken: "invalid_token")
+//            let categories = try await apiClient.loadCategories()
+//            session.prayerCategories = categories
+            let categories = try? await apiClient.loadCategories()
+            session.login(user: user, categories: categories ?? [])
         } catch {
             let error = error.localizedDescription
             alertType = .loginFailure(message: error)

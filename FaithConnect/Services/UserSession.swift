@@ -36,6 +36,6 @@ class UserSession: ObservableObject {
     func restore() {
         self.user = user
         self.isLoggedIn = true
-//        self.prayerCategories = categories
+        self.prayerCategories = []
     }
 }

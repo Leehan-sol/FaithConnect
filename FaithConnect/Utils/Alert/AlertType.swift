@@ -18,8 +18,8 @@ enum AlertType: Identifiable, Hashable {
     case registerSuccess
     case successLogout
     case categoryNotSelected
-    case deleteFailure(message: String)
     case writeError(message: String)
+    case deleteFailure(message: String)
     case serverError(action: String, message: String)
   
     var id: Int { hashValue }
@@ -46,10 +46,10 @@ enum AlertType: Identifiable, Hashable {
             return "로그아웃"
         case .categoryNotSelected:
             return "카테고리를 선택해 주세요."
-        case .deleteFailure:
-            return "삭제 실패"
         case .writeError:
             return "기도 작성 실패"
+        case .deleteFailure:
+            return "삭제 실패"
         case .serverError:
             return "에러 발생"
         }
@@ -77,10 +77,10 @@ enum AlertType: Identifiable, Hashable {
             return "로그아웃되었습니다."
         case .categoryNotSelected:
             return "카테고리를 선택해 주세요."
-        case .deleteFailure(let message):
-            return "삭제 실패했습니다. 다시 시도해주세요. \n \(message)"
         case .writeError(let message):
             return message
+        case .deleteFailure(let message):
+            return "삭제 실패했습니다. 다시 시도해주세요. \n \(message)"
         case .serverError(let action, let message):
             return "\(action)을(를) 실패했습니다. 다시 시도해주세요. \n \(message)"
         }
