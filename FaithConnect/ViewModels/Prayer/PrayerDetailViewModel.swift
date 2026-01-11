@@ -42,7 +42,8 @@ class PrayerDetailViewModel: ObservableObject {
             return id
         } catch {
             let error = error.localizedDescription
-            alertType = .deleteFailure(message: error)
+            alertType = .error(title: "삭제 실패",
+                               message: error)
             return nil
         }
     }
@@ -67,7 +68,8 @@ class PrayerDetailViewModel: ObservableObject {
             return true
         } catch {
             let error = error.localizedDescription
-            alertType = .writeError(message: error)
+            alertType = .error(title: "응답 작성 실패",
+                               message: error)
             return false
         }
     }
@@ -82,7 +84,8 @@ class PrayerDetailViewModel: ObservableObject {
             self.prayer = prayer
         } catch {
             let error = error.localizedDescription
-            alertType = .deleteFailure(message: error)
+            alertType = .error(title: "삭제 실패",
+                               message: error)
         }
     }
     

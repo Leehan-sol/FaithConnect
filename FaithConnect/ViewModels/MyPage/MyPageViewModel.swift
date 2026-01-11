@@ -29,7 +29,8 @@ class MyPageViewModel: ObservableObject {
         }
         
         if newPassword != confirmPassword {
-            alertType = .passwordMismatch
+            alertType = .error(title: "비밀번호 오류",
+                               message: "입력하신 비밀번호와 비밀번호 확인이 일치하지 않습니다. 다시 입력해주세요.")
             return
         }
         
@@ -41,7 +42,8 @@ class MyPageViewModel: ObservableObject {
             alertType = .successChangePassword
         } catch {
             let error = error.localizedDescription
-            alertType = .failureChangePassword(message: error)
+            alertType = .error(title: "비밀번호 변경 실패",
+                               message: error)
         }
     }
     
@@ -51,7 +53,8 @@ class MyPageViewModel: ObservableObject {
             alertType = .successLogout
         } catch {
             let error = error.localizedDescription
-            alertType = .serverError(action: "로그아웃", message: error)
+            alertType = .error(title: "로그아웃",
+                               message: error)
         }
     }
 

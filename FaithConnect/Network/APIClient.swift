@@ -125,7 +125,12 @@ extension APIClient {
                 
                 do {
                     try await refreshAccessToken()
-                    return try await performRequest(request: request,
+                    var retryRequest = request
+                    if let newToken = tokenStorage.accessToken {
+                        retryRequest.setValue("Bearer \(newToken)", forHTTPHeaderField: "Authorization")
+                    }
+                    
+                    return try await performRequest(request: retryRequest,
                                                     isRetry: true,
                                                     auth: auth)
                 } catch {
