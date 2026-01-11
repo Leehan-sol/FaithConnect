@@ -5,7 +5,7 @@
 	<key>ChurchName</key>
 	<string>만나교회</string>
 	<key>APIEnvironment</key>
-	<string>production</string>
+	<string>mock</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>

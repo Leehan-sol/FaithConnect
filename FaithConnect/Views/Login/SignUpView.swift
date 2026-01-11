@@ -14,7 +14,7 @@ struct SignUpView: View {
     @State private var email: String = ""
     @State private var password: String = ""
     @State private var confirmPassword: String = ""
-    @State private var shouldDismiss: Bool = false
+    @Binding var isPresented: Bool
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
@@ -76,20 +76,15 @@ struct SignUpView: View {
             .padding(EdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20))
             .navigationTitle("회원가입")
             .customBackButtonStyle()
-            .alert(item: $viewModel.alertType) { alert in
-                let dismissAction = {
-                    if case .registerSuccess = alert {
-                        shouldDismiss = true
-                    }
-                }
+            .alert(item: $viewModel.signUpAlertType) { alert in
                 return Alert(title: Text(alert.title),
                              message: Text(alert.message),
-                             dismissButton: .default(Text("확인"),
-                                                     action: dismissAction))
+                             dismissButton: .default(Text("확인")) {
+                    if case .registerSuccess = alert {
+                        isPresented = false
+                    }
+                })
             }
-        }
-        .onChange(of: shouldDismiss) {
-            if shouldDismiss { dismiss() }
         }
         .onTapGesture {
             UIApplication.shared.endEditing()
@@ -98,7 +93,9 @@ struct SignUpView: View {
     
 }
 
-#Preview {
-    SignUpView(viewModel: LoginViewModel(APIClient(tokenStorage: TokenStorage()),
-                                         UserSession()))
-}
+//#Preview {
+//    @State var isPresented: Bool = false
+//    SignUpView(viewModel: LoginViewModel(APIClient(tokenStorage: TokenStorage()),
+//                                         UserSession()),
+//               isPresented: $isPresented)
+//}
