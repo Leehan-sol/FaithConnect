@@ -30,8 +30,6 @@ struct LoginRequest: Codable {
 }
 
 struct LoginResponse: Decodable {
-    let name: String
-    let email: String
     let accessToken: String
     let refreshToken: String
     let errorCode: APIErrorCode?

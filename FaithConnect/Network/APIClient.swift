@@ -105,7 +105,7 @@ extension APIClient {
         guard let httpResponse = response as? HTTPURLResponse else {
             throw APIError.serverMessage(code: .unknown)
         }
-        
+
         // 토큰만료
         if httpResponse.statusCode == 401 {
             if auth == .required, tokenStorage.accessToken != nil {
@@ -290,12 +290,11 @@ extension APIClient {
     func loadPrayers(categoryId: Int, page: Int) async throws -> PrayerPage {
         let urlString = APIEndpoint.prayers.urlString
         
-        let apiResponse: PrayerListResponse = try await get(
-            path: urlString,
-            queryItems: [
-                URLQueryItem(name: "categoryId", value: "\(categoryId)"),
-                URLQueryItem(name: "page", value: "\(page)")
-            ])
+        let apiResponse: PrayerListResponse = try await get(path: urlString,
+                                                            queryItems: [
+                                                                URLQueryItem(name: "categoryId", value: "\(categoryId)"),
+                                                                URLQueryItem(name: "page", value: "\(page)")
+                                                            ])
         
         print("기도:", apiResponse.prayerRequests.count)
         apiResponse.prayerRequests.forEach { prayer in

@@ -39,8 +39,8 @@ class LoginViewModel: ObservableObject {
         do {
             let loginResponse = try await apiClient.login(email: email,
                                                            password: password)
-            let user = User(name: loginResponse.name,
-                            email: loginResponse.email,
+            let user = User(name: "",
+                            email: "",
                             accessToken: loginResponse.accessToken,
                             refreshToken: loginResponse.refreshToken)
             let categories = try? await apiClient.loadCategories()

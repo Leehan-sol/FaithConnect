@@ -17,7 +17,7 @@ class HomeViewModel: ObservableObject {
     
     private let apiClient: APIClientProtocol
     private var hasInitialized = false
-    private var currentPage: Int = 0
+    private var currentPage: Int = 1
     private var hasNext: Bool = true
     
     init(_ apiClient: APIClientProtocol) {
@@ -37,39 +37,36 @@ class HomeViewModel: ObservableObject {
     func selectCategory(id: Int) async {
         guard selectedCategoryId != id else { return }
         selectedCategoryId = id
-        prayers.removeAll()
-        
         await loadPrayers(reset: true)
     }
     
     func refreshPrayers() async {
-        guard !isLoading else { return }
+        guard !isRefreshing else { return }
         isRefreshing = true
-        
         await loadPrayers(reset: true)
         isRefreshing = false
     }
     
     func loadPrayers(reset: Bool) async {
-        guard !isLoading else { return }
+        guard !isLoading && (reset || hasNext) else { return }
         isLoading = true
         defer { isLoading = false }
+        
+        let pageToLoad = reset ? 1 : currentPage + 1
         
         do {
             let prayerPage = try await apiClient.loadPrayers(
                 categoryId: selectedCategoryId,
-                page: reset ? 1 : currentPage
+                page: pageToLoad
             )
             
             if reset {
                 prayers = prayerPage.prayers
-                currentPage = 1
-                hasNext = true
             } else {
                 prayers.append(contentsOf: prayerPage.prayers)
-                currentPage += 1
             }
             
+            currentPage = pageToLoad
             hasNext = prayerPage.hasNext
         } catch {
             print(error)
@@ -90,10 +87,10 @@ class HomeViewModel: ObservableObject {
         return PrayerDetailViewModel(apiClient,
                                      prayerRequestId: prayer.id)
     }
-
+    
     func makePrayerEditorVM() -> PrayerEditorViewModel {
         return PrayerEditorViewModel(apiClient)
     }
     
-
+    
 }

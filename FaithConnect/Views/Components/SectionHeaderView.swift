@@ -24,7 +24,6 @@ struct SectionHeaderView: View {
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(.horizontal, 20)
         .padding(.top, 10)
         .foregroundColor(Color(.darkGray))
     }

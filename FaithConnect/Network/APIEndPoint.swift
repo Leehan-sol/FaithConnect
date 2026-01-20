@@ -35,7 +35,7 @@ enum APIEndpoint {
     // MARK: - Token
     case refreshToken
     
-    private static let baseURL = "http://prayer-app.duckdns.org/dev"
+    private static let baseURL = "https://faith-connect.net/dev"
     
     private var basePath: String {
         switch APIEnvironment.current {
