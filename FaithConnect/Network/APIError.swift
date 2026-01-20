@@ -28,8 +28,14 @@ extension APIError {
             return "네트워크 응답이 없습니다."
         case .serverMessage(let code):
             switch code {
-            case .expiredAccessToken, .expiredRefreshToken, .refreshTokenNotFound:
-                return "시간이 만료되었습니다. 다시 로그인해주세요."
+//            case .expiredAccessToken, .expiredRefreshToken, .refreshTokenNotFound:
+//                return "시간이 만료되었습니다. 다시 로그인해주세요."
+            case .expiredAccessToken:
+                return "액세스 토큰 만료 (갱신 시도 예정)"
+            case .expiredRefreshToken:
+                return "리프레시 토큰 만료 (다시 로그인 필요)"
+            case .refreshTokenNotFound:
+                return "리프레시 토큰을 찾을 수 없음"
             case .userNotFound:
                 return "사용자를 찾을 수 없습니다. 다시 시도해주세요."
             case .userExistByEmail:

@@ -114,7 +114,8 @@ struct LoginView: View {
             }
             .navigationBarHidden(true)
             .navigationDestination(isPresented: $showSignUp) {
-                SignUpView(viewModel: viewModel)
+                SignUpView(viewModel: viewModel,
+                           isPresented: $showSignUp)
             }
             .navigationDestination(isPresented: $showFindID) {
                 FindIDView(viewModel: viewModel)

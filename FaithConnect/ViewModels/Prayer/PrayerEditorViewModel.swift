@@ -20,7 +20,7 @@ class PrayerEditorViewModel: ObservableObject {
     
     func writePrayer(categoryId: Int, title: String, content: String) async -> Prayer? {
         if categoryId == 0 {
-            alertType = .categoryNotSelected
+            alertType = .error(message: "카테고리를 선택해 주세요.")
             return nil
         }
         
@@ -41,7 +41,8 @@ class PrayerEditorViewModel: ObservableObject {
             return prayer
         } catch {
             let error = error.localizedDescription
-            alertType = .writeError(message: error)
+            alertType = .error(title: "기도 작성 실패",
+                               message: error)
             return nil
         }
     }

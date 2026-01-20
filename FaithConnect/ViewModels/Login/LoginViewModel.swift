@@ -10,6 +10,8 @@ import Foundation
 @MainActor
 class LoginViewModel: ObservableObject {
     @Published var alertType: AlertType? = nil
+    @Published var signUpAlertType: AlertType? = nil
+    @Published var findIDAlertType: AlertType? = nil
     @Published var isLoading: Bool = false
     
     private let apiClient: APIClientProtocol
@@ -37,35 +39,33 @@ class LoginViewModel: ObservableObject {
         }
         
         do {
-            let loginResponse = try await apiClient.login(email: email,
-                                                           password: password)
-            let user = User(name: "",
-                            email: "",
-                            accessToken: loginResponse.accessToken,
-                            refreshToken: loginResponse.refreshToken)
-            let categories = try? await apiClient.loadCategories()
-            session.login(user: user, categories: categories ?? [])
+            try await apiClient.login(email: email,
+                                      password: password)
             // 테스트용 코드
-//            session.login(user:user, categories: [])
-//            TokenStorage().saveToken(accessToken: "invalid_token",
-//                                     refreshToken: "invalid_token")
-//            let categories = try await apiClient.loadCategories()
-//            session.prayerCategories = categories
+//            TokenStorage().saveToken(accessToken: "wrong_token", refreshToken: TokenStorage().refreshToken ?? "")
+            async let userFetch = apiClient.fetchMyInfo()
+            async let categoriesFetch = try? await apiClient.loadCategories()
+            
+            let user = try await userFetch
+            let categories = await categoriesFetch
+            
+            session.login(user: user, categories: categories ?? [])
         } catch {
             let error = error.localizedDescription
-            alertType = .loginFailure(message: error)
+            alertType = .error(title: "로그인 실패",
+                               message: error)
         }
     }
     
     func findID(memberID: Int, name: String) async -> String? {
         print("아이디 찾기 memberID: \(memberID), name: \(name)")
         if memberID == 0 {
-            alertType = .fieldEmpty(fieldName: "교번")
+            findIDAlertType = .fieldEmpty(fieldName: "교번")
             return nil
         }
         
         if name.isEmpty {
-            alertType = .fieldEmpty(fieldName: "이름")
+            findIDAlertType = .fieldEmpty(fieldName: "이름")
             return nil
         }
         
@@ -74,7 +74,8 @@ class LoginViewModel: ObservableObject {
                                                          name: name)
             return foundEmail
         } catch {
-            alertType = .findIDFailure
+            findIDAlertType = .error(title: "아이디 찾기 실패",
+                                     message: "해당 정보로 가입된 아이디가 없습니다. 다시 시도해주세요.")
             return nil
         }
     }
@@ -86,38 +87,46 @@ class LoginViewModel: ObservableObject {
     func signUp(memberID: Int, name: String, email: String, password: String, confirmPassword: String) async {
         print("회원가입 memberID: \(memberID), name: \(name), email: \(email), password: \(password), confirmPassword: \(confirmPassword)")
         if memberID == 0 {
-            alertType = .fieldEmpty(fieldName: "교번")
+            signUpAlertType = .fieldEmpty(fieldName: "교번")
             return
         }
         
         if name.isEmpty {
-            alertType = .fieldEmpty(fieldName: "이름")
+            signUpAlertType = .fieldEmpty(fieldName: "이름")
             return
         }
         
         if email.isEmpty {
-            alertType = .fieldEmpty(fieldName: "이메일")
+            signUpAlertType = .fieldEmpty(fieldName: "이메일")
             return
         }
         
         if password.isEmpty {
-            alertType = .fieldEmpty(fieldName: "비밀번호")
+            signUpAlertType = .fieldEmpty(fieldName: "비밀번호")
             return
         }
         
         if confirmPassword.isEmpty {
-            alertType = .fieldEmpty(fieldName: "비밀번호 확인")
+            signUpAlertType = .fieldEmpty(fieldName: "비밀번호 확인")
             return
         }
         
         if password != confirmPassword {
-            alertType = .passwordMismatch
+            signUpAlertType = .error(title: "비밀번호 오류",
+                                     message: "입력하신 비밀번호와 비밀번호 확인이 일치하지 않습니다. 다시 입력해주세요.")
+            return
+        }
+        
+        if !isValidEmail(email: email) {
+            signUpAlertType = .error(title: "이메일 형식 오류",
+                                     message: "올바른 이메일 형식이 아닙니다.")
             return
         }
         
         if !isValidPassword(password: password) {
-            alertType = .invalidPassword
-            return 
+            signUpAlertType = .error(title: "비밀번호 형식 오류",
+                                     message: "비밀번호는 영문과 숫자를 포함하여 8자 이상으로 설정해 주세요.")
+            return
         }
         
         do {
@@ -126,11 +135,17 @@ class LoginViewModel: ObservableObject {
                                          email: email,
                                          password: password,
                                          confirmPassword: confirmPassword)
-            alertType = .registerSuccess
+            signUpAlertType = .registerSuccess
         } catch {
             let error = error.localizedDescription
-            alertType = .registerFailure(message: error)
+            signUpAlertType = .error(title: "회원가입 실패",
+                                     message: error)
         }
+    }
+    
+    func isValidEmail(email: String) -> Bool {
+        let emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
+        return NSPredicate(format: "SELF MATCHES %@", emailRegex).evaluate(with: email)
     }
     
     func isValidPassword(password: String) -> Bool {

@@ -24,7 +24,7 @@ struct PrayerEditorView: View {
     }
     
     var body: some View {
-        let categories = session.prayerCategories.filter { $0.id != 1 }
+        let categories = session.prayerCategories.filter { $0.categoryName != "전체" }
     
         ScrollView(.vertical, showsIndicators: false) {
             Spacer()

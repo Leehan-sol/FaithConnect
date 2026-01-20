@@ -44,6 +44,12 @@ struct LogoutResponse: Decodable {
     let status: Int?
 }
 
+// MARK: - 내 정보
+struct FetchMyInfoResponse: Decodable {
+    let name: String
+    let email: String
+}
+
 // MARK: - 아이디 찾기
 struct FindIDRequest: Codable {
     let name: String

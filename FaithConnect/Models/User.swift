@@ -10,6 +10,4 @@ import Foundation
 struct User {
     let name: String
     let email: String
-    let accessToken: String
-    let refreshToken: String
 }

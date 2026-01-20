@@ -9,10 +9,12 @@ import Foundation
 
 // MARK: - Protocol
 protocol APIClientProtocol {
+    var hasToken: Bool { get }
     // Auth
     func signUp(memberID: Int, name: String, email: String, password: String, confirmPassword: String) async throws
-    func login(email: String, password: String) async throws -> LoginResponse
+    func login(email: String, password: String) async throws
     func logout() async throws
+    func fetchMyInfo() async throws -> User
     func findID(memberID: Int, name: String) async throws -> String
     func changePassword(id: Int, name: String, email: String, newPassword: String) async throws
     
@@ -35,6 +37,13 @@ final class APIClient: APIClientProtocol {
     
     init(tokenStorage: TokenStorageProtocol) {
         self.tokenStorage = tokenStorage
+    }
+    
+    var hasToken: Bool {
+        if let refreshToken = tokenStorage.refreshToken, !refreshToken.isEmpty {
+            return true
+        }
+        return false
     }
 }
 
@@ -116,7 +125,12 @@ extension APIClient {
                 
                 do {
                     try await refreshAccessToken()
-                    return try await performRequest(request: request,
+                    var retryRequest = request
+                    if let newToken = tokenStorage.accessToken {
+                        retryRequest.setValue("Bearer \(newToken)", forHTTPHeaderField: "Authorization")
+                    }
+                    
+                    return try await performRequest(request: retryRequest,
                                                     isRetry: true,
                                                     auth: auth)
                 } catch {
@@ -181,7 +195,7 @@ extension APIClient {
         }
     }
     
-    func login(email: String, password: String) async throws -> LoginResponse {
+    func login(email: String, password: String) async throws {
         let urlString = APIEndpoint.login.urlString
         print("\(urlString)")
         let requestBody = LoginRequest(
@@ -205,7 +219,6 @@ extension APIClient {
                 refreshToken: apiResponse.refreshToken
             )
         }
-        return apiResponse
     }
     
     func logout() async throws {
@@ -222,6 +235,17 @@ extension APIClient {
         await MainActor.run {
             tokenStorage.clearToken()
         }
+    }
+    
+    func fetchMyInfo() async throws -> User {
+        let urlString = APIEndpoint.fetchMyInfo.urlString
+        
+        let apiResponse: FetchMyInfoResponse = try await get(path: urlString)
+        
+        let user = User(name: apiResponse.name,
+                        email: apiResponse.email)
+        
+        return user
     }
     
     func findID(memberID: Int, name: String) async throws -> String {

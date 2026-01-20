@@ -21,9 +21,10 @@ enum APIEndpoint {
     // MARK: - Auth
     case signup
     case login
+    case logout
+    case fetchMyInfo
     case findID
     case changePassword
-    case logout
     // MARK: - Prayer
     case categories
     case prayers
@@ -52,12 +53,14 @@ enum APIEndpoint {
             return "\(basePath)/signup"
         case .login:
             return "\(basePath)/login"
+        case .logout:
+            return "\(basePath)/logout"
+        case .fetchMyInfo:
+            return "\(basePath)/me"
         case .findID:
             return "\(basePath)/find-email"
         case .changePassword:
             return "\(basePath)/change-password"
-        case .logout:
-            return "\(basePath)/logout"
         case .categories:
             return "\(basePath)/categories"
         case .prayers:
