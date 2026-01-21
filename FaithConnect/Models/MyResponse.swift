@@ -15,7 +15,7 @@ struct MyResponsePage {
 
 struct MyResponse: Identifiable {
     let id: Int // prayerRequestId
-    let prayerResponseId: Int
+    let prayerRequestId: Int
     let prayerRequestTitle: String
     let categoryId: Int
     let categoryName: String
@@ -26,8 +26,8 @@ struct MyResponse: Identifiable {
 // MARK: - Extension
 extension MyResponse {
     init(from dto: MyResponseItem){
-        self.id = dto.prayerRequestId
-        self.prayerResponseId = dto.prayerResponseId
+        self.id = dto.prayerResponseId
+        self.prayerRequestId = dto.prayerRequestId
         self.prayerRequestTitle = dto.prayerRequestTitle
         self.categoryId = dto.categoryId
         self.categoryName = dto.categoryName

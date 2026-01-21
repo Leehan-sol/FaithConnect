@@ -67,8 +67,8 @@ struct MyResponseList: Decodable {
 }
 
 struct MyResponseItem: Decodable {
-    let prayerRequestId: Int
     let prayerResponseId: Int
+    let prayerRequestId: Int
     let prayerRequestTitle: String
     let categoryId: Int
     let categoryName: String

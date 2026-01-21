@@ -26,7 +26,7 @@ class PrayerDetailViewModel: ObservableObject {
         hasInitialized = true
         
         do {
-            let prayer = try await apiClient.loadPrayerDetail(prayerRequestId: prayerRequestId)
+            let prayer = try await apiClient.loadPrayerDetail(prayerRequestID: prayerRequestId)
             self.prayer = prayer
         } catch {
             print(error)
@@ -59,7 +59,7 @@ class PrayerDetailViewModel: ObservableObject {
         
         do {
             print("기도 응답 API 호출")
-            let response = try await apiClient.writePrayerResponse(prayerRequsetId: id,
+            let response = try await apiClient.writePrayerResponse(prayerRequsetID: id,
                                                                    message: message)
             guard var prayer = prayer else { return false }
             prayer.responses?.append(response)
@@ -77,7 +77,7 @@ class PrayerDetailViewModel: ObservableObject {
     func deletePrayerResponse(response: PrayerResponse) async {
         do {
             print("응답 삭제 API 호출")
-            try await apiClient.deletePrayerResponse(prayerRequestId: response.id)
+            try await apiClient.deletePrayerResponse(responseID: response.id)
             
             guard var prayer = prayer else { return }
             prayer.responses?.removeAll { $0.id == response.id }

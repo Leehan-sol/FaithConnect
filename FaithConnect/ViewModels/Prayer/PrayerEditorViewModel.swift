@@ -35,7 +35,7 @@ class PrayerEditorViewModel: ObservableObject {
         }
         
         do {
-            let prayer = try await apiClient.writePrayer(categoryId: categoryId, 
+            let prayer = try await apiClient.writePrayer(categoryID: categoryId, 
                                                           title: title,
                                                           content: content)
             return prayer

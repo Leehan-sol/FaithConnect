@@ -38,7 +38,7 @@ struct MyResponseRowView: View {
 
 #Preview {
     MyResponseRowView(response: MyResponse(id: 0,
-                                           prayerResponseId: 0,
+                                           prayerRequestId: 0,
                                            prayerRequestTitle: "제목",
                                            categoryId: 0,
                                            categoryName: "건강",

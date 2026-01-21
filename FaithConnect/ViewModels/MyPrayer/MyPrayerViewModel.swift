@@ -76,7 +76,7 @@ class MyPrayerViewModel: ObservableObject {
             self.writtenPrayers = writtenPrayers
         } catch {
             let error = error.localizedDescription
-            alertType = .deleteFailure(message: error)
+            alertType = .error(title: "삭제", message: error)
         }
     }
     
@@ -114,13 +114,13 @@ class MyPrayerViewModel: ObservableObject {
     func deletePrayerResponse(responseID: Int) async {
         do {
             print("응답 삭제 API 호출")
-            try await apiClient.deletePrayerResponse(prayerRequestId: responseID)
+            try await apiClient.deletePrayerResponse(responseID: responseID)
             var participatedPrayers = participatedPrayers
             participatedPrayers.removeAll { $0.id == responseID }
             self.participatedPrayers = participatedPrayers
         } catch {
             let error = error.localizedDescription
-            alertType = .deleteFailure(message: error)
+            alertType = .error(title: "삭제", message: error)
         }
     }
     

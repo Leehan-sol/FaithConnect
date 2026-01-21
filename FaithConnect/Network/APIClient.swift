@@ -20,12 +20,12 @@ protocol APIClientProtocol {
     
     // Prayer
     func loadCategories() async throws -> [PrayerCategory]
-    func loadPrayers(categoryId: Int, page: Int) async throws -> PrayerPage
-    func loadPrayerDetail(prayerRequestId: Int) async throws -> Prayer
-    func writePrayer(categoryId: Int, title: String, content: String) async throws -> Prayer
+    func loadPrayers(categoryID: Int, page: Int) async throws -> PrayerPage
+    func loadPrayerDetail(prayerRequestID: Int) async throws -> Prayer
+    func writePrayer(categoryID: Int, title: String, content: String) async throws -> Prayer
     func deletePrayer(prayerRequestId: Int) async throws
-    func writePrayerResponse(prayerRequsetId: Int, message: String) async throws -> PrayerResponse
-    func deletePrayerResponse(prayerRequestId: Int) async throws
+    func writePrayerResponse(prayerRequsetID: Int, message: String) async throws -> PrayerResponse
+    func deletePrayerResponse(responseID: Int) async throws
     func loadWrittenPrayers(page: Int) async throws -> PrayerPage
     func loadParticipatedPrayers(page: Int) async throws -> MyResponsePage
 }
@@ -311,12 +311,12 @@ extension APIClient {
         return category
     }
     
-    func loadPrayers(categoryId: Int, page: Int) async throws -> PrayerPage {
+    func loadPrayers(categoryID: Int, page: Int) async throws -> PrayerPage {
         let urlString = APIEndpoint.prayers.urlString
         
         let apiResponse: PrayerListResponse = try await get(path: urlString,
                                                             queryItems: [
-                                                                URLQueryItem(name: "categoryId", value: "\(categoryId)"),
+                                                                URLQueryItem(name: "categoryId", value: "\(categoryID)"),
                                                                 URLQueryItem(name: "page", value: "\(page)")
                                                             ])
         
@@ -335,19 +335,19 @@ extension APIClient {
                           hasNext: apiResponse.hasNext)
     }
     
-    func loadPrayerDetail(prayerRequestId: Int) async throws -> Prayer {
-        let urlString = APIEndpoint.prayerDetail(id: prayerRequestId).urlString
+    func loadPrayerDetail(prayerRequestID: Int) async throws -> Prayer {
+        let urlString = APIEndpoint.prayerDetail(id: prayerRequestID).urlString
         
         let apiResponse: PrayerDetailResponse = try await get(path: urlString)
         
         return Prayer(from: apiResponse)
     }
     
-    func writePrayer(categoryId: Int, title: String, content: String) async throws -> Prayer {
+    func writePrayer(categoryID: Int, title: String, content: String) async throws -> Prayer {
         let urlString = APIEndpoint.prayers.urlString
         
         let requestBody = PrayerWriteRequest(
-            categoryId: categoryId,
+            categoryId: categoryID,
             title: title,
             content: content
         )
@@ -369,10 +369,10 @@ extension APIClient {
         }
     }
     
-    func writePrayerResponse(prayerRequsetId: Int, message: String) async throws -> PrayerResponse {
+    func writePrayerResponse(prayerRequsetID: Int, message: String) async throws -> PrayerResponse {
         let urlString = APIEndpoint.responses.urlString
         
-        let requestBody = PrayerResponseWriteRequest(prayerRequestId: prayerRequsetId,
+        let requestBody = PrayerResponseWriteRequest(prayerRequestId: prayerRequsetID,
                                                      message: message)
         
         let apiResponse: DetailResponseItem = try await post(urlString: urlString,
@@ -381,8 +381,8 @@ extension APIClient {
         return PrayerResponse(from: apiResponse)
     }
     
-    func deletePrayerResponse(prayerRequestId: Int) async throws {
-        let urlString = APIEndpoint.responseDetail(id: prayerRequestId).urlString
+    func deletePrayerResponse(responseID: Int) async throws {
+        let urlString = APIEndpoint.responseDetail(id: responseID).urlString
         
         let apiResponse: PrayerDeleteResponse = try await delete(path: urlString)
         

@@ -56,7 +56,7 @@ class HomeViewModel: ObservableObject {
         
         do {
             let prayerPage = try await apiClient.loadPrayers(
-                categoryId: selectedCategoryId,
+                categoryID: selectedCategoryId,
                 page: pageToLoad
             )
             
