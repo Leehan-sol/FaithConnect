@@ -16,8 +16,7 @@ struct FaithConnectApp: App {
     private let apiClient: APIClientProtocol
     
     init() {
-        let tokenStorage = TokenStorage()
-        self.tokenStorage = tokenStorage
+        self.tokenStorage = TokenStorage()
         self.apiClient = APIClient(tokenStorage: tokenStorage)
     }
     
@@ -29,6 +28,8 @@ struct FaithConnectApp: App {
     }
 }
 
+
+// MARK: - RootView
 struct RootView: View {
     @EnvironmentObject var session: UserSession
     let apiClient: APIClientProtocol
@@ -44,7 +45,11 @@ struct RootView: View {
             if isCheckingAuth {
                 SplashView()
             } else if session.isLoggedIn {
-                MainTabView(apiClient)
+                MainTabView(
+                    homeViewModel: HomeViewModel(apiClient),
+                    myPrayerViewModel: MyPrayerViewModel(apiClient),
+                    myPageViewModel: MyPageViewModel(apiClient)
+                )
             } else {
                 LoginView(viewModel: LoginViewModel(apiClient,
                                                     session))
@@ -57,18 +62,22 @@ struct RootView: View {
             session.logout()
         }
     }
-    
+}
+
+
+
+// MARK: - Extension
+private extension RootView {
     private func checkLoginStatus() {
         Task {
             guard apiClient.hasToken else {
                 print("❌ 토큰 없음")
                 await MainActor.run {
-                    withAnimation(.easeInOut(duration: 0.4)) {
-                        isCheckingAuth = false
-                    }
+                    isCheckingAuth = false
                 }
                 return
             }
+            
             do {
                 async let userFetch = apiClient.fetchMyInfo()
                 async let categoriesFetch = try? await apiClient.loadCategories()
@@ -78,16 +87,14 @@ struct RootView: View {
                 await MainActor.run {
                     session.login(user: user, categories: categories ?? [])
                 }
+                print("⭕️ 토큰 존재")
             } catch {
                 print("❌ 토큰 만료: \(error.localizedDescription)")
             }
             
             await MainActor.run {
-                withAnimation(.easeInOut(duration: 0.4)) {
-                    isCheckingAuth = false
-                }
+                isCheckingAuth = false
             }
         }
     }
 }
-
