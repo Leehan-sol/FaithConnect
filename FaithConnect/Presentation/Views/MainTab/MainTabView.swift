@@ -54,10 +54,13 @@ struct MainTabView: View {
 }
 
 #Preview {
-    MainTabView(
-        homeViewModel: HomeViewModel(APIClient(tokenStorage: TokenStorage())),
-        myPrayerViewModel: MyPrayerViewModel(APIClient(tokenStorage: TokenStorage())),
-        myPageViewModel: MyPageViewModel(APIClient(tokenStorage: TokenStorage()))
+    let mockAPIClient = APIClient(tokenStorage: TokenStorage())
+    let mockRepo = PrayerRepository(apiClient: mockAPIClient)
+    
+    return MainTabView(
+        homeViewModel: HomeViewModel(prayerRepository: mockRepo),
+        myPrayerViewModel: MyPrayerViewModel(prayerRepository: mockRepo),
+        myPageViewModel: MyPageViewModel(apiClient: mockAPIClient)
     )
     .environmentObject(UserSession())
 }

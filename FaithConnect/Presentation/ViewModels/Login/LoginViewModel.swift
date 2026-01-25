@@ -17,7 +17,8 @@ class LoginViewModel: ObservableObject {
     private let apiClient: APIClientProtocol
     private let session: UserSession
     
-    init(_ apiClient: APIClientProtocol, _ session: UserSession) {
+    init(apiClient: APIClientProtocol,
+         session: UserSession) {
         self.apiClient = apiClient
         self.session = session
     }
@@ -43,13 +44,8 @@ class LoginViewModel: ObservableObject {
                                       password: password)
             // 테스트용 코드
 //            TokenStorage().saveToken(accessToken: "wrong_token", refreshToken: TokenStorage().refreshToken ?? "")
-            async let userFetch = apiClient.fetchMyInfo()
-            async let categoriesFetch = try? await apiClient.loadCategories()
-            
-            let user = try await userFetch
-            let categories = await categoriesFetch
-            
-            session.login(user: user, categories: categories ?? [])
+            let user = try await apiClient.fetchMyInfo()
+            session.login(user: user)
         } catch {
             let error = error.localizedDescription
             alertType = .error(title: "로그인 실패",

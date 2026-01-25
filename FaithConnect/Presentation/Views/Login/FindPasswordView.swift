@@ -50,6 +50,9 @@ struct FindPasswordView: View {
 }
 
 #Preview {
-    FindPasswordView(viewModel: LoginViewModel(APIClient(tokenStorage: TokenStorage()),
-                                               UserSession()))
+    let mockAPIClient = APIClient(tokenStorage: TokenStorage())
+    let mockSession = UserSession()
+    
+    return FindPasswordView(viewModel: LoginViewModel(apiClient: mockAPIClient,
+                                                      session: mockSession))
 }

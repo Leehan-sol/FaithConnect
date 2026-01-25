@@ -24,8 +24,6 @@ struct PrayerEditorView: View {
     }
     
     var body: some View {
-        let categories = session.prayerCategories.filter { $0.categoryName != "전체" }
-    
         ScrollView(.vertical, showsIndicators: false) {
             Spacer()
                 .frame(height: 20)
@@ -124,15 +122,20 @@ struct PrayerEditorView: View {
                       message: Text(alert.message),
                       dismissButton: .default(Text("확인")))
             }
+            .task {
+                await viewModel.fetchCategories()
+            }
         }
     }
 }
 
 #Preview {
-    PrayerEditorView(
-               viewModel: { PrayerEditorViewModel(APIClient(tokenStorage: TokenStorage())) },
+    let mockAPIClient = APIClient(tokenStorage: TokenStorage())
+    let mockRepo = PrayerRepository(apiClient: mockAPIClient)
+    
+    return PrayerEditorView(
+        viewModel: { PrayerEditorViewModel(prayerRepository: mockRepo) },
                onDone: { _ in
                }
            )
-           .environmentObject(UserSession())
 }

@@ -17,15 +17,15 @@ class MyPrayerViewModel: ObservableObject {
     @Published var isRefreshingParticipatedPrayers: Bool = false
     @Published var alertType: AlertType? = nil
     
-    private let apiClient: APIClientProtocol
+    private let prayerRepository: PrayerRepositoryProtocol
     private var hasInitialized = false
     private var currentWrittenPage: Int = 1
     private var currentParticipatedPage: Int = 1
     private var hasNextWrittenPage: Bool = false
     private var hasNextParticipatedPage: Bool = false
     
-    init(_ apiClient: APIClientProtocol) {
-        self.apiClient = apiClient
+    init(prayerRepository: PrayerRepositoryProtocol) {
+        self.prayerRepository = prayerRepository
     }
     
     func initializeIfNeeded() async {
@@ -46,38 +46,38 @@ class MyPrayerViewModel: ObservableObject {
     }
     
     func loadWrittenPrayers(reset: Bool) async {
-        guard !isLoadingWrittenPrayers else { return }
-        isLoadingWrittenPrayers = true
-        defer { isLoadingWrittenPrayers = false }
-        
-        let pageToLoad = reset ? 1 : currentWrittenPage + 1
-        
-        do {
-            let prayerPage = try await apiClient.loadWrittenPrayers(page: pageToLoad)
-            
-            if reset {
-                writtenPrayers = prayerPage.prayers
-            } else {
-                writtenPrayers.append(contentsOf: prayerPage.prayers)
-            }
-            currentWrittenPage = pageToLoad
-            hasNextWrittenPage = prayerPage.hasNext
-        } catch {
-            print("내가 올린 기도 로드 실패: \(error)")
-        }
+//        guard !isLoadingWrittenPrayers else { return }
+//        isLoadingWrittenPrayers = true
+//        defer { isLoadingWrittenPrayers = false }
+//        
+//        let pageToLoad = reset ? 1 : currentWrittenPage + 1
+//        
+//        do {
+//            let prayerPage = try await apiClient.loadWrittenPrayers(page: pageToLoad)
+//            
+//            if reset {
+//                writtenPrayers = prayerPage.prayers
+//            } else {
+//                writtenPrayers.append(contentsOf: prayerPage.prayers)
+//            }
+//            currentWrittenPage = pageToLoad
+//            hasNextWrittenPage = prayerPage.hasNext
+//        } catch {
+//            print("내가 올린 기도 로드 실패: \(error)")
+//        }
     }
     
     func deletePrayer(prayerID: Int) async {
-        do {
-            print("삭제 API 호출")
-            try await apiClient.deletePrayer(prayerRequestId: prayerID)
-            var writtenPrayers = writtenPrayers
-            writtenPrayers.removeAll { $0.id == prayerID }
-            self.writtenPrayers = writtenPrayers
-        } catch {
-            let error = error.localizedDescription
-            alertType = .error(title: "삭제", message: error)
-        }
+//        do {
+//            print("삭제 API 호출")
+//            try await apiClient.deletePrayer(prayerRequestId: prayerID)
+//            var writtenPrayers = writtenPrayers
+//            writtenPrayers.removeAll { $0.id == prayerID }
+//            self.writtenPrayers = writtenPrayers
+//        } catch {
+//            let error = error.localizedDescription
+//            alertType = .error(title: "삭제", message: error)
+//        }
     }
     
     // MARK: - 내가 응답한 기도
@@ -90,42 +90,42 @@ class MyPrayerViewModel: ObservableObject {
     }
     
     func loadParticipatedPrayers(reset: Bool) async {
-        guard !isLoadingParticipatedPrayers && (reset || hasNextParticipatedPage) else { return }
-        isLoadingParticipatedPrayers = true
-        defer { isLoadingParticipatedPrayers = false }
-        
-        let pageToLoad = reset ? 1 : currentParticipatedPage + 1
-        
-        do {
-            let responsePage = try await apiClient.loadParticipatedPrayers(page: pageToLoad)
-            
-            if reset {
-                participatedPrayers = responsePage.responses
-            } else {
-                participatedPrayers.append(contentsOf: responsePage.responses)
-            }
-            currentParticipatedPage = pageToLoad
-            hasNextParticipatedPage = responsePage.hasNext
-        } catch {
-            print("내가 올린 기도 로드 실패: \(error)")
-        }
+//        guard !isLoadingParticipatedPrayers && (reset || hasNextParticipatedPage) else { return }
+//        isLoadingParticipatedPrayers = true
+//        defer { isLoadingParticipatedPrayers = false }
+//        
+//        let pageToLoad = reset ? 1 : currentParticipatedPage + 1
+//        
+//        do {
+//            let responsePage = try await apiClient.loadParticipatedPrayers(page: pageToLoad)
+//            
+//            if reset {
+//                participatedPrayers = responsePage.responses
+//            } else {
+//                participatedPrayers.append(contentsOf: responsePage.responses)
+//            }
+//            currentParticipatedPage = pageToLoad
+//            hasNextParticipatedPage = responsePage.hasNext
+//        } catch {
+//            print("내가 올린 기도 로드 실패: \(error)")
+//        }
     }
     
     func deletePrayerResponse(responseID: Int) async {
-        do {
-            print("응답 삭제 API 호출")
-            try await apiClient.deletePrayerResponse(responseID: responseID)
-            var participatedPrayers = participatedPrayers
-            participatedPrayers.removeAll { $0.id == responseID }
-            self.participatedPrayers = participatedPrayers
-        } catch {
-            let error = error.localizedDescription
-            alertType = .error(title: "삭제", message: error)
-        }
+//        do {
+//            print("응답 삭제 API 호출")
+//            try await apiClient.deletePrayerResponse(responseID: responseID)
+//            var participatedPrayers = participatedPrayers
+//            participatedPrayers.removeAll { $0.id == responseID }
+//            self.participatedPrayers = participatedPrayers
+//        } catch {
+//            let error = error.localizedDescription
+//            alertType = .error(title: "삭제", message: error)
+//        }
     }
     
     func makePrayerDetailVM(prayerRequestId: Int) -> PrayerDetailViewModel {
-        return PrayerDetailViewModel(apiClient,
+        return PrayerDetailViewModel(prayerRepository: prayerRepository,
                                      prayerRequestId: prayerRequestId)
     }
     

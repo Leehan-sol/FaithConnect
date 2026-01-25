@@ -136,6 +136,9 @@ struct LoginView: View {
 }
 
 #Preview {
-    LoginView(viewModel: LoginViewModel(APIClient(tokenStorage: TokenStorage()),
-                                        UserSession()))
+    let mockAPIClient = APIClient(tokenStorage: TokenStorage())
+    let mockSession = UserSession()
+    
+    return LoginView(viewModel: LoginViewModel(apiClient: mockAPIClient,
+                                        session: mockSession))
 }

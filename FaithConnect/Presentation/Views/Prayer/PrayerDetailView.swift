@@ -153,9 +153,11 @@ struct DetailView: View {
 
 
 #Preview {
-    PrayerDetailView(viewModel: { PrayerDetailViewModel(APIClient(tokenStorage: TokenStorage()),
+    let mockAPIClient = APIClient(tokenStorage: TokenStorage())
+    let mockRepo = PrayerRepository(apiClient: mockAPIClient)
+    
+    return PrayerDetailView(viewModel: { PrayerDetailViewModel(prayerRepository: mockRepo,
                                                         prayerRequestId: 1) },
                      onDeletePrayer: { _ in
                      })
-    .environmentObject(UserSession())
 }

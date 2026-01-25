@@ -76,6 +76,9 @@ struct FindIDView: View {
 
 
 #Preview {
-    FindIDView(viewModel: LoginViewModel(APIClient(tokenStorage: TokenStorage()),
-                                         UserSession()))
+    let mockAPIClient = APIClient(tokenStorage: TokenStorage())
+    let mockSession = UserSession()
+    
+    return FindIDView(viewModel: LoginViewModel(apiClient: mockAPIClient,
+                                         session: mockSession))
 }

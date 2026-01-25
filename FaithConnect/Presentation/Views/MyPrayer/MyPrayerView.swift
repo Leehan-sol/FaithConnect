@@ -224,5 +224,8 @@ struct PreviewSection<Item: Identifiable, RowView: View>: View {
 
 
 #Preview {
-    MyPrayerView(viewModel: MyPrayerViewModel(APIClient(tokenStorage: TokenStorage())))
+    let mockAPIClient = APIClient(tokenStorage: TokenStorage())
+    let mockRepo = PrayerRepository(apiClient: mockAPIClient)
+    
+    return MyPrayerView(viewModel: MyPrayerViewModel(prayerRepository: mockRepo))
 }

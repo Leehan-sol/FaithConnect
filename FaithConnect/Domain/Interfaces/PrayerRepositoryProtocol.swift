@@ -6,3 +6,8 @@
 //
 
 import Foundation
+
+protocol PrayerRepositoryProtocol {
+    func fetchCategories() async throws -> [PrayerCategory]
+    func loadPrayers(categoryID: Int, page: Int) async throws -> PrayerPage
+}

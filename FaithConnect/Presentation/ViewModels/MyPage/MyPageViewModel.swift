@@ -13,7 +13,7 @@ class MyPageViewModel: ObservableObject {
     
     private let apiClient: APIClientProtocol
     
-    init(_ apiClient: APIClientProtocol) {
+    init(apiClient: APIClientProtocol) {
         self.apiClient = apiClient
     }
     

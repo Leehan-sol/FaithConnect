@@ -81,6 +81,9 @@ struct MyPrayerListView: View {
 }
 
 #Preview {
-    MyPrayerListView(viewModel: MyPrayerViewModel(APIClient(tokenStorage: TokenStorage())),
-                     prayerContextType: .response)
+    let mockAPIClient = APIClient(tokenStorage: TokenStorage())
+    let mockRepo = PrayerRepository(apiClient: mockAPIClient)
+    
+    return MyPrayerListView(viewModel: MyPrayerViewModel(prayerRepository: mockRepo),
+                            prayerContextType: .response)
 }

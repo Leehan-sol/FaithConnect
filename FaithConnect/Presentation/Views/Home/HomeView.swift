@@ -15,13 +15,11 @@ struct HomeView: View {
     @State private var showPrayerEditor: Bool = false
     
     var body: some View {
-        let categories = session.prayerCategories
-        
         ZStack {
             VStack {
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 10) {
-                        ForEach(categories) { category in
+                        ForEach(viewModel.categories) { category in
                             CategoryButtonView(
                                 category: category,
                                 isSelected: category.id == viewModel.selectedCategoryId,
@@ -91,16 +89,14 @@ struct HomeView: View {
             )
         }
         .task {
-            guard let firstCategoryID = session.prayerCategories.first?.id else { return }
-            await viewModel.initializeIfNeeded(
-                categoryID: firstCategoryID
-            )
+            await viewModel.initializeIfNeeded()
         }
     }
 }
 
 
 #Preview {
-    HomeView(viewModel: HomeViewModel(APIClient(tokenStorage: TokenStorage())))
-        .environmentObject(UserSession())
+    let mockAPIClient = APIClient(tokenStorage: TokenStorage())
+    let mockRepo = PrayerRepository(apiClient: mockAPIClient)
+    return HomeView(viewModel: HomeViewModel(prayerRepository: mockRepo))
 }

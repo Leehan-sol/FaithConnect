@@ -11,7 +11,6 @@ import Foundation
 class UserSession: ObservableObject {
     @Published var user: User?
     @Published var isLoggedIn: Bool = false
-    @Published var prayerCategories: [PrayerCategory] = []
     
     var name: String {
         user?.name ?? ""
@@ -21,16 +20,14 @@ class UserSession: ObservableObject {
         user?.email ?? ""
     }
     
-    func login(user: User, categories: [PrayerCategory]) {
+    func login(user: User) {
         self.user = user
         self.isLoggedIn = true
-        self.prayerCategories = categories
     }
     
     func logout() {
         self.user = nil
         self.isLoggedIn = false
-        self.prayerCategories = []
     }
     
 }
