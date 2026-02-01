@@ -12,12 +12,20 @@ class MyPageViewModel: ObservableObject {
     @Published var alertType: AlertType? = nil
     
     private let apiClient: APIClientProtocol
+    private let userSession: UserSession
     
-    init(apiClient: APIClientProtocol) {
+    // TODO: - userSession의 name, email쓰는거로 수정 필요
+    let name = ""
+    let email = ""
+    
+    init(apiClient: APIClientProtocol, userSession: UserSession) {
         self.apiClient = apiClient
+        self.userSession = userSession
     }
     
-    func changePassword(id: Int, name: String, email: String, currentPassword: String, newPassword: String, confirmPassword: String) async {
+
+    
+    func changePassword(id: Int, currentPassword: String, newPassword: String, confirmPassword: String) async {
         if id == 0 {
             alertType = .fieldEmpty(fieldName: "교번")
             return
@@ -36,8 +44,8 @@ class MyPageViewModel: ObservableObject {
         
         do {
             try await apiClient.changePassword(id: id,
-                                               name: name,
-                                               email: email,
+                                               name: userSession.name,
+                                               email: userSession.email,
                                                newPassword: newPassword)
             alertType = .successChangePassword
         } catch {
@@ -58,4 +66,9 @@ class MyPageViewModel: ObservableObject {
         }
     }
 
+    
+    func sessionLogout() {
+        userSession.logout()
+    }
+    
 }

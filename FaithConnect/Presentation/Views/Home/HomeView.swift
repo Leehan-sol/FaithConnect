@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct HomeView: View {
-    @EnvironmentObject private var session: UserSession
     @ObservedObject var viewModel: HomeViewModel
     @State private var selectedPrayer: Prayer? = nil
     @State private var showPrayerDetail: Bool = false
@@ -72,21 +71,12 @@ struct HomeView: View {
         .navigationTitle("기도 모음")
         .navigationDestination(isPresented: $showPrayerDetail) {
             if let prayer = selectedPrayer {
-                PrayerDetailView(viewModel: { viewModel.makePrayerDetailVM(prayer: prayer) },
-                                 onDeletePrayer: { deleteId in
-                    viewModel.deletePrayer(id: deleteId)
-                    showPrayerDetail = false
-                })
+                PrayerDetailView(viewModel: { viewModel.makePrayerDetailVM(prayer: prayer) })
             }
         }
         .navigationDestination(isPresented: $showPrayerEditor) {
             PrayerEditorView(
-                viewModel: { viewModel.makePrayerEditorVM() },
-                onDone: { newPrayer in
-                    viewModel.addPrayer(prayer: newPrayer)
-                    showPrayerEditor = false
-                }
-            )
+                viewModel: { viewModel.makePrayerEditorVM() })
         }
         .task {
             await viewModel.initializeIfNeeded()
@@ -98,5 +88,6 @@ struct HomeView: View {
 #Preview {
     let mockAPIClient = APIClient(tokenStorage: TokenStorage())
     let mockRepo = PrayerRepository(apiClient: mockAPIClient)
-    return HomeView(viewModel: HomeViewModel(prayerRepository: mockRepo))
+    let mockUsecase = PrayerUseCase(repository: mockRepo)
+    return HomeView(viewModel: HomeViewModel(prayerUseCase: mockUsecase))
 }

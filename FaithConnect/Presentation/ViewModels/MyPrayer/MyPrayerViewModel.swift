@@ -17,15 +17,15 @@ class MyPrayerViewModel: ObservableObject {
     @Published var isRefreshingParticipatedPrayers: Bool = false
     @Published var alertType: AlertType? = nil
     
-    private let prayerRepository: PrayerRepositoryProtocol
+    private let prayerUseCase: PrayerUseCaseProtocol
     private var hasInitialized = false
     private var currentWrittenPage: Int = 1
     private var currentParticipatedPage: Int = 1
     private var hasNextWrittenPage: Bool = false
     private var hasNextParticipatedPage: Bool = false
     
-    init(prayerRepository: PrayerRepositoryProtocol) {
-        self.prayerRepository = prayerRepository
+    init(prayerUseCase: PrayerUseCaseProtocol) {
+        self.prayerUseCase = prayerUseCase
     }
     
     func initializeIfNeeded() async {
@@ -125,7 +125,7 @@ class MyPrayerViewModel: ObservableObject {
     }
     
     func makePrayerDetailVM(prayerRequestId: Int) -> PrayerDetailViewModel {
-        return PrayerDetailViewModel(prayerRepository: prayerRepository,
+        return PrayerDetailViewModel(prayerUseCase: prayerUseCase,
                                      prayerRequestId: prayerRequestId)
     }
     

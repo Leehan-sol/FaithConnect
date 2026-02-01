@@ -65,15 +65,9 @@ struct MyPrayerListView: View {
         .toolbar(.hidden, for: .tabBar)
         .navigationDestination(isPresented: $showPrayerDetail) {
             if let prayer = selectedPrayer {
-                PrayerDetailView(viewModel: { viewModel.makePrayerDetailVM(prayerRequestId: prayer.id) },
-                                 onDeletePrayer: { deleteId in
-                    
-                })
+                PrayerDetailView(viewModel: { viewModel.makePrayerDetailVM(prayerRequestId: prayer.id) })
             } else if let response = selectedResponse {
-                PrayerDetailView(viewModel: { viewModel.makePrayerDetailVM(prayerRequestId: response.id) },
-                                 onDeletePrayer: { deleteId in
-                    
-                })
+                PrayerDetailView(viewModel: { viewModel.makePrayerDetailVM(prayerRequestId: response.id) })
             }
         }
     }
@@ -83,7 +77,8 @@ struct MyPrayerListView: View {
 #Preview {
     let mockAPIClient = APIClient(tokenStorage: TokenStorage())
     let mockRepo = PrayerRepository(apiClient: mockAPIClient)
+    let mockUseCase = PrayerUseCase(repository: mockRepo)
     
-    return MyPrayerListView(viewModel: MyPrayerViewModel(prayerRepository: mockRepo),
+    return MyPrayerListView(viewModel: MyPrayerViewModel(prayerUseCase: mockUseCase),
                             prayerContextType: .response)
 }

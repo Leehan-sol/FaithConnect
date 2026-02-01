@@ -8,19 +8,16 @@
 import SwiftUI
 
 struct PrayerDetailView: View {
-    @EnvironmentObject private var session: UserSession
     @StateObject private var viewModel: PrayerDetailViewModel
+    @Environment(\.dismiss) private var dismiss
+    
     @State private var showBottomSheet = false
     @State private var showConfirmationDialog = false
     @State private var showPrayerEditor = false
     @State private var showDeleteAlert = false
     
-    var onDeletePrayer: ((Int) -> Void)?
-    
-    init(viewModel: @escaping () -> PrayerDetailViewModel,
-         onDeletePrayer: ((Int) -> Void)?) {
+    init(viewModel: @escaping () -> PrayerDetailViewModel) {
         _viewModel = StateObject(wrappedValue: viewModel())
-        self.onDeletePrayer = onDeletePrayer
     }
     
     var body: some View {
@@ -33,6 +30,9 @@ struct PrayerDetailView: View {
                     .progressViewStyle(CircularProgressViewStyle(tint: .blue))
                     .scaleEffect(1.5)
             }
+        }
+        .refreshable {
+            await viewModel.refresh()
         }
         .task {
             await viewModel.initializeIfNeeded()
@@ -60,9 +60,9 @@ struct PrayerDetailView: View {
             isPresented: $showConfirmationDialog,
             titleVisibility: .hidden
         ) {
-//            Button("수정") {
-//                showPrayerEditor = true
-//            }
+            //            Button("수정") {
+            //                showPrayerEditor = true
+            //            }
             
             Button("삭제", role: .destructive) {
                 showDeleteAlert = true
@@ -74,9 +74,8 @@ struct PrayerDetailView: View {
                isPresented: $showDeleteAlert) {
             Button("삭제", role: .destructive) {
                 Task {
-                    if let deleteId = await viewModel.deletePrayer() {
-                        onDeletePrayer?(deleteId)
-                    }
+                    await viewModel.deletePrayer()
+                    dismiss()
                 }
             }
             Button("취소", role: .cancel) { }
@@ -138,14 +137,14 @@ struct DetailView: View {
         
         VStack(spacing: 0) {
             ForEach(prayer.responses ?? []) { response in
-                PrayerResponseRowView(response: response, 
+                PrayerResponseRowView(response: response,
                                       onDelete: { response in
                     Task {
                         await viewModel.deletePrayerResponse(response: response)
                     }
                 })
-                    .padding(.horizontal, 20)
-                    .padding(.vertical, 10)
+                .padding(.horizontal, 20)
+                .padding(.vertical, 10)
             }
         }
     }
@@ -155,9 +154,8 @@ struct DetailView: View {
 #Preview {
     let mockAPIClient = APIClient(tokenStorage: TokenStorage())
     let mockRepo = PrayerRepository(apiClient: mockAPIClient)
+    let mockUseCase = PrayerUseCase(repository: mockRepo)
     
-    return PrayerDetailView(viewModel: { PrayerDetailViewModel(prayerRepository: mockRepo,
-                                                        prayerRequestId: 1) },
-                     onDeletePrayer: { _ in
-                     })
+    return PrayerDetailView(viewModel: { PrayerDetailViewModel(prayerUseCase: mockUseCase,
+                                                               prayerRequestId: 1) })
 }

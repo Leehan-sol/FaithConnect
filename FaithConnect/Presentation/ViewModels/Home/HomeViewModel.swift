@@ -16,28 +16,52 @@ class HomeViewModel: ObservableObject {
     @Published var isLoading: Bool = false
     @Published var selectedCategoryId: Int = 0
     
-    private let prayerRepository: PrayerRepositoryProtocol
+    private let prayerUseCase: PrayerUseCaseProtocol
     private var cancellables = Set<AnyCancellable>()
     
     private var currentPage: Int = 1
     private var hasNext: Bool = true
     private var hasInitialized: Bool = false
     
-    init(prayerRepository: PrayerRepositoryProtocol) {
-        self.prayerRepository = prayerRepository
+    init(prayerUseCase: PrayerUseCaseProtocol) {
+        self.prayerUseCase = prayerUseCase
+        bindRepositoryEvents()
     }
     
     func initializeIfNeeded() async {
         guard !hasInitialized else { return }
         hasInitialized = true
         do {
-            categories = try await prayerRepository.fetchCategories()
+            categories = try await prayerUseCase.loadCategories()
             guard let firstCategoryId = categories.first?.id else { return }
             selectedCategoryId = firstCategoryId
             try await loadPrayers(categoryID: firstCategoryId,
                                   reset: true)
         } catch {
-            // TODO: - init 에러시 화면 처리
+            // TODO: - 에러시 화면 처리
+        }
+    }
+    
+    private func bindRepositoryEvents() {
+        prayerUseCase.eventPublisher
+            .sink { [weak self] event in
+                self?.handle(event: event)
+            }
+            .store(in: &cancellables)
+    }
+    
+    private func handle(event: PrayerEventType) {
+        switch event {
+        case .prayerAdded(let prayer):
+            if selectedCategoryId == 1 || selectedCategoryId == prayer.categoryId {
+                prayers.append(prayer)
+            }
+        case .prayerUpdated(let prayer):
+            if let index = prayers.firstIndex(where: { $0.id == prayer.id }) {
+                prayers[index] = prayer
+            }
+        case .prayerDeleted(let prayerRequestId):
+            prayers.removeAll { $0.id == prayerRequestId }
         }
     }
     
@@ -86,7 +110,7 @@ class HomeViewModel: ObservableObject {
         
         let pageToLoad = reset ? 1 : currentPage + 1
         
-        let prayerPage = try await prayerRepository.loadPrayers(
+        let prayerPage = try await prayerUseCase.loadPrayers(
             categoryID: categoryID,
             page: pageToLoad
         )
@@ -104,24 +128,13 @@ class HomeViewModel: ObservableObject {
         hasNext = prayerPage.hasNext
     }
     
-    func addPrayer(prayer: Prayer) {
-        if selectedCategoryId == prayer.categoryId {
-            prayers.insert(prayer, at: 0)
-        }
-    }
-    
-    func deletePrayer(id: Int) {
-        prayers.removeAll { $0.id == id }
-    }
-    
     func makePrayerDetailVM(prayer: Prayer) -> PrayerDetailViewModel {
-        return PrayerDetailViewModel(prayerRepository: prayerRepository,
+        return PrayerDetailViewModel(prayerUseCase: prayerUseCase,
                                      prayerRequestId: prayer.id)
     }
     
     func makePrayerEditorVM() -> PrayerEditorViewModel {
-        return PrayerEditorViewModel(prayerRepository: prayerRepository)
+        return PrayerEditorViewModel(prayerUseCase: prayerUseCase)
     }
-    
-    
+
 }

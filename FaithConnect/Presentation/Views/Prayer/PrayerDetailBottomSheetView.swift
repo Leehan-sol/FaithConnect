@@ -130,7 +130,8 @@ struct PrayerDetailBottomSheetView: View {
 #Preview {
     let mockAPIClient = APIClient(tokenStorage: TokenStorage())
     let mockRepo = PrayerRepository(apiClient: mockAPIClient)
+    let mockUseCase = PrayerUseCase(repository: mockRepo)
     
-    return PrayerDetailBottomSheetView(viewModel: PrayerDetailViewModel(prayerRepository: mockRepo,
+    return PrayerDetailBottomSheetView(viewModel: PrayerDetailViewModel(prayerUseCase: mockUseCase,
                                                                  prayerRequestId: 0))
 }

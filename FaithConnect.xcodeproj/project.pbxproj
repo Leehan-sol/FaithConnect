@@ -72,6 +72,8 @@
 		CCAD36982EB7920C0028D451 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAD36972EB7920C0028D451 /* HomeViewModel.swift */; };
 		CCAD369A2EB792140028D451 /* MyPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAD36992EB792140028D451 /* MyPageViewModel.swift */; };
 		CCAD369E2EB799B70028D451 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAD369D2EB799B70028D451 /* String+Extensions.swift */; };
+		CCFDC1302F2F2043008F9CB9 /* PrayerEventType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCFDC12F2F2F2043008F9CB9 /* PrayerEventType.swift */; };
+		CCFDC1322F2FA2C5008F9CB9 /* PrayerUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCFDC1312F2FA2C5008F9CB9 /* PrayerUseCase.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -142,6 +144,8 @@
 		CCAD36972EB7920C0028D451 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		CCAD36992EB792140028D451 /* MyPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewModel.swift; sourceTree = "<group>"; };
 		CCAD369D2EB799B70028D451 /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
+		CCFDC12F2F2F2043008F9CB9 /* PrayerEventType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerEventType.swift; sourceTree = "<group>"; };
+		CCFDC1312F2FA2C5008F9CB9 /* PrayerUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerUseCase.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -267,7 +271,7 @@
 		CC6B2AD92F24CAC4003BB246 /* Domain */ = {
 			isa = PBXGroup;
 			children = (
-				CCAD36772EB7285A0028D451 /* Models */,
+				CCAD36772EB7285A0028D451 /* Entities */,
 				CC6B2ADD2F24CB3D003BB246 /* Interfaces */,
 				CC6B2AE42F24CCB5003BB246 /* UseCases */,
 			);
@@ -312,6 +316,8 @@
 		CC6B2AE42F24CCB5003BB246 /* UseCases */ = {
 			isa = PBXGroup;
 			children = (
+				CCFDC12F2F2F2043008F9CB9 /* PrayerEventType.swift */,
+				CCFDC1312F2FA2C5008F9CB9 /* PrayerUseCase.swift */,
 			);
 			path = UseCases;
 			sourceTree = "<group>";
@@ -372,7 +378,7 @@
 			path = App;
 			sourceTree = "<group>";
 		};
-		CCAD36772EB7285A0028D451 /* Models */ = {
+		CCAD36772EB7285A0028D451 /* Entities */ = {
 			isa = PBXGroup;
 			children = (
 				CC6194C52EF7E030005B79A7 /* User.swift */,
@@ -381,7 +387,7 @@
 				CC5B0E572EBF322400CE79A3 /* PrayerResponse.swift */,
 				CC6EC0632F015711009D2E31 /* MyResponse.swift */,
 			);
-			path = Models;
+			path = Entities;
 			sourceTree = "<group>";
 		};
 		CCAD36782EB728620028D451 /* ViewModels */ = {
@@ -577,6 +583,7 @@
 				CC6FFE172F1390B300EB10D3 /* SplashView.swift in Sources */,
 				CC6C8F1B2E9B978300E43387 /* FaithConnectApp.swift in Sources */,
 				186D4F6F2F037523005520FD /* PrayerContextType.swift in Sources */,
+				CCFDC1302F2F2043008F9CB9 /* PrayerEventType.swift in Sources */,
 				CC4EA43E2EC9AC3E0097D09C /* PrayerDetailBottomSheetView.swift in Sources */,
 				1862C5452EFBA77D00B0DD70 /* CategoryDTOs.swift in Sources */,
 				1862C5462EFBA77D00B0DD70 /* AuthDTOs.swift in Sources */,
@@ -592,6 +599,7 @@
 				CC5B0E5E2EBF387000CE79A3 /* ActionButton.swift in Sources */,
 				CC5B0E662EBF990A00CE79A3 /* CategoryScrollView.swift in Sources */,
 				CC5B0E642EBF8BA900CE79A3 /* PrayerCategory.swift in Sources */,
+				CCFDC1322F2FA2C5008F9CB9 /* PrayerUseCase.swift in Sources */,
 				CC4EA4422EC9F64A0097D09C /* CustomBackButtonStyle.swift in Sources */,
 				CC6EC0642F015711009D2E31 /* MyResponse.swift in Sources */,
 				CCAD369E2EB799B70028D451 /* String+Extensions.swift in Sources */,

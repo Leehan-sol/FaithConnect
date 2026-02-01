@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct PrayerResponseRowView: View {
-    @EnvironmentObject private var session: UserSession
     @State private var showConfirmationDialog = false
     @State private var showDeleteAlert = false
     let response: PrayerResponse
@@ -82,5 +81,4 @@ struct PrayerResponseRowView: View {
                                                    isMine: false),
                           onDelete: { _ in })
     .padding()
-    .environmentObject(UserSession())
 }

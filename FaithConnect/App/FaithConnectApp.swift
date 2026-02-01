@@ -12,21 +12,25 @@ struct FaithConnectApp: App {
     @Environment(\.scenePhase) private var scenePhase
     @StateObject private var session = UserSession()
     
+    private let userSession: UserSession
     private let tokenStorage: TokenStorageProtocol
     private let apiClient: APIClientProtocol
     private let prayerRepository: PrayerRepositoryProtocol
+    private let prayerUseCase: PrayerUseCaseProtocol
     
     init() {
+        self.userSession = UserSession()
         self.tokenStorage = TokenStorage()
         self.apiClient = APIClient(tokenStorage: tokenStorage)
         self.prayerRepository = PrayerRepository(apiClient: apiClient)
+        self.prayerUseCase = PrayerUseCase(repository: prayerRepository)
     }
     
     var body: some Scene {
         WindowGroup {
-            RootView(apiClient: apiClient,
-                     prayerRepository: prayerRepository)
-            .environmentObject(session)
+            RootView(session: userSession,
+                     apiClient: apiClient, // TODO: - 1) AuthuseCase 사용으로 변경해야함
+                     prayerUseCase: prayerUseCase)
         }
     }
 }
@@ -34,15 +38,18 @@ struct FaithConnectApp: App {
 
 // MARK: - RootView
 struct RootView: View {
-    @EnvironmentObject var session: UserSession
-    let apiClient: APIClientProtocol
-    let prayerRepository: PrayerRepositoryProtocol
+    let session: UserSession
+    let apiClient: APIClientProtocol // TODO: - 2)
+    let prayerUseCase: PrayerUseCaseProtocol
     
     @State private var isCheckingAuth = true
     
-    init(apiClient: APIClientProtocol, prayerRepository: PrayerRepositoryProtocol) {
+    init(session: UserSession,
+         apiClient: APIClientProtocol,
+         prayerUseCase: PrayerUseCaseProtocol) {
+        self.session = session
         self.apiClient = apiClient
-        self.prayerRepository = prayerRepository
+        self.prayerUseCase = prayerUseCase
     }
     
     var body: some View {
@@ -50,11 +57,12 @@ struct RootView: View {
             if isCheckingAuth {
                 SplashView()
             } else if session.isLoggedIn {
-                // TODO: - AuthRepository 분리 (apiClient 주입) -> ViewModel에서 APIClient를 몰라도됨
+                // TODO: - 3) AuthRepository 분리 (apiClient 주입) -> ViewModel에서 APIClient를 몰라도됨
                 MainTabView(
-                    homeViewModel: HomeViewModel(prayerRepository: prayerRepository),
-                    myPrayerViewModel: MyPrayerViewModel(prayerRepository: prayerRepository),
-                    myPageViewModel: MyPageViewModel(apiClient: apiClient)
+                    homeViewModel: HomeViewModel(prayerUseCase: prayerUseCase),
+                    myPrayerViewModel: MyPrayerViewModel(prayerUseCase: prayerUseCase),
+                    myPageViewModel: MyPageViewModel(apiClient: apiClient,
+                                                    userSession: session)
                 )
             } else {
                 LoginView(viewModel: LoginViewModel(apiClient: apiClient,

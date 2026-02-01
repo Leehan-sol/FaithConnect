@@ -22,7 +22,7 @@ struct Prayer: Identifiable {
     let title: String
     let content: String
     let createdAt: String
-    let participationCount: Int
+    var participationCount: Int
     var responses: [PrayerResponse]?
     let isMine: Bool
 }

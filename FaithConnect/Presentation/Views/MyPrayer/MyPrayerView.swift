@@ -61,14 +61,10 @@ struct MyPrayerView: View {
         .navigationDestination(isPresented: $showPrayerDetail) {
             if let prayer = selectedPrayer {
                 PrayerDetailView(
-                    viewModel: { viewModel.makePrayerDetailVM(prayerRequestId: prayer.id) },
-                    onDeletePrayer: { _ in }
-                )
+                    viewModel: { viewModel.makePrayerDetailVM(prayerRequestId: prayer.id) })
             } else if let response = selectedResponse {
                 PrayerDetailView(
-                    viewModel: { viewModel.makePrayerDetailVM(prayerRequestId: response.id) },
-                    onDeletePrayer: { _ in }
-                )
+                    viewModel: { viewModel.makePrayerDetailVM(prayerRequestId: response.id) })
             }
         }
         .navigationDestination(isPresented: $showMyPrayerList) {
@@ -226,6 +222,7 @@ struct PreviewSection<Item: Identifiable, RowView: View>: View {
 #Preview {
     let mockAPIClient = APIClient(tokenStorage: TokenStorage())
     let mockRepo = PrayerRepository(apiClient: mockAPIClient)
+    let mockUseCase = PrayerUseCase(repository: mockRepo)
     
-    return MyPrayerView(viewModel: MyPrayerViewModel(prayerRepository: mockRepo))
+    return MyPrayerView(viewModel: MyPrayerViewModel(prayerUseCase: mockUseCase))
 }

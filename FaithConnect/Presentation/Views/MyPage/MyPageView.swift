@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct MyPageView: View {
-    @EnvironmentObject private var session: UserSession
     @ObservedObject var viewModel: MyPageViewModel
     @State private var showChangePassword: Bool = false
     @State private var selectedPolicy: PolicyType?
@@ -27,9 +26,9 @@ struct MyPageView: View {
                         .frame(width: 30, height: 30)
                     
                     VStack(alignment: .leading, spacing: 5) {
-                        Text(session.name)
+                        Text(viewModel.name)
                         
-                        Text(verbatim: session.email)
+                        Text(verbatim: viewModel.email)
                             .foregroundColor(.gray)
                             .font(.footnote)
                     }
@@ -130,7 +129,7 @@ struct MyPageView: View {
             .alert(item: $viewModel.alertType) { alert in
                 let dismissAction = {
                     if alert == .successLogout {
-                        session.logout()
+                        viewModel.sessionLogout()
                     }
                     
                     if alert == .successChangePassword {
@@ -149,7 +148,7 @@ struct MyPageView: View {
 }
 
 #Preview {
-    MyPageView(viewModel: MyPageViewModel(apiClient: APIClient(tokenStorage: TokenStorage())))
-        .environmentObject(UserSession())
+    MyPageView(viewModel: MyPageViewModel(apiClient: APIClient(tokenStorage: TokenStorage()), 
+                                          userSession: UserSession()))
 }
 

@@ -8,19 +8,16 @@
 import SwiftUI
 
 struct PrayerEditorView: View {
-    @EnvironmentObject var session: UserSession
     @StateObject var viewModel: PrayerEditorViewModel
     @Environment(\.dismiss) var dismiss
+    
     @State private var selectedCategoryId: Int = 0
     @State var title: String = ""
     @State var content: String = ""
     @State var showAlert: Bool = false
     
-    var onDone: ((Prayer) -> Void)?
-    
-    init(viewModel: @escaping () -> PrayerEditorViewModel, onDone: ((Prayer) -> Void)?) {
+    init(viewModel: @escaping () -> PrayerEditorViewModel) {
         _viewModel = StateObject(wrappedValue: viewModel())
-        self.onDone = onDone
     }
     
     var body: some View {
@@ -35,7 +32,7 @@ struct PrayerEditorView: View {
                 
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 10) {
-                        ForEach(categories, id: \.self) { category in
+                        ForEach(viewModel.categories, id: \.self) { category in
                             CategoryButtonView(
                                 category: category,
                                 isSelected: category.id == selectedCategoryId,
@@ -100,11 +97,10 @@ struct PrayerEditorView: View {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
                         Task {
-                            if let newPrayer = await viewModel.writePrayer(categoryId: selectedCategoryId,
+                            await viewModel.writePrayer(categoryId: selectedCategoryId,
                                                                            title: title,
-                                                                           content: content) {
-                                onDone?(newPrayer)
-                            }
+                                                                           content: content)
+                            dismiss()
                         }
                     } label: {
                         Text("완료")
@@ -132,10 +128,7 @@ struct PrayerEditorView: View {
 #Preview {
     let mockAPIClient = APIClient(tokenStorage: TokenStorage())
     let mockRepo = PrayerRepository(apiClient: mockAPIClient)
+    let mockUseCase = PrayerUseCase(repository: mockRepo)
     
-    return PrayerEditorView(
-        viewModel: { PrayerEditorViewModel(prayerRepository: mockRepo) },
-               onDone: { _ in
-               }
-           )
+    return PrayerEditorView(viewModel: { PrayerEditorViewModel(prayerUseCase: mockUseCase) })
 }

@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct ChangePasswordView: View {
-    @EnvironmentObject private var session: UserSession
     @ObservedObject var viewModel: MyPageViewModel
 
     @State var churchId: Int?
@@ -54,8 +53,6 @@ struct ChangePasswordView: View {
                              backgroundColor: .customBlue1) {
                     Task {
                         await viewModel.changePassword(id: churchId ?? 0,
-                                                       name: session.name,
-                                                       email: session.email,
                                                        currentPassword: password,
                                                        newPassword: newPassword,
                                                        confirmPassword: confirmNewPassword)
@@ -75,6 +72,6 @@ struct ChangePasswordView: View {
 
 
 #Preview {
-    ChangePasswordView(viewModel: MyPageViewModel(apiClient: APIClient(tokenStorage: TokenStorage())))
-        .environmentObject(UserSession())
+    ChangePasswordView(viewModel: MyPageViewModel(apiClient: APIClient(tokenStorage: TokenStorage()),
+                                                  userSession: UserSession()))
 }

@@ -19,15 +19,15 @@ protocol APIClientProtocol {
     func changePassword(id: Int, name: String, email: String, newPassword: String) async throws
     
     // Prayer
-    func loadCategories() async throws -> [PrayerCategory]
-    func loadPrayers(categoryID: Int, page: Int) async throws -> PrayerPage
-    func loadPrayerDetail(prayerRequestID: Int) async throws -> Prayer
-    func writePrayer(categoryID: Int, title: String, content: String) async throws -> Prayer
+    func loadCategories() async throws -> [CategoryResponse]
+    func loadPrayers(categoryID: Int, page: Int) async throws -> PrayerListResponse
+    func loadPrayerDetail(prayerRequestID: Int) async throws -> PrayerDetailResponse
+    func writePrayer(categoryID: Int, title: String, content: String) async throws -> PrayerWriteResponse
     func deletePrayer(prayerRequestId: Int) async throws
-    func writePrayerResponse(prayerRequsetID: Int, message: String) async throws -> PrayerResponse
+    func writePrayerResponse(prayerRequsetID: Int, message: String) async throws -> DetailResponseItem
     func deletePrayerResponse(responseID: Int) async throws
-    func loadWrittenPrayers(page: Int) async throws -> PrayerPage
-    func loadParticipatedPrayers(page: Int) async throws -> MyResponsePage
+    func loadWrittenPrayers(page: Int) async throws -> PrayerListResponse
+    func loadParticipatedPrayers(page: Int) async throws -> MyResponseList
 }
 
 // MARK: - APIClient
@@ -288,30 +288,15 @@ extension APIClient {
 
 // MARK: - Prayer
 extension APIClient {
-    func loadCategories() async throws -> [PrayerCategory] {
+    func loadCategories() async throws -> [CategoryResponse] {
         let urlString = APIEndpoint.categories.urlString
         
         let apiResponse: [CategoryResponse] = try await get(path: urlString)
         
-        let category = apiResponse.map { response in
-            PrayerCategory(id: response.categoryId,
-                           categoryCode: response.categoryCode,
-                           categoryName: response.categoryName)
-        }
-        
-        print("카테고리:", category.count)
-        category.forEach { category in
-            print("""
-                      ─────────────
-                      id: \(category.id)
-                      name: \(category.categoryName)
-                      """)
-        }
-        
-        return category
+        return apiResponse
     }
     
-    func loadPrayers(categoryID: Int, page: Int) async throws -> PrayerPage {
+    func loadPrayers(categoryID: Int, page: Int) async throws -> PrayerListResponse {
         let urlString = APIEndpoint.prayers.urlString
         
         let apiResponse: PrayerListResponse = try await get(path: urlString,
@@ -320,30 +305,18 @@ extension APIClient {
                                                                 URLQueryItem(name: "page", value: "\(page)")
                                                             ])
         
-        print("기도:", apiResponse.prayerRequests.count)
-        apiResponse.prayerRequests.forEach { prayer in
-            print("""
-                  ─────────────
-                  id: \(prayer.prayerRequestId)
-                  title: \(prayer.title)
-                  categoryId: \(prayer.categoryId)
-                  """)
-        }
-        
-        return PrayerPage(prayers: apiResponse.prayerRequests.map { Prayer(from: $0) },
-                          currentPage: apiResponse.currentPage,
-                          hasNext: apiResponse.hasNext)
+        return apiResponse
     }
     
-    func loadPrayerDetail(prayerRequestID: Int) async throws -> Prayer {
+    func loadPrayerDetail(prayerRequestID: Int) async throws -> PrayerDetailResponse {
         let urlString = APIEndpoint.prayerDetail(id: prayerRequestID).urlString
         
         let apiResponse: PrayerDetailResponse = try await get(path: urlString)
         
-        return Prayer(from: apiResponse)
+        return apiResponse
     }
     
-    func writePrayer(categoryID: Int, title: String, content: String) async throws -> Prayer {
+    func writePrayer(categoryID: Int, title: String, content: String) async throws -> PrayerWriteResponse {
         let urlString = APIEndpoint.prayers.urlString
         
         let requestBody = PrayerWriteRequest(
@@ -355,7 +328,7 @@ extension APIClient {
         let apiResponse: PrayerWriteResponse = try await post(urlString: urlString,
                                                               requestBody: requestBody)
         
-        return Prayer(from: apiResponse)
+        return apiResponse
     }
     
     func deletePrayer(prayerRequestId: Int) async throws {
@@ -369,7 +342,7 @@ extension APIClient {
         }
     }
     
-    func writePrayerResponse(prayerRequsetID: Int, message: String) async throws -> PrayerResponse {
+    func writePrayerResponse(prayerRequsetID: Int, message: String) async throws -> DetailResponseItem {
         let urlString = APIEndpoint.responses.urlString
         
         let requestBody = PrayerResponseWriteRequest(prayerRequestId: prayerRequsetID,
@@ -377,8 +350,7 @@ extension APIClient {
         
         let apiResponse: DetailResponseItem = try await post(urlString: urlString,
                                                              requestBody: requestBody)
-        
-        return PrayerResponse(from: apiResponse)
+        return apiResponse
     }
     
     func deletePrayerResponse(responseID: Int) async throws {
@@ -392,7 +364,7 @@ extension APIClient {
         }
     }
     
-    func loadWrittenPrayers(page: Int) async throws -> PrayerPage {
+    func loadWrittenPrayers(page: Int) async throws -> PrayerListResponse {
         let urlString = APIEndpoint.myRequests.urlString
         
         let apiResponse: PrayerListResponse = try await get(path: urlString,
@@ -408,12 +380,10 @@ extension APIClient {
                   """)
         }
         
-        return PrayerPage(prayers: apiResponse.prayerRequests.map { Prayer(from: $0) },
-                          currentPage: apiResponse.currentPage,
-                          hasNext: apiResponse.hasNext)
+        return apiResponse
     }
     
-    func loadParticipatedPrayers(page: Int) async throws -> MyResponsePage {
+    func loadParticipatedPrayers(page: Int) async throws -> MyResponseList {
         let urlString = APIEndpoint.myPrayers.urlString
         
         let apiResponse: MyResponseList = try await get(path: urlString,
@@ -429,9 +399,7 @@ extension APIClient {
                   """)
         }
         
-        return MyResponsePage(responses: apiResponse.responses.map { MyResponse(from: $0) },
-                              currentPage: apiResponse.currentPage,
-                              hasNext: apiResponse.hasNext)
+        return apiResponse
     }
 }
 
