@@ -11,15 +11,13 @@ import SwiftUI
 struct FaithConnectApp: App {
     @Environment(\.scenePhase) private var scenePhase
     @StateObject private var session = UserSession()
-    
-    private let userSession: UserSession
+
     private let tokenStorage: TokenStorageProtocol
     private let apiClient: APIClientProtocol
     private let prayerRepository: PrayerRepositoryProtocol
     private let prayerUseCase: PrayerUseCaseProtocol
     
     init() {
-        self.userSession = UserSession()
         self.tokenStorage = TokenStorage()
         self.apiClient = APIClient(tokenStorage: tokenStorage)
         self.prayerRepository = PrayerRepository(apiClient: apiClient)
@@ -28,7 +26,7 @@ struct FaithConnectApp: App {
     
     var body: some Scene {
         WindowGroup {
-            RootView(session: userSession,
+            RootView(session: session,
                      apiClient: apiClient, // TODO: - 1) AuthuseCase 사용으로 변경해야함
                      prayerUseCase: prayerUseCase)
         }
@@ -38,7 +36,7 @@ struct FaithConnectApp: App {
 
 // MARK: - RootView
 struct RootView: View {
-    let session: UserSession
+    @ObservedObject var session: UserSession
     let apiClient: APIClientProtocol // TODO: - 2)
     let prayerUseCase: PrayerUseCaseProtocol
     

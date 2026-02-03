@@ -28,20 +28,6 @@ class HomeViewModel: ObservableObject {
         bindRepositoryEvents()
     }
     
-    func initializeIfNeeded() async {
-        guard !hasInitialized else { return }
-        hasInitialized = true
-        do {
-            categories = try await prayerUseCase.loadCategories()
-            guard let firstCategoryId = categories.first?.id else { return }
-            selectedCategoryId = firstCategoryId
-            try await loadPrayers(categoryID: firstCategoryId,
-                                  reset: true)
-        } catch {
-            // TODO: - 에러시 화면 처리
-        }
-    }
-    
     private func bindRepositoryEvents() {
         prayerUseCase.eventPublisher
             .sink { [weak self] event in
@@ -62,6 +48,20 @@ class HomeViewModel: ObservableObject {
             }
         case .prayerDeleted(let prayerRequestId):
             prayers.removeAll { $0.id == prayerRequestId }
+        }
+    }
+    
+    func initializeIfNeeded() async {
+        guard !hasInitialized else { return }
+        hasInitialized = true
+        do {
+            categories = try await prayerUseCase.loadCategories()
+            guard let firstCategoryId = categories.first?.id else { return }
+            selectedCategoryId = firstCategoryId
+            try await loadPrayers(categoryID: firstCategoryId,
+                                  reset: true)
+        } catch {
+            // TODO: - 에러시 화면 처리
         }
     }
     
