@@ -223,7 +223,7 @@ extension APIClient {
         }
         
         await MainActor.run {
-            tokenStorage.saveToken(
+            tokenStorage.save(
                 accessToken: apiResponse.accessToken,
                 refreshToken: apiResponse.refreshToken
             )
@@ -242,7 +242,7 @@ extension APIClient {
         }
         
         await MainActor.run {
-            tokenStorage.clearToken()
+            tokenStorage.clear()
         }
     }
     
@@ -437,7 +437,7 @@ extension APIClient {
                 }
                 
                 await MainActor.run {
-                    tokenStorage.saveToken(accessToken: apiResponse.accessToken,
+                    tokenStorage.save(accessToken: apiResponse.accessToken,
                                            refreshToken: apiResponse.refreshToken)
                 }
                 
@@ -452,7 +452,7 @@ extension APIClient {
     }
     
     private func handleSessionExpiration() async {
-        tokenStorage.clearToken()
+        tokenStorage.clear()
         await MainActor.run {
             NotificationCenter.default.post(name: .logoutRequired, object: nil)
         }

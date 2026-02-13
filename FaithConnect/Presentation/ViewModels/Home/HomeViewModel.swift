@@ -42,7 +42,7 @@ class HomeViewModel: ObservableObject {
             alertType = .error(message: error.localizedDescription)
         }
     }
-    
+
     private func bindRepositoryEvents() {
         prayerUseCase.eventPublisher
             .receive(on: DispatchQueue.main)
