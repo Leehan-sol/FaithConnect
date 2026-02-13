@@ -36,7 +36,15 @@ enum APIEndpoint {
     // MARK: - Token
     case refreshToken
     
-    private static let baseURL = "https://faith-connect.net/dev"
+    private var baseURL: String {
+        switch APIEnvironment.current {
+        case .mock:
+            return "http://localhost:8080"
+        case .production:
+            return "http://localhost:8080"
+//            return "https://faith-connect.net/dev"
+        }
+    }
     
     private var basePath: String {
         switch APIEnvironment.current {
@@ -81,6 +89,6 @@ enum APIEndpoint {
     }
     
     var urlString: String {
-        Self.baseURL + path
+        self.baseURL + path
     }
 }

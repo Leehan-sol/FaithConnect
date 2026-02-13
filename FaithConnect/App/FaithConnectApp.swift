@@ -11,25 +11,27 @@ import SwiftUI
 struct FaithConnectApp: App {
     @Environment(\.scenePhase) private var scenePhase
     @StateObject private var session = UserSession()
-    
-    private let userSession: UserSession
+
     private let tokenStorage: TokenStorageProtocol
     private let apiClient: APIClientProtocol
+    private let authRepository: AuthRepositoryProtocol
+    private let authUseCase: AuthUseCaseProtocol
     private let prayerRepository: PrayerRepositoryProtocol
     private let prayerUseCase: PrayerUseCaseProtocol
-    
+
     init() {
-        self.userSession = UserSession()
         self.tokenStorage = TokenStorage()
         self.apiClient = APIClient(tokenStorage: tokenStorage)
+        self.authRepository = AuthRepository(apiClient: apiClient)
+        self.authUseCase = AuthUseCase(repository: authRepository)
         self.prayerRepository = PrayerRepository(apiClient: apiClient)
         self.prayerUseCase = PrayerUseCase(repository: prayerRepository)
     }
-    
+
     var body: some Scene {
         WindowGroup {
-            RootView(session: userSession,
-                     apiClient: apiClient, // TODO: - 1) AuthuseCase 사용으로 변경해야함
+            RootView(session: session,
+                     authUseCase: authUseCase,
                      prayerUseCase: prayerUseCase)
         }
     }
@@ -38,34 +40,33 @@ struct FaithConnectApp: App {
 
 // MARK: - RootView
 struct RootView: View {
-    let session: UserSession
-    let apiClient: APIClientProtocol // TODO: - 2)
+    @ObservedObject var session: UserSession
+    let authUseCase: AuthUseCaseProtocol
     let prayerUseCase: PrayerUseCaseProtocol
-    
+
     @State private var isCheckingAuth = true
-    
+
     init(session: UserSession,
-         apiClient: APIClientProtocol,
+         authUseCase: AuthUseCaseProtocol,
          prayerUseCase: PrayerUseCaseProtocol) {
         self.session = session
-        self.apiClient = apiClient
+        self.authUseCase = authUseCase
         self.prayerUseCase = prayerUseCase
     }
-    
+
     var body: some View {
         Group {
             if isCheckingAuth {
                 SplashView()
             } else if session.isLoggedIn {
-                // TODO: - 3) AuthRepository 분리 (apiClient 주입) -> ViewModel에서 APIClient를 몰라도됨
                 MainTabView(
                     homeViewModel: HomeViewModel(prayerUseCase: prayerUseCase),
                     myPrayerViewModel: MyPrayerViewModel(prayerUseCase: prayerUseCase),
-                    myPageViewModel: MyPageViewModel(apiClient: apiClient,
+                    myPageViewModel: MyPageViewModel(authUseCase: authUseCase,
                                                     userSession: session)
                 )
             } else {
-                LoginView(viewModel: LoginViewModel(apiClient: apiClient,
+                LoginView(viewModel: LoginViewModel(authUseCase: authUseCase,
                                                     session: session))
             }
         }
@@ -84,17 +85,17 @@ struct RootView: View {
 private extension RootView {
     private func checkLoginStatus() {
         Task {
-            guard apiClient.hasToken else {
+            guard authUseCase.hasToken else {
                 print("❌ 토큰 없음")
                 await MainActor.run {
                     isCheckingAuth = false
                 }
                 return
             }
-            
+
             do {
-                let user = try await apiClient.fetchMyInfo()
-                
+                let user = try await authUseCase.fetchMyInfo()
+
                 await MainActor.run {
                     session.login(user: user)
                 }
@@ -102,7 +103,7 @@ private extension RootView {
             } catch {
                 print("❌ 토큰 만료: \(error.localizedDescription)")
             }
-            
+
             await MainActor.run {
                 isCheckingAuth = false
             }

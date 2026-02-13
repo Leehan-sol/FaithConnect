@@ -81,6 +81,11 @@ struct HomeView: View {
         .task {
             await viewModel.initializeIfNeeded()
         }
+        .alert(item: $viewModel.alertType) { alert in
+            Alert(title: Text(alert.title),
+                  message: Text(alert.message),
+                  dismissButton: .default(Text("확인")))
+        }
     }
 }
 

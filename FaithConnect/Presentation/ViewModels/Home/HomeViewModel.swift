@@ -15,6 +15,7 @@ class HomeViewModel: ObservableObject {
     @Published var isRefreshing: Bool = false
     @Published var isLoading: Bool = false
     @Published var selectedCategoryId: Int = 0
+    @Published var alertType: AlertType? = nil
     
     private let prayerUseCase: PrayerUseCaseProtocol
     private var cancellables = Set<AnyCancellable>()
@@ -38,12 +39,13 @@ class HomeViewModel: ObservableObject {
             try await loadPrayers(categoryID: firstCategoryId,
                                   reset: true)
         } catch {
-            // TODO: - 에러시 화면 처리
+            alertType = .error(message: error.localizedDescription)
         }
     }
     
     private func bindRepositoryEvents() {
         prayerUseCase.eventPublisher
+            .receive(on: DispatchQueue.main)
             .sink { [weak self] event in
                 self?.handle(event: event)
             }
@@ -62,6 +64,8 @@ class HomeViewModel: ObservableObject {
             }
         case .prayerDeleted(let prayerRequestId):
             prayers.removeAll { $0.id == prayerRequestId }
+        case .responseAdded, .responseDeleted:
+            break
         }
     }
     
@@ -76,7 +80,7 @@ class HomeViewModel: ObservableObject {
             do {
                 try await loadPrayers(categoryID: categoryID, reset: true)
             } catch {
-                
+                alertType = .error(message: error.localizedDescription)
             }
             
         }
@@ -90,7 +94,7 @@ class HomeViewModel: ObservableObject {
             try await loadPrayers(categoryID: selectedCategoryId,
                                   reset: true)
         } catch {
-            
+            alertType = .error(message: error.localizedDescription)
         }
     }
     
@@ -99,7 +103,7 @@ class HomeViewModel: ObservableObject {
             try await loadPrayers(categoryID: selectedCategoryId,
                                   reset: false)
         } catch {
-            
+            alertType = .error(message: error.localizedDescription)
         }
     }
     

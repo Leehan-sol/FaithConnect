@@ -93,9 +93,12 @@ struct SignUpView: View {
     
 }
 
-//#Preview {
-//    @State var isPresented: Bool = false
-//    SignUpView(viewModel: LoginViewModel(APIClient(tokenStorage: TokenStorage()),
-//                                         UserSession()),
-//               isPresented: $isPresented)
-//}
+#Preview {
+    @State var isPresented: Bool = false
+    let mockAuthUseCase = AuthUseCase(repository: AuthRepository(apiClient: APIClient(tokenStorage: TokenStorage())))
+    let mockSession = UserSession()
+    
+    return SignUpView(viewModel: LoginViewModel(authUseCase: mockAuthUseCase,
+                                                    session: mockSession),
+               isPresented: $isPresented)
+}

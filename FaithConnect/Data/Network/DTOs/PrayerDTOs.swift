@@ -23,13 +23,13 @@ struct PrayerListResponse: Decodable {
 // MARK: - 기도 상세
 struct PrayerDetailResponse: Decodable {
     let prayerRequestId: Int
-    let prayerUserId: Int
+    let prayerUserId: Int?
     let prayerUserName: String
-    let categoryId: Int
+    let categoryId: Int?
     let categoryName: String
     let title: String
     let content: String
-    let createdAt: String
+    let createdAt: String?
     let participationCount: Int
     let responses: [DetailResponseItem]?
     let isMine: Bool

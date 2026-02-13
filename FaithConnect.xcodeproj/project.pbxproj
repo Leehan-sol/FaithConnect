@@ -28,6 +28,9 @@
 		CC4EA4402EC9B7370097D09C /* FindIDResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4EA43F2EC9B7370097D09C /* FindIDResultView.swift */; };
 		CC4EA4422EC9F64A0097D09C /* CustomBackButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4EA4412EC9F64A0097D09C /* CustomBackButtonStyle.swift */; };
 		CC4EA4442EC9F6C50097D09C /* View+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4EA4432EC9F6C50097D09C /* View+Extensions.swift */; };
+		CC51C3882F3F652400C94EDC /* AuthRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC51C3872F3F652400C94EDC /* AuthRepository.swift */; };
+		CC51C38A2F3F653C00C94EDC /* AuthUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC51C3892F3F653C00C94EDC /* AuthUseCase.swift */; };
+		CC51C38C2F3F655500C94EDC /* AuthRepositoryProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC51C38B2F3F655500C94EDC /* AuthRepositoryProtocol.swift */; };
 		CC57ADB82EDC41BE0043A8D8 /* ChangePasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC57ADB72EDC41BE0043A8D8 /* ChangePasswordView.swift */; };
 		CC5B0E482EBF243000CE79A3 /* SectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5B0E472EBF243000CE79A3 /* SectionHeaderView.swift */; };
 		CC5B0E4B2EBF2DD000CE79A3 /* MyPrayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5B0E4A2EBF2DD000CE79A3 /* MyPrayerView.swift */; };
@@ -58,7 +61,6 @@
 		CC6EC0662F015FB2009D2E31 /* MyResponseRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6EC0652F015FB2009D2E31 /* MyResponseRowView.swift */; };
 		CC6FFE172F1390B300EB10D3 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6FFE162F1390B300EB10D3 /* SplashView.swift */; };
 		CC728A392EFEB13D00D93208 /* AlertType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC728A382EFEB13D00D93208 /* AlertType.swift */; };
-		CC7A00D32F0BE529005CB132 /* AuthRequirement.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC7A00D22F0BE529005CB132 /* AuthRequirement.swift */; };
 		CC7A00D52F0BEF14005CB132 /* APIDTOs.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC7A00D42F0BEF14005CB132 /* APIDTOs.swift */; };
 		CCAD36752EB726510028D451 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CCAD36742EB726510028D451 /* LaunchScreen.storyboard */; };
 		CCAD36832EB731EF0028D451 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAD36822EB731EF0028D451 /* LoginView.swift */; };
@@ -98,6 +100,9 @@
 		CC4EA43F2EC9B7370097D09C /* FindIDResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindIDResultView.swift; sourceTree = "<group>"; };
 		CC4EA4412EC9F64A0097D09C /* CustomBackButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomBackButtonStyle.swift; sourceTree = "<group>"; };
 		CC4EA4432EC9F6C50097D09C /* View+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extensions.swift"; sourceTree = "<group>"; };
+		CC51C3872F3F652400C94EDC /* AuthRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthRepository.swift; sourceTree = "<group>"; };
+		CC51C3892F3F653C00C94EDC /* AuthUseCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthUseCase.swift; sourceTree = "<group>"; };
+		CC51C38B2F3F655500C94EDC /* AuthRepositoryProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthRepositoryProtocol.swift; sourceTree = "<group>"; };
 		CC57ADB62EDC3F980043A8D8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		CC57ADB72EDC41BE0043A8D8 /* ChangePasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordView.swift; sourceTree = "<group>"; };
 		CC5B0E472EBF243000CE79A3 /* SectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeaderView.swift; sourceTree = "<group>"; };
@@ -130,7 +135,6 @@
 		CC6EC0652F015FB2009D2E31 /* MyResponseRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyResponseRowView.swift; sourceTree = "<group>"; };
 		CC6FFE162F1390B300EB10D3 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 		CC728A382EFEB13D00D93208 /* AlertType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertType.swift; sourceTree = "<group>"; };
-		CC7A00D22F0BE529005CB132 /* AuthRequirement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthRequirement.swift; sourceTree = "<group>"; };
 		CC7A00D42F0BEF14005CB132 /* APIDTOs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIDTOs.swift; sourceTree = "<group>"; };
 		CCAD36742EB726510028D451 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CCAD36822EB731EF0028D451 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
@@ -174,7 +178,6 @@
 			isa = PBXGroup;
 			children = (
 				CC5D794E2EC757F600C1CEE4 /* APIClient.swift */,
-				CC7A00D22F0BE529005CB132 /* AuthRequirement.swift */,
 				1862C5482EFBA89600B0DD70 /* APIError.swift */,
 				180939752F0B7CE200CC1BAE /* APIErrorCode.swift */,
 				18948E732F024C8B00C9C75C /* APIEndPoint.swift */,
@@ -300,6 +303,7 @@
 		CC6B2ADD2F24CB3D003BB246 /* Interfaces */ = {
 			isa = PBXGroup;
 			children = (
+				CC51C38B2F3F655500C94EDC /* AuthRepositoryProtocol.swift */,
 				CC6B2ADE2F24CB4B003BB246 /* PrayerRepositoryProtocol.swift */,
 			);
 			path = Interfaces;
@@ -308,6 +312,7 @@
 		CC6B2AE12F24CB62003BB246 /* Repositories */ = {
 			isa = PBXGroup;
 			children = (
+				CC51C3872F3F652400C94EDC /* AuthRepository.swift */,
 				CC6B2AE22F24CB72003BB246 /* PrayerRepository.swift */,
 			);
 			path = Repositories;
@@ -316,6 +321,7 @@
 		CC6B2AE42F24CCB5003BB246 /* UseCases */ = {
 			isa = PBXGroup;
 			children = (
+				CC51C3892F3F653C00C94EDC /* AuthUseCase.swift */,
 				CCFDC12F2F2F2043008F9CB9 /* PrayerEventType.swift */,
 				CCFDC1312F2FA2C5008F9CB9 /* PrayerUseCase.swift */,
 			);
@@ -590,6 +596,7 @@
 				1862C5472EFBA77D00B0DD70 /* PrayerDTOs.swift in Sources */,
 				CC5B0E5C2EBF368900CE79A3 /* FindPasswordView.swift in Sources */,
 				CCAD36942EB78D290028D451 /* MyPageView.swift in Sources */,
+				CC51C38C2F3F655500C94EDC /* AuthRepositoryProtocol.swift in Sources */,
 				CC6437DA2EBE42C20079ED24 /* PrayerEditorView.swift in Sources */,
 				CC728A392EFEB13D00D93208 /* AlertType.swift in Sources */,
 				CC5B0E5A2EBF367900CE79A3 /* FindIDView.swift in Sources */,
@@ -609,7 +616,6 @@
 				18948E742F024C9300C9C75C /* APIEndPoint.swift in Sources */,
 				CC6194C62EF7E030005B79A7 /* User.swift in Sources */,
 				1860F0422F0E3F5D00D8AB9A /* LoadingDialogView.swift in Sources */,
-				CC7A00D32F0BE529005CB132 /* AuthRequirement.swift in Sources */,
 				CC5B0E4D2EBF2E5500CE79A3 /* MyPrayerViewModel.swift in Sources */,
 				CC5B0E602EBF567F00CE79A3 /* UIApplication+Extensions.swift in Sources */,
 				CC4EA4442EC9F6C50097D09C /* View+Extensions.swift in Sources */,
@@ -619,8 +625,10 @@
 				CC5D794F2EC757F600C1CEE4 /* APIClient.swift in Sources */,
 				CCAD368E2EB782A00028D451 /* MainTabView.swift in Sources */,
 				CC6EC0662F015FB2009D2E31 /* MyResponseRowView.swift in Sources */,
+				CC51C3882F3F652400C94EDC /* AuthRepository.swift in Sources */,
 				CC6E3DF82ED1A19500B0EF4D /* MyPageItemField.swift in Sources */,
 				CC5B0E582EBF322400CE79A3 /* PrayerResponse.swift in Sources */,
+				CC51C38A2F3F653C00C94EDC /* AuthUseCase.swift in Sources */,
 				187636062F0D1529005EF482 /* NotificationCenter+Extensions.swift in Sources */,
 				CC5B0E4F2EBF30A900CE79A3 /* PrayerDetailViewModel.swift in Sources */,
 				CCAD369A2EB792140028D451 /* MyPageViewModel.swift in Sources */,

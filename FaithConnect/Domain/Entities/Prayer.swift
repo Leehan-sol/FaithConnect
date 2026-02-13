@@ -32,21 +32,21 @@ struct Prayer: Identifiable {
 extension Prayer {
     init(from dto: PrayerDetailResponse) {
         self.id = dto.prayerRequestId
-        self.userId = dto.prayerUserId
+        self.userId = dto.prayerUserId ?? 0
         self.userName = dto.prayerUserName
-        self.categoryId = dto.categoryId
+        self.categoryId = dto.categoryId ?? 0
         self.categoryName = dto.categoryName
         self.title = dto.title
         self.content = dto.content
-        self.createdAt = dto.createdAt
+        self.createdAt = dto.createdAt ?? ""
         self.participationCount = dto.participationCount
         self.responses = dto.responses?.map { PrayerResponse(from: $0) }
         self.isMine = dto.isMine
     }
-    
+
     init(from dto: PrayerWriteResponse) {
         self.id = dto.prayerRequestId
-//        self.id = UUID().hashValue // TODO: - 테스트코드
+//        self.id = UUID().hashValue // 테스트코드
         self.userId = dto.prayerUserId
         self.userName = dto.prayerUserName
         self.categoryId = dto.categoryId

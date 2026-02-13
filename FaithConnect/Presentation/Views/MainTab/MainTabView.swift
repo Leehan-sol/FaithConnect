@@ -61,7 +61,7 @@ struct MainTabView: View {
     return MainTabView(
         homeViewModel: HomeViewModel(prayerUseCase: mockUseCase),
         myPrayerViewModel: MyPrayerViewModel(prayerUseCase: mockUseCase),
-        myPageViewModel: MyPageViewModel(apiClient: mockAPIClient,
+        myPageViewModel: MyPageViewModel(authUseCase: AuthUseCase(repository: AuthRepository(apiClient: mockAPIClient)),
                                          userSession: UserSession())
     )
 }

@@ -14,12 +14,12 @@ class LoginViewModel: ObservableObject {
     @Published var findIDAlertType: AlertType? = nil
     @Published var isLoading: Bool = false
     
-    private let apiClient: APIClientProtocol
+    private let authUseCase: AuthUseCaseProtocol
     private let session: UserSession
     
-    init(apiClient: APIClientProtocol,
+    init(authUseCase: AuthUseCaseProtocol,
          session: UserSession) {
-        self.apiClient = apiClient
+        self.authUseCase = authUseCase
         self.session = session
     }
     
@@ -40,11 +40,11 @@ class LoginViewModel: ObservableObject {
         }
         
         do {
-            try await apiClient.login(email: email,
+            try await authUseCase.login(email: email,
                                       password: password)
             // 테스트용 코드
 //            TokenStorage().saveToken(accessToken: "wrong_token", refreshToken: TokenStorage().refreshToken ?? "")
-            let user = try await apiClient.fetchMyInfo()
+            let user = try await authUseCase.fetchMyInfo()
             session.login(user: user)
         } catch {
             let error = error.localizedDescription
@@ -66,7 +66,7 @@ class LoginViewModel: ObservableObject {
         }
         
         do {
-            let foundEmail = try await apiClient.findID(memberID: memberID,
+            let foundEmail = try await authUseCase.findID(memberID: memberID,
                                                          name: name)
             return foundEmail
         } catch {
@@ -126,7 +126,7 @@ class LoginViewModel: ObservableObject {
         }
         
         do {
-            try await apiClient.signUp(memberID: memberID,
+            try await authUseCase.signUp(memberID: memberID,
                                          name: name,
                                          email: email,
                                          password: password,

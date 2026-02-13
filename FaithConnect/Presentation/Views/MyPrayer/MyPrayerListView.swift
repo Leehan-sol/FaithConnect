@@ -67,7 +67,7 @@ struct MyPrayerListView: View {
             if let prayer = selectedPrayer {
                 PrayerDetailView(viewModel: { viewModel.makePrayerDetailVM(prayerRequestId: prayer.id) })
             } else if let response = selectedResponse {
-                PrayerDetailView(viewModel: { viewModel.makePrayerDetailVM(prayerRequestId: response.id) })
+                PrayerDetailView(viewModel: { viewModel.makePrayerDetailVM(prayerRequestId: response.prayerRequestId) })
             }
         }
     }

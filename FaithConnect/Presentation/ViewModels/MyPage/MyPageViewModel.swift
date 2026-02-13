@@ -11,19 +11,16 @@ import Foundation
 class MyPageViewModel: ObservableObject {
     @Published var alertType: AlertType? = nil
     
-    private let apiClient: APIClientProtocol
+    private let authUseCase: AuthUseCaseProtocol
     private let userSession: UserSession
-    
-    // TODO: - userSession의 name, email쓰는거로 수정 필요
-    let name = ""
-    let email = ""
-    
-    init(apiClient: APIClientProtocol, userSession: UserSession) {
-        self.apiClient = apiClient
+
+    var name: String { userSession.name }
+    var email: String { userSession.email }
+
+    init(authUseCase: AuthUseCaseProtocol, userSession: UserSession) {
+        self.authUseCase = authUseCase
         self.userSession = userSession
     }
-    
-
     
     func changePassword(id: Int, currentPassword: String, newPassword: String, confirmPassword: String) async {
         if id == 0 {
@@ -43,7 +40,7 @@ class MyPageViewModel: ObservableObject {
         }
         
         do {
-            try await apiClient.changePassword(id: id,
+            try await authUseCase.changePassword(id: id,
                                                name: userSession.name,
                                                email: userSession.email,
                                                newPassword: newPassword)
@@ -57,7 +54,7 @@ class MyPageViewModel: ObservableObject {
     
     func logout() async {
         do {
-            try await apiClient.logout()
+            try await authUseCase.logout()
             alertType = .successLogout
         } catch {
             let error = error.localizedDescription
@@ -66,7 +63,6 @@ class MyPageViewModel: ObservableObject {
         }
     }
 
-    
     func sessionLogout() {
         userSession.logout()
     }

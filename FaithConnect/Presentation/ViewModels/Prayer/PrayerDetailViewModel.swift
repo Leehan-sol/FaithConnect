@@ -15,6 +15,7 @@ class PrayerDetailViewModel: ObservableObject {
     private let prayerUseCase: PrayerUseCaseProtocol
     private let prayerRequestId: Int
     private var hasInitialized = false
+    @Published var isDeleted = false
     
     init(prayerUseCase: PrayerUseCaseProtocol, prayerRequestId: Int) {
         self.prayerUseCase = prayerUseCase
@@ -35,6 +36,7 @@ class PrayerDetailViewModel: ObservableObject {
         do {
             let prayer = try await prayerUseCase.loadPrayerDetail(prayerRequestID: prayerRequestId)
             self.prayer = prayer
+            self.isDeleted = prayer.createdAt.isEmpty
         } catch {
             alertType = .error(title: "불러오기 실패",
                                message: error.localizedDescription)
@@ -65,7 +67,10 @@ class PrayerDetailViewModel: ObservableObject {
         do {
             print("기도 응답 API 호출")
             let response = try await prayerUseCase.writePrayerResponse(prayerRequsetID: id,
-                                                                          message: message)
+                                                                      message: message,
+                                                                      prayerTitle: prayer?.title ?? "",
+                                                                      categoryId: prayer?.categoryId ?? 0,
+                                                                      categoryName: prayer?.categoryName ?? "")
             guard var prayer = prayer else { return false }
             prayer.responses?.insert(response, at: 0)
             prayer.participationCount += 1

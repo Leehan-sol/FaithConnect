@@ -22,7 +22,37 @@ struct PrayerDetailView: View {
     
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
-            if let prayer = viewModel.prayer {
+            if viewModel.isDeleted, let prayer = viewModel.prayer {
+                VStack(spacing: 10) {
+                    Image(systemName: "trash.slash")
+                        .font(.system(size: 28))
+                        .foregroundColor(.gray)
+                    Text("삭제된 기도입니다")
+                        .font(.headline)
+                        .foregroundColor(.gray)
+                    Text("이 기도는 작성자에 의해 삭제되었습니다.")
+                        .font(.subheadline)
+                        .foregroundColor(.gray)
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 30)
+
+                Divider()
+                    .padding(.horizontal, 20)
+
+                VStack(spacing: 0) {
+                    ForEach(prayer.responses ?? []) { response in
+                        PrayerResponseRowView(response: response,
+                                              onDelete: { response in
+                            Task {
+                                await viewModel.deletePrayerResponse(response: response)
+                            }
+                        })
+                        .padding(.horizontal, 20)
+                        .padding(.vertical, 10)
+                    }
+                }
+            } else if let prayer = viewModel.prayer {
                 DetailView(viewModel: viewModel,
                            prayer: prayer)
             } else {
@@ -38,7 +68,7 @@ struct PrayerDetailView: View {
             await viewModel.initializeIfNeeded()
         }
         .customBackButtonStyle {
-            if viewModel.prayer?.isMine == true {
+            if viewModel.prayer?.isMine == true && !viewModel.isDeleted {
                 Button {
                     showBottomSheet = false
                     showConfirmationDialog = true
@@ -87,14 +117,17 @@ struct PrayerDetailView: View {
                   message: Text(alert.message),
                   dismissButton: .default(Text("확인")))
         }
+        .navigationBarTitleDisplayMode(.inline)
         .toolbar(.hidden, for: .tabBar)
         
-        ActionButton(title: "기도 응답하기",
-                     foregroundColor: .white,
-                     backgroundColor: .customBlue1) {
-            showBottomSheet = true
-            showConfirmationDialog = false
-        }.padding(EdgeInsets(top: 0, leading: 20, bottom: 10, trailing: 20))
+        if !viewModel.isDeleted {
+            ActionButton(title: "기도 응답하기",
+                         foregroundColor: .white,
+                         backgroundColor: .customBlue1) {
+                showBottomSheet = true
+                showConfirmationDialog = false
+            }.padding(EdgeInsets(top: 0, leading: 20, bottom: 10, trailing: 20))
+        }
     }
     
 }

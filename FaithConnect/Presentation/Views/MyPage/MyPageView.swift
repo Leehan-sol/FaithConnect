@@ -148,7 +148,7 @@ struct MyPageView: View {
 }
 
 #Preview {
-    MyPageView(viewModel: MyPageViewModel(apiClient: APIClient(tokenStorage: TokenStorage()), 
+    MyPageView(viewModel: MyPageViewModel(authUseCase: AuthUseCase(repository: AuthRepository(apiClient: APIClient(tokenStorage: TokenStorage()))),
                                           userSession: UserSession()))
 }
 

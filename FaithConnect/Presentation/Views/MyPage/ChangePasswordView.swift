@@ -72,6 +72,6 @@ struct ChangePasswordView: View {
 
 
 #Preview {
-    ChangePasswordView(viewModel: MyPageViewModel(apiClient: APIClient(tokenStorage: TokenStorage()),
+    ChangePasswordView(viewModel: MyPageViewModel(authUseCase: AuthUseCase(repository: AuthRepository(apiClient: APIClient(tokenStorage: TokenStorage()))),
                                                   userSession: UserSession()))
 }

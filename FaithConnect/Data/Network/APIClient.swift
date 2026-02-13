@@ -7,6 +7,12 @@
 
 import Foundation
 
+// MARK: - AuthType
+enum AuthRequirement {
+    case required
+    case none
+}
+
 // MARK: - Protocol
 protocol APIClientProtocol {
     var hasToken: Bool { get }
@@ -14,7 +20,7 @@ protocol APIClientProtocol {
     func signUp(memberID: Int, name: String, email: String, password: String, confirmPassword: String) async throws
     func login(email: String, password: String) async throws
     func logout() async throws
-    func fetchMyInfo() async throws -> User
+    func fetchMyInfo() async throws -> FetchMyInfoResponse
     func findID(memberID: Int, name: String) async throws -> String
     func changePassword(id: Int, name: String, email: String, newPassword: String) async throws
     
@@ -74,7 +80,9 @@ extension APIClient {
         auth: AuthRequirement = .required
     ) async throws -> Res {
         var components = URLComponents(string: path)
-        components?.queryItems = queryItems
+        if !queryItems.isEmpty {
+            components?.queryItems = queryItems
+        }
         guard let url = components?.url else { throw APIError.invalidURL }
         
         let request = URLRequest(url: url)
@@ -102,6 +110,7 @@ extension APIClient {
         isRetry: Bool = false,
         auth: AuthRequirement = .required
     ) async throws -> Response {
+        print("URL: \(String(describing: request.url))")
         
         var request = request
         
@@ -197,7 +206,7 @@ extension APIClient {
     
     func login(email: String, password: String) async throws {
         let urlString = APIEndpoint.login.urlString
-        print("\(urlString)")
+        
         let requestBody = LoginRequest(
             email: email,
             password: password
@@ -237,15 +246,12 @@ extension APIClient {
         }
     }
     
-    func fetchMyInfo() async throws -> User {
+    func fetchMyInfo() async throws -> FetchMyInfoResponse {
         let urlString = APIEndpoint.fetchMyInfo.urlString
-        
+
         let apiResponse: FetchMyInfoResponse = try await get(path: urlString)
-        
-        let user = User(name: apiResponse.name,
-                        email: apiResponse.email)
-        
-        return user
+
+        return apiResponse
     }
     
     func findID(memberID: Int, name: String) async throws -> String {
@@ -370,16 +376,6 @@ extension APIClient {
         let apiResponse: PrayerListResponse = try await get(path: urlString,
                                                             queryItems: [URLQueryItem(name: "page", value: "\(page)")])
         
-        print("내 기도:", apiResponse.prayerRequests.count)
-        apiResponse.prayerRequests.forEach { prayer in
-            print("""
-                  ─────────────
-                  id: \(prayer.prayerRequestId)
-                  title: \(prayer.title)
-                  categoryId: \(prayer.categoryId)
-                  """)
-        }
-        
         return apiResponse
     }
     
@@ -388,16 +384,6 @@ extension APIClient {
         
         let apiResponse: MyResponseList = try await get(path: urlString,
                                                         queryItems: [URLQueryItem(name: "page", value: "\(page)")])
-        
-        print("내 응답:", apiResponse.responses.count)
-        apiResponse.responses.forEach { response in
-            print("""
-                  ─────────────
-                  id: \(response.prayerResponseId)
-                  title: \(response.message)
-                  categoryId: \(response.categoryId)
-                  """)
-        }
         
         return apiResponse
     }

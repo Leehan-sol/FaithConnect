@@ -19,7 +19,7 @@ struct PrayerResponse: Identifiable {
 extension PrayerResponse {
     init(from dto: DetailResponseItem) {
         self.id = dto.prayerResponseId
-//        self.id = UUID().hashValue // TODO: - 테스트코드
+//        self.id = UUID().hashValue // 테스트코드
         self.prayerRequestId = dto.prayerRequestId
         self.message = dto.message
         self.createdAt = dto.createdAt

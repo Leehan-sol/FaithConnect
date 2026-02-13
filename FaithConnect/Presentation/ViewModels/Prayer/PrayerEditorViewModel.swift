@@ -22,11 +22,11 @@ class PrayerEditorViewModel: ObservableObject {
     }
     
     func fetchCategories() async {
-        // TODO: - '전체' 카테고리 제거
         do {
-            categories = try await prayerUseCase.loadCategories()
+            let allCategories = try await prayerUseCase.loadCategories()
+            categories = allCategories.filter { $0.categoryCode != 1 }
         } catch {
-            
+            alertType = .error(message: error.localizedDescription)
         }
     }
     
