@@ -64,7 +64,7 @@ class HomeViewModel: ObservableObject {
             }
         case .prayerDeleted(let prayerRequestId):
             prayers.removeAll { $0.id == prayerRequestId }
-        case .responseAdded, .responseDeleted:
+        case .responseAdded, .responseUpdated, .responseDeleted:
             break
         }
     }

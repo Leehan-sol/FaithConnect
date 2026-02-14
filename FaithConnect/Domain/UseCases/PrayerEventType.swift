@@ -12,5 +12,6 @@ enum PrayerEventType {
     case prayerUpdated(prayer: Prayer)
     case prayerDeleted(prayerId: Int)
     case responseAdded(response: MyResponse)
+    case responseUpdated(response: PrayerResponse)
     case responseDeleted(responseId: Int)
 }

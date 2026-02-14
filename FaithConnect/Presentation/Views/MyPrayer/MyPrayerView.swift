@@ -29,7 +29,7 @@ struct MyPrayerView: View {
                     }
                 },
                 onMoreTap: {
-                    showMyResponseList = true
+                    showMyPrayerList = true
                 })
             
             ParticipatedPrayerSectionView(

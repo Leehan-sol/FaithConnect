@@ -80,7 +80,7 @@ struct PrayerEditorView: View {
                 
             }
             .padding(EdgeInsets(top: 0, leading: 20, bottom: 10, trailing: 20))
-            .navigationTitle("새 기도")
+            .navigationTitle(viewModel.isEditMode ? "기도 수정" : "새 기도")
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarBackButtonHidden(true)
             .toolbar {
@@ -97,10 +97,12 @@ struct PrayerEditorView: View {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
                         Task {
-                            await viewModel.writePrayer(categoryId: selectedCategoryId,
-                                                                           title: title,
-                                                                           content: content)
-                            dismiss()
+                            await viewModel.savePrayer(categoryId: selectedCategoryId,
+                                                      title: title,
+                                                      content: content)
+                            if viewModel.alertType == nil {
+                                dismiss()
+                            }
                         }
                     } label: {
                         Text("완료")
@@ -120,6 +122,11 @@ struct PrayerEditorView: View {
             }
             .task {
                 await viewModel.fetchCategories()
+                if let prayer = viewModel.prayer {
+                    selectedCategoryId = prayer.categoryId
+                    title = prayer.title
+                    content = prayer.content
+                }
             }
         }
     }

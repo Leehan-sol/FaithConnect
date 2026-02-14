@@ -55,6 +55,10 @@ class MyPrayerViewModel: ObservableObject {
             if let index = writtenPrayers.firstIndex(where: { $0.id == response.prayerRequestId }) {
                 writtenPrayers[index].participationCount += 1
             }
+        case .responseUpdated(let response):
+            if let index = participatedPrayers.firstIndex(where: { $0.id == response.id }) {
+                participatedPrayers[index].message = response.message
+            }
         case .responseDeleted(let responseId):
             participatedPrayers.removeAll { $0.id == responseId }
         }

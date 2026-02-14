@@ -29,8 +29,10 @@ protocol APIClientProtocol {
     func loadPrayers(categoryID: Int, page: Int) async throws -> PrayerListResponse
     func loadPrayerDetail(prayerRequestID: Int) async throws -> PrayerDetailResponse
     func writePrayer(categoryID: Int, title: String, content: String) async throws -> PrayerWriteResponse
+    func updatePrayer(prayerRequestId: Int, categoryID: Int, title: String, content: String) async throws -> PrayerDetailResponse
     func deletePrayer(prayerRequestId: Int) async throws
     func writePrayerResponse(prayerRequsetID: Int, message: String) async throws -> DetailResponseItem
+    func updatePrayerResponse(responseID: Int, message: String) async throws -> PrayerResponseUpdateResponse
     func deletePrayerResponse(responseID: Int) async throws
     func loadWrittenPrayers(page: Int) async throws -> PrayerListResponse
     func loadParticipatedPrayers(page: Int) async throws -> MyResponseList
@@ -98,9 +100,28 @@ extension APIClient {
         var components = URLComponents(string: path)
         components?.queryItems = queryItems
         guard let url = components?.url else { throw APIError.invalidURL }
-        
+
         var request = URLRequest(url: url)
         request.httpMethod = "DELETE"
+        return try await performRequest(request: request,
+                                        auth: auth)
+    }
+
+    private func put<Req: Encodable, Res: Decodable>(
+        urlString: String,
+        requestBody: Req? = nil,
+        auth: AuthRequirement = .required
+    ) async throws -> Res {
+
+        guard let url = URL(string: urlString) else { throw APIError.invalidURL }
+        var request = URLRequest(url: url)
+        request.httpMethod = "PUT"
+
+        if let body = requestBody, !(body is EmptyRequest) {
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.httpBody = try JSONEncoder().encode(body)
+        }
+
         return try await performRequest(request: request,
                                         auth: auth)
     }
@@ -337,9 +358,24 @@ extension APIClient {
         return apiResponse
     }
     
+    func updatePrayer(prayerRequestId: Int, categoryID: Int, title: String, content: String) async throws -> PrayerDetailResponse {
+        let urlString = APIEndpoint.prayerDetail(id: prayerRequestId).urlString
+
+        let requestBody = PrayerWriteRequest(
+            categoryId: categoryID,
+            title: title,
+            content: content
+        )
+
+        let apiResponse: PrayerDetailResponse = try await put(urlString: urlString,
+                                                              requestBody: requestBody)
+
+        return apiResponse
+    }
+
     func deletePrayer(prayerRequestId: Int) async throws {
         let urlString = APIEndpoint.prayerDetail(id: prayerRequestId).urlString
-        
+
         let apiResponse: PrayerDeleteResponse = try await delete(path: urlString)
         
         if apiResponse.success != true {
@@ -359,11 +395,22 @@ extension APIClient {
         return apiResponse
     }
     
+    func updatePrayerResponse(responseID: Int, message: String) async throws -> PrayerResponseUpdateResponse {
+        let urlString = APIEndpoint.responseDetail(id: responseID).urlString
+
+        let requestBody = PrayerResponseUpdateRequest(message: message)
+
+        let apiResponse: PrayerResponseUpdateResponse = try await put(urlString: urlString,
+                                                               requestBody: requestBody)
+        
+        return apiResponse
+    }
+    
     func deletePrayerResponse(responseID: Int) async throws {
         let urlString = APIEndpoint.responseDetail(id: responseID).urlString
-        
+
         let apiResponse: PrayerDeleteResponse = try await delete(path: urlString)
-        
+
         if apiResponse.success != true {
             let code = apiResponse.errorCode ?? .unknown
             throw APIError.serverMessage(code: code)

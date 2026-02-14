@@ -15,6 +15,7 @@ struct PrayerDetailView: View {
     @State private var showConfirmationDialog = false
     @State private var showPrayerEditor = false
     @State private var showDeleteAlert = false
+    @State private var editingResponse: PrayerResponse?
     
     init(viewModel: @escaping () -> PrayerDetailViewModel) {
         _viewModel = StateObject(wrappedValue: viewModel())
@@ -43,6 +44,9 @@ struct PrayerDetailView: View {
                 VStack(spacing: 0) {
                     ForEach(prayer.responses ?? []) { response in
                         PrayerResponseRowView(response: response,
+                                              onEdit: { response in
+                            editingResponse = response
+                        },
                                               onDelete: { response in
                             Task {
                                 await viewModel.deletePrayerResponse(response: response)
@@ -54,7 +58,8 @@ struct PrayerDetailView: View {
                 }
             } else if let prayer = viewModel.prayer {
                 DetailView(viewModel: viewModel,
-                           prayer: prayer)
+                           prayer: prayer,
+                           editingResponse: $editingResponse)
             } else {
                 ProgressView()
                     .progressViewStyle(CircularProgressViewStyle(tint: .blue))
@@ -79,8 +84,15 @@ struct PrayerDetailView: View {
                 }
             }
         }
-        .sheet(isPresented: $showBottomSheet) {
-            PrayerDetailBottomSheetView(viewModel: viewModel)
+        .onChange(of: editingResponse) {
+            if editingResponse != nil {
+                showBottomSheet = true
+            }
+        }
+        .sheet(isPresented: $showBottomSheet, onDismiss: {
+            editingResponse = nil
+        }) {
+            PrayerDetailBottomSheetView(viewModel: viewModel, editingResponse: editingResponse)
                 .presentationDetents([.fraction(0.75)])
                 .presentationDragIndicator(.visible)
                 .interactiveDismissDisabled(true)
@@ -90,15 +102,25 @@ struct PrayerDetailView: View {
             isPresented: $showConfirmationDialog,
             titleVisibility: .hidden
         ) {
-            //            Button("수정") {
-            //                showPrayerEditor = true
-            //            }
-            
+            Button("수정") {
+                showPrayerEditor = true
+            }
+
             Button("삭제", role: .destructive) {
                 showDeleteAlert = true
             }
-            
+
             Button("취소", role: .cancel) { }
+        }
+        .navigationDestination(isPresented: $showPrayerEditor) {
+            PrayerEditorView(viewModel: { viewModel.makePrayerEditorVM() })
+        }
+        .onChange(of: showPrayerEditor) { oldValue, newValue in
+            if oldValue && !newValue {
+                Task {
+                    await viewModel.refresh()
+                }
+            }
         }
         .alert("기도 삭제",
                isPresented: $showDeleteAlert) {
@@ -135,7 +157,8 @@ struct PrayerDetailView: View {
 struct DetailView: View {
     @ObservedObject var viewModel: PrayerDetailViewModel
     let prayer: Prayer
-    
+    @Binding var editingResponse: PrayerResponse?
+
     var body: some View {
         VStack(alignment: .leading, spacing: 25) {
             HStack {
@@ -171,6 +194,9 @@ struct DetailView: View {
         VStack(spacing: 0) {
             ForEach(prayer.responses ?? []) { response in
                 PrayerResponseRowView(response: response,
+                                      onEdit: { response in
+                    editingResponse = response
+                },
                                       onDelete: { response in
                     Task {
                         await viewModel.deletePrayerResponse(response: response)

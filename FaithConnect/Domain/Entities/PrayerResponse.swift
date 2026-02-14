@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct PrayerResponse: Identifiable {
+struct PrayerResponse: Identifiable, Equatable {
     let id: Int
     let prayerRequestId: Int
     let message: String
@@ -24,5 +24,13 @@ extension PrayerResponse {
         self.message = dto.message
         self.createdAt = dto.createdAt
         self.isMine = dto.isMine
+    }
+
+    init(from dto: PrayerResponseUpdateResponse) {
+        self.id = dto.prayerResponseId
+        self.prayerRequestId = dto.prayerRequestId
+        self.message = dto.message
+        self.createdAt = dto.createdAt
+        self.isMine = dto.mine
     }
 }
