@@ -15,10 +15,13 @@ class PrayerEditorViewModel: ObservableObject {
     
     private let prayerUseCase: PrayerUseCaseProtocol
     private var cancellables = Set<AnyCancellable>()
-    
-    
-    init(prayerUseCase: PrayerUseCaseProtocol) {
+    let prayer: Prayer?
+
+    var isEditMode: Bool { prayer != nil }
+
+    init(prayerUseCase: PrayerUseCaseProtocol, prayer: Prayer? = nil) {
         self.prayerUseCase = prayerUseCase
+        self.prayer = prayer
     }
     
     func fetchCategories() async {
@@ -30,32 +33,38 @@ class PrayerEditorViewModel: ObservableObject {
         }
     }
     
-    func writePrayer(categoryId: Int, title: String, content: String) async {
+    func savePrayer(categoryId: Int, title: String, content: String) async {
         if categoryId == 0 {
             alertType = .error(message: "카테고리를 선택해 주세요.")
             return
         }
-        
+
         if title.isEmpty {
             alertType = .fieldEmpty(fieldName: "제목")
             return
         }
-        
+
         if content.isEmpty {
             alertType = .fieldEmpty(fieldName: "내용")
             return
         }
-        
+
         do {
-            let _ = try await prayerUseCase.writePrayer(categoryID: categoryId,
-                                                                title: title,
-                                                                content: content)
+            if let prayer {
+                let _ = try await prayerUseCase.updatePrayer(prayerRequestId: prayer.id,
+                                                             categoryID: categoryId,
+                                                             title: title,
+                                                             content: content)
+            } else {
+                let _ = try await prayerUseCase.writePrayer(categoryID: categoryId,
+                                                            title: title,
+                                                            content: content)
+            }
         } catch {
-            let error = error.localizedDescription
-            alertType = .error(title: "기도 작성 실패",
-                               message: error)
-            return
+            let failTitle = isEditMode ? "기도 수정 실패" : "기도 작성 실패"
+            alertType = .error(title: failTitle,
+                               message: error.localizedDescription)
         }
     }
-    
+
 }

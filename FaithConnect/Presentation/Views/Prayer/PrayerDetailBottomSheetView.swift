@@ -9,11 +9,17 @@ import SwiftUI
 
 struct PrayerDetailBottomSheetView: View {
     @ObservedObject var viewModel: PrayerDetailViewModel
+    let editingResponse: PrayerResponse?
     @State var content: String = ""
     @State var wordCount: Int = 0
     @State var showAlert: Bool = false
     @Environment(\.dismiss) var dismiss
-    
+
+    init(viewModel: PrayerDetailViewModel, editingResponse: PrayerResponse? = nil) {
+        self.viewModel = viewModel
+        self.editingResponse = editingResponse
+    }
+
     private var isSendButtonActive: Bool {
         return wordCount > 0
     }
@@ -25,7 +31,7 @@ struct PrayerDetailBottomSheetView: View {
                     Spacer()
                         .frame(height: 5)
                     
-                    Text("기도 응답 보내기")
+                    Text(editingResponse != nil ? "기도 응답 수정" : "기도 응답 보내기")
                         .font(.title2)
                         .frame(maxWidth: .infinity, alignment: .leading)
                     
@@ -104,7 +110,12 @@ struct PrayerDetailBottomSheetView: View {
                              backgroundColor: isSendButtonActive ? .customBlue1 : Color(.systemGray6)) {
                     if isSendButtonActive {
                         Task {
-                            let result = await viewModel.writePrayerResponse(message: content)
+                            let result: Bool
+                            if let editing = editingResponse {
+                                result = await viewModel.updatePrayerResponse(responseID: editing.id, message: content)
+                            } else {
+                                result = await viewModel.writePrayerResponse(message: content)
+                            }
                             if result {
                                 dismiss()
                             }
@@ -113,13 +124,21 @@ struct PrayerDetailBottomSheetView: View {
                 }
             }
             .padding(EdgeInsets(top: 0, leading: 10, bottom: 10, trailing: 10))
-        }.alert("작성 취소", isPresented: $showAlert) {
+        }.alert(editingResponse != nil ? "수정 취소" : "작성 취소", isPresented: $showAlert) {
             Button("취소", role: .cancel) { }
             Button("확인", role: .destructive) {
                 dismiss()
             }
         } message: {
-            Text("작성 중인 응답 내용이 있습니다. \r 정말 취소하시겠습니까?")
+            Text(editingResponse != nil
+                 ? "수정 중인 응답 내용이 있습니다. \r 정말 취소하시겠습니까?"
+                 : "작성 중인 응답 내용이 있습니다. \r 정말 취소하시겠습니까?")
+        }
+        .onAppear {
+            if let editing = editingResponse {
+                content = editing.message
+                wordCount = editing.message.count
+            }
         }
         .onTapGesture {
             UIApplication.shared.endEditing()

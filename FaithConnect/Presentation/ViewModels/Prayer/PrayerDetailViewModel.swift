@@ -84,6 +84,30 @@ class PrayerDetailViewModel: ObservableObject {
         }
     }
     
+    func makePrayerEditorVM() -> PrayerEditorViewModel {
+        PrayerEditorViewModel(prayerUseCase: prayerUseCase, prayer: prayer)
+    }
+
+    func updatePrayerResponse(responseID: Int, message: String) async -> Bool {
+        do {
+            print("응답 수정 API 호출")
+            let updatedResponse = try await prayerUseCase.updatePrayerResponse(responseID: responseID, 
+                                                                               message: message)
+
+            guard var prayer = prayer else { return false }
+            if let index = prayer.responses?.firstIndex(where: { $0.id == responseID }) {
+                prayer.responses?[index] = updatedResponse
+            }
+            self.prayer = prayer
+            return true
+        } catch {
+            let error = error.localizedDescription
+            alertType = .error(title: "수정 실패",
+                               message: error)
+            return false
+        }
+    }
+
     func deletePrayerResponse(response: PrayerResponse) async {
         do {
             print("응답 삭제 API 호출")

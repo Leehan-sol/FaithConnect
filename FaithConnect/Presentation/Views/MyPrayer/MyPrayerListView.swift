@@ -30,6 +30,15 @@ struct MyPrayerListView: View {
                             selectedPrayer = prayer
                             showPrayerDetail = true
                         }
+                        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                            Button(role: .destructive) {
+                                Task {
+                                    await viewModel.deletePrayer(prayerID: prayer.id)
+                                }
+                            } label: {
+                                Label("삭제", systemImage: "trash")
+                            }
+                        }
                     }
                 }
                 .refreshable {
@@ -50,6 +59,15 @@ struct MyPrayerListView: View {
                                 print("Tapped: \(response.id), \(response.message)")
                                 selectedResponse = response
                                 showPrayerDetail = true
+                            }
+                            .swipeActions(edge: .trailing) {
+                                Button(role: .destructive) {
+                                    Task {
+                                        await viewModel.deletePrayerResponse(responseID: response.id)
+                                    }
+                                } label: {
+                                    Label("삭제", systemImage: "trash")
+                                }
                             }
                     }
                 }

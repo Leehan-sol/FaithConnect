@@ -103,3 +103,16 @@ struct PrayerResponseWriteRequest: Codable {
     let prayerRequestId: Int
     let message: String
 }
+
+// MARK: - 기도 응답 수정
+struct PrayerResponseUpdateRequest: Codable {
+    let message: String
+}
+
+struct PrayerResponseUpdateResponse: Decodable {
+    let prayerResponseId: Int
+    let prayerRequestId: Int
+    let message: String
+    let createdAt: String
+    let mine: Bool
+}

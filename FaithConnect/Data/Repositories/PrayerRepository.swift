@@ -31,12 +31,25 @@ class PrayerRepository: ObservableObject, PrayerRepositoryProtocol {
         return try await apiClient.writePrayer(categoryID: categoryID, title: title, content: content)
     }
     
+    func updatePrayer(prayerRequestId: Int, categoryID: Int, title: String, content: String) async throws -> PrayerDetailResponse {
+        return try await apiClient.updatePrayer(prayerRequestId: prayerRequestId, 
+                                                categoryID: categoryID, 
+                                                title: title,
+                                                content: content)
+    }
+
     func deletePrayer(prayerRequestId: Int) async throws {
         try await apiClient.deletePrayer(prayerRequestId: prayerRequestId)
     }
     
     func writePrayerResponse(prayerRequsetID: Int, message: String) async throws -> DetailResponseItem {
-        return try await apiClient.writePrayerResponse(prayerRequsetID: prayerRequsetID, message: message)
+        return try await apiClient.writePrayerResponse(prayerRequsetID: prayerRequsetID, 
+                                                       message: message)
+    }
+    
+    func updatePrayerResponse(responseID: Int, message: String) async throws -> PrayerResponseUpdateResponse {
+        return try await apiClient.updatePrayerResponse(responseID: responseID, 
+                                                        message: message)
     }
     
     func deletePrayerResponse(responseID: Int) async throws {

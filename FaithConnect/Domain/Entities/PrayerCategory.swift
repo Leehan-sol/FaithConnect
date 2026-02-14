@@ -12,3 +12,12 @@ struct PrayerCategory: Identifiable, Hashable {
     let categoryCode: Int
     let categoryName: String
 }
+
+// MARK: - Extension
+extension PrayerCategory {
+    init(from dto: CategoryResponse) {
+        self.id = dto.categoryId
+        self.categoryCode = dto.categoryCode
+        self.categoryName = dto.categoryName
+    }
+}

@@ -15,8 +15,10 @@ protocol PrayerUseCaseProtocol {
     func loadPrayers(categoryID: Int, page: Int) async throws -> PrayerPage
     func loadPrayerDetail(prayerRequestID: Int) async throws -> Prayer
     func writePrayer(categoryID: Int, title: String, content: String) async throws -> Prayer
+    func updatePrayer(prayerRequestId: Int, categoryID: Int, title: String, content: String) async throws -> Prayer
     func deletePrayer(prayerRequestId: Int) async throws
     func writePrayerResponse(prayerRequsetID: Int, message: String, prayerTitle: String, categoryId: Int, categoryName: String) async throws -> PrayerResponse
+    func updatePrayerResponse(responseID: Int, message: String) async throws -> PrayerResponse
     func deletePrayerResponse(responseID: Int) async throws
     func loadWrittenPrayers(page: Int) async throws -> PrayerPage
     func loadParticipatedPrayers(page: Int) async throws -> MyResponsePage
@@ -33,11 +35,7 @@ class PrayerUseCase: PrayerUseCaseProtocol {
     func loadCategories() async throws -> [PrayerCategory] {
         let categories = try await repository.loadCategories()
         
-        let result = categories.map { response in
-            PrayerCategory(id: response.categoryId,
-                           categoryCode: response.categoryCode,
-                           categoryName: response.categoryName)
-        }
+        let result = categories.map { PrayerCategory(from: $0) }
         
         print("카테고리:", result.count)
         result.forEach { category in
@@ -52,7 +50,8 @@ class PrayerUseCase: PrayerUseCaseProtocol {
     }
     
     func loadPrayers(categoryID: Int, page: Int) async throws -> PrayerPage {
-        let result = try await repository.loadPrayers(categoryID: categoryID, page: page)
+        let result = try await repository.loadPrayers(categoryID: categoryID, 
+                                                      page: page)
         
         result.prayerRequests.forEach { prayer in
             print("""
@@ -75,20 +74,34 @@ class PrayerUseCase: PrayerUseCaseProtocol {
     }
     
     func writePrayer(categoryID: Int, title: String, content: String) async throws -> Prayer {
-        let result = try await repository.writePrayer(categoryID: categoryID, title: title, content: content)
+        let result = try await repository.writePrayer(categoryID: categoryID, 
+                                                      title: title,
+                                                      content: content)
         let prayer = Prayer(from: result)
+        
         eventPublisher.send(.prayerAdded(prayer: prayer))
         
         return prayer
     }
     
+    func updatePrayer(prayerRequestId: Int, categoryID: Int, title: String, content: String) async throws -> Prayer {
+        let result = try await repository.updatePrayer(prayerRequestId: prayerRequestId, 
+                                                       categoryID: categoryID,
+                                                       title: title, 
+                                                       content: content)
+        let prayer = Prayer(from: result)
+        eventPublisher.send(.prayerUpdated(prayer: prayer))
+        return prayer
+    }
+
     func deletePrayer(prayerRequestId: Int) async throws {
         try await repository.deletePrayer(prayerRequestId: prayerRequestId)
         eventPublisher.send(.prayerDeleted(prayerId: prayerRequestId))
     }
     
     func writePrayerResponse(prayerRequsetID: Int, message: String, prayerTitle: String, categoryId: Int, categoryName: String) async throws -> PrayerResponse {
-        let result = try await repository.writePrayerResponse(prayerRequsetID: prayerRequsetID, message: message)
+        let result = try await repository.writePrayerResponse(prayerRequsetID: prayerRequsetID, 
+                                                              message: message)
         let prayerResponse = PrayerResponse(from: result)
 
         let myResponse = MyResponse(id: prayerResponse.id,
@@ -98,6 +111,7 @@ class PrayerUseCase: PrayerUseCaseProtocol {
                                     categoryName: categoryName,
                                     message: message,
                                     createdAt: prayerResponse.createdAt)
+        
         eventPublisher.send(.responseAdded(response: myResponse))
 
         return prayerResponse
@@ -106,6 +120,14 @@ class PrayerUseCase: PrayerUseCaseProtocol {
     func deletePrayerResponse(responseID: Int) async throws {
         try await repository.deletePrayerResponse(responseID: responseID)
         eventPublisher.send(.responseDeleted(responseId: responseID))
+    }
+
+    func updatePrayerResponse(responseID: Int, message: String) async throws -> PrayerResponse {
+        let result = try await repository.updatePrayerResponse(responseID: responseID, 
+                                                               message: message)
+        let prayerResponse = PrayerResponse(from: result)
+        eventPublisher.send(.responseUpdated(response: prayerResponse))
+        return prayerResponse
     }
     
     func loadWrittenPrayers(page: Int) async throws -> PrayerPage {
