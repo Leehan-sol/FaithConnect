@@ -19,7 +19,7 @@ protocol PrayerUseCaseProtocol {
     func deletePrayer(prayerRequestId: Int) async throws
     func writePrayerResponse(prayerRequsetID: Int, message: String, prayerTitle: String, categoryId: Int, categoryName: String) async throws -> PrayerResponse
     func updatePrayerResponse(responseID: Int, message: String) async throws -> PrayerResponse
-    func deletePrayerResponse(responseID: Int) async throws
+    func deletePrayerResponse(responseID: Int, prayerRequestId: Int) async throws
     func loadWrittenPrayers(page: Int) async throws -> PrayerPage
     func loadParticipatedPrayers(page: Int) async throws -> MyResponsePage
 }
@@ -117,9 +117,9 @@ class PrayerUseCase: PrayerUseCaseProtocol {
         return prayerResponse
     }
     
-    func deletePrayerResponse(responseID: Int) async throws {
+    func deletePrayerResponse(responseID: Int, prayerRequestId: Int) async throws {
         try await repository.deletePrayerResponse(responseID: responseID)
-        eventPublisher.send(.responseDeleted(responseId: responseID))
+        eventPublisher.send(.responseDeleted(responseId: responseID, prayerRequestId: prayerRequestId))
     }
 
     func updatePrayerResponse(responseID: Int, message: String) async throws -> PrayerResponse {

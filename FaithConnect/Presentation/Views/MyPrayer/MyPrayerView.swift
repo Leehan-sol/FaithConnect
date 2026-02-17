@@ -38,9 +38,9 @@ struct MyPrayerView: View {
                     selectedResponse = response
                     showPrayerDetail = true
                 },
-                onDelete: { responseID in
+                onDelete: { responseID, prayerRequestId in
                     Task {
-                        await viewModel.deletePrayerResponse(responseID: responseID)
+                        await viewModel.deletePrayerResponse(responseID: responseID, prayerRequestId: prayerRequestId)
                     }
                 },
                 onMoreTap: {
@@ -129,9 +129,9 @@ struct WrittenPrayerSectionView: View {
 struct ParticipatedPrayerSectionView: View {
     let responses: [MyResponse]
     let onTap: (MyResponse) -> Void
-    let onDelete: (Int) -> Void
+    let onDelete: (Int, Int) -> Void
     let onMoreTap: () -> Void
-    
+
     var body: some View {
         Section {
             if responses.isEmpty {
@@ -147,7 +147,7 @@ struct ParticipatedPrayerSectionView: View {
                         .swipeActions(edge: .trailing) {
                             Button(role: .destructive) {
                                 print("지금 삭제하는 응답: \(response.id)")
-                                onDelete(response.id)
+                                onDelete(response.id, response.prayerRequestId)
                             } label: {
                                 Label("삭제", systemImage: "trash")
                             }

@@ -111,7 +111,8 @@ class PrayerDetailViewModel: ObservableObject {
     func deletePrayerResponse(response: PrayerResponse) async {
         do {
             print("응답 삭제 API 호출")
-            try await prayerUseCase.deletePrayerResponse(responseID: response.id)
+            try await prayerUseCase.deletePrayerResponse(responseID: response.id, 
+                                                         prayerRequestId: response.prayerRequestId)
             
             guard var prayer = prayer else { return }
             prayer.responses?.removeAll { $0.id == response.id }

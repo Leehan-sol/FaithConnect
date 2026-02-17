@@ -19,12 +19,13 @@ struct MyResponse: Identifiable {
     let prayerRequestTitle: String
     let categoryId: Int
     let categoryName: String
-    var message: String
+    let message: String
     let createdAt: String
 }
 
 // MARK: - Extension
 extension MyResponse {
+    
     init(from dto: MyResponseItem){
         self.id = dto.prayerResponseId
         self.prayerRequestId = dto.prayerRequestId

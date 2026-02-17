@@ -63,8 +63,19 @@ class MyPageViewModel: ObservableObject {
         }
     }
 
+    func deleteAccount() async {
+        do {
+            try await authUseCase.deleteAccount()
+            alertType = .successDeleteAccount
+        } catch {
+            let error = error.localizedDescription
+            alertType = .error(title: "회원탈퇴 실패",
+                               message: error)
+        }
+    }
+
     func sessionLogout() {
         userSession.logout()
     }
-    
+
 }

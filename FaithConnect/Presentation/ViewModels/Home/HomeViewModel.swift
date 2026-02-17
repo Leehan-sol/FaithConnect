@@ -64,7 +64,15 @@ class HomeViewModel: ObservableObject {
             }
         case .prayerDeleted(let prayerRequestId):
             prayers.removeAll { $0.id == prayerRequestId }
-        case .responseAdded, .responseUpdated, .responseDeleted:
+        case .responseAdded(let response):
+            if let index = prayers.firstIndex(where: { $0.id == response.prayerRequestId }) {
+                prayers[index].participationCount += 1
+            }
+        case .responseDeleted(_, let prayerRequestId):
+            if let index = prayers.firstIndex(where: { $0.id == prayerRequestId }) {
+                prayers[index].participationCount -= 1
+            }
+        case .responseUpdated:
             break
         }
     }

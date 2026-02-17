@@ -79,6 +79,14 @@ struct ChangePasswordResponse: Decodable {
 }
 
 
+// MARK: - 회원탈퇴
+struct DeleteAccountResponse: Decodable {
+    let message: String
+    let success: Bool?
+    let errorCode: APIErrorCode?
+    let status: Int?
+}
+
 // MARK: - 토큰 요청
 struct AccessTokenRequest: Codable {
     let refreshToken: String

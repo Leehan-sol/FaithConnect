@@ -23,7 +23,8 @@ protocol APIClientProtocol {
     func fetchMyInfo() async throws -> FetchMyInfoResponse
     func findID(memberID: Int, name: String) async throws -> String
     func changePassword(id: Int, name: String, email: String, newPassword: String) async throws
-    
+    func deleteAccount() async throws
+
     // Prayer
     func loadCategories() async throws -> [CategoryResponse]
     func loadPrayers(categoryID: Int, page: Int) async throws -> PrayerListResponse
@@ -293,6 +294,21 @@ extension APIClient {
         }
     }
     
+    func deleteAccount() async throws {
+        let urlString = APIEndpoint.deleteAccount.urlString
+
+        let apiResponse: DeleteAccountResponse = try await delete(path: urlString)
+
+        guard apiResponse.success == true else {
+            let code = apiResponse.errorCode ?? .unknown
+            throw APIError.serverMessage(code: code)
+        }
+
+        await MainActor.run {
+            tokenStorage.clear()
+        }
+    }
+
     func changePassword(id: Int, name: String, email: String, newPassword: String) async throws {
         let urlString = APIEndpoint.changePassword.urlString
         

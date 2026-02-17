@@ -47,6 +47,13 @@ struct HomeView: View {
                                 selectedPrayer = prayer
                                 showPrayerDetail = true
                             }
+                            .onAppear {
+                                if prayer.id == viewModel.prayers.last?.id {
+                                    Task {
+                                        await viewModel.loadMorePrayers()
+                                    }
+                                }
+                            }
                         }
                     }
                     .refreshable {

@@ -12,6 +12,7 @@ struct MyPageView: View {
     @State private var showChangePassword: Bool = false
     @State private var selectedPolicy: PolicyType?
     @State var showAlert: Bool = false
+    @State private var showDeleteAccountAlert: Bool = false
     
     private let versionNumber = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
     private let churchName = Bundle.main.infoDictionary?["ChurchName"] as? String
@@ -98,7 +99,7 @@ struct MyPageView: View {
                     Text("FaithConnect v\(versionNumber ?? "1.0.0") © \(churchName ?? "우리교회")")
                     
                     Button {
-                        // 회원탈퇴
+                        showDeleteAccountAlert = true
                     } label: {
                         Text("회원탈퇴")
                             .underline()
@@ -116,6 +117,16 @@ struct MyPageView: View {
             .navigationDestination(item: $selectedPolicy) { policy in
                 PolicyWebView(viewType: selectedPolicy ?? .privacy)
             }
+            .alert("회원탈퇴", isPresented: $showDeleteAccountAlert) {
+                Button("취소", role: .cancel) { }
+                Button("탈퇴", role: .destructive) {
+                    Task {
+                        await viewModel.deleteAccount()
+                    }
+                }
+            } message: {
+                Text("정말 탈퇴하시겠습니까?\n탈퇴 시 모든 데이터가 삭제됩니다.")
+            }
             .alert("로그아웃", isPresented: $showAlert) {
                 Button("취소", role: .cancel) { }
                 Button("확인", role: .destructive) {
@@ -128,7 +139,7 @@ struct MyPageView: View {
             }
             .alert(item: $viewModel.alertType) { alert in
                 let dismissAction = {
-                    if alert == .successLogout {
+                    if alert == .successLogout || alert == .successDeleteAccount {
                         viewModel.sessionLogout()
                     }
                     
