@@ -59,8 +59,11 @@ class MyPrayerViewModel: ObservableObject {
             if let index = participatedPrayers.firstIndex(where: { $0.id == response.id }) {
                 participatedPrayers[index].message = response.message
             }
-        case .responseDeleted(let responseId):
+        case .responseDeleted(let responseId, let prayerRequestId):
             participatedPrayers.removeAll { $0.id == responseId }
+            if let index = writtenPrayers.firstIndex(where: { $0.id == prayerRequestId }) {
+                writtenPrayers[index].participationCount -= 1
+            }
         }
     }
     
@@ -82,7 +85,7 @@ class MyPrayerViewModel: ObservableObject {
     }
     
     func loadWrittenPrayers(reset: Bool) async {
-        guard !isLoadingWrittenPrayers else { return }
+        guard !isLoadingWrittenPrayers && (reset || hasNextWrittenPage) else { return }
         isLoadingWrittenPrayers = true
         defer { isLoadingWrittenPrayers = false }
 
@@ -142,9 +145,10 @@ class MyPrayerViewModel: ObservableObject {
         }
     }
     
-    func deletePrayerResponse(responseID: Int) async {
+    func deletePrayerResponse(responseID: Int, prayerRequestId: Int) async {
         do {
-            try await prayerUseCase.deletePrayerResponse(responseID: responseID)
+            try await prayerUseCase.deletePrayerResponse(responseID: responseID, 
+                                                         prayerRequestId: prayerRequestId)
         } catch {
             alertType = .error(message: error.localizedDescription)
         }

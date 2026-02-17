@@ -14,9 +14,10 @@ enum AlertType: Identifiable, Hashable {
     case successChangePassword
     case registerSuccess
     case successLogout
-    
+    case successDeleteAccount
+
     var id: Int { hashValue }
-    
+
     var title: String {
         switch self {
         case .error(let title, _):
@@ -31,9 +32,11 @@ enum AlertType: Identifiable, Hashable {
             return "회원가입 성공"
         case .successLogout:
             return "로그아웃"
+        case .successDeleteAccount:
+            return "회원탈퇴"
         }
     }
-    
+
     var message: String {
         switch self {
         case .error(_, let message):
@@ -48,6 +51,8 @@ enum AlertType: Identifiable, Hashable {
             return "회원가입에 성공했습니다. 로그인 해주세요."
         case .successLogout:
             return "로그아웃되었습니다."
+        case .successDeleteAccount:
+            return "회원탈퇴가 완료되었습니다."
         }
     }
 }

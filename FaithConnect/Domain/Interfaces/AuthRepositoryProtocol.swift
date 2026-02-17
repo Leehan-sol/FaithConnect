@@ -15,5 +15,6 @@ protocol AuthRepositoryProtocol {
     func fetchMyInfo() async throws -> FetchMyInfoResponse
     func findID(memberID: Int, name: String) async throws -> String
     func changePassword(id: Int, name: String, email: String, newPassword: String) async throws
+    func deleteAccount() async throws
 }
 

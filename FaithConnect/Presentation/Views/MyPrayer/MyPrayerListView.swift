@@ -39,6 +39,13 @@ struct MyPrayerListView: View {
                                 Label("삭제", systemImage: "trash")
                             }
                         }
+                        .onAppear {
+                            if prayer.id == viewModel.writtenPrayers.last?.id {
+                                Task {
+                                    await viewModel.loadWrittenPrayers(reset: false)
+                                }
+                            }
+                        }
                     }
                 }
                 .refreshable {
@@ -63,10 +70,17 @@ struct MyPrayerListView: View {
                             .swipeActions(edge: .trailing) {
                                 Button(role: .destructive) {
                                     Task {
-                                        await viewModel.deletePrayerResponse(responseID: response.id)
+                                        await viewModel.deletePrayerResponse(responseID: response.id, prayerRequestId: response.prayerRequestId)
                                     }
                                 } label: {
                                     Label("삭제", systemImage: "trash")
+                                }
+                            }
+                            .onAppear {
+                                if response.id == viewModel.participatedPrayers.last?.id {
+                                    Task {
+                                        await viewModel.loadParticipatedPrayers(reset: false)
+                                    }
                                 }
                             }
                     }

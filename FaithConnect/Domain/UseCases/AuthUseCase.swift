@@ -15,6 +15,7 @@ protocol AuthUseCaseProtocol {
     func fetchMyInfo() async throws -> User
     func findID(memberID: Int, name: String) async throws -> String
     func changePassword(id: Int, name: String, email: String, newPassword: String) async throws
+    func deleteAccount() async throws
 }
 
 class AuthUseCase: AuthUseCaseProtocol {
@@ -56,9 +57,13 @@ class AuthUseCase: AuthUseCaseProtocol {
     }
 
     func changePassword(id: Int, name: String, email: String, newPassword: String) async throws {
-        try await repository.changePassword(id: id, 
+        try await repository.changePassword(id: id,
                                             name: name,
-                                            email: email, 
+                                            email: email,
                                             newPassword: newPassword)
+    }
+
+    func deleteAccount() async throws {
+        try await repository.deleteAccount()
     }
 }

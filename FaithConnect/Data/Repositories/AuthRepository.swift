@@ -44,9 +44,13 @@ class AuthRepository: AuthRepositoryProtocol {
     }
 
     func changePassword(id: Int, name: String, email: String, newPassword: String) async throws {
-        try await apiClient.changePassword(id: id, 
+        try await apiClient.changePassword(id: id,
                                            name: name,
                                            email: email,
                                            newPassword: newPassword)
+    }
+
+    func deleteAccount() async throws {
+        try await apiClient.deleteAccount()
     }
 }
