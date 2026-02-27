@@ -53,4 +53,12 @@ class AuthRepository: AuthRepositoryProtocol {
     func deleteAccount() async throws {
         try await apiClient.deleteAccount()
     }
+
+    func registerPushToken(deviceToken: String) async throws {
+        try await apiClient.registerPushToken(deviceToken: deviceToken)
+    }
+
+    func deletePushToken(deviceToken: String) async throws {
+        try await apiClient.deletePushToken(deviceToken: deviceToken)
+    }
 }

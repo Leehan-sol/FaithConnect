@@ -42,10 +42,14 @@ class LoginViewModel: ObservableObject {
         do {
             try await authUseCase.login(email: email,
                                       password: password)
-            // 테스트용 코드
-//            TokenStorage().saveToken(accessToken: "wrong_token", refreshToken: TokenStorage().refreshToken ?? "")
             let user = try await authUseCase.fetchMyInfo()
             session.login(user: user)
+
+            // 로그인 성공 시 푸시 토큰 등록
+            if let deviceToken = UserDefaults.standard.string(forKey: "deviceToken") {
+                try? await authUseCase.registerPushToken(deviceToken: deviceToken)
+                print("푸시 토큰 등록 완료")
+            }
         } catch {
             let error = error.localizedDescription
             alertType = .error(title: "로그인 실패",
