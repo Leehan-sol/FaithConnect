@@ -54,6 +54,11 @@ class MyPageViewModel: ObservableObject {
     
     func logout() async {
         do {
+            // 로그아웃 전 푸시 토큰 삭제
+            if let deviceToken = UserDefaults.standard.string(forKey: "deviceToken") {
+                try? await authUseCase.deletePushToken(deviceToken: deviceToken)
+                print("푸시 토큰 삭제 완료")
+            }
             try await authUseCase.logout()
             alertType = .successLogout
         } catch {
@@ -65,6 +70,11 @@ class MyPageViewModel: ObservableObject {
 
     func deleteAccount() async {
         do {
+            // 회원탈퇴 전 푸시 토큰 삭제
+            if let deviceToken = UserDefaults.standard.string(forKey: "deviceToken") {
+                try? await authUseCase.deletePushToken(deviceToken: deviceToken)
+                print("푸시 토큰 삭제 완료")
+            }
             try await authUseCase.deleteAccount()
             alertType = .successDeleteAccount
         } catch {

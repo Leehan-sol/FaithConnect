@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CC51C3A02F51B10000C94EDC /* PushTokenDTOs.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC51C39E2F51B10000C94EDC /* PushTokenDTOs.swift */; };
+		CC51C3A12F51B10000C94EDC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC51C39F2F51B10000C94EDC /* AppDelegate.swift */; };
 		180228912EBA08C300ABA95C /* PrayerRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180228902EBA08BD00ABA95C /* PrayerRowView.swift */; };
 		180228932EBA092A00ABA95C /* FloatingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180228922EBA091D00ABA95C /* FloatingButton.swift */; };
 		180939762F0B7CE600CC1BAE /* APIErrorCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180939752F0B7CE200CC1BAE /* APIErrorCode.swift */; };
@@ -148,8 +150,11 @@
 		CCAD36972EB7920C0028D451 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		CCAD36992EB792140028D451 /* MyPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewModel.swift; sourceTree = "<group>"; };
 		CCAD369D2EB799B70028D451 /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
+		CCB8262B2F51AD8D002880F0 /* FaithConnect.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FaithConnect.entitlements; sourceTree = "<group>"; };
 		CCFDC12F2F2F2043008F9CB9 /* PrayerEventType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerEventType.swift; sourceTree = "<group>"; };
 		CCFDC1312F2FA2C5008F9CB9 /* PrayerUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerUseCase.swift; sourceTree = "<group>"; };
+		CC51C39E2F51B10000C94EDC /* PushTokenDTOs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushTokenDTOs.swift; sourceTree = "<group>"; };
+		CC51C39F2F51B10000C94EDC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -170,6 +175,7 @@
 				1862C5402EFBA77D00B0DD70 /* AuthDTOs.swift */,
 				1862C5412EFBA77D00B0DD70 /* CategoryDTOs.swift */,
 				1862C5422EFBA77D00B0DD70 /* PrayerDTOs.swift */,
+				CC51C39E2F51B10000C94EDC /* PushTokenDTOs.swift */,
 			);
 			path = DTOs;
 			sourceTree = "<group>";
@@ -347,6 +353,7 @@
 		CC6C8F192E9B978300E43387 /* FaithConnect */ = {
 			isa = PBXGroup;
 			children = (
+				CCB8262B2F51AD8D002880F0 /* FaithConnect.entitlements */,
 				CC57ADB62EDC3F980043A8D8 /* Info.plist */,
 				CC6B2AD82F24CA9C003BB246 /* Presentation */,
 				CC6B2AD92F24CAC4003BB246 /* Domain */,
@@ -378,6 +385,7 @@
 			isa = PBXGroup;
 			children = (
 				CC6C8F1A2E9B978300E43387 /* FaithConnectApp.swift */,
+				CC51C39F2F51B10000C94EDC /* AppDelegate.swift */,
 				CC6FFE162F1390B300EB10D3 /* SplashView.swift */,
 				CCAD36742EB726510028D451 /* LaunchScreen.storyboard */,
 			);
@@ -633,6 +641,8 @@
 				CC5B0E4F2EBF30A900CE79A3 /* PrayerDetailViewModel.swift in Sources */,
 				CCAD369A2EB792140028D451 /* MyPageViewModel.swift in Sources */,
 				1862C53F2EFB74C900B0DD70 /* PrayerEmptyView.swift in Sources */,
+				CC51C3A02F51B10000C94EDC /* PushTokenDTOs.swift in Sources */,
+				CC51C3A12F51B10000C94EDC /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -763,6 +773,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = FaithConnect/FaithConnect.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -782,7 +793,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = hansol.FaithConnect.;
+				PRODUCT_BUNDLE_IDENTIFIER = hansol.FaithConnect;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -796,6 +807,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = FaithConnect/FaithConnect.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -815,7 +827,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = hansol.FaithConnect.;
+				PRODUCT_BUNDLE_IDENTIFIER = hansol.FaithConnect;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;

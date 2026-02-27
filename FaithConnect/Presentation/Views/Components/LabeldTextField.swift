@@ -26,8 +26,10 @@ struct LabeledTextField: View {
                 Group {
                     if secureState {
                         SecureField(placeholder, text: $text)
+                            .textContentType(.none)
                     } else {
                         TextField(placeholder, text: $text)
+                            .textContentType(.none)
                     }
                 }
                 .padding()

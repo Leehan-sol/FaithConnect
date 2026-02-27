@@ -25,6 +25,10 @@ protocol APIClientProtocol {
     func changePassword(id: Int, name: String, email: String, newPassword: String) async throws
     func deleteAccount() async throws
 
+    // Push Token
+    func registerPushToken(deviceToken: String) async throws
+    func deletePushToken(deviceToken: String) async throws
+
     // Prayer
     func loadCategories() async throws -> [CategoryResponse]
     func loadPrayers(categoryID: Int, page: Int) async throws -> PrayerListResponse
@@ -93,17 +97,26 @@ extension APIClient {
                                         auth: auth)
     }
     
-    private func delete<Res: Decodable>(
+    private func delete<Req: Encodable, Res: Decodable>(
         path: String,
         queryItems: [URLQueryItem] = [],
+        requestBody: Req? = nil,
         auth: AuthRequirement = .required
     ) async throws -> Res {
         var components = URLComponents(string: path)
-        components?.queryItems = queryItems
+        if !queryItems.isEmpty {
+            components?.queryItems = queryItems
+        }
         guard let url = components?.url else { throw APIError.invalidURL }
 
         var request = URLRequest(url: url)
         request.httpMethod = "DELETE"
+
+        if let body = requestBody, !(body is EmptyRequest) {
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.httpBody = try JSONEncoder().encode(body)
+        }
+
         return try await performRequest(request: request,
                                         auth: auth)
     }
@@ -297,7 +310,7 @@ extension APIClient {
     func deleteAccount() async throws {
         let urlString = APIEndpoint.deleteAccount.urlString
 
-        let apiResponse: DeleteAccountResponse = try await delete(path: urlString)
+        let apiResponse: DeleteAccountResponse = try await delete(path: urlString, requestBody: EmptyRequest())
 
         guard apiResponse.success == true else {
             let code = apiResponse.errorCode ?? .unknown
@@ -327,6 +340,23 @@ extension APIClient {
         }
     }
     
+}
+
+// MARK: - Push Token
+extension APIClient {
+    func registerPushToken(deviceToken: String) async throws {
+        let urlString = APIEndpoint.pushToken.urlString
+        let requestBody = PushTokenRegisterRequest(deviceToken: deviceToken, platform: "IOS")
+
+        let _: PushTokenResponse = try await post(urlString: urlString, requestBody: requestBody)
+    }
+
+    func deletePushToken(deviceToken: String) async throws {
+        let urlString = APIEndpoint.pushToken.urlString
+        let requestBody = PushTokenDeleteRequest(deviceToken: deviceToken)
+
+        let _: PushTokenResponse = try await delete(path: urlString, requestBody: requestBody)
+    }
 }
 
 // MARK: - Prayer
@@ -392,14 +422,14 @@ extension APIClient {
     func deletePrayer(prayerRequestId: Int) async throws {
         let urlString = APIEndpoint.prayerDetail(id: prayerRequestId).urlString
 
-        let apiResponse: PrayerDeleteResponse = try await delete(path: urlString)
-        
+        let apiResponse: PrayerDeleteResponse = try await delete(path: urlString, requestBody: EmptyRequest())
+
         if apiResponse.success != true {
             let code = apiResponse.errorCode ?? .unknown
             throw APIError.serverMessage(code: code)
         }
     }
-    
+
     func writePrayerResponse(prayerRequsetID: Int, message: String) async throws -> DetailResponseItem {
         let urlString = APIEndpoint.responses.urlString
         
@@ -425,14 +455,14 @@ extension APIClient {
     func deletePrayerResponse(responseID: Int) async throws {
         let urlString = APIEndpoint.responseDetail(id: responseID).urlString
 
-        let apiResponse: PrayerDeleteResponse = try await delete(path: urlString)
+        let apiResponse: PrayerDeleteResponse = try await delete(path: urlString, requestBody: EmptyRequest())
 
         if apiResponse.success != true {
             let code = apiResponse.errorCode ?? .unknown
             throw APIError.serverMessage(code: code)
         }
     }
-    
+
     func loadWrittenPrayers(page: Int) async throws -> PrayerListResponse {
         let urlString = APIEndpoint.myRequests.urlString
         

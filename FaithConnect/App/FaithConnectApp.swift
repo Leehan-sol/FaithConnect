@@ -9,6 +9,7 @@ import SwiftUI
 
 @main
 struct FaithConnectApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @Environment(\.scenePhase) private var scenePhase
     @StateObject private var session = UserSession()
 
@@ -100,6 +101,12 @@ private extension RootView {
                     session.login(user: user)
                 }
                 print("⭕️ 토큰 존재")
+
+                // 자동 로그인 시 푸시 토큰 등록
+                if let deviceToken = UserDefaults.standard.string(forKey: "deviceToken") {
+                    try? await authUseCase.registerPushToken(deviceToken: deviceToken)
+                    print("푸시 토큰 등록 완료")
+                }
             } catch {
                 print("❌ 토큰 만료: \(error.localizedDescription)")
             }
