@@ -68,6 +68,26 @@ struct MyPageView: View {
                     .padding()
                 
                 
+                SectionHeaderView(title: "개발자 도구", buttonHidden: true){}
+
+                VStack {
+                    MyPageItemField(imageName: "bell.badge",
+                                    color: .green,
+                                    titleName: "푸시 알림 테스트") {
+                        Task {
+                            await viewModel.testPush()
+                        }
+                    }
+                }.padding(5)
+                    .background()
+                    .cornerRadius(10)
+                    .shadow(color: Color.gray.opacity(0.3), radius: 4, x: 0, y: 2)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(Color(.systemGray6), lineWidth: 1)
+                    )
+                    .padding()
+
                 SectionHeaderView(title: "정보", buttonHidden: true){}
                 
                 VStack {

@@ -18,5 +18,6 @@ protocol AuthRepositoryProtocol {
     func deleteAccount() async throws
     func registerPushToken(deviceToken: String) async throws
     func deletePushToken(deviceToken: String) async throws
+    func testPush(fcmToken: String) async throws
 }
 
