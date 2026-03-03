@@ -23,13 +23,9 @@ struct LoginView: View {
                         Spacer()
                             .frame(height: 10)
                         
-                        Image(systemName: "figure.and.child.holdinghands")
+                        Image("heartIcon")
                             .resizable()
-                            .scaledToFit()
-                            .frame(width: 80, height: 80, alignment: .trailing)
-                            .foregroundColor(.white)
-                            .background(.customBlue1)
-                            .cornerRadius(10)
+                            .frame(width: 120, height: 120)
                         
                         Text("Faith Connect")
                             .font(.title)
