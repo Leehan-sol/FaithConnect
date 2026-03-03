@@ -7,6 +7,8 @@
 
 import UIKit
 import UserNotifications
+import FirebaseCore
+import FirebaseMessaging
 
 class AppDelegate: NSObject, UIApplicationDelegate {
 
@@ -14,7 +16,11 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
     ) -> Bool {
+        // Firebase 초기화
+        FirebaseApp.configure()
+
         UNUserNotificationCenter.current().delegate = self
+        Messaging.messaging().delegate = self
         requestNotificationPermission(application)
         return true
     }
@@ -23,9 +29,8 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         _ application: UIApplication,
         didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data
     ) {
-        let token = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
-        print("APNs 디바이스 토큰: \(token)")
-        UserDefaults.standard.set(token, forKey: "deviceToken")
+        // APNs 토큰을 Firebase에 전달 → Firebase가 FCM 토큰 발급
+        Messaging.messaging().apnsToken = deviceToken
     }
 
     func application(
@@ -76,5 +81,15 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         let userInfo = response.notification.request.content.userInfo
         print("알림 탭: \(userInfo)")
         completionHandler()
+    }
+}
+
+// MARK: - MessagingDelegate
+extension AppDelegate: MessagingDelegate {
+    // FCM 토큰 수신 및 갱신
+    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
+        guard let fcmToken = fcmToken else { return }
+        print("FCM 토큰: \(fcmToken)")
+        UserDefaults.standard.set(fcmToken, forKey: "fcmToken")
     }
 }
