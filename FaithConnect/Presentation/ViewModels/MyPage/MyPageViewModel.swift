@@ -55,8 +55,8 @@ class MyPageViewModel: ObservableObject {
     func logout() async {
         do {
             // 로그아웃 전 푸시 토큰 삭제
-            if let deviceToken = UserDefaults.standard.string(forKey: "deviceToken") {
-                try? await authUseCase.deletePushToken(deviceToken: deviceToken)
+            if let fcmToken = UserDefaults.standard.string(forKey: "fcmToken") {
+                try? await authUseCase.deletePushToken(deviceToken: fcmToken)
                 print("푸시 토큰 삭제 완료")
             }
             try await authUseCase.logout()
@@ -71,8 +71,8 @@ class MyPageViewModel: ObservableObject {
     func deleteAccount() async {
         do {
             // 회원탈퇴 전 푸시 토큰 삭제
-            if let deviceToken = UserDefaults.standard.string(forKey: "deviceToken") {
-                try? await authUseCase.deletePushToken(deviceToken: deviceToken)
+            if let fcmToken = UserDefaults.standard.string(forKey: "fcmToken") {
+                try? await authUseCase.deletePushToken(deviceToken: fcmToken)
                 print("푸시 토큰 삭제 완료")
             }
             try await authUseCase.deleteAccount()
@@ -81,6 +81,19 @@ class MyPageViewModel: ObservableObject {
             let error = error.localizedDescription
             alertType = .error(title: "회원탈퇴 실패",
                                message: error)
+        }
+    }
+
+    func testPush() async {
+        guard let fcmToken = UserDefaults.standard.string(forKey: "fcmToken") else {
+            alertType = .error(title: "푸시 테스트 실패", message: "FCM 토큰이 없습니다.")
+            return
+        }
+        do {
+            try await authUseCase.testPush(fcmToken: fcmToken)
+            alertType = .error(title: "푸시 테스트", message: "푸시 알림 전송 요청 성공")
+        } catch {
+            alertType = .error(title: "푸시 테스트 실패", message: error.localizedDescription)
         }
     }
 

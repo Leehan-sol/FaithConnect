@@ -46,8 +46,8 @@ class LoginViewModel: ObservableObject {
             session.login(user: user)
 
             // 로그인 성공 시 푸시 토큰 등록
-            if let deviceToken = UserDefaults.standard.string(forKey: "deviceToken") {
-                try? await authUseCase.registerPushToken(deviceToken: deviceToken)
+            if let fcmToken = UserDefaults.standard.string(forKey: "fcmToken") {
+                try? await authUseCase.registerPushToken(deviceToken: fcmToken)
                 print("푸시 토큰 등록 완료")
             }
         } catch {

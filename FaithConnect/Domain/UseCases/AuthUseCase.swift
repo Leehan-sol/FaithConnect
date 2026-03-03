@@ -18,6 +18,7 @@ protocol AuthUseCaseProtocol {
     func deleteAccount() async throws
     func registerPushToken(deviceToken: String) async throws
     func deletePushToken(deviceToken: String) async throws
+    func testPush(fcmToken: String) async throws
 }
 
 class AuthUseCase: AuthUseCaseProtocol {
@@ -75,5 +76,9 @@ class AuthUseCase: AuthUseCaseProtocol {
 
     func deletePushToken(deviceToken: String) async throws {
         try await repository.deletePushToken(deviceToken: deviceToken)
+    }
+
+    func testPush(fcmToken: String) async throws {
+        try await repository.testPush(fcmToken: fcmToken)
     }
 }

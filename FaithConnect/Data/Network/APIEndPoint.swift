@@ -36,6 +36,8 @@ enum APIEndpoint {
     case myPrayers
     // MARK: - Push
     case pushToken
+    case pushTest
+    case pushTestMock
     // MARK: - Token
     case refreshToken
     
@@ -89,6 +91,10 @@ enum APIEndpoint {
             return "\(basePath)/my-prayers"
         case .pushToken:
             return "\(basePath)/push-token"
+        case .pushTest:
+            return "\(basePath)/push/test"
+        case .pushTestMock:
+            return "\(basePath)/push/test/mock"
         case .refreshToken:
             return "\(basePath)/refresh-token"
         }
