@@ -28,6 +28,7 @@ protocol APIClientProtocol {
     // Push Token
     func registerPushToken(deviceToken: String) async throws
     func deletePushToken(deviceToken: String) async throws
+    func testPush(fcmToken: String) async throws
 
     // Prayer
     func loadCategories() async throws -> [CategoryResponse]
@@ -346,16 +347,25 @@ extension APIClient {
 extension APIClient {
     func registerPushToken(deviceToken: String) async throws {
         let urlString = APIEndpoint.pushToken.urlString
-        let requestBody = PushTokenRegisterRequest(deviceToken: deviceToken, platform: "IOS")
+        let requestBody = PushTokenRegisterRequest(deviceToken: deviceToken, platform: "iOS")
 
-        let _: PushTokenResponse = try await post(urlString: urlString, requestBody: requestBody)
+        let _: PushTokenResponse = try await post(urlString: urlString,
+                                                  requestBody: requestBody)
     }
 
     func deletePushToken(deviceToken: String) async throws {
         let urlString = APIEndpoint.pushToken.urlString
         let requestBody = PushTokenDeleteRequest(deviceToken: deviceToken)
 
-        let _: PushTokenResponse = try await delete(path: urlString, requestBody: requestBody)
+        let _: PushTokenResponse = try await delete(path: urlString,
+                                                    requestBody: requestBody)
+    }
+
+    func testPush(fcmToken: String) async throws {
+        let urlString = APIEndpoint.pushTestMock.urlString
+        let requestBody = PushTokenRegisterRequest(deviceToken: fcmToken, platform: "iOS")
+        let _: PushTokenResponse = try await post(urlString: urlString,
+                                                  requestBody: requestBody)
     }
 }
 

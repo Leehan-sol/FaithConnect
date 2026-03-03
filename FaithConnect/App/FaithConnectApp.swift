@@ -87,7 +87,7 @@ private extension RootView {
     private func checkLoginStatus() {
         Task {
             guard authUseCase.hasToken else {
-                print("❌ 토큰 없음")
+                print("refresh 토큰 없음")
                 await MainActor.run {
                     isCheckingAuth = false
                 }
@@ -100,15 +100,15 @@ private extension RootView {
                 await MainActor.run {
                     session.login(user: user)
                 }
-                print("⭕️ 토큰 존재")
+                print("refresh 토큰 존재")
 
                 // 자동 로그인 시 푸시 토큰 등록
-                if let deviceToken = UserDefaults.standard.string(forKey: "deviceToken") {
-                    try? await authUseCase.registerPushToken(deviceToken: deviceToken)
+                if let fcmToken = UserDefaults.standard.string(forKey: "fcmToken") {
+                    try? await authUseCase.registerPushToken(deviceToken: fcmToken)
                     print("푸시 토큰 등록 완료")
                 }
             } catch {
-                print("❌ 토큰 만료: \(error.localizedDescription)")
+                print("refresh 토큰 만료: \(error.localizedDescription)")
             }
 
             await MainActor.run {

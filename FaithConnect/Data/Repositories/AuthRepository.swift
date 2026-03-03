@@ -61,4 +61,8 @@ class AuthRepository: AuthRepositoryProtocol {
     func deletePushToken(deviceToken: String) async throws {
         try await apiClient.deletePushToken(deviceToken: deviceToken)
     }
+
+    func testPush(fcmToken: String) async throws {
+        try await apiClient.testPush(fcmToken: fcmToken)
+    }
 }
