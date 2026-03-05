@@ -9,9 +9,10 @@ import SwiftUI
 
 struct FindPasswordView: View {
     @ObservedObject var viewModel: LoginViewModel
-    @Environment(\.dismiss) private var dismiss
+    @Binding var isPresented: Bool
     @State private var email: String = ""
-    
+    @State private var showResetPassword: Bool = false
+
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             Spacer()
@@ -32,7 +33,9 @@ struct FindPasswordView: View {
             ActionButton(title: "재설정 링크 전송",
                          foregroundColor: .white,
                          backgroundColor: .customBlue1) {
-                // TODO: - 비밀번호 재설정
+                Task {
+                    await viewModel.requestPasswordReset(email: email)
+                }
             }.padding(.bottom, 20)
             
             InfoBoxView(messages: [
@@ -43,6 +46,18 @@ struct FindPasswordView: View {
         .padding(EdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20))
         .navigationTitle("비밀번호 찾기")
         .customBackButtonStyle()
+        .navigationDestination(isPresented: $showResetPassword) {
+            ResetPasswordView(viewModel: viewModel, isPresented: $isPresented, email: email)
+        }
+        .alert(item: $viewModel.findPasswordAlertType) { alert in
+            Alert(title: Text(alert.title),
+                  message: Text(alert.message),
+                  dismissButton: .default(Text("확인")) {
+                      if alert == .successPasswordResetEmail {
+                          showResetPassword = true
+                      }
+                  })
+        }
         .onTapGesture {
             UIApplication.shared.endEditing()
         }
@@ -53,6 +68,7 @@ struct FindPasswordView: View {
     let mockAuthUseCase = AuthUseCase(repository: AuthRepository(apiClient: APIClient(tokenStorage: TokenStorage())))
     let mockSession = UserSession()
 
-    return FindPasswordView(viewModel: LoginViewModel(authUseCase: mockAuthUseCase,
-                                                      session: mockSession))
+    FindPasswordView(viewModel: LoginViewModel(authUseCase: mockAuthUseCase,
+                                                  session: mockSession),
+                      isPresented: .constant(true))
 }

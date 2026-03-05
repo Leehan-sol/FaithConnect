@@ -24,3 +24,18 @@ struct PushTokenResponse: Decodable {
     let errorCode: APIErrorCode?
     let status: Int?
 }
+
+// MARK: - 푸시 테스트
+struct PushTestRequest: Encodable {
+    let title: String
+    let body: String
+    let data: [String: String]?
+}
+
+struct PushTestResponse: Decodable {
+    let success: Bool
+    let message: String?
+    let deviceCount: Int?
+    let errorCode: APIErrorCode?
+    let status: Int?
+}

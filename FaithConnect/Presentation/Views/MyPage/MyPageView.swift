@@ -67,7 +67,7 @@ struct MyPageView: View {
                     )
                     .padding()
                 
-                
+#if DEBUG
                 SectionHeaderView(title: "개발자 도구", buttonHidden: true){}
 
                 VStack {
@@ -87,6 +87,7 @@ struct MyPageView: View {
                             .stroke(Color(.systemGray6), lineWidth: 1)
                     )
                     .padding()
+#endif
 
                 SectionHeaderView(title: "정보", buttonHidden: true){}
                 

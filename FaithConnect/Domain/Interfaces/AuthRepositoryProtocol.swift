@@ -16,8 +16,10 @@ protocol AuthRepositoryProtocol {
     func findID(memberID: Int, name: String) async throws -> String
     func changePassword(id: Int, name: String, email: String, newPassword: String) async throws
     func deleteAccount() async throws
+    func requestPasswordReset(email: String) async throws
+    func confirmPasswordReset(email: String, code: String, newPassword: String) async throws
     func registerPushToken(deviceToken: String) async throws
     func deletePushToken(deviceToken: String) async throws
-    func testPush(fcmToken: String) async throws
+    func testPush(title: String, body: String, data: [String: String]?) async throws
 }
 
