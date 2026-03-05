@@ -87,6 +87,32 @@ struct DeleteAccountResponse: Decodable {
     let status: Int?
 }
 
+// MARK: - 비밀번호 재설정
+struct PasswordResetRequest: Encodable {
+    let email: String
+}
+
+struct PasswordResetResponse: Decodable {
+    let message: String?
+    let success: Bool
+    let errorCode: APIErrorCode?
+    let status: Int?
+}
+
+// MARK: - 비밀번호 재설정 확인
+struct PasswordResetConfirmRequest: Encodable {
+    let email: String
+    let code: String
+    let newPassword: String
+}
+
+struct PasswordResetConfirmResponse: Decodable {
+    let message: String?
+    let success: Bool
+    let errorCode: APIErrorCode?
+    let status: Int?
+}
+
 // MARK: - 토큰 요청
 struct AccessTokenRequest: Codable {
     let refreshToken: String

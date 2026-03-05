@@ -24,6 +24,7 @@
 		186D4F782F03BD02005520FD /* terms.html in Resources */ = {isa = PBXBuildFile; fileRef = 186D4F772F03BCFA005520FD /* terms.html */; };
 		187636062F0D1529005EF482 /* NotificationCenter+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 187636052F0D1523005EF482 /* NotificationCenter+Extensions.swift */; };
 		18948E742F024C9300C9C75C /* APIEndPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18948E732F024C8B00C9C75C /* APIEndPoint.swift */; };
+		18B32D4C2F59494A00A171B2 /* ResetPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B32D4B2F59494A00A171B2 /* ResetPasswordView.swift */; };
 		18C747A12F56D1B5006BF9DF /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 18C747A02F56D1B5006BF9DF /* FirebaseAnalytics */; };
 		18C747A32F56D1B5006BF9DF /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 18C747A22F56D1B5006BF9DF /* FirebaseAuth */; };
 		18C747A52F56D1B5006BF9DF /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 18C747A42F56D1B5006BF9DF /* FirebaseMessaging */; };
@@ -102,6 +103,7 @@
 		186D4F772F03BCFA005520FD /* terms.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = terms.html; sourceTree = "<group>"; };
 		187636052F0D1523005EF482 /* NotificationCenter+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationCenter+Extensions.swift"; sourceTree = "<group>"; };
 		18948E732F024C8B00C9C75C /* APIEndPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIEndPoint.swift; sourceTree = "<group>"; };
+		18B32D4B2F59494A00A171B2 /* ResetPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPasswordView.swift; sourceTree = "<group>"; };
 		18C747A62F56D784006BF9DF /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		CC4EA43D2EC9AC3D0097D09C /* PrayerDetailBottomSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerDetailBottomSheetView.swift; sourceTree = "<group>"; };
 		CC4EA43F2EC9B7370097D09C /* FindIDResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindIDResultView.swift; sourceTree = "<group>"; };
@@ -483,6 +485,7 @@
 				CC5B0E592EBF367900CE79A3 /* FindIDView.swift */,
 				CC4EA43F2EC9B7370097D09C /* FindIDResultView.swift */,
 				CC5B0E5B2EBF368900CE79A3 /* FindPasswordView.swift */,
+				18B32D4B2F59494A00A171B2 /* ResetPasswordView.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -627,6 +630,7 @@
 				CC5B0E5E2EBF387000CE79A3 /* ActionButton.swift in Sources */,
 				CC5B0E662EBF990A00CE79A3 /* CategoryScrollView.swift in Sources */,
 				CC5B0E642EBF8BA900CE79A3 /* PrayerCategory.swift in Sources */,
+				18B32D4C2F59494A00A171B2 /* ResetPasswordView.swift in Sources */,
 				CCFDC1322F2FA2C5008F9CB9 /* PrayerUseCase.swift in Sources */,
 				CC4EA4422EC9F64A0097D09C /* CustomBackButtonStyle.swift in Sources */,
 				CC6EC0642F015711009D2E31 /* MyResponse.swift in Sources */,

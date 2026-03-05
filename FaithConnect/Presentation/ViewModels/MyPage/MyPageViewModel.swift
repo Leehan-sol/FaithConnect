@@ -85,12 +85,12 @@ class MyPageViewModel: ObservableObject {
     }
 
     func testPush() async {
-        guard let fcmToken = UserDefaults.standard.string(forKey: "fcmToken") else {
-            alertType = .error(title: "푸시 테스트 실패", message: "FCM 토큰이 없습니다.")
-            return
-        }
         do {
-            try await authUseCase.testPush(fcmToken: fcmToken)
+            try await authUseCase.testPush(
+                title: "FaithConnect 테스트",
+                body: "푸시 알림 테스트입니다.",
+                data: ["additionalProp1": "test"]
+            )
             alertType = .error(title: "푸시 테스트", message: "푸시 알림 전송 요청 성공")
         } catch {
             alertType = .error(title: "푸시 테스트 실패", message: error.localizedDescription)

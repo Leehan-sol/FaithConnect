@@ -25,6 +25,8 @@ enum APIEndpoint {
     case fetchMyInfo
     case findID
     case changePassword
+    case passwordReset
+    case passwordResetConfirm
     case deleteAccount
     // MARK: - Prayer
     case categories
@@ -73,6 +75,10 @@ enum APIEndpoint {
             return "\(basePath)/find-email"
         case .changePassword:
             return "\(basePath)/change-password"
+        case .passwordReset:
+            return "\(basePath)/password-reset/request"
+        case .passwordResetConfirm:
+            return "\(basePath)/password-reset/confirm"
         case .deleteAccount:
             return "\(basePath)/me"
         case .categories:

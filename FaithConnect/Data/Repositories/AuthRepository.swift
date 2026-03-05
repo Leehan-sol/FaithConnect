@@ -54,6 +54,16 @@ class AuthRepository: AuthRepositoryProtocol {
         try await apiClient.deleteAccount()
     }
 
+    func requestPasswordReset(email: String) async throws {
+        try await apiClient.requestPasswordReset(email: email)
+    }
+
+    func confirmPasswordReset(email: String, code: String, newPassword: String) async throws {
+        try await apiClient.confirmPasswordReset(email: email,
+                                                 code: code,
+                                                 newPassword: newPassword)
+    }
+
     func registerPushToken(deviceToken: String) async throws {
         try await apiClient.registerPushToken(deviceToken: deviceToken)
     }
@@ -62,7 +72,7 @@ class AuthRepository: AuthRepositoryProtocol {
         try await apiClient.deletePushToken(deviceToken: deviceToken)
     }
 
-    func testPush(fcmToken: String) async throws {
-        try await apiClient.testPush(fcmToken: fcmToken)
+    func testPush(title: String, body: String, data: [String: String]? = nil) async throws {
+        try await apiClient.testPush(title: title, body: body, data: data)
     }
 }

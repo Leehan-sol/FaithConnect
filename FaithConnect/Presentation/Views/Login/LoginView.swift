@@ -117,7 +117,7 @@ struct LoginView: View {
                 FindIDView(viewModel: viewModel)
             }
             .navigationDestination(isPresented: $showFindPW) {
-                FindPasswordView(viewModel: viewModel)
+                FindPasswordView(viewModel: viewModel, isPresented: $showFindPW)
             }
             .alert(item: $viewModel.alertType) { alert in
                 Alert(title: Text(alert.title),

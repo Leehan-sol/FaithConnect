@@ -24,11 +24,13 @@ protocol APIClientProtocol {
     func findID(memberID: Int, name: String) async throws -> String
     func changePassword(id: Int, name: String, email: String, newPassword: String) async throws
     func deleteAccount() async throws
+    func requestPasswordReset(email: String) async throws
+    func confirmPasswordReset(email: String, code: String, newPassword: String) async throws
 
     // Push Token
     func registerPushToken(deviceToken: String) async throws
     func deletePushToken(deviceToken: String) async throws
-    func testPush(fcmToken: String) async throws
+    func testPush(title: String, body: String, data: [String: String]?) async throws
 
     // Prayer
     func loadCategories() async throws -> [CategoryResponse]
@@ -284,9 +286,9 @@ extension APIClient {
     
     func fetchMyInfo() async throws -> FetchMyInfoResponse {
         let urlString = APIEndpoint.fetchMyInfo.urlString
-
+        
         let apiResponse: FetchMyInfoResponse = try await get(path: urlString)
-
+        
         return apiResponse
     }
     
@@ -310,19 +312,19 @@ extension APIClient {
     
     func deleteAccount() async throws {
         let urlString = APIEndpoint.deleteAccount.urlString
-
+        
         let apiResponse: DeleteAccountResponse = try await delete(path: urlString, requestBody: EmptyRequest())
-
+        
         guard apiResponse.success == true else {
             let code = apiResponse.errorCode ?? .unknown
             throw APIError.serverMessage(code: code)
         }
-
+        
         await MainActor.run {
             tokenStorage.clear()
         }
     }
-
+    
     func changePassword(id: Int, name: String, email: String, newPassword: String) async throws {
         let urlString = APIEndpoint.changePassword.urlString
         
@@ -341,7 +343,33 @@ extension APIClient {
         }
     }
     
+    func requestPasswordReset(email: String) async throws {
+        let urlString = APIEndpoint.passwordReset.urlString
+        let requestBody = PasswordResetRequest(email: email)
+        let apiResponse: PasswordResetResponse = try await post(urlString: urlString,
+                                                                requestBody: requestBody,
+                                                                auth: .none)
+        if apiResponse.success != true {
+            let code = apiResponse.errorCode ?? .unknown
+            throw APIError.serverMessage(code: code)
+        }
+    }
+    
+    func confirmPasswordReset(email: String, code: String, newPassword: String) async throws {
+        let urlString = APIEndpoint.passwordResetConfirm.urlString
+        let requestBody = PasswordResetConfirmRequest(email: email,
+                                                      code: code,
+                                                      newPassword: newPassword)
+        let apiResponse: PasswordResetConfirmResponse = try await post(urlString: urlString,
+                                                                       requestBody: requestBody,
+                                                                       auth: .none)
+        if apiResponse.success != true {
+            let code = apiResponse.errorCode ?? .unknown
+            throw APIError.serverMessage(code: code)
+        }
+    }
 }
+
 
 // MARK: - Push Token
 extension APIClient {
@@ -361,11 +389,15 @@ extension APIClient {
                                                     requestBody: requestBody)
     }
 
-    func testPush(fcmToken: String) async throws {
-        let urlString = APIEndpoint.pushTestMock.urlString
-        let requestBody = PushTokenRegisterRequest(deviceToken: fcmToken, platform: "iOS")
-        let _: PushTokenResponse = try await post(urlString: urlString,
-                                                  requestBody: requestBody)
+    func testPush(title: String, body: String, data: [String: String]? = nil) async throws {
+        let urlString = APIEndpoint.pushTest.urlString
+        let requestBody = PushTestRequest(title: title, body: body, data: data)
+        let apiResponse: PushTestResponse = try await post(urlString: urlString,
+                                                        requestBody: requestBody)
+        if apiResponse.success != true {
+            let code = apiResponse.errorCode ?? .unknown
+            throw APIError.serverMessage(code: code)
+        }
     }
 }
 
