@@ -148,7 +148,7 @@ extension APIClient {
         isRetry: Bool = false,
         auth: AuthRequirement = .required
     ) async throws -> Response {
-        print("URL: \(String(describing: request.url))")
+//        print("URL: \(String(describing: request.url))")
         
         var request = request
         
@@ -157,7 +157,16 @@ extension APIClient {
         }
         
         let (data, response) = try await URLSession.shared.data(for: request)
-        
+
+        #if DEBUG
+        if let requestBody = request.httpBody, let reqString = String(data: requestBody, encoding: .utf8) {
+            print("[\(request.httpMethod ?? "")] \(request.url?.path ?? "") 요청: \(reqString)")
+        }
+        if let jsonString = String(data: data, encoding: .utf8) {
+            print("[\(request.httpMethod ?? "")] \(request.url?.path ?? "") 응답: \(jsonString)")
+        }
+        #endif
+
         guard let httpResponse = response as? HTTPURLResponse else {
             throw APIError.serverMessage(code: .unknown)
         }
@@ -375,7 +384,7 @@ extension APIClient {
 extension APIClient {
     func registerPushToken(deviceToken: String) async throws {
         let urlString = APIEndpoint.pushToken.urlString
-        let requestBody = PushTokenRegisterRequest(deviceToken: deviceToken, platform: "iOS")
+        let requestBody = PushTokenRegisterRequest(deviceToken: deviceToken, platform: "IOS")
 
         let _: PushTokenResponse = try await post(urlString: urlString,
                                                   requestBody: requestBody)

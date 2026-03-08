@@ -13,6 +13,7 @@ struct MyPageView: View {
     @State private var selectedPolicy: PolicyType?
     @State var showAlert: Bool = false
     @State private var showDeleteAccountAlert: Bool = false
+    @State private var passwordResetVM: PasswordResetViewModel?
     
     private let versionNumber = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
     private let churchName = Bundle.main.infoDictionary?["ChurchName"] as? String
@@ -46,6 +47,7 @@ struct MyPageView: View {
                     MyPageItemField(imageName: "lock",
                                     color: .blue,
                                     titleName: "비밀번호 변경") {
+                        passwordResetVM = viewModel.makePasswordResetViewModel()
                         showChangePassword = true
                     }
                     
@@ -133,7 +135,12 @@ struct MyPageView: View {
             }
             .navigationTitle("마이페이지")
             .navigationDestination(isPresented: $showChangePassword) {
-                ChangePasswordView(viewModel: viewModel)
+                if let vm = passwordResetVM {
+                    FindPasswordView(viewModel: vm,
+                                     isPresented: $showChangePassword,
+                                     onResetSuccess: { viewModel.sessionLogout() },
+                                     initialEmail: viewModel.email)
+                }
             }
             .navigationDestination(item: $selectedPolicy) { policy in
                 PolicyWebView(viewType: selectedPolicy ?? .privacy)
@@ -163,7 +170,7 @@ struct MyPageView: View {
                     if alert == .successLogout || alert == .successDeleteAccount {
                         viewModel.sessionLogout()
                     }
-                    
+
                     if alert == .successChangePassword {
                         Task {
                             await viewModel.logout()

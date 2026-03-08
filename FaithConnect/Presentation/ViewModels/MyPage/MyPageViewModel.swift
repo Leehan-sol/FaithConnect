@@ -10,7 +10,7 @@ import Foundation
 @MainActor
 class MyPageViewModel: ObservableObject {
     @Published var alertType: AlertType? = nil
-    
+
     private let authUseCase: AuthUseCaseProtocol
     private let userSession: UserSession
 
@@ -89,12 +89,17 @@ class MyPageViewModel: ObservableObject {
             try await authUseCase.testPush(
                 title: "FaithConnect 테스트",
                 body: "푸시 알림 테스트입니다.",
-                data: ["additionalProp1": "test"]
+                data: ["type": "PRAYER_RESPONSE",
+                       "prayerRequestId": "123"]
             )
             alertType = .error(title: "푸시 테스트", message: "푸시 알림 전송 요청 성공")
         } catch {
             alertType = .error(title: "푸시 테스트 실패", message: error.localizedDescription)
         }
+    }
+
+    func makePasswordResetViewModel() -> PasswordResetViewModel {
+        PasswordResetViewModel(authUseCase: authUseCase)
     }
 
     func sessionLogout() {
