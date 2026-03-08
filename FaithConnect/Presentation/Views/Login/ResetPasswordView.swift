@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ResetPasswordView: View {
-    @ObservedObject var viewModel: LoginViewModel
+    @ObservedObject var viewModel: PasswordResetViewModel
     @Binding var isPresented: Bool
 
     @State private var verificationCode: String = ""
@@ -16,6 +16,7 @@ struct ResetPasswordView: View {
     @State private var confirmPassword: String = ""
 
     let email: String
+    var onSuccess: (() -> Void)? = nil
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -66,7 +67,11 @@ struct ResetPasswordView: View {
                   message: Text(alert.message),
                   dismissButton: .default(Text("확인")) {
                       if alert == .successPasswordReset {
-                          isPresented = false
+                          if let onSuccess = onSuccess {
+                              onSuccess()
+                          } else {
+                              isPresented = false
+                          }
                       }
                   })
         }
@@ -76,12 +81,12 @@ struct ResetPasswordView: View {
     }
 }
 
-#Preview {
-    let mockAuthUseCase = AuthUseCase(repository: AuthRepository(apiClient: APIClient(tokenStorage: TokenStorage())))
-    let mockSession = UserSession()
-
-    ResetPasswordView(viewModel: LoginViewModel(authUseCase: mockAuthUseCase,
-                                                session: mockSession),
-                      isPresented: .constant(true),
-                      email: "test@test.com")
-}
+//#Preview {
+//    let mockAuthUseCase = AuthUseCase(repository: AuthRepository(apiClient: APIClient(tokenStorage: TokenStorage())))
+//    let mockSession = UserSession()
+//
+//    ResetPasswordView(viewModel: LoginViewModel(authUseCase: mockAuthUseCase,
+//                                                session: mockSession),
+//                      isPresented: .constant(true),
+//                      email: "test@test.com")
+//}

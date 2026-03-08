@@ -25,10 +25,8 @@
 		187636062F0D1529005EF482 /* NotificationCenter+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 187636052F0D1523005EF482 /* NotificationCenter+Extensions.swift */; };
 		18948E742F024C9300C9C75C /* APIEndPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18948E732F024C8B00C9C75C /* APIEndPoint.swift */; };
 		18B32D4C2F59494A00A171B2 /* ResetPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B32D4B2F59494A00A171B2 /* ResetPasswordView.swift */; };
-		18C747A12F56D1B5006BF9DF /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 18C747A02F56D1B5006BF9DF /* FirebaseAnalytics */; };
-		18C747A32F56D1B5006BF9DF /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 18C747A22F56D1B5006BF9DF /* FirebaseAuth */; };
-		18C747A52F56D1B5006BF9DF /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 18C747A42F56D1B5006BF9DF /* FirebaseMessaging */; };
 		18C747A72F56D784006BF9DF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 18C747A62F56D784006BF9DF /* GoogleService-Info.plist */; };
+		CC1A00012F5B00000028D451 /* PasswordResetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1A00002F5B00000028D451 /* PasswordResetViewModel.swift */; };
 		CC4EA43E2EC9AC3E0097D09C /* PrayerDetailBottomSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4EA43D2EC9AC3D0097D09C /* PrayerDetailBottomSheetView.swift */; };
 		CC4EA4402EC9B7370097D09C /* FindIDResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4EA43F2EC9B7370097D09C /* FindIDResultView.swift */; };
 		CC4EA4422EC9F64A0097D09C /* CustomBackButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4EA4412EC9F64A0097D09C /* CustomBackButtonStyle.swift */; };
@@ -38,7 +36,6 @@
 		CC51C38C2F3F655500C94EDC /* AuthRepositoryProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC51C38B2F3F655500C94EDC /* AuthRepositoryProtocol.swift */; };
 		CC51C3A02F51B10000C94EDC /* PushTokenDTOs.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC51C39E2F51B10000C94EDC /* PushTokenDTOs.swift */; };
 		CC51C3A12F51B10000C94EDC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC51C39F2F51B10000C94EDC /* AppDelegate.swift */; };
-		CC57ADB82EDC41BE0043A8D8 /* ChangePasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC57ADB72EDC41BE0043A8D8 /* ChangePasswordView.swift */; };
 		CC5B0E482EBF243000CE79A3 /* SectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5B0E472EBF243000CE79A3 /* SectionHeaderView.swift */; };
 		CC5B0E4B2EBF2DD000CE79A3 /* MyPrayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5B0E4A2EBF2DD000CE79A3 /* MyPrayerView.swift */; };
 		CC5B0E4D2EBF2E5500CE79A3 /* MyPrayerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5B0E4C2EBF2E5500CE79A3 /* MyPrayerViewModel.swift */; };
@@ -81,6 +78,9 @@
 		CCAD36982EB7920C0028D451 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAD36972EB7920C0028D451 /* HomeViewModel.swift */; };
 		CCAD369A2EB792140028D451 /* MyPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAD36992EB792140028D451 /* MyPageViewModel.swift */; };
 		CCAD369E2EB799B70028D451 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAD369D2EB799B70028D451 /* String+Extensions.swift */; };
+		CCC8A3F02F5C05AD00C30ED6 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = CCC8A3EF2F5C05AD00C30ED6 /* FirebaseAnalytics */; };
+		CCC8A3FC2F5C05AD00C30ED6 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = CCC8A3FB2F5C05AD00C30ED6 /* FirebaseAuth */; };
+		CCC8A41A2F5C05AD00C30ED6 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = CCC8A4192F5C05AD00C30ED6 /* FirebaseMessaging */; };
 		CCFDC1302F2F2043008F9CB9 /* PrayerEventType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCFDC12F2F2F2043008F9CB9 /* PrayerEventType.swift */; };
 		CCFDC1322F2FA2C5008F9CB9 /* PrayerUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCFDC1312F2FA2C5008F9CB9 /* PrayerUseCase.swift */; };
 /* End PBXBuildFile section */
@@ -105,6 +105,7 @@
 		18948E732F024C8B00C9C75C /* APIEndPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIEndPoint.swift; sourceTree = "<group>"; };
 		18B32D4B2F59494A00A171B2 /* ResetPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPasswordView.swift; sourceTree = "<group>"; };
 		18C747A62F56D784006BF9DF /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		CC1A00002F5B00000028D451 /* PasswordResetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordResetViewModel.swift; sourceTree = "<group>"; };
 		CC4EA43D2EC9AC3D0097D09C /* PrayerDetailBottomSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerDetailBottomSheetView.swift; sourceTree = "<group>"; };
 		CC4EA43F2EC9B7370097D09C /* FindIDResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindIDResultView.swift; sourceTree = "<group>"; };
 		CC4EA4412EC9F64A0097D09C /* CustomBackButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomBackButtonStyle.swift; sourceTree = "<group>"; };
@@ -115,7 +116,6 @@
 		CC51C39E2F51B10000C94EDC /* PushTokenDTOs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushTokenDTOs.swift; sourceTree = "<group>"; };
 		CC51C39F2F51B10000C94EDC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CC57ADB62EDC3F980043A8D8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		CC57ADB72EDC41BE0043A8D8 /* ChangePasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordView.swift; sourceTree = "<group>"; };
 		CC5B0E472EBF243000CE79A3 /* SectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeaderView.swift; sourceTree = "<group>"; };
 		CC5B0E4A2EBF2DD000CE79A3 /* MyPrayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPrayerView.swift; sourceTree = "<group>"; };
 		CC5B0E4C2EBF2E5500CE79A3 /* MyPrayerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPrayerViewModel.swift; sourceTree = "<group>"; };
@@ -169,9 +169,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				18C747A52F56D1B5006BF9DF /* FirebaseMessaging in Frameworks */,
-				18C747A12F56D1B5006BF9DF /* FirebaseAnalytics in Frameworks */,
-				18C747A32F56D1B5006BF9DF /* FirebaseAuth in Frameworks */,
+				CCC8A3F02F5C05AD00C30ED6 /* FirebaseAnalytics in Frameworks */,
+				CCC8A3FC2F5C05AD00C30ED6 /* FirebaseAuth in Frameworks */,
+				CCC8A41A2F5C05AD00C30ED6 /* FirebaseMessaging in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -225,6 +225,7 @@
 			isa = PBXGroup;
 			children = (
 				CCAD36842EB732FE0028D451 /* LoginViewModel.swift */,
+				CC1A00002F5B00000028D451 /* PasswordResetViewModel.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -510,7 +511,6 @@
 			isa = PBXGroup;
 			children = (
 				CCAD36932EB78D290028D451 /* MyPageView.swift */,
-				CC57ADB72EDC41BE0043A8D8 /* ChangePasswordView.swift */,
 				186D4F722F03A561005520FD /* PolicyWebView.swift */,
 			);
 			path = MyPage;
@@ -532,6 +532,11 @@
 			dependencies = (
 			);
 			name = FaithConnect;
+			packageProductDependencies = (
+				CCC8A3EF2F5C05AD00C30ED6 /* FirebaseAnalytics */,
+				CCC8A3FB2F5C05AD00C30ED6 /* FirebaseAuth */,
+				CCC8A4192F5C05AD00C30ED6 /* FirebaseMessaging */,
+			);
 			productName = FaithConnect;
 			productReference = CC6C8F172E9B978300E43387 /* FaithConnect.app */;
 			productType = "com.apple.product-type.application";
@@ -561,7 +566,7 @@
 			);
 			mainGroup = CC6C8F0E2E9B978300E43387;
 			packageReferences = (
-				18C7479F2F56D1B5006BF9DF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				CCC8A3EE2F5C05AD00C30ED6 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = CC6C8F182E9B978300E43387 /* Products */;
 			projectDirPath = "";
@@ -595,6 +600,7 @@
 			files = (
 				CC4EA4402EC9B7370097D09C /* FindIDResultView.swift in Sources */,
 				CCAD36852EB732FE0028D451 /* LoginViewModel.swift in Sources */,
+				CC1A00012F5B00000028D451 /* PasswordResetViewModel.swift in Sources */,
 				CC5B0E4B2EBF2DD000CE79A3 /* MyPrayerView.swift in Sources */,
 				CC6194CA2EF7F5BB005B79A7 /* UserSession.swift in Sources */,
 				CCAD36982EB7920C0028D451 /* HomeViewModel.swift in Sources */,
@@ -604,7 +610,6 @@
 				CC5B0E682EBFA5A800CE79A3 /* PrayerResponseRowView.swift in Sources */,
 				180228932EBA092A00ABA95C /* FloatingButton.swift in Sources */,
 				1862C5492EFBA89C00B0DD70 /* APIError.swift in Sources */,
-				CC57ADB82EDC41BE0043A8D8 /* ChangePasswordView.swift in Sources */,
 				CC6B2AE32F24CB72003BB246 /* PrayerRepository.swift in Sources */,
 				CCAD36892EB74F8F0028D451 /* SignUpView.swift in Sources */,
 				CCAD36872EB73F540028D451 /* LabeldTextField.swift in Sources */,
@@ -877,30 +882,30 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		18C7479F2F56D1B5006BF9DF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+		CCC8A3EE2F5C05AD00C30ED6 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 12.10.0;
+				minimumVersion = 10.29.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		18C747A02F56D1B5006BF9DF /* FirebaseAnalytics */ = {
+		CCC8A3EF2F5C05AD00C30ED6 /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 18C7479F2F56D1B5006BF9DF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			package = CCC8A3EE2F5C05AD00C30ED6 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseAnalytics;
 		};
-		18C747A22F56D1B5006BF9DF /* FirebaseAuth */ = {
+		CCC8A3FB2F5C05AD00C30ED6 /* FirebaseAuth */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 18C7479F2F56D1B5006BF9DF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			package = CCC8A3EE2F5C05AD00C30ED6 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseAuth;
 		};
-		18C747A42F56D1B5006BF9DF /* FirebaseMessaging */ = {
+		CCC8A4192F5C05AD00C30ED6 /* FirebaseMessaging */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 18C7479F2F56D1B5006BF9DF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			package = CCC8A3EE2F5C05AD00C30ED6 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseMessaging;
 		};
 /* End XCSwiftPackageProductDependency section */

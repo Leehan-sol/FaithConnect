@@ -10,14 +10,16 @@ import SwiftUI
 struct PrayerDetailBottomSheetView: View {
     @ObservedObject var viewModel: PrayerDetailViewModel
     let editingResponse: PrayerResponse?
+    var onDismissSheet: () -> Void
     @State var content: String = ""
     @State var wordCount: Int = 0
     @State var showAlert: Bool = false
-    @Environment(\.dismiss) var dismiss
+    @State private var localAlert: AlertType?
 
-    init(viewModel: PrayerDetailViewModel, editingResponse: PrayerResponse? = nil) {
+    init(viewModel: PrayerDetailViewModel, editingResponse: PrayerResponse? = nil, onDismissSheet: @escaping () -> Void) {
         self.viewModel = viewModel
         self.editingResponse = editingResponse
+        self.onDismissSheet = onDismissSheet
     }
 
     private var isSendButtonActive: Bool {
@@ -101,11 +103,11 @@ struct PrayerDetailBottomSheetView: View {
                     if isSendButtonActive {
                         showAlert = true
                     } else {
-                        dismiss()
+                        onDismissSheet()
                     }
                 }
                 
-                ActionButton(title: "전송",
+                ActionButton(title: editingResponse != nil ? "수정" : "전송",
                              foregroundColor: isSendButtonActive ? .white : .gray,
                              backgroundColor: isSendButtonActive ? .customBlue1 : Color(.systemGray6)) {
                     if isSendButtonActive {
@@ -117,7 +119,10 @@ struct PrayerDetailBottomSheetView: View {
                                 result = await viewModel.writePrayerResponse(message: content)
                             }
                             if result {
-                                dismiss()
+                                onDismissSheet()
+                            } else if let alert = viewModel.alertType {
+                                viewModel.alertType = nil
+                                localAlert = alert
                             }
                         }
                     }
@@ -127,12 +132,17 @@ struct PrayerDetailBottomSheetView: View {
         }.alert(editingResponse != nil ? "수정 취소" : "작성 취소", isPresented: $showAlert) {
             Button("취소", role: .cancel) { }
             Button("확인", role: .destructive) {
-                dismiss()
+                onDismissSheet()
             }
         } message: {
             Text(editingResponse != nil
                  ? "수정 중인 응답 내용이 있습니다. \r 정말 취소하시겠습니까?"
                  : "작성 중인 응답 내용이 있습니다. \r 정말 취소하시겠습니까?")
+        }
+        .alert(item: $localAlert) { alert in
+            Alert(title: Text(alert.title),
+                  message: Text(alert.message),
+                  dismissButton: .default(Text("확인")))
         }
         .onAppear {
             if let editing = editingResponse {
@@ -152,5 +162,6 @@ struct PrayerDetailBottomSheetView: View {
     let mockUseCase = PrayerUseCase(repository: mockRepo)
     
     return PrayerDetailBottomSheetView(viewModel: PrayerDetailViewModel(prayerUseCase: mockUseCase,
-                                                                 prayerRequestId: 0))
+                                                                 prayerRequestId: 0),
+                                      onDismissSheet: {})
 }

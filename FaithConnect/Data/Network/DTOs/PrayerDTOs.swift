@@ -114,5 +114,5 @@ struct PrayerResponseUpdateResponse: Decodable {
     let prayerRequestId: Int
     let message: String
     let createdAt: String
-    let mine: Bool
+    let isMine: Bool
 }

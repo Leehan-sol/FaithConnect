@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UserNotifications
 
 @main
 struct FaithConnectApp: App {
@@ -34,6 +35,11 @@ struct FaithConnectApp: App {
             RootView(session: session,
                      authUseCase: authUseCase,
                      prayerUseCase: prayerUseCase)
+        }
+        .onChange(of: scenePhase) {
+            if scenePhase == .active {
+                UNUserNotificationCenter.current().setBadgeCount(0)
+            }
         }
     }
 }
@@ -104,8 +110,12 @@ private extension RootView {
 
                 // 자동 로그인 시 푸시 토큰 등록
                 if let fcmToken = UserDefaults.standard.string(forKey: "fcmToken") {
-                    try? await authUseCase.registerPushToken(deviceToken: fcmToken)
-                    print("푸시 토큰 등록 완료")
+                    do {
+                        try await authUseCase.registerPushToken(deviceToken: fcmToken)
+                        print("푸시 토큰 등록 완료")
+                    } catch {
+                        print("푸시 토큰 등록 실패: \(error)")
+                    }
                 }
             } catch {
                 print("refresh 토큰 만료: \(error.localizedDescription)")

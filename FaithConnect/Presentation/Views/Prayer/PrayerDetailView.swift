@@ -7,15 +7,33 @@
 
 import SwiftUI
 
+enum BottomSheetType: Identifiable {
+    case create
+    case edit(PrayerResponse)
+
+    var id: String {
+        switch self {
+        case .create: return "create"
+        case .edit(let r): return "edit-\(r.id)"
+        }
+    }
+
+    var editingResponse: PrayerResponse? {
+        switch self {
+        case .create: return nil
+        case .edit(let r): return r
+        }
+    }
+}
+
 struct PrayerDetailView: View {
     @StateObject private var viewModel: PrayerDetailViewModel
     @Environment(\.dismiss) private var dismiss
     
-    @State private var showBottomSheet = false
+    @State private var bottomSheetType: BottomSheetType?
     @State private var showConfirmationDialog = false
     @State private var showPrayerEditor = false
     @State private var showDeleteAlert = false
-    @State private var editingResponse: PrayerResponse?
     
     init(viewModel: @escaping () -> PrayerDetailViewModel) {
         _viewModel = StateObject(wrappedValue: viewModel())
@@ -45,7 +63,7 @@ struct PrayerDetailView: View {
                     ForEach(prayer.responses ?? []) { response in
                         PrayerResponseRowView(response: response,
                                               onEdit: { response in
-                            editingResponse = response
+                            bottomSheetType = .edit(response)
                         },
                                               onDelete: { response in
                             Task {
@@ -59,7 +77,7 @@ struct PrayerDetailView: View {
             } else if let prayer = viewModel.prayer {
                 DetailView(viewModel: viewModel,
                            prayer: prayer,
-                           editingResponse: $editingResponse)
+                           bottomSheetType: $bottomSheetType)
             } else {
                 ProgressView()
                     .progressViewStyle(CircularProgressViewStyle(tint: .blue))
@@ -75,7 +93,7 @@ struct PrayerDetailView: View {
         .customBackButtonStyle {
             if viewModel.prayer?.isMine == true && !viewModel.isDeleted {
                 Button {
-                    showBottomSheet = false
+                    bottomSheetType = nil
                     showConfirmationDialog = true
                 } label: {
                     Image(systemName: "ellipsis")
@@ -84,15 +102,10 @@ struct PrayerDetailView: View {
                 }
             }
         }
-        .onChange(of: editingResponse) {
-            if editingResponse != nil {
-                showBottomSheet = true
-            }
-        }
-        .sheet(isPresented: $showBottomSheet, onDismiss: {
-            editingResponse = nil
-        }) {
-            PrayerDetailBottomSheetView(viewModel: viewModel, editingResponse: editingResponse)
+        .sheet(item: $bottomSheetType) { type in
+            PrayerDetailBottomSheetView(viewModel: viewModel,
+                                        editingResponse: type.editingResponse,
+                                        onDismissSheet: { bottomSheetType = nil })
                 .presentationDetents([.fraction(0.75)])
                 .presentationDragIndicator(.visible)
                 .interactiveDismissDisabled(true)
@@ -146,7 +159,7 @@ struct PrayerDetailView: View {
             ActionButton(title: "기도 응답하기",
                          foregroundColor: .white,
                          backgroundColor: .customBlue1) {
-                showBottomSheet = true
+                bottomSheetType = .create
                 showConfirmationDialog = false
             }.padding(EdgeInsets(top: 0, leading: 20, bottom: 10, trailing: 20))
         }
@@ -157,7 +170,7 @@ struct PrayerDetailView: View {
 struct DetailView: View {
     @ObservedObject var viewModel: PrayerDetailViewModel
     let prayer: Prayer
-    @Binding var editingResponse: PrayerResponse?
+    @Binding var bottomSheetType: BottomSheetType?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 25) {
@@ -195,7 +208,7 @@ struct DetailView: View {
             ForEach(prayer.responses ?? []) { response in
                 PrayerResponseRowView(response: response,
                                       onEdit: { response in
-                    editingResponse = response
+                    bottomSheetType = .edit(response)
                 },
                                       onDelete: { response in
                     Task {

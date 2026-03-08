@@ -31,6 +31,6 @@ extension PrayerResponse {
         self.prayerRequestId = dto.prayerRequestId
         self.message = dto.message
         self.createdAt = dto.createdAt
-        self.isMine = dto.mine
+        self.isMine = dto.isMine
     }
 }

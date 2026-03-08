@@ -18,15 +18,19 @@ struct SectionHeaderView: View {
                 .font(.headline)
             
             if (!buttonHidden) {
-                Button(action: action) {
-                    Image(systemName: "chevron.forward")
-                }
+                Image(systemName: "chevron.forward")
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.top, 10)
         .padding(.horizontal, 20)
         .foregroundColor(Color(.darkGray))
+        .contentShape(Rectangle())
+        .onTapGesture {
+            if !buttonHidden {
+                action()
+            }
+        }
     }
 }
 
