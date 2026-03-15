@@ -11,13 +11,16 @@ struct MainTabView: View {
     @StateObject private var homeViewModel: HomeViewModel
     @StateObject private var myPrayerViewModel: MyPrayerViewModel
     @StateObject private var myPageViewModel: MyPageViewModel
-    
+    private let apiClient: APIClientProtocol
+
     init(homeViewModel: HomeViewModel,
          myPrayerViewModel: MyPrayerViewModel,
-         myPageViewModel: MyPageViewModel) {
+         myPageViewModel: MyPageViewModel,
+         apiClient: APIClientProtocol) {
         _homeViewModel = StateObject(wrappedValue: homeViewModel)
         _myPrayerViewModel = StateObject(wrappedValue: myPrayerViewModel)
         _myPageViewModel = StateObject(wrappedValue: myPageViewModel)
+        self.apiClient = apiClient
     }
     
     var body: some View {
@@ -41,7 +44,7 @@ struct MainTabView: View {
             .tag(1)
             
             NavigationStack {
-                MyPageView(viewModel: myPageViewModel)
+                MyPageView(viewModel: myPageViewModel, apiClient: apiClient)
             }
             .tabItem {
                 Image(systemName: "person")
@@ -62,6 +65,7 @@ struct MainTabView: View {
         homeViewModel: HomeViewModel(prayerUseCase: mockUseCase),
         myPrayerViewModel: MyPrayerViewModel(prayerUseCase: mockUseCase),
         myPageViewModel: MyPageViewModel(authUseCase: AuthUseCase(repository: AuthRepository(apiClient: mockAPIClient)),
-                                         userSession: UserSession())
+                                         userSession: UserSession()),
+        apiClient: mockAPIClient
     )
 }

@@ -16,6 +16,8 @@
 		1862C5452EFBA77D00B0DD70 /* CategoryDTOs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1862C5412EFBA77D00B0DD70 /* CategoryDTOs.swift */; };
 		1862C5462EFBA77D00B0DD70 /* AuthDTOs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1862C5402EFBA77D00B0DD70 /* AuthDTOs.swift */; };
 		1862C5472EFBA77D00B0DD70 /* PrayerDTOs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1862C5422EFBA77D00B0DD70 /* PrayerDTOs.swift */; };
+		EB6F29681E572F7B38D34012 /* InquiryDTOs.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC8B9D7289E0D82CDD4DE82 /* InquiryDTOs.swift */; };
+		1C3D198A3BAEA02F0440C1A2 /* InquiryBottomSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6464E434A280823AC492405 /* InquiryBottomSheetView.swift */; };
 		1862C5492EFBA89C00B0DD70 /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1862C5482EFBA89600B0DD70 /* APIError.swift */; };
 		186D4F692F036CDB005520FD /* MyPrayerListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 186D4F682F036CD1005520FD /* MyPrayerListView.swift */; };
 		186D4F6F2F037523005520FD /* PrayerContextType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 186D4F6E2F03751F005520FD /* PrayerContextType.swift */; };
@@ -120,6 +122,8 @@
 		1862C5402EFBA77D00B0DD70 /* AuthDTOs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthDTOs.swift; sourceTree = "<group>"; };
 		1862C5412EFBA77D00B0DD70 /* CategoryDTOs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryDTOs.swift; sourceTree = "<group>"; };
 		1862C5422EFBA77D00B0DD70 /* PrayerDTOs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerDTOs.swift; sourceTree = "<group>"; };
+		BFC8B9D7289E0D82CDD4DE82 /* InquiryDTOs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InquiryDTOs.swift; sourceTree = "<group>"; };
+		F6464E434A280823AC492405 /* InquiryBottomSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InquiryBottomSheetView.swift; sourceTree = "<group>"; };
 		1862C5482EFBA89600B0DD70 /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
 		186D4F682F036CD1005520FD /* MyPrayerListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPrayerListView.swift; sourceTree = "<group>"; };
 		186D4F6E2F03751F005520FD /* PrayerContextType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerContextType.swift; sourceTree = "<group>"; };
@@ -236,6 +240,7 @@
 				1862C5412EFBA77D00B0DD70 /* CategoryDTOs.swift */,
 				1862C5422EFBA77D00B0DD70 /* PrayerDTOs.swift */,
 				CC51C39E2F51B10000C94EDC /* PushTokenDTOs.swift */,
+				BFC8B9D7289E0D82CDD4DE82 /* InquiryDTOs.swift */,
 			);
 			path = DTOs;
 			sourceTree = "<group>";
@@ -524,6 +529,7 @@
 				CC5B0E652EBF990A00CE79A3 /* CategoryScrollView.swift */,
 				CC5D79582EC76B6700C1CEE4 /* InfoBoxView.swift */,
 				CC6E3DF72ED1A19500B0EF4D /* MyPageItemField.swift */,
+				F6464E434A280823AC492405 /* InquiryBottomSheetView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -739,6 +745,8 @@
 				CCAD369A2EB792140028D451 /* MyPageViewModel.swift in Sources */,
 				1862C53F2EFB74C900B0DD70 /* PrayerEmptyView.swift in Sources */,
 				CC51C3A02F51B10000C94EDC /* PushTokenDTOs.swift in Sources */,
+				EB6F29681E572F7B38D34012 /* InquiryDTOs.swift in Sources */,
+				1C3D198A3BAEA02F0440C1A2 /* InquiryBottomSheetView.swift in Sources */,
 				CC51C3A12F51B10000C94EDC /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

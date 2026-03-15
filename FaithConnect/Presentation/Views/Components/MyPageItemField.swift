@@ -18,6 +18,7 @@ struct MyPageItemField: View {
             HStack(spacing: 20) {
                 Image(systemName: imageName)
                     .resizable()
+                    .scaledToFit()
                     .frame(width: 15, height: 15)
                     .padding(10)
                     .foregroundColor(color)
