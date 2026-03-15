@@ -14,10 +14,17 @@ struct MyPageView: View {
     @State var showAlert: Bool = false
     @State private var showDeleteAccountAlert: Bool = false
     @State private var passwordResetVM: PasswordResetViewModel?
-    
+    @State private var showInquiry: Bool = false
+
     private let versionNumber = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
     private let churchName = Bundle.main.infoDictionary?["ChurchName"] as? String
-    
+    private let apiClient: APIClientProtocol
+
+    init(viewModel: MyPageViewModel, apiClient: APIClientProtocol) {
+        self.viewModel = viewModel
+        self.apiClient = apiClient
+    }
+
     var body: some View {
         ScrollView {
             VStack(spacing: 10) {
@@ -26,10 +33,10 @@ struct MyPageView: View {
                         .resizable()
                         .foregroundColor(Color(.darkGray))
                         .frame(width: 30, height: 30)
-                    
+
                     VStack(alignment: .leading, spacing: 5) {
                         Text(viewModel.name)
-                        
+
                         Text(verbatim: viewModel.email)
                             .foregroundColor(.gray)
                             .font(.footnote)
@@ -40,9 +47,9 @@ struct MyPageView: View {
                 .background(Color(.systemGray6))
                 .cornerRadius(10)
                 .padding()
-                
+
                 SectionHeaderView(title: "계정 설정", buttonHidden: true){}
-                
+
                 VStack {
                     MyPageItemField(imageName: "lock",
                                     color: .blue,
@@ -50,10 +57,10 @@ struct MyPageView: View {
                         passwordResetVM = viewModel.makePasswordResetViewModel()
                         showChangePassword = true
                     }
-                    
+
                     Divider()
                         .foregroundColor(Color(.systemGray6))
-                    
+
                     MyPageItemField(imageName: "rectangle.portrait.and.arrow.right",
                                     color: .orange,
                                     titleName: "로그아웃") {
@@ -68,7 +75,7 @@ struct MyPageView: View {
                             .stroke(Color(.systemGray6), lineWidth: 1)
                     )
                     .padding()
-                
+
 #if DEBUG
                 SectionHeaderView(title: "개발자 도구", buttonHidden: true){}
 
@@ -92,21 +99,30 @@ struct MyPageView: View {
 #endif
 
                 SectionHeaderView(title: "정보", buttonHidden: true){}
-                
+
                 VStack {
                     MyPageItemField(imageName: "book.pages",
                                     color: .black,
                                     titleName: "이용약관") {
                         selectedPolicy = .terms
                     }
-                    
+
                     Divider()
                         .foregroundColor(Color(.systemGray6))
-                    
+
                     MyPageItemField(imageName: "shield",
                                     color: .black,
                                     titleName: "개인정보 처리방침") {
                         selectedPolicy = .privacy
+                    }
+
+                    Divider()
+                        .foregroundColor(Color(.systemGray6))
+
+                    MyPageItemField(imageName: "envelope",
+                                    color: .black,
+                                    titleName: "문의하기") {
+                        showInquiry = true
                     }
                 }.padding(5)
                     .background()
@@ -117,10 +133,10 @@ struct MyPageView: View {
                             .stroke(Color(.systemGray6), lineWidth: 1)
                     )
                     .padding()
-                
+
                 VStack(spacing: 10) {
                     Text("FaithConnect v\(versionNumber ?? "1.0.0") © \(churchName ?? "우리교회")")
-                    
+
                     Button {
                         showDeleteAccountAlert = true
                     } label: {
@@ -131,7 +147,7 @@ struct MyPageView: View {
                 .padding(.top, 50)
                 .font(.footnote)
                 .foregroundColor(.gray)
-                
+
             }
             .navigationTitle("마이페이지")
             .navigationDestination(isPresented: $showChangePassword) {
@@ -144,6 +160,14 @@ struct MyPageView: View {
             }
             .navigationDestination(item: $selectedPolicy) { policy in
                 PolicyWebView(viewType: selectedPolicy ?? .privacy)
+            }
+            .sheet(isPresented: $showInquiry) {
+                InquiryBottomSheetView(apiClient: apiClient,
+                                       userEmail: viewModel.email,
+                                       onDismissSheet: { showInquiry = false })
+                .presentationDetents([.fraction(0.95)])
+                .presentationDragIndicator(.visible)
+                .interactiveDismissDisabled(true)
             }
             .alert("회원탈퇴", isPresented: $showDeleteAccountAlert) {
                 Button("취소", role: .cancel) { }
@@ -188,6 +212,6 @@ struct MyPageView: View {
 
 #Preview {
     MyPageView(viewModel: MyPageViewModel(authUseCase: AuthUseCase(repository: AuthRepository(apiClient: APIClient(tokenStorage: TokenStorage()))),
-                                          userSession: UserSession()))
+                                          userSession: UserSession()),
+              apiClient: APIClient(tokenStorage: TokenStorage()))
 }
-

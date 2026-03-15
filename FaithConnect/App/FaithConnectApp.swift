@@ -34,7 +34,8 @@ struct FaithConnectApp: App {
         WindowGroup {
             RootView(session: session,
                      authUseCase: authUseCase,
-                     prayerUseCase: prayerUseCase)
+                     prayerUseCase: prayerUseCase,
+                     apiClient: apiClient)
         }
         .onChange(of: scenePhase) {
             if scenePhase == .active {
@@ -50,15 +51,18 @@ struct RootView: View {
     @ObservedObject var session: UserSession
     let authUseCase: AuthUseCaseProtocol
     let prayerUseCase: PrayerUseCaseProtocol
+    let apiClient: APIClientProtocol
 
     @State private var isCheckingAuth = true
 
     init(session: UserSession,
          authUseCase: AuthUseCaseProtocol,
-         prayerUseCase: PrayerUseCaseProtocol) {
+         prayerUseCase: PrayerUseCaseProtocol,
+         apiClient: APIClientProtocol) {
         self.session = session
         self.authUseCase = authUseCase
         self.prayerUseCase = prayerUseCase
+        self.apiClient = apiClient
     }
 
     var body: some View {
@@ -70,11 +74,13 @@ struct RootView: View {
                     homeViewModel: HomeViewModel(prayerUseCase: prayerUseCase),
                     myPrayerViewModel: MyPrayerViewModel(prayerUseCase: prayerUseCase),
                     myPageViewModel: MyPageViewModel(authUseCase: authUseCase,
-                                                    userSession: session)
+                                                    userSession: session),
+                    apiClient: apiClient
                 )
             } else {
                 LoginView(viewModel: LoginViewModel(authUseCase: authUseCase,
-                                                    session: session))
+                                                    session: session),
+                          apiClient: apiClient)
             }
         }
         .onAppear {

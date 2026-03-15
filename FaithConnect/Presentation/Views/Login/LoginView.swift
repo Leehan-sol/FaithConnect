@@ -9,11 +9,13 @@ import SwiftUI
 
 struct LoginView: View {
     @StateObject var viewModel: LoginViewModel
+    let apiClient: APIClientProtocol
     @State private var email: String = ""
     @State private var password: String = ""
     @State private var showSignUp: Bool = false
     @State private var showFindID: Bool = false
     @State private var showFindPW: Bool = false
+    @State private var showInquiry: Bool = false
     @State private var passwordResetVM: PasswordResetViewModel?
     
     var body: some View {
@@ -101,10 +103,14 @@ struct LoginView: View {
 
                     Spacer()
 
-                    Text("교회 성도 전용 플랫폼")
-                        .font(.subheadline)
-                        .foregroundColor(.gray)
-                        .padding(.bottom, 16)
+                    Button {
+                        showInquiry = true
+                    } label: {
+                        Text("문의하기")
+                            .font(.subheadline)
+                            .foregroundColor(.gray)
+                    }
+                    .padding(.bottom, 16)
                 }.disabled(viewModel.isLoading)
  
                 if viewModel.isLoading {
@@ -125,6 +131,14 @@ struct LoginView: View {
                     FindPasswordView(viewModel: vm, isPresented: $showFindPW)
                 }
             }
+            .sheet(isPresented: $showInquiry) {
+                InquiryBottomSheetView(apiClient: apiClient,
+                                       userEmail: "",
+                                       onDismissSheet: { showInquiry = false })
+                .presentationDetents([.fraction(0.95)])
+                .presentationDragIndicator(.visible)
+                .interactiveDismissDisabled(true)
+            }
             .alert(item: $viewModel.alertType) { alert in
                 Alert(title: Text(alert.title),
                       message: Text(alert.message),
@@ -138,9 +152,11 @@ struct LoginView: View {
 }
 
 #Preview {
-    let mockAuthUseCase = AuthUseCase(repository: AuthRepository(apiClient: APIClient(tokenStorage: TokenStorage())))
+    let mockAPIClient = APIClient(tokenStorage: TokenStorage())
+    let mockAuthUseCase = AuthUseCase(repository: AuthRepository(apiClient: mockAPIClient))
     let mockSession = UserSession()
 
     return LoginView(viewModel: LoginViewModel(authUseCase: mockAuthUseCase,
-                                               session: mockSession))
+                                               session: mockSession),
+                     apiClient: mockAPIClient)
 }

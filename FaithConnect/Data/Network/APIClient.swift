@@ -32,6 +32,9 @@ protocol APIClientProtocol {
     func deletePushToken(deviceToken: String) async throws
     func testPush(title: String, body: String, data: [String: String]?) async throws
 
+    // Inquiry
+    func sendInquiry(title: String, content: String, userEmail: String) async throws
+
     // Prayer
     func loadCategories() async throws -> [CategoryResponse]
     func loadPrayers(categoryID: Int, page: Int) async throws -> PrayerListResponse
@@ -406,6 +409,20 @@ extension APIClient {
         if apiResponse.success != true {
             let code = apiResponse.errorCode ?? .unknown
             throw APIError.serverMessage(code: code)
+        }
+    }
+}
+
+// MARK: - Inquiry
+extension APIClient {
+    func sendInquiry(title: String, content: String, userEmail: String) async throws {
+        let urlString = APIEndpoint.inquiry.urlString
+        let requestBody = InquiryRequest(title: title, content: content, userEmail: userEmail)
+        let apiResponse: InquiryResponse = try await post(urlString: urlString,
+                                                           requestBody: requestBody,
+                                                           auth: .none)
+        if apiResponse.success != true {
+            throw APIError.serverMessage(code: .unknown)
         }
     }
 }
