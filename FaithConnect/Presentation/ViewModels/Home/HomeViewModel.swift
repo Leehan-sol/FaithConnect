@@ -56,7 +56,7 @@ class HomeViewModel: ObservableObject {
         switch event {
         case .prayerAdded(let prayer):
             if selectedCategoryId == 1 || selectedCategoryId == prayer.categoryId {
-                prayers.append(prayer)
+                prayers.insert(prayer, at: 0)
             }
         case .prayerUpdated(let prayer):
             if let index = prayers.firstIndex(where: { $0.id == prayer.id }) {
