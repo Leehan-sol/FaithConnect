@@ -18,12 +18,6 @@ struct MyPageView: View {
 
     private let versionNumber = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
     private let churchName = Bundle.main.infoDictionary?["ChurchName"] as? String
-    private let apiClient: APIClientProtocol
-
-    init(viewModel: MyPageViewModel, apiClient: APIClientProtocol) {
-        self.viewModel = viewModel
-        self.apiClient = apiClient
-    }
 
     var body: some View {
         ScrollView {
@@ -162,7 +156,7 @@ struct MyPageView: View {
                 PolicyWebView(viewType: selectedPolicy ?? .privacy)
             }
             .sheet(isPresented: $showInquiry) {
-                InquiryBottomSheetView(apiClient: apiClient,
+                InquiryBottomSheetView(viewModel: viewModel.makeInquiryViewModel(),
                                        userEmail: viewModel.email,
                                        onDismissSheet: { showInquiry = false })
                 .presentationDetents([.fraction(0.95)])
@@ -209,8 +203,7 @@ struct MyPageView: View {
     let mockUseCase = AuthUseCase(repository: mockRepository)
     
     MyPageView(viewModel: MyPageViewModel(authUseCase: mockUseCase,
-                                          userSession: UserSession()),
-              apiClient: mockAPIClient)
+                                          userSession: UserSession()))
 }
 
 

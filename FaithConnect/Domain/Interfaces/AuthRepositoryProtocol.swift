@@ -21,5 +21,6 @@ protocol AuthRepositoryProtocol {
     func registerPushToken(deviceToken: String) async throws
     func deletePushToken(deviceToken: String) async throws
     func testPush(title: String, body: String, data: [String: String]?) async throws
+    func sendInquiry(title: String, content: String, userEmail: String) async throws
 }
 

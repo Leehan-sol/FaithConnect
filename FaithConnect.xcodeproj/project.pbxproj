@@ -12,6 +12,8 @@
 		180939762F0B7CE600CC1BAE /* APIErrorCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180939752F0B7CE200CC1BAE /* APIErrorCode.swift */; };
 		180939782F0B894500CC1BAE /* TokenStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180939772F0B894200CC1BAE /* TokenStorage.swift */; };
 		1841FD082F6798D6007EF11C /* DeleteAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1841FD072F6798D6007EF11C /* DeleteAccountView.swift */; };
+		1841FD0A2F67BD8A007EF11C /* DeepLinkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1841FD092F67BD8A007EF11C /* DeepLinkManager.swift */; };
+		1841FD0C2F67C10F007EF11C /* InquiryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1841FD0B2F67C10F007EF11C /* InquiryViewModel.swift */; };
 		1860F0422F0E3F5D00D8AB9A /* LoadingDialogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1860F0412F0E3F5A00D8AB9A /* LoadingDialogView.swift */; };
 		1862C53F2EFB74C900B0DD70 /* PrayerEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1862C53E2EFB74BE00B0DD70 /* PrayerEmptyView.swift */; };
 		1862C5452EFBA77D00B0DD70 /* CategoryDTOs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1862C5412EFBA77D00B0DD70 /* CategoryDTOs.swift */; };
@@ -119,6 +121,8 @@
 		180939752F0B7CE200CC1BAE /* APIErrorCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIErrorCode.swift; sourceTree = "<group>"; };
 		180939772F0B894200CC1BAE /* TokenStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenStorage.swift; sourceTree = "<group>"; };
 		1841FD072F6798D6007EF11C /* DeleteAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountView.swift; sourceTree = "<group>"; };
+		1841FD092F67BD8A007EF11C /* DeepLinkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLinkManager.swift; sourceTree = "<group>"; };
+		1841FD0B2F67C10F007EF11C /* InquiryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InquiryViewModel.swift; sourceTree = "<group>"; };
 		1860F0412F0E3F5A00D8AB9A /* LoadingDialogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingDialogView.swift; sourceTree = "<group>"; };
 		1862C53E2EFB74BE00B0DD70 /* PrayerEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerEmptyView.swift; sourceTree = "<group>"; };
 		1862C5402EFBA77D00B0DD70 /* AuthDTOs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthDTOs.swift; sourceTree = "<group>"; };
@@ -307,6 +311,7 @@
 			isa = PBXGroup;
 			children = (
 				CCAD36992EB792140028D451 /* MyPageViewModel.swift */,
+				1841FD0B2F67C10F007EF11C /* InquiryViewModel.swift */,
 			);
 			path = MyPage;
 			sourceTree = "<group>";
@@ -455,6 +460,7 @@
 			children = (
 				CC6C8F1A2E9B978300E43387 /* FaithConnectApp.swift */,
 				CC51C39F2F51B10000C94EDC /* AppDelegate.swift */,
+				1841FD092F67BD8A007EF11C /* DeepLinkManager.swift */,
 				CC6FFE162F1390B300EB10D3 /* SplashView.swift */,
 				CCAD36742EB726510028D451 /* LaunchScreen.storyboard */,
 			);
@@ -700,6 +706,7 @@
 				CC6B2ADF2F24CB4B003BB246 /* PrayerRepositoryProtocol.swift in Sources */,
 				180228912EBA08C300ABA95C /* PrayerRowView.swift in Sources */,
 				CC6FFE172F1390B300EB10D3 /* SplashView.swift in Sources */,
+				1841FD0A2F67BD8A007EF11C /* DeepLinkManager.swift in Sources */,
 				CC6C8F1B2E9B978300E43387 /* FaithConnectApp.swift in Sources */,
 				186D4F6F2F037523005520FD /* PrayerContextType.swift in Sources */,
 				CCFDC1302F2F2043008F9CB9 /* PrayerEventType.swift in Sources */,
@@ -719,6 +726,7 @@
 				CC5B0E5E2EBF387000CE79A3 /* ActionButton.swift in Sources */,
 				CC5B0E662EBF990A00CE79A3 /* CategoryScrollView.swift in Sources */,
 				CC5B0E642EBF8BA900CE79A3 /* PrayerCategory.swift in Sources */,
+				1841FD0C2F67C10F007EF11C /* InquiryViewModel.swift in Sources */,
 				18B32D4C2F59494A00A171B2 /* ResetPasswordView.swift in Sources */,
 				CCFDC1322F2FA2C5008F9CB9 /* PrayerUseCase.swift in Sources */,
 				CC4EA4422EC9F64A0097D09C /* CustomBackButtonStyle.swift in Sources */,

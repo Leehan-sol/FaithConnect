@@ -144,6 +144,11 @@ class HomeViewModel: ObservableObject {
         return PrayerDetailViewModel(prayerUseCase: prayerUseCase,
                                      prayerRequestId: prayer.id)
     }
+
+    func makePrayerDetailVM(prayerRequestId: Int) -> PrayerDetailViewModel {
+        return PrayerDetailViewModel(prayerUseCase: prayerUseCase,
+                                     prayerRequestId: prayerRequestId)
+    }
     
     func makePrayerEditorVM() -> PrayerEditorViewModel {
         return PrayerEditorViewModel(prayerUseCase: prayerUseCase)

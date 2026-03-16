@@ -84,14 +84,42 @@ class MyPageViewModel: ObservableObject {
     }
 
     func testPush() async {
+        /*
+        1. 딴사람이 기도 올렸을때 받기
+        {
+          "notification": {
+            "title": "새로운 기도제목이 등록되었습니다",
+            "body": "홍길동님이 새로운 기도제목을 올렸습니다: 건강을 위한 기도"
+          },
+          "data": {
+            "type": "PRAYER_REQUEST",
+            "prayerRequestId": "123"
+          }
+        }
+
+        2. 내가 응답 올렸을때 기도 올린 사람이 받기
+        {
+          "notification": {
+            "title": "새로운 기도 응답이 있습니다",
+            "body": "김철수님이 기도제목에 응답했습니다: 건강을 위한 기도"
+          },
+          "data": {
+            "type": "PRAYER_RESPONSE",
+            "prayerRequestId": "123"
+          }
+        }
+         */
+        
+        alertType = .error(title: "푸시 테스트", message: "5초 후 푸시 알림이 발송됩니다.")
+        try? await Task.sleep(nanoseconds: 5_000_000_000)
+
         do {
             try await authUseCase.testPush(
-                title: "FaithConnect 테스트",
-                body: "푸시 알림 테스트입니다.",
-                data: ["type": "PRAYER_RESPONSE",
-                       "prayerRequestId": "123"]
+                title: "새로운 기도제목이 등록되었습니다",
+                body: "홍길동님이 새로운 기도제목을 올렸습니다: 건강을 위한 기도",
+                data: ["type": "PRAYER_REQUEST",
+                       "prayerRequestId": "15"]
             )
-            alertType = .error(title: "푸시 테스트", message: "푸시 알림 전송 요청 성공")
         } catch {
             alertType = .error(title: "푸시 테스트 실패", message: error.localizedDescription)
         }
@@ -99,6 +127,10 @@ class MyPageViewModel: ObservableObject {
 
     func makePasswordResetViewModel() -> PasswordResetViewModel {
         PasswordResetViewModel(authUseCase: authUseCase)
+    }
+
+    func makeInquiryViewModel() -> InquiryViewModel {
+        InquiryViewModel(authUseCase: authUseCase)
     }
 
     func sessionLogout() {

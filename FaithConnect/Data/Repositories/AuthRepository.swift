@@ -75,4 +75,8 @@ class AuthRepository: AuthRepositoryProtocol {
     func testPush(title: String, body: String, data: [String: String]? = nil) async throws {
         try await apiClient.testPush(title: title, body: body, data: data)
     }
+
+    func sendInquiry(title: String, content: String, userEmail: String) async throws {
+        try await apiClient.sendInquiry(title: title, content: content, userEmail: userEmail)
+    }
 }

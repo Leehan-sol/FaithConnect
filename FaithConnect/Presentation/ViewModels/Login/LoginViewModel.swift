@@ -88,6 +88,10 @@ class LoginViewModel: ObservableObject {
         PasswordResetViewModel(authUseCase: authUseCase)
     }
 
+    func makeInquiryViewModel() -> InquiryViewModel {
+        InquiryViewModel(authUseCase: authUseCase)
+    }
+
     func signUp(memberID: Int, name: String, email: String, password: String, confirmPassword: String) async {
         print("회원가입 memberID: \(memberID), name: \(name), email: \(email)")
         if memberID == 0 {

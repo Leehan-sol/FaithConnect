@@ -21,6 +21,7 @@ protocol AuthUseCaseProtocol {
     func registerPushToken(deviceToken: String) async throws
     func deletePushToken(deviceToken: String) async throws
     func testPush(title: String, body: String, data: [String: String]?) async throws
+    func sendInquiry(title: String, content: String, userEmail: String) async throws
 }
 
 class AuthUseCase: AuthUseCaseProtocol {
@@ -92,5 +93,9 @@ class AuthUseCase: AuthUseCaseProtocol {
 
     func testPush(title: String, body: String, data: [String: String]? = nil) async throws {
         try await repository.testPush(title: title, body: body, data: data)
+    }
+
+    func sendInquiry(title: String, content: String, userEmail: String) async throws {
+        try await repository.sendInquiry(title: title, content: content, userEmail: userEmail)
     }
 }
