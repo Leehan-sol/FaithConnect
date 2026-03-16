@@ -95,6 +95,12 @@ struct WrittenPrayerSectionView: View {
     
     var body: some View {
         Section {
+            SectionHeaderView(title: "내가 올린 기도 제목", buttonHidden: false) {
+                onMoreTap()
+            }
+            .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+            .listRowSeparator(.hidden)
+
             if prayers.isEmpty {
                 PrayerEmptyView(prayerContextType: .prayer)
                     .listRowSeparator(.hidden)
@@ -115,10 +121,6 @@ struct WrittenPrayerSectionView: View {
                         .listRowInsets(EdgeInsets(top: 10, leading: 20, bottom: 20, trailing: 20))
                 }
             }
-        } header: {
-            SectionHeaderView(title: "내가 올린 기도 제목", buttonHidden: false) {
-                onMoreTap()
-            }.padding(.top, -20)
         }
         .listRowInsets(EdgeInsets(top: 10, leading: 0, bottom: 10, trailing: 0))
         .listRowSeparator(.hidden)
@@ -134,6 +136,12 @@ struct ParticipatedPrayerSectionView: View {
 
     var body: some View {
         Section {
+            SectionHeaderView(title: "내가 기도한 기도 제목", buttonHidden: false) {
+                onMoreTap()
+            }
+            .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+            .listRowSeparator(.hidden)
+
             if responses.isEmpty {
                 PrayerEmptyView(prayerContextType: .response)
                     .listRowSeparator(.hidden)
@@ -154,10 +162,6 @@ struct ParticipatedPrayerSectionView: View {
                         }
                         .listRowInsets(EdgeInsets(top: 10, leading: 20, bottom: 20, trailing: 20))
                 }
-            }
-        } header: {
-            SectionHeaderView(title: "내가 기도한 기도 제목", buttonHidden: false) {
-                onMoreTap()
             }
         }
         .listRowInsets(EdgeInsets(top: 10, leading: 0, bottom: 10, trailing: 0))
