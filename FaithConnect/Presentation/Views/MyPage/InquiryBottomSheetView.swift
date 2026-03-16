@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct InquiryBottomSheetView: View {
-    let apiClient: APIClientProtocol
+    @ObservedObject var viewModel: InquiryViewModel
     let userEmail: String
     var onDismissSheet: () -> Void
 
@@ -16,8 +16,6 @@ struct InquiryBottomSheetView: View {
     @State var content: String = ""
     @State var email: String = ""
     @State var showAlert: Bool = false
-    @State private var localAlert: AlertType?
-    @State private var isLoading: Bool = false
 
     private var isSendButtonActive: Bool {
         !title.isEmpty && !content.isEmpty && !email.isEmpty
@@ -96,16 +94,18 @@ struct InquiryBottomSheetView: View {
                              backgroundColor: isSendButtonActive ? .customBlue1 : Color(.systemGray6)) {
                     if isSendButtonActive {
                         Task {
-                            await sendInquiry()
+                            await viewModel.sendInquiry(title: title,
+                                                        content: content,
+                                                        userEmail: email)
                         }
                     }
                 }
             }
             .padding(EdgeInsets(top: 0, leading: 10, bottom: 10, trailing: 10))
         }
-        .disabled(isLoading)
+        .disabled(viewModel.isLoading)
         .overlay {
-            if isLoading {
+            if viewModel.isLoading {
                 LoadingDialogView()
             }
         }
@@ -117,7 +117,7 @@ struct InquiryBottomSheetView: View {
         } message: {
             Text("작성 중인 내용이 있습니다. \r 정말 취소하시겠습니까?")
         }
-        .alert(item: $localAlert) { alert in
+        .alert(item: $viewModel.alertType) { alert in
             Alert(title: Text(alert.title),
                   message: Text(alert.message),
                   dismissButton: .default(Text("확인")) {
@@ -133,20 +133,6 @@ struct InquiryBottomSheetView: View {
             UIApplication.shared.endEditing()
         }
     }
-
-    private func sendInquiry() async {
-        isLoading = true
-        defer { isLoading = false }
-
-        do {
-            try await apiClient.sendInquiry(title: title,
-                                             content: content,
-                                             userEmail: email)
-            localAlert = .success(title: "문의 완료", message: "문의가 성공적으로 전송되었습니다.")
-        } catch {
-            localAlert = .error(title: "문의 실패", message: error.localizedDescription)
-        }
-    }
 }
 
 
@@ -154,10 +140,8 @@ struct InquiryBottomSheetView: View {
     let mockAPIClient = APIClient(tokenStorage: TokenStorage())
     let mockRepository = AuthRepository(apiClient: mockAPIClient)
     let mockUseCase = AuthUseCase(repository: mockRepository)
-    
-    InquiryBottomSheetView(apiClient: mockAPIClient,
+
+    InquiryBottomSheetView(viewModel: InquiryViewModel(authUseCase: mockUseCase),
                            userEmail: "",
                            onDismissSheet: {})
 }
-
-

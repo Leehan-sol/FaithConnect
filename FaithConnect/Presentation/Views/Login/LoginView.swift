@@ -9,7 +9,6 @@ import SwiftUI
 
 struct LoginView: View {
     @StateObject var viewModel: LoginViewModel
-    let apiClient: APIClientProtocol
     @State private var email: String = ""
     @State private var password: String = ""
     @State private var showSignUp: Bool = false
@@ -132,7 +131,7 @@ struct LoginView: View {
                 }
             }
             .sheet(isPresented: $showInquiry) {
-                InquiryBottomSheetView(apiClient: apiClient,
+                InquiryBottomSheetView(viewModel: viewModel.makeInquiryViewModel(),
                                        userEmail: "",
                                        onDismissSheet: { showInquiry = false })
                 .presentationDetents([.fraction(0.95)])
@@ -157,6 +156,5 @@ struct LoginView: View {
     let mockSession = UserSession()
 
     return LoginView(viewModel: LoginViewModel(authUseCase: mockAuthUseCase,
-                                               session: mockSession),
-                     apiClient: mockAPIClient)
+                                               session: mockSession))
 }

@@ -13,6 +13,7 @@ struct FaithConnectApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @Environment(\.scenePhase) private var scenePhase
     @StateObject private var session = UserSession()
+    @StateObject private var deepLinkManager = DeepLinkManager()
 
     private let tokenStorage: TokenStorageProtocol
     private let apiClient: APIClientProtocol
@@ -35,7 +36,10 @@ struct FaithConnectApp: App {
             RootView(session: session,
                      authUseCase: authUseCase,
                      prayerUseCase: prayerUseCase,
-                     apiClient: apiClient)
+                     deepLinkManager: deepLinkManager)
+            .onAppear {
+                appDelegate.deepLinkManager = deepLinkManager
+            }
         }
         .onChange(of: scenePhase) {
             if scenePhase == .active {
@@ -49,20 +53,20 @@ struct FaithConnectApp: App {
 // MARK: - RootView
 struct RootView: View {
     @ObservedObject var session: UserSession
+    @ObservedObject var deepLinkManager: DeepLinkManager
     let authUseCase: AuthUseCaseProtocol
     let prayerUseCase: PrayerUseCaseProtocol
-    let apiClient: APIClientProtocol
 
     @State private var isCheckingAuth = true
 
     init(session: UserSession,
          authUseCase: AuthUseCaseProtocol,
          prayerUseCase: PrayerUseCaseProtocol,
-         apiClient: APIClientProtocol) {
+         deepLinkManager: DeepLinkManager) {
         self.session = session
         self.authUseCase = authUseCase
         self.prayerUseCase = prayerUseCase
-        self.apiClient = apiClient
+        self.deepLinkManager = deepLinkManager
     }
 
     var body: some View {
@@ -75,12 +79,11 @@ struct RootView: View {
                     myPrayerViewModel: MyPrayerViewModel(prayerUseCase: prayerUseCase),
                     myPageViewModel: MyPageViewModel(authUseCase: authUseCase,
                                                     userSession: session),
-                    apiClient: apiClient
+                    deepLinkManager: deepLinkManager
                 )
             } else {
                 LoginView(viewModel: LoginViewModel(authUseCase: authUseCase,
-                                                    session: session),
-                          apiClient: apiClient)
+                                                    session: session))
             }
         }
         .onAppear {

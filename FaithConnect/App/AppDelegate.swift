@@ -11,6 +11,7 @@ import FirebaseCore
 import FirebaseMessaging
 
 class AppDelegate: NSObject, UIApplicationDelegate {
+    var deepLinkManager: DeepLinkManager?
 
     func application(
         _ application: UIApplication,
@@ -80,6 +81,11 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     ) {
         let userInfo = response.notification.request.content.userInfo
         print("알림 탭: \(userInfo)")
+
+        Task { @MainActor in
+            deepLinkManager?.handleNotification(userInfo: userInfo)
+        }
+
         completionHandler()
     }
 }
