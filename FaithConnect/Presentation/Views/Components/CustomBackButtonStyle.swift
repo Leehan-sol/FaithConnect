@@ -32,3 +32,20 @@ struct CustomBackButtonStyle<Trailing: View>: ViewModifier {
             }
     }
 }
+
+
+#Preview {
+    struct PreviewWrapper: View {
+        var body: some View {
+            NavigationStack {
+                Text("커스텀 버튼 테스트")
+                    .navigationTitle("상세 화면")
+                    .customBackButtonStyle()
+            }
+        }
+    }
+    
+    return PreviewWrapper()
+}
+
+

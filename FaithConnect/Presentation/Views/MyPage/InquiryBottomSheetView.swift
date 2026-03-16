@@ -15,7 +15,6 @@ struct InquiryBottomSheetView: View {
     @State var title: String = ""
     @State var content: String = ""
     @State var email: String = ""
-    @State var wordCount: Int = 0
     @State var showAlert: Bool = false
     @State private var localAlert: AlertType?
     @State private var isLoading: Bool = false
@@ -52,16 +51,11 @@ struct InquiryBottomSheetView: View {
                         ZStack(alignment: .topLeading) {
                             TextEditor(text: $content)
                                 .frame(height: 200)
-                                .padding(EdgeInsets(top: 8,
-                                                    leading: 8,
-                                                    bottom: 8,
-                                                    trailing: 8))
+                                .padding(EdgeInsets(top: 8,leading: 8, bottom: 8, trailing: 8))
                                 .background(Color(.systemGray6))
                                 .cornerRadius(10)
                                 .scrollContentBackground(.hidden)
                                 .onChange(of: content) { oldValue, newValue in
-                                    wordCount = newValue.count
-
                                     if newValue.count > 500 {
                                         content = String(newValue.prefix(500))
                                     }
@@ -76,11 +70,6 @@ struct InquiryBottomSheetView: View {
                             }
                         }
 
-                        Text("\(wordCount) / 500")
-                            .frame(maxWidth: .infinity, alignment: .trailing)
-                            .font(.caption)
-                            .foregroundColor(wordCount == 500 ? .red : .gray)
-                            .padding(.trailing, 8)
                     }
 
                     InfoBoxView(messages: [
@@ -159,3 +148,16 @@ struct InquiryBottomSheetView: View {
         }
     }
 }
+
+
+#Preview {
+    let mockAPIClient = APIClient(tokenStorage: TokenStorage())
+    let mockRepository = AuthRepository(apiClient: mockAPIClient)
+    let mockUseCase = AuthUseCase(repository: mockRepository)
+    
+    InquiryBottomSheetView(apiClient: mockAPIClient,
+                           userEmail: "",
+                           onDismissSheet: {})
+}
+
+

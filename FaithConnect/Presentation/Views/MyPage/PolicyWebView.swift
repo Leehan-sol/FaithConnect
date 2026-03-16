@@ -32,7 +32,6 @@ enum PolicyType {
 }
 
 struct LocalHTMLView: UIViewRepresentable {
-    
     let fileName: String
     
     func makeUIView(context: Context) -> WKWebView {

@@ -94,7 +94,7 @@ struct SignUpView: View {
 }
 
 #Preview {
-    @State var isPresented: Bool = false
+    @Previewable @State var isPresented: Bool = false
     let mockAuthUseCase = AuthUseCase(repository: AuthRepository(apiClient: APIClient(tokenStorage: TokenStorage())))
     let mockSession = UserSession()
     

@@ -16,8 +16,6 @@
 		1862C5452EFBA77D00B0DD70 /* CategoryDTOs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1862C5412EFBA77D00B0DD70 /* CategoryDTOs.swift */; };
 		1862C5462EFBA77D00B0DD70 /* AuthDTOs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1862C5402EFBA77D00B0DD70 /* AuthDTOs.swift */; };
 		1862C5472EFBA77D00B0DD70 /* PrayerDTOs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1862C5422EFBA77D00B0DD70 /* PrayerDTOs.swift */; };
-		EB6F29681E572F7B38D34012 /* InquiryDTOs.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC8B9D7289E0D82CDD4DE82 /* InquiryDTOs.swift */; };
-		1C3D198A3BAEA02F0440C1A2 /* InquiryBottomSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6464E434A280823AC492405 /* InquiryBottomSheetView.swift */; };
 		1862C5492EFBA89C00B0DD70 /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1862C5482EFBA89600B0DD70 /* APIError.swift */; };
 		186D4F692F036CDB005520FD /* MyPrayerListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 186D4F682F036CD1005520FD /* MyPrayerListView.swift */; };
 		186D4F6F2F037523005520FD /* PrayerContextType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 186D4F6E2F03751F005520FD /* PrayerContextType.swift */; };
@@ -28,6 +26,7 @@
 		18948E742F024C9300C9C75C /* APIEndPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18948E732F024C8B00C9C75C /* APIEndPoint.swift */; };
 		18B32D4C2F59494A00A171B2 /* ResetPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B32D4B2F59494A00A171B2 /* ResetPasswordView.swift */; };
 		18C747A72F56D784006BF9DF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 18C747A62F56D784006BF9DF /* GoogleService-Info.plist */; };
+		1C3D198A3BAEA02F0440C1A2 /* InquiryBottomSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6464E434A280823AC492405 /* InquiryBottomSheetView.swift */; };
 		CC1A00012F5B00000028D451 /* PasswordResetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1A00002F5B00000028D451 /* PasswordResetViewModel.swift */; };
 		CC1DC8EF2F66D55E00BDDE0A /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = CC1DC8EE2F66D55E00BDDE0A /* FirebaseAnalytics */; };
 		CC1DC8F12F66D55E00BDDE0A /* FirebaseAnalyticsOnDeviceConversion in Frameworks */ = {isa = PBXBuildFile; productRef = CC1DC8F02F66D55E00BDDE0A /* FirebaseAnalyticsOnDeviceConversion */; };
@@ -110,6 +109,7 @@
 		CCAD369E2EB799B70028D451 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAD369D2EB799B70028D451 /* String+Extensions.swift */; };
 		CCFDC1302F2F2043008F9CB9 /* PrayerEventType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCFDC12F2F2F2043008F9CB9 /* PrayerEventType.swift */; };
 		CCFDC1322F2FA2C5008F9CB9 /* PrayerUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCFDC1312F2FA2C5008F9CB9 /* PrayerUseCase.swift */; };
+		EB6F29681E572F7B38D34012 /* InquiryDTOs.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC8B9D7289E0D82CDD4DE82 /* InquiryDTOs.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -122,8 +122,6 @@
 		1862C5402EFBA77D00B0DD70 /* AuthDTOs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthDTOs.swift; sourceTree = "<group>"; };
 		1862C5412EFBA77D00B0DD70 /* CategoryDTOs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryDTOs.swift; sourceTree = "<group>"; };
 		1862C5422EFBA77D00B0DD70 /* PrayerDTOs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerDTOs.swift; sourceTree = "<group>"; };
-		BFC8B9D7289E0D82CDD4DE82 /* InquiryDTOs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InquiryDTOs.swift; sourceTree = "<group>"; };
-		F6464E434A280823AC492405 /* InquiryBottomSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InquiryBottomSheetView.swift; sourceTree = "<group>"; };
 		1862C5482EFBA89600B0DD70 /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
 		186D4F682F036CD1005520FD /* MyPrayerListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPrayerListView.swift; sourceTree = "<group>"; };
 		186D4F6E2F03751F005520FD /* PrayerContextType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerContextType.swift; sourceTree = "<group>"; };
@@ -134,6 +132,7 @@
 		18948E732F024C8B00C9C75C /* APIEndPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIEndPoint.swift; sourceTree = "<group>"; };
 		18B32D4B2F59494A00A171B2 /* ResetPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPasswordView.swift; sourceTree = "<group>"; };
 		18C747A62F56D784006BF9DF /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		BFC8B9D7289E0D82CDD4DE82 /* InquiryDTOs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InquiryDTOs.swift; sourceTree = "<group>"; };
 		CC1A00002F5B00000028D451 /* PasswordResetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordResetViewModel.swift; sourceTree = "<group>"; };
 		CC4EA43D2EC9AC3D0097D09C /* PrayerDetailBottomSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerDetailBottomSheetView.swift; sourceTree = "<group>"; };
 		CC4EA43F2EC9B7370097D09C /* FindIDResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindIDResultView.swift; sourceTree = "<group>"; };
@@ -191,6 +190,7 @@
 		CCB8262B2F51AD8D002880F0 /* FaithConnect.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FaithConnect.entitlements; sourceTree = "<group>"; };
 		CCFDC12F2F2F2043008F9CB9 /* PrayerEventType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerEventType.swift; sourceTree = "<group>"; };
 		CCFDC1312F2FA2C5008F9CB9 /* PrayerUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerUseCase.swift; sourceTree = "<group>"; };
+		F6464E434A280823AC492405 /* InquiryBottomSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InquiryBottomSheetView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -529,7 +529,6 @@
 				CC5B0E652EBF990A00CE79A3 /* CategoryScrollView.swift */,
 				CC5D79582EC76B6700C1CEE4 /* InfoBoxView.swift */,
 				CC6E3DF72ED1A19500B0EF4D /* MyPageItemField.swift */,
-				F6464E434A280823AC492405 /* InquiryBottomSheetView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -568,6 +567,7 @@
 			children = (
 				CCAD36932EB78D290028D451 /* MyPageView.swift */,
 				186D4F722F03A561005520FD /* PolicyWebView.swift */,
+				F6464E434A280823AC492405 /* InquiryBottomSheetView.swift */,
 			);
 			path = MyPage;
 			sourceTree = "<group>";

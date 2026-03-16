@@ -211,7 +211,13 @@ struct MyPageView: View {
 }
 
 #Preview {
-    MyPageView(viewModel: MyPageViewModel(authUseCase: AuthUseCase(repository: AuthRepository(apiClient: APIClient(tokenStorage: TokenStorage()))),
+    let mockAPIClient = APIClient(tokenStorage: TokenStorage())
+    let mockRepository = AuthRepository(apiClient: mockAPIClient)
+    let mockUseCase = AuthUseCase(repository: mockRepository)
+    
+    MyPageView(viewModel: MyPageViewModel(authUseCase: mockUseCase,
                                           userSession: UserSession()),
-              apiClient: APIClient(tokenStorage: TokenStorage()))
+              apiClient: mockAPIClient)
 }
+
+

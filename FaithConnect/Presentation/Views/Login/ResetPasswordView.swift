@@ -81,12 +81,10 @@ struct ResetPasswordView: View {
     }
 }
 
-//#Preview {
-//    let mockAuthUseCase = AuthUseCase(repository: AuthRepository(apiClient: APIClient(tokenStorage: TokenStorage())))
-//    let mockSession = UserSession()
-//
-//    ResetPasswordView(viewModel: LoginViewModel(authUseCase: mockAuthUseCase,
-//                                                session: mockSession),
-//                      isPresented: .constant(true),
-//                      email: "test@test.com")
-//}
+#Preview {
+    let mockAuthUseCase = AuthUseCase(repository: AuthRepository(apiClient: APIClient(tokenStorage: TokenStorage())))
+
+    ResetPasswordView(viewModel: PasswordResetViewModel(authUseCase: mockAuthUseCase),
+                      isPresented: .constant(true),
+                      email: "test@test.com")
+}
