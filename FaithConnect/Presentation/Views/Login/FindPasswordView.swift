@@ -75,11 +75,9 @@ struct FindPasswordView: View {
     }
 }
 
-//#Preview {
-//    let mockAuthUseCase = AuthUseCase(repository: AuthRepository(apiClient: APIClient(tokenStorage: TokenStorage())))
-//    let mockSession = UserSession()
-//
-//    FindPasswordView(viewModel: LoginViewModel(authUseCase: mockAuthUseCase,
-//                                                  session: mockSession),
-//                      isPresented: .constant(true))
-//}
+#Preview {
+    let mockAuthUseCase = AuthUseCase(repository: AuthRepository(apiClient: APIClient(tokenStorage: TokenStorage())))
+
+    FindPasswordView(viewModel: PasswordResetViewModel(authUseCase: mockAuthUseCase),
+                      isPresented: .constant(true))
+}
