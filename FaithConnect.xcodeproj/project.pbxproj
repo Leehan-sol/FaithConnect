@@ -11,6 +11,7 @@
 		180228932EBA092A00ABA95C /* FloatingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180228922EBA091D00ABA95C /* FloatingButton.swift */; };
 		180939762F0B7CE600CC1BAE /* APIErrorCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180939752F0B7CE200CC1BAE /* APIErrorCode.swift */; };
 		180939782F0B894500CC1BAE /* TokenStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180939772F0B894200CC1BAE /* TokenStorage.swift */; };
+		1841FD082F6798D6007EF11C /* DeleteAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1841FD072F6798D6007EF11C /* DeleteAccountView.swift */; };
 		1860F0422F0E3F5D00D8AB9A /* LoadingDialogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1860F0412F0E3F5A00D8AB9A /* LoadingDialogView.swift */; };
 		1862C53F2EFB74C900B0DD70 /* PrayerEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1862C53E2EFB74BE00B0DD70 /* PrayerEmptyView.swift */; };
 		1862C5452EFBA77D00B0DD70 /* CategoryDTOs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1862C5412EFBA77D00B0DD70 /* CategoryDTOs.swift */; };
@@ -117,6 +118,7 @@
 		180228922EBA091D00ABA95C /* FloatingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingButton.swift; sourceTree = "<group>"; };
 		180939752F0B7CE200CC1BAE /* APIErrorCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIErrorCode.swift; sourceTree = "<group>"; };
 		180939772F0B894200CC1BAE /* TokenStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenStorage.swift; sourceTree = "<group>"; };
+		1841FD072F6798D6007EF11C /* DeleteAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountView.swift; sourceTree = "<group>"; };
 		1860F0412F0E3F5A00D8AB9A /* LoadingDialogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingDialogView.swift; sourceTree = "<group>"; };
 		1862C53E2EFB74BE00B0DD70 /* PrayerEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerEmptyView.swift; sourceTree = "<group>"; };
 		1862C5402EFBA77D00B0DD70 /* AuthDTOs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthDTOs.swift; sourceTree = "<group>"; };
@@ -568,6 +570,7 @@
 				CCAD36932EB78D290028D451 /* MyPageView.swift */,
 				186D4F722F03A561005520FD /* PolicyWebView.swift */,
 				F6464E434A280823AC492405 /* InquiryBottomSheetView.swift */,
+				1841FD072F6798D6007EF11C /* DeleteAccountView.swift */,
 			);
 			path = MyPage;
 			sourceTree = "<group>";
@@ -740,6 +743,7 @@
 				CC6E3DF82ED1A19500B0EF4D /* MyPageItemField.swift in Sources */,
 				CC5B0E582EBF322400CE79A3 /* PrayerResponse.swift in Sources */,
 				CC51C38A2F3F653C00C94EDC /* AuthUseCase.swift in Sources */,
+				1841FD082F6798D6007EF11C /* DeleteAccountView.swift in Sources */,
 				187636062F0D1529005EF482 /* NotificationCenter+Extensions.swift in Sources */,
 				CC5B0E4F2EBF30A900CE79A3 /* PrayerDetailViewModel.swift in Sources */,
 				CCAD369A2EB792140028D451 /* MyPageViewModel.swift in Sources */,

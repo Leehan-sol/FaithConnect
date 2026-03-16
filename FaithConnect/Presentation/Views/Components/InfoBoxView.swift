@@ -9,18 +9,38 @@ import SwiftUI
 
 struct InfoBoxView: View {
     let messages: [String]
+    var icon: String? = nil
+    var title: String? = nil
+    var textColor: Color = .customNavy
+    var backgroundColor: Color = Color(.customBlue1).opacity(0.2)
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 5) {
-            ForEach(messages, id: \.self) { message in
-                Text(message)
+        VStack(alignment: .leading, spacing: 10) {
+            if let title {
+                HStack(spacing: 8) {
+                    if let icon {
+                        Image(systemName: icon)
+                            .font(.title3)
+                    }
+
+                    Text(title)
+                        .font(.subheadline)
+                        .bold()
+                }
             }
+
+            VStack(alignment: .leading, spacing: 5) {
+                ForEach(messages, id: \.self) { message in
+                    Text(message)
+                }
+            }
+            .font(.caption)
+            .padding(.leading, title != nil ? 30 : 0)
         }
-        .font(.caption)
         .padding(EdgeInsets(top: 18, leading: 8, bottom: 18, trailing: 0))
         .frame(maxWidth: .infinity, alignment: .leading)
-        .foregroundColor(.customNavy)
-        .background(Color(.customBlue1).opacity(0.2))
+        .foregroundColor(textColor)
+        .background(backgroundColor)
         .cornerRadius(10)
     }
 }

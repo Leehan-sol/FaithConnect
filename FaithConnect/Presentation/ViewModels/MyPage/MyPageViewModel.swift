@@ -10,6 +10,7 @@ import Foundation
 @MainActor
 class MyPageViewModel: ObservableObject {
     @Published var alertType: AlertType? = nil
+    @Published var deleteAccountAlert: AlertType? = nil
 
     private let authUseCase: AuthUseCaseProtocol
     private let userSession: UserSession
@@ -54,7 +55,6 @@ class MyPageViewModel: ObservableObject {
     
     func logout() async {
         do {
-            // 로그아웃 전 푸시 토큰 삭제
             if let fcmToken = UserDefaults.standard.string(forKey: "fcmToken") {
                 try? await authUseCase.deletePushToken(deviceToken: fcmToken)
                 print("푸시 토큰 삭제 완료")
@@ -70,17 +70,16 @@ class MyPageViewModel: ObservableObject {
 
     func deleteAccount() async {
         do {
-            // 회원탈퇴 전 푸시 토큰 삭제
             if let fcmToken = UserDefaults.standard.string(forKey: "fcmToken") {
                 try? await authUseCase.deletePushToken(deviceToken: fcmToken)
                 print("푸시 토큰 삭제 완료")
             }
             try await authUseCase.deleteAccount()
-            alertType = .successDeleteAccount
+            deleteAccountAlert = .successDeleteAccount
         } catch {
             let error = error.localizedDescription
-            alertType = .error(title: "회원탈퇴 실패",
-                               message: error)
+            deleteAccountAlert = .error(title: "회원탈퇴 실패",
+                                        message: error)
         }
     }
 
