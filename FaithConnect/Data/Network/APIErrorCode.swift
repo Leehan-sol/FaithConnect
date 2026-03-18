@@ -15,9 +15,10 @@ enum APIErrorCode: Int, Decodable {
     
     // MARK: - Auth
     case userNotFound = 51001 // 사용자를 찾을 수 없습니다.
-    case userExistByEmail = 51002 // 해당 이메일의 사용자가 있습니다.
+    case userNotExistByEmail = 51002 // 해당 이메일의 사용자가 없습니다.
     case passwordMismatch = 51003 // 비밀번호가 일치하지 않습니다.
     case invalidUserInformation = 51004 // 입력하신 정보가 올바르지 않습니다.
+    case userExistByEmail = 51005 // 이미 사용 중인 이메일입니다.
     
     // MARK: - Prayer
     case categoryNotFound = 52001 // 기도 카테고리를 찾을 수 없습니다.

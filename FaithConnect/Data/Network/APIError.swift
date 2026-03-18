@@ -36,12 +36,14 @@ extension APIError {
                 return "리프레시 토큰을 찾을 수 없음"
             case .userNotFound:
                 return "사용자를 찾을 수 없습니다. 다시 시도해주세요."
-            case .userExistByEmail:
-                return "해당 이메일의 사용자가 있습니다."
+            case .userNotExistByEmail:
+                return "해당 이메일의 사용자가 없습니다."
             case .passwordMismatch:
                 return "비밀번호가 일치하지 않습니다."
             case .invalidUserInformation:
                 return "입력하신 정보가 올바르지 않습니다."
+            case .userExistByEmail:
+                return "이미 사용중인 이메일입니다."
             case .categoryNotFound:
                 return "해당 카테고리를 찾을 수 없습니다. 다시 시도해주세요."
             case .prayerNotFound:
