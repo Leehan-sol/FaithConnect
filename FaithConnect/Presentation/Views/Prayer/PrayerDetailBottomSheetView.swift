@@ -45,7 +45,7 @@ struct PrayerDetailBottomSheetView: View {
                             .bold()
                             .font(.caption)
                             .cornerRadius(10)
-                        
+
                         Text(viewModel.prayer?.title ?? "")
                             .bold()
                     }.padding()
@@ -65,7 +65,7 @@ struct PrayerDetailBottomSheetView: View {
                             .scrollContentBackground(.hidden)
                             .onChange(of: content) { oldValue, newValue in
                                 wordCount = newValue.count
-                                
+
                                 if newValue.count > 500 {
                                     content = String(newValue.prefix(500))
                                 }
@@ -153,6 +153,7 @@ struct PrayerDetailBottomSheetView: View {
         .onTapGesture {
             UIApplication.shared.endEditing()
         }
+        .ignoresSafeArea(.keyboard)
     }
 }
 

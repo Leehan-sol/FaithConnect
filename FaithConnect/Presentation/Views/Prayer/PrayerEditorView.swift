@@ -55,12 +55,16 @@ struct PrayerEditorView: View {
                 ZStack(alignment: .topLeading) {
                     TextEditor(text: $content)
                         .frame(height: 250)
-                        .padding(EdgeInsets(top: 8, leading
-                                            : 8, bottom: 8, trailing: 8))
+                        .padding(EdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8))
                         .background(Color(.systemGray6))
                         .cornerRadius(10)
                         .scrollContentBackground(.hidden)
-                    
+                        .onChange(of: content) { newValue in
+                            if newValue.count > 2000 {
+                                content = String(newValue.prefix(2000))
+                            }
+                        }
+
                     if content.isEmpty {
                         Text("기도 내용을 입력하세요")
                             .foregroundColor(Color(uiColor: .placeholderText))

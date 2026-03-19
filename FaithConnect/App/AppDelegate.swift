@@ -23,6 +23,11 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         UNUserNotificationCenter.current().delegate = self
         Messaging.messaging().delegate = self
         requestNotificationPermission(application)
+
+        // 앱 실행 시 뱃지 초기화
+        application.applicationIconBadgeNumber = 0
+        UserDefaults.standard.set(0, forKey: "badgeCount")
+
         return true
     }
 
@@ -39,6 +44,16 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         didFailToRegisterForRemoteNotificationsWithError error: Error
     ) {
         print("APNs 등록 실패: \(error.localizedDescription)")
+    }
+
+    // 백그라운드 푸시 수신 시 뱃지 누적
+    func application(
+        _ application: UIApplication,
+        didReceiveRemoteNotification userInfo: [AnyHashable: Any],
+        fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void
+    ) {
+        incrementBadgeCount()
+        completionHandler(.newData)
     }
 
     private func requestNotificationPermission(_ application: UIApplication) {
@@ -70,7 +85,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         willPresent notification: UNNotification,
         withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void
     ) {
-        completionHandler([.banner, .badge, .sound])
+        completionHandler([.banner, .sound])
     }
 
     // 알림 탭 처리
@@ -87,6 +102,14 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         }
 
         completionHandler()
+    }
+
+    // 클라이언트 뱃지 카운트 누적
+    private func incrementBadgeCount() {
+        var count = UserDefaults.standard.integer(forKey: "badgeCount")
+        count += 1
+        UserDefaults.standard.set(count, forKey: "badgeCount")
+        UIApplication.shared.applicationIconBadgeNumber = count
     }
 }
 

@@ -34,6 +34,7 @@ struct PrayerDetailView: View {
     @State private var showConfirmationDialog = false
     @State private var showPrayerEditor = false
     @State private var showDeleteAlert = false
+    @State private var sheetDetent: PresentationDetent = .fraction(0.75)
     
     init(viewModel: @escaping () -> PrayerDetailViewModel) {
         _viewModel = StateObject(wrappedValue: viewModel())
@@ -106,8 +107,9 @@ struct PrayerDetailView: View {
             PrayerDetailBottomSheetView(viewModel: viewModel,
                                         editingResponse: type.editingResponse,
                                         onDismissSheet: { bottomSheetType = nil })
-                .presentationDetents([.fraction(0.75)])
+                .presentationDetents([.fraction(0.3), .fraction(0.75)], selection: $sheetDetent)
                 .presentationDragIndicator(.visible)
+                .presentationBackgroundInteraction(.enabled(upThrough: .fraction(0.3)))
                 .interactiveDismissDisabled(true)
         }
         .confirmationDialog(
