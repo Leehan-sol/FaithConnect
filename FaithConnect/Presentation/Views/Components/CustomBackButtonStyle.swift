@@ -10,6 +10,7 @@ import SwiftUI
 struct CustomBackButtonStyle<Trailing: View>: ViewModifier {
     @Environment(\.dismiss) var dismiss
     let trailingButton: Trailing?
+    var onBeforeDismiss: (() -> Bool)?
 
     func body(content: Content) -> some View {
         content
@@ -17,7 +18,13 @@ struct CustomBackButtonStyle<Trailing: View>: ViewModifier {
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button {
-                        dismiss()
+                        if let onBeforeDismiss, onBeforeDismiss() {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                                dismiss()
+                            }
+                        } else {
+                            dismiss()
+                        }
                     } label: {
                         Image(systemName: "chevron.backward")
                             .foregroundColor(.black)
