@@ -91,7 +91,17 @@ struct PrayerDetailView: View {
         .task {
             await viewModel.initializeIfNeeded()
         }
-        .customBackButtonStyle {
+        .customBackButtonStyle(onBeforeDismiss: {
+            if bottomSheetType != nil {
+                var transaction = Transaction()
+                transaction.disablesAnimations = true
+                withTransaction(transaction) {
+                    bottomSheetType = nil
+                }
+                return true
+            }
+            return false
+        }) {
             if viewModel.prayer?.isMine == true && !viewModel.isDeleted {
                 Button {
                     bottomSheetType = nil

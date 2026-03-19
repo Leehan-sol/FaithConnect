@@ -11,13 +11,25 @@ extension View {
     func customBackButtonStyle() -> some View {
         modifier(CustomBackButtonStyle<EmptyView>(trailingButton: nil))
     }
-    
+
     func customBackButtonStyle<Trailing: View>(
           @ViewBuilder trailingButton: () -> Trailing
       ) -> some View {
           modifier(
               CustomBackButtonStyle(
                   trailingButton: trailingButton()
+              )
+          )
+      }
+
+    func customBackButtonStyle<Trailing: View>(
+          onBeforeDismiss: @escaping () -> Bool,
+          @ViewBuilder trailingButton: () -> Trailing
+      ) -> some View {
+          modifier(
+              CustomBackButtonStyle(
+                  trailingButton: trailingButton(),
+                  onBeforeDismiss: onBeforeDismiss
               )
           )
       }
