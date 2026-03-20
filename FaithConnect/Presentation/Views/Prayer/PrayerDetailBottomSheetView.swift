@@ -153,7 +153,6 @@ struct PrayerDetailBottomSheetView: View {
         .onTapGesture {
             UIApplication.shared.endEditing()
         }
-        .ignoresSafeArea(.keyboard)
     }
 }
 
