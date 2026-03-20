@@ -72,7 +72,7 @@ class PrayerDetailViewModel: ObservableObject {
                                                                       categoryId: prayer?.categoryId ?? 0,
                                                                       categoryName: prayer?.categoryName ?? "")
             guard var prayer = prayer else { return false }
-            prayer.responses?.insert(response, at: 0)
+            prayer.responses?.append(response)
             prayer.participationCount += 1
             self.prayer = prayer
             return true
