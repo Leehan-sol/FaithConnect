@@ -16,7 +16,7 @@ struct MyPrayerListView: View {
     let prayerContextType: PrayerContextType
     
     var body: some View {
-        VStack {
+        Group {
             if prayerContextType == .prayer {
                 List {
                     ForEach(viewModel.writtenPrayers) { prayer in
@@ -54,7 +54,7 @@ struct MyPrayerListView: View {
                 .listStyle(PlainListStyle())
                 .scrollIndicators(.hidden)
             }
-            
+
             if prayerContextType == .response {
                 List {
                     ForEach(viewModel.participatedPrayers) { response in
@@ -94,8 +94,8 @@ struct MyPrayerListView: View {
         }
         .navigationTitle(prayerContextType.navigationTitle)
         .customBackButtonStyle()
-        .toolbar(.hidden, for: .tabBar)
-        .navigationDestination(isPresented: $showPrayerDetail) {
+        .toolbarVisibility(.hidden, for: .tabBar)
+                .navigationDestination(isPresented: $showPrayerDetail) {
             if let prayer = selectedPrayer {
                 PrayerDetailView(viewModel: { viewModel.makePrayerDetailVM(prayerRequestId: prayer.id) })
             } else if let response = selectedResponse {

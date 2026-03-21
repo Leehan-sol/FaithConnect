@@ -44,7 +44,7 @@ struct MainTabView: View {
                 Text("홈")
             }
             .tag(0)
-            
+
             NavigationStack {
                 MyPrayerView(viewModel: myPrayerViewModel)
             }
@@ -53,7 +53,7 @@ struct MainTabView: View {
                 Text("내 기도")
             }
             .tag(1)
-            
+
             NavigationStack {
                 MyPageView(viewModel: myPageViewModel)
             }

@@ -84,53 +84,53 @@ struct PrayerEditorView: View {
                 
             }
             .padding(EdgeInsets(top: 0, leading: 20, bottom: 10, trailing: 20))
-            .navigationTitle(viewModel.isEditMode ? "기도 수정" : "새 기도")
-            .navigationBarTitleDisplayMode(.inline)
-            .navigationBarBackButtonHidden(true)
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button {
-                        dismiss()
-                    } label: {
-                        Text("취소")
-                            .bold()
-                            .foregroundColor(.black)
-                    }
+        }
+        .navigationTitle(viewModel.isEditMode ? "기도 수정" : "새 기도")
+        .navigationBarTitleDisplayMode(.inline)
+        .navigationBarBackButtonHidden(true)
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button {
+                    dismiss()
+                } label: {
+                    Text("취소")
+                        .bold()
+                        .foregroundColor(.black)
                 }
-                
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        Task {
-                            await viewModel.savePrayer(categoryId: selectedCategoryId,
-                                                      title: title,
-                                                      content: content)
-                            if viewModel.alertType == nil {
-                                dismiss()
-                            }
+            }
+
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    Task {
+                        await viewModel.savePrayer(categoryId: selectedCategoryId,
+                                                  title: title,
+                                                  content: content)
+                        if viewModel.alertType == nil {
+                            dismiss()
                         }
-                    } label: {
-                        Text("완료")
-                            .bold()
-                            .foregroundColor(.black)
                     }
+                } label: {
+                    Text("완료")
+                        .bold()
+                        .foregroundColor(.black)
                 }
             }
-            .toolbar(.hidden, for: .tabBar)
-            .onTapGesture {
-                UIApplication.shared.endEditing()
-            }
-            .alert(item: $viewModel.alertType) { alert in
-                Alert(title: Text(alert.title),
-                      message: Text(alert.message),
-                      dismissButton: .default(Text("확인")))
-            }
-            .task {
-                await viewModel.fetchCategories()
-                if let prayer = viewModel.prayer {
-                    selectedCategoryId = prayer.categoryId
-                    title = prayer.title
-                    content = prayer.content
-                }
+        }
+        .toolbarVisibility(.hidden, for: .tabBar)
+        .onTapGesture {
+            UIApplication.shared.endEditing()
+        }
+        .alert(item: $viewModel.alertType) { alert in
+            Alert(title: Text(alert.title),
+                  message: Text(alert.message),
+                  dismissButton: .default(Text("확인")))
+        }
+        .task {
+            await viewModel.fetchCategories()
+            if let prayer = viewModel.prayer {
+                selectedCategoryId = prayer.categoryId
+                title = prayer.title
+                content = prayer.content
             }
         }
     }

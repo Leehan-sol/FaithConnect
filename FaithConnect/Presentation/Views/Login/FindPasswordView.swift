@@ -52,6 +52,7 @@ struct FindPasswordView: View {
         .navigationTitle("비밀번호 찾기")
         .navigationBarTitleDisplayMode(.inline)
         .customBackButtonStyle()
+        .toolbarVisibility(.hidden, for: .tabBar)
         .navigationDestination(isPresented: $showResetPassword) {
             ResetPasswordView(viewModel: viewModel, isPresented: $isPresented, email: email, onSuccess: onResetSuccess)
         }

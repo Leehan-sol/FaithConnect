@@ -59,6 +59,7 @@ struct PolicyWebView: View {
             .navigationTitle(viewType.title)
             .navigationBarTitleDisplayMode(.inline)
             .customBackButtonStyle()
+            .toolbarVisibility(.hidden, for: .tabBar)
     }
     
 }
