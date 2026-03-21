@@ -56,7 +56,9 @@ class PasswordResetViewModel: ObservableObject {
         }
 
         do {
-            try await authUseCase.confirmPasswordReset(email: email, code: code, newPassword: newPassword)
+            try await authUseCase.confirmPasswordReset(email: email,
+                                                              code: code,
+                                                              newPassword: newPassword)
             resetPasswordAlertType = .successPasswordReset
         } catch {
             resetPasswordAlertType = .error(title: "비밀번호 재설정 실패",

@@ -23,7 +23,7 @@ struct PrayerResponseRowView: View {
                 .cornerRadius(15)
             
             VStack(alignment: .leading, spacing: 20) {
-                Text(response.message)
+                Text(response.message.trimmingCharacters(in: .whitespacesAndNewlines))
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
                 Text(response.createdAt.toTimeAgoDisplay())
@@ -69,7 +69,7 @@ struct PrayerResponseRowView: View {
             }
             Button("취소", role: .cancel) { }
         } message: {
-            Text("이 응답을 삭제하시겠습니까? \n 삭제된 내용은 복구할 수 없습니다.")
+            Text("이 응답을 삭제하시겠습니까? \n삭제된 내용은 복구할 수 없습니다.")
         }
     }
 }

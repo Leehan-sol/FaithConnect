@@ -52,9 +52,9 @@ enum AlertType: Identifiable, Hashable {
         case .fieldEmpty(let fieldName):
             return "\(fieldName)을(를) 입력해주세요."
         case .successChangePassword:
-            return "비밀번호가 변경되었습니다. \n 다시 로그인해주세요."
+            return "비밀번호가 변경되었습니다. \n다시 로그인해주세요."
         case .registerSuccess:
-            return "회원가입에 성공했습니다. 로그인 해주세요."
+            return "회원가입에 성공했습니다. \n로그인 해주세요."
         case .successLogout:
             return "로그아웃되었습니다."
         case .successDeleteAccount:
@@ -62,7 +62,7 @@ enum AlertType: Identifiable, Hashable {
         case .successPasswordResetEmail:
             return "입력하신 이메일로 인증코드를 전송했습니다."
         case .successPasswordReset:
-            return "비밀번호가 재설정되었습니다. \n 새 비밀번호로 로그인해주세요."
+            return "비밀번호가 재설정되었습니다. \n새 비밀번호로 로그인해주세요."
         }
     }
 }
