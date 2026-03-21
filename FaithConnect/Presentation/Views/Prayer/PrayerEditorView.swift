@@ -10,26 +10,26 @@ import SwiftUI
 struct PrayerEditorView: View {
     @StateObject var viewModel: PrayerEditorViewModel
     @Environment(\.dismiss) var dismiss
-    
+
     @State private var selectedCategoryId: Int = 0
     @State var title: String = ""
     @State var content: String = ""
     @State var showAlert: Bool = false
-    
+
     init(viewModel: @escaping () -> PrayerEditorViewModel) {
         _viewModel = StateObject(wrappedValue: viewModel())
     }
-    
+
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
             Spacer()
                 .frame(height: 20)
-            
+
             VStack(alignment: .leading, spacing: 10) {
                 Text("카테고리")
                     .font(.subheadline)
                     .bold()
-                
+
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 10) {
                         ForEach(viewModel.categories, id: \.self) { category in
@@ -44,14 +44,14 @@ struct PrayerEditorView: View {
                     }
                 }
                 .padding(EdgeInsets(top: 10, leading: 0, bottom: 20, trailing: 0))
-                
+
                 LabeledTextField(title: "제목", placeholder: "기도 제목을 입력하세요", text: $title)
                     .padding(.bottom, 20)
-                
+
                 Text("내용")
                     .font(.subheadline)
                     .bold()
-                
+
                 ZStack(alignment: .topLeading) {
                     TextEditor(text: $content)
                         .frame(height: 250)
@@ -74,63 +74,63 @@ struct PrayerEditorView: View {
                     }
                 }
                 .padding(.bottom, 20)
-                
+
                 InfoBoxView(messages: [
                     "• 기도제목은 익명으로 공유됩니다.",
                     "• 이름과 연락처 등 개인정보는 작성하지 말아주세요.",
                     "• 모든 성도들이 함께 기도할 수 있도록 진솔하게 작성해 주세요."])
-                
+
                 Spacer()
-                
+
             }
             .padding(EdgeInsets(top: 0, leading: 20, bottom: 10, trailing: 20))
-        }
-        .navigationTitle(viewModel.isEditMode ? "기도 수정" : "새 기도")
-        .navigationBarTitleDisplayMode(.inline)
-        .navigationBarBackButtonHidden(true)
-        .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                Button {
-                    dismiss()
-                } label: {
-                    Text("취소")
-                        .bold()
-                        .foregroundColor(.black)
-                }
-            }
-
-            ToolbarItem(placement: .topBarTrailing) {
-                Button {
-                    Task {
-                        await viewModel.savePrayer(categoryId: selectedCategoryId,
-                                                  title: title,
-                                                  content: content)
-                        if viewModel.alertType == nil {
-                            dismiss()
-                        }
+            .navigationTitle(viewModel.isEditMode ? "기도 수정" : "새 기도")
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationBarBackButtonHidden(true)
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button {
+                        dismiss()
+                    } label: {
+                        Text("취소")
+                            .bold()
+                            .foregroundColor(.black)
                     }
-                } label: {
-                    Text("완료")
-                        .bold()
-                        .foregroundColor(.black)
+                }
+
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        Task {
+                            await viewModel.savePrayer(categoryId: selectedCategoryId,
+                                                      title: title,
+                                                      content: content)
+                            if viewModel.alertType == nil {
+                                dismiss()
+                            }
+                        }
+                    } label: {
+                        Text("완료")
+                            .bold()
+                            .foregroundColor(.black)
+                    }
                 }
             }
-        }
-        .toolbarVisibility(.hidden, for: .tabBar)
-        .onTapGesture {
-            UIApplication.shared.endEditing()
-        }
-        .alert(item: $viewModel.alertType) { alert in
-            Alert(title: Text(alert.title),
-                  message: Text(alert.message),
-                  dismissButton: .default(Text("확인")))
-        }
-        .task {
-            await viewModel.fetchCategories()
-            if let prayer = viewModel.prayer {
-                selectedCategoryId = prayer.categoryId
-                title = prayer.title
-                content = prayer.content
+            .toolbarVisibility(.hidden, for: .tabBar)
+            .onTapGesture {
+                UIApplication.shared.endEditing()
+            }
+            .alert(item: $viewModel.alertType) { alert in
+                Alert(title: Text(alert.title),
+                      message: Text(alert.message),
+                      dismissButton: .default(Text("확인")))
+            }
+            .task {
+                await viewModel.fetchCategories()
+                if let prayer = viewModel.prayer {
+                    selectedCategoryId = prayer.categoryId
+                    title = prayer.title
+                    content = prayer.content
+                }
             }
         }
     }
@@ -140,6 +140,6 @@ struct PrayerEditorView: View {
     let mockAPIClient = APIClient(tokenStorage: TokenStorage())
     let mockRepo = PrayerRepository(apiClient: mockAPIClient)
     let mockUseCase = PrayerUseCase(repository: mockRepo)
-    
+
     return PrayerEditorView(viewModel: { PrayerEditorViewModel(prayerUseCase: mockUseCase) })
 }

@@ -38,13 +38,13 @@ struct LocalHTMLView: UIViewRepresentable {
         let webView = WKWebView()
         webView.isOpaque = false
         webView.backgroundColor = .clear
+        if let url = Bundle.main.url(forResource: fileName, withExtension: "html") {
+            webView.loadFileURL(url, allowingReadAccessTo: url.deletingLastPathComponent())
+        }
         return webView
     }
-    
+
     func updateUIView(_ uiView: WKWebView, context: Context) {
-        if let url = Bundle.main.url(forResource: fileName, withExtension: "html") {
-            uiView.loadFileURL(url, allowingReadAccessTo: url)
-        }
     }
     
 }
@@ -52,14 +52,26 @@ struct LocalHTMLView: UIViewRepresentable {
 
 struct PolicyWebView: View {
     let viewType: PolicyType
-    
+    @State private var isReady = false
+
     var body: some View {
-        LocalHTMLView(fileName: viewType.htmlFileName)
-            .id(viewType)
-            .navigationTitle(viewType.title)
-            .navigationBarTitleDisplayMode(.inline)
-            .customBackButtonStyle()
-            .toolbarVisibility(.hidden, for: .tabBar)
+        Group {
+            if isReady {
+                LocalHTMLView(fileName: viewType.htmlFileName)
+                    .id(viewType)
+            } else {
+                ProgressView()
+            }
+        }
+        .navigationTitle(viewType.title)
+        .navigationBarTitleDisplayMode(.inline)
+        .customBackButtonStyle()
+        .toolbarVisibility(.hidden, for: .tabBar)
+        .onAppear {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                isReady = true
+            }
+        }
     }
-    
+
 }
