@@ -192,8 +192,8 @@ struct PrayerDetailView: View {
             }
         }
         .overlay {
-            if showHeartAnimation, let count = viewModel.prayer?.participationCount, count > 0 {
-                PrayerHeartAnimationView(participationCount: count) {
+            if showHeartAnimation {
+                PrayerHeartAnimationView(participationCount: viewModel.prayer?.participationCount ?? 0) {
                     showHeartAnimation = false
                 }
             }
