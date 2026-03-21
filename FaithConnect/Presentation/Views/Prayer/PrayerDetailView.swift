@@ -41,6 +41,7 @@ struct PrayerDetailView: View {
     }
     
     var body: some View {
+        ScrollViewReader { proxy in
         ScrollView(.vertical, showsIndicators: false) {
             if viewModel.isDeleted, let prayer = viewModel.prayer {
                 VStack(spacing: 10) {
@@ -79,6 +80,10 @@ struct PrayerDetailView: View {
                 DetailView(viewModel: viewModel,
                            prayer: prayer,
                            bottomSheetType: $bottomSheetType)
+
+                Color.clear
+                    .frame(height: 1)
+                    .id("bottom")
             } else {
                 ProgressView()
                     .progressViewStyle(CircularProgressViewStyle(tint: .blue))
@@ -90,6 +95,13 @@ struct PrayerDetailView: View {
         }
         .task {
             await viewModel.initializeIfNeeded()
+        }
+        .onChange(of: viewModel.prayer?.responses?.count) { oldValue, newValue in
+            if let oldValue, let newValue, newValue > oldValue {
+                withAnimation {
+                    proxy.scrollTo("bottom")
+                }
+            }
         }
         .customBackButtonStyle(onBeforeDismiss: {
             if bottomSheetType != nil {
@@ -165,8 +177,9 @@ struct PrayerDetailView: View {
                   dismissButton: .default(Text("확인")))
         }
         .navigationBarTitleDisplayMode(.inline)
-        .toolbar(.hidden, for: .tabBar)
-        
+        .toolbarVisibility(.hidden, for: .tabBar)
+                } // ScrollViewReader
+
         if !viewModel.isDeleted {
             ActionButton(title: "기도 응답하기",
                          foregroundColor: .white,

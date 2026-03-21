@@ -111,6 +111,7 @@ struct DeleteAccountView: View {
         .navigationTitle("회원탈퇴")
         .navigationBarTitleDisplayMode(.inline)
         .customBackButtonStyle()
+        .toolbarVisibility(.hidden, for: .tabBar)
         .alert("회원탈퇴", isPresented: $showDeleteConfirm) {
             Button("취소", role: .cancel) { }
             Button("탈퇴", role: .destructive) {
