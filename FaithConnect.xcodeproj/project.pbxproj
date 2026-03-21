@@ -71,6 +71,7 @@
 		CC6EC0642F015711009D2E31 /* MyResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6EC0632F015711009D2E31 /* MyResponse.swift */; };
 		CC6EC0662F015FB2009D2E31 /* MyResponseRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6EC0652F015FB2009D2E31 /* MyResponseRowView.swift */; };
 		CC6FFE172F1390B300EB10D3 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6FFE162F1390B300EB10D3 /* SplashView.swift */; };
+		CC71D1282F6EEA4E00AE89D5 /* PrayerHeartAnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC71D1272F6EEA4E00AE89D5 /* PrayerHeartAnimationView.swift */; };
 		CC728A392EFEB13D00D93208 /* AlertType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC728A382EFEB13D00D93208 /* AlertType.swift */; };
 		CC7A00D52F0BEF14005CB132 /* APIDTOs.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC7A00D42F0BEF14005CB132 /* APIDTOs.swift */; };
 		CCAD36752EB726510028D451 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CCAD36742EB726510028D451 /* LaunchScreen.storyboard */; };
@@ -154,6 +155,7 @@
 		CC6EC0632F015711009D2E31 /* MyResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyResponse.swift; sourceTree = "<group>"; };
 		CC6EC0652F015FB2009D2E31 /* MyResponseRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyResponseRowView.swift; sourceTree = "<group>"; };
 		CC6FFE162F1390B300EB10D3 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
+		CC71D1272F6EEA4E00AE89D5 /* PrayerHeartAnimationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerHeartAnimationView.swift; sourceTree = "<group>"; };
 		CC728A382EFEB13D00D93208 /* AlertType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertType.swift; sourceTree = "<group>"; };
 		CC7A00D42F0BEF14005CB132 /* APIDTOs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIDTOs.swift; sourceTree = "<group>"; };
 		CCAD36742EB726510028D451 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -286,6 +288,7 @@
 				CC5B0E672EBFA5A800CE79A3 /* PrayerResponseRowView.swift */,
 				CC6EC0652F015FB2009D2E31 /* MyResponseRowView.swift */,
 				1862C53E2EFB74BE00B0DD70 /* PrayerEmptyView.swift */,
+				CC71D1272F6EEA4E00AE89D5 /* PrayerHeartAnimationView.swift */,
 			);
 			path = Prayer;
 			sourceTree = "<group>";
@@ -632,6 +635,7 @@
 				180228912EBA08C300ABA95C /* PrayerRowView.swift in Sources */,
 				CC6FFE172F1390B300EB10D3 /* SplashView.swift in Sources */,
 				1841FD0A2F67BD8A007EF11C /* DeepLinkManager.swift in Sources */,
+				CC71D1282F6EEA4E00AE89D5 /* PrayerHeartAnimationView.swift in Sources */,
 				CC6C8F1B2E9B978300E43387 /* FaithConnectApp.swift in Sources */,
 				186D4F6F2F037523005520FD /* PrayerContextType.swift in Sources */,
 				CCFDC1302F2F2043008F9CB9 /* PrayerEventType.swift in Sources */,
@@ -818,7 +822,7 @@
 				CODE_SIGN_ENTITLEMENTS = FaithConnect/FaithConnect.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_ASSET_PATHS = "\"FaithConnect/Preview Content\"";
 				DEVELOPMENT_TEAM = Y9U32NW3Q6;
 				ENABLE_PREVIEWS = YES;
@@ -856,7 +860,7 @@
 				CODE_SIGN_ENTITLEMENTS = FaithConnect/FaithConnect.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_ASSET_PATHS = "\"FaithConnect/Preview Content\"";
 				DEVELOPMENT_TEAM = Y9U32NW3Q6;
 				ENABLE_PREVIEWS = YES;

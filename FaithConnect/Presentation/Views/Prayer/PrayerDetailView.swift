@@ -10,14 +10,14 @@ import SwiftUI
 enum BottomSheetType: Identifiable {
     case create
     case edit(PrayerResponse)
-
+    
     var id: String {
         switch self {
         case .create: return "create"
         case .edit(let r): return "edit-\(r.id)"
         }
     }
-
+    
     var editingResponse: PrayerResponse? {
         switch self {
         case .create: return nil
@@ -35,158 +35,174 @@ struct PrayerDetailView: View {
     @State private var showPrayerEditor = false
     @State private var showDeleteAlert = false
     @State private var sheetDetent: PresentationDetent = .fraction(0.75)
+    @State private var showHeartAnimation = false
     
     init(viewModel: @escaping () -> PrayerDetailViewModel) {
         _viewModel = StateObject(wrappedValue: viewModel())
     }
     
     var body: some View {
-        ScrollViewReader { proxy in
-        ScrollView(.vertical, showsIndicators: false) {
-            if viewModel.isDeleted, let prayer = viewModel.prayer {
-                VStack(spacing: 10) {
-                    Image(systemName: "trash.slash")
-                        .font(.system(size: 28))
-                        .foregroundColor(.gray)
-                    Text("삭제된 기도입니다")
-                        .font(.headline)
-                        .foregroundColor(.gray)
-                    Text("이 기도는 작성자에 의해 삭제되었습니다.")
-                        .font(.subheadline)
-                        .foregroundColor(.gray)
-                }
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 30)
-
-                Divider()
-                    .padding(.horizontal, 20)
-
-                VStack(spacing: 0) {
-                    ForEach(prayer.responses ?? []) { response in
-                        PrayerResponseRowView(response: response,
-                                              onEdit: { response in
-                            bottomSheetType = .edit(response)
-                        },
-                                              onDelete: { response in
-                            Task {
-                                await viewModel.deletePrayerResponse(response: response)
+        VStack(spacing: 0) {
+            ScrollViewReader { proxy in
+                ScrollView(.vertical, showsIndicators: false) {
+                    if viewModel.isDeleted, let prayer = viewModel.prayer {
+                        VStack(spacing: 10) {
+                            Image(systemName: "trash.slash")
+                                .font(.system(size: 28))
+                                .foregroundColor(.gray)
+                            Text("삭제된 기도입니다")
+                                .font(.headline)
+                                .foregroundColor(.gray)
+                            Text("이 기도는 작성자에 의해 삭제되었습니다.")
+                                .font(.subheadline)
+                                .foregroundColor(.gray)
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 30)
+                        
+                        Divider()
+                            .padding(.horizontal, 20)
+                        
+                        VStack(spacing: 0) {
+                            ForEach(prayer.responses ?? []) { response in
+                                PrayerResponseRowView(response: response,
+                                                      onEdit: { response in
+                                    bottomSheetType = .edit(response)
+                                },
+                                                      onDelete: { response in
+                                    Task {
+                                        await viewModel.deletePrayerResponse(response: response)
+                                    }
+                                })
+                                .padding(.horizontal, 20)
+                                .padding(.vertical, 10)
                             }
-                        })
-                        .padding(.horizontal, 20)
-                        .padding(.vertical, 10)
+                        }
+                    } else if let prayer = viewModel.prayer {
+                        DetailView(viewModel: viewModel,
+                                   prayer: prayer,
+                                   bottomSheetType: $bottomSheetType)
+                        
+                        Color.clear
+                            .frame(height: 1)
+                            .id("bottom")
+                    } else {
+                        ProgressView()
+                            .progressViewStyle(CircularProgressViewStyle(tint: .blue))
+                            .scaleEffect(1.5)
                     }
                 }
-            } else if let prayer = viewModel.prayer {
-                DetailView(viewModel: viewModel,
-                           prayer: prayer,
-                           bottomSheetType: $bottomSheetType)
-
-                Color.clear
-                    .frame(height: 1)
-                    .id("bottom")
-            } else {
-                ProgressView()
-                    .progressViewStyle(CircularProgressViewStyle(tint: .blue))
-                    .scaleEffect(1.5)
-            }
-        }
-        .refreshable {
-            await viewModel.refresh()
-        }
-        .task {
-            await viewModel.initializeIfNeeded()
-        }
-        .onChange(of: viewModel.prayer?.responses?.count) { oldValue, newValue in
-            if let oldValue, let newValue, newValue > oldValue {
-                withAnimation {
-                    proxy.scrollTo("bottom")
-                }
-            }
-        }
-        .customBackButtonStyle(onBeforeDismiss: {
-            if bottomSheetType != nil {
-                var transaction = Transaction()
-                transaction.disablesAnimations = true
-                withTransaction(transaction) {
-                    bottomSheetType = nil
-                }
-                return true
-            }
-            return false
-        }) {
-            if viewModel.prayer?.isMine == true && !viewModel.isDeleted {
-                Button {
-                    bottomSheetType = nil
-                    showConfirmationDialog = true
-                } label: {
-                    Image(systemName: "ellipsis")
-                        .rotationEffect(.degrees(90))
-                        .foregroundColor(.black)
-                }
-            }
-        }
-        .sheet(item: $bottomSheetType) { type in
-            PrayerDetailBottomSheetView(viewModel: viewModel,
-                                        editingResponse: type.editingResponse,
-                                        onDismissSheet: { bottomSheetType = nil })
-                .presentationDetents([.fraction(0.3), .fraction(0.75)], selection: $sheetDetent)
-                .presentationDragIndicator(.visible)
-                .presentationBackgroundInteraction(.enabled(upThrough: .fraction(0.3)))
-                .interactiveDismissDisabled(true)
-        }
-        .confirmationDialog(
-            "",
-            isPresented: $showConfirmationDialog,
-            titleVisibility: .hidden
-        ) {
-            Button("수정") {
-                showPrayerEditor = true
-            }
-
-            Button("삭제", role: .destructive) {
-                showDeleteAlert = true
-            }
-
-            Button("취소", role: .cancel) { }
-        }
-        .navigationDestination(isPresented: $showPrayerEditor) {
-            PrayerEditorView(viewModel: { viewModel.makePrayerEditorVM() })
-        }
-        .onChange(of: showPrayerEditor) { oldValue, newValue in
-            if oldValue && !newValue {
-                Task {
+                .refreshable {
                     await viewModel.refresh()
                 }
+                .task {
+                    await viewModel.initializeIfNeeded()
+                }
+                .onChange(of: viewModel.prayer?.responses?.count) { oldValue, newValue in
+                    if let oldValue, let newValue, newValue > oldValue {
+                        withAnimation {
+                            proxy.scrollTo("bottom")
+                        }
+                    }
+                }
+                .customBackButtonStyle(onBeforeDismiss: {
+                    if bottomSheetType != nil {
+                        var transaction = Transaction()
+                        transaction.disablesAnimations = true
+                        withTransaction(transaction) {
+                            bottomSheetType = nil
+                        }
+                        return true
+                    }
+                    return false
+                }) {
+                    if viewModel.prayer?.isMine == true && !viewModel.isDeleted {
+                        Button {
+                            bottomSheetType = nil
+                            showConfirmationDialog = true
+                        } label: {
+                            Image(systemName: "ellipsis")
+                                .rotationEffect(.degrees(90))
+                                .foregroundColor(.black)
+                        }
+                    }
+                }
+                .sheet(item: $bottomSheetType) { type in
+                    PrayerDetailBottomSheetView(viewModel: viewModel,
+                                                editingResponse: type.editingResponse,
+                                                onDismissSheet: { bottomSheetType = nil })
+                    .presentationDetents([.fraction(0.3), .fraction(0.75)], selection: $sheetDetent)
+                    .presentationDragIndicator(.visible)
+                    .presentationBackgroundInteraction(.enabled(upThrough: .fraction(0.3)))
+                    .interactiveDismissDisabled(true)
+                }
+                .confirmationDialog(
+                    "",
+                    isPresented: $showConfirmationDialog,
+                    titleVisibility: .hidden
+                ) {
+                    Button("수정") {
+                        showPrayerEditor = true
+                    }
+                    
+                    Button("삭제", role: .destructive) {
+                        showDeleteAlert = true
+                    }
+                    
+                    Button("취소", role: .cancel) { }
+                }
+                .navigationDestination(isPresented: $showPrayerEditor) {
+                    PrayerEditorView(viewModel: { viewModel.makePrayerEditorVM() })
+                }
+                .onChange(of: showPrayerEditor) { oldValue, newValue in
+                    if oldValue && !newValue {
+                        Task {
+                            await viewModel.refresh()
+                        }
+                    }
+                }
+                .alert("기도 삭제",
+                       isPresented: $showDeleteAlert) {
+                    Button("삭제", role: .destructive) {
+                        Task {
+                            await viewModel.deletePrayer()
+                            dismiss()
+                        }
+                    }
+                    Button("취소", role: .cancel) { }
+                } message: {
+                    Text("이 기도를 정말 삭제하시겠습니까? \n 삭제된 내용은 복구할 수 없습니다.")
+                }
+                .alert(item: $viewModel.alertType) { alert in
+                    Alert(title: Text(alert.title),
+                          message: Text(alert.message),
+                          dismissButton: .default(Text("확인")))
+                }
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbarVisibility(.hidden, for: .tabBar)
+            } // ScrollViewReader
+            
+            if !viewModel.isDeleted {
+                ActionButton(title: "기도 응답하기",
+                             foregroundColor: .white,
+                             backgroundColor: .customBlue1) {
+                    bottomSheetType = .create
+                    showConfirmationDialog = false
+                }.padding(EdgeInsets(top: 0, leading: 20, bottom: 10, trailing: 20))
             }
         }
-        .alert("기도 삭제",
-               isPresented: $showDeleteAlert) {
-            Button("삭제", role: .destructive) {
-                Task {
-                    await viewModel.deletePrayer()
-                    dismiss()
+        .overlay {
+            if showHeartAnimation, let count = viewModel.prayer?.participationCount, count > 0 {
+                PrayerHeartAnimationView(participationCount: count) {
+                    showHeartAnimation = false
                 }
             }
-            Button("취소", role: .cancel) { }
-        } message: {
-            Text("이 기도를 정말 삭제하시겠습니까? \n 삭제된 내용은 복구할 수 없습니다.")
         }
-        .alert(item: $viewModel.alertType) { alert in
-            Alert(title: Text(alert.title),
-                  message: Text(alert.message),
-                  dismissButton: .default(Text("확인")))
-        }
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbarVisibility(.hidden, for: .tabBar)
-                } // ScrollViewReader
-
-        if !viewModel.isDeleted {
-            ActionButton(title: "기도 응답하기",
-                         foregroundColor: .white,
-                         backgroundColor: .customBlue1) {
-                bottomSheetType = .create
-                showConfirmationDialog = false
-            }.padding(EdgeInsets(top: 0, leading: 20, bottom: 10, trailing: 20))
+        .onChange(of: viewModel.prayer?.participationCount) { oldValue, newValue in
+            if oldValue == nil, let count = newValue, count > 0,
+               viewModel.prayer?.isMine == true {
+                showHeartAnimation = true
+            }
         }
     }
     
@@ -196,7 +212,7 @@ struct DetailView: View {
     @ObservedObject var viewModel: PrayerDetailViewModel
     let prayer: Prayer
     @Binding var bottomSheetType: BottomSheetType?
-
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 25) {
             HStack {
