@@ -36,6 +36,10 @@ struct PrayerDetailView: View {
     @State private var showDeleteAlert = false
     @State private var sheetDetent: PresentationDetent = .fraction(0.75)
     @State private var showHeartAnimation = false
+    @State private var showReportAlert = false
+    @State private var showBlockAlert = false
+    @State private var showReportCompleteAlert = false
+    @State private var showBlockCompleteAlert = false
     
     init(viewModel: @escaping () -> PrayerDetailViewModel) {
         _viewModel = StateObject(wrappedValue: viewModel())
@@ -116,7 +120,7 @@ struct PrayerDetailView: View {
                     }
                     return false
                 }) {
-                    if viewModel.prayer?.isMine == true && !viewModel.isDeleted {
+                    if !viewModel.isDeleted {
                         Button {
                             bottomSheetType = nil
                             showConfirmationDialog = true
@@ -141,14 +145,24 @@ struct PrayerDetailView: View {
                     isPresented: $showConfirmationDialog,
                     titleVisibility: .hidden
                 ) {
-                    Button("수정") {
-                        showPrayerEditor = true
+                    if viewModel.prayer?.isMine == true {
+                        Button("수정") {
+                            showPrayerEditor = true
+                        }
+
+                        Button("삭제", role: .destructive) {
+                            showDeleteAlert = true
+                        }
+                    } else {
+                        Button("신고", role: .destructive) {
+                            showReportAlert = true
+                        }
+
+                        Button("차단", role: .destructive) {
+                            showBlockAlert = true
+                        }
                     }
-                    
-                    Button("삭제", role: .destructive) {
-                        showDeleteAlert = true
-                    }
-                    
+
                     Button("취소", role: .cancel) { }
                 }
                 .navigationDestination(isPresented: $showPrayerEditor) {
@@ -173,6 +187,38 @@ struct PrayerDetailView: View {
                     Button("취소", role: .cancel) { }
                 } message: {
                     Text("이 기도를 정말 삭제하시겠습니까? \n 삭제된 내용은 복구할 수 없습니다.")
+                }
+                .alert("신고",
+                       isPresented: $showReportAlert) {
+                    Button("신고", role: .destructive) {
+                        // TODO: 신고 API 연동
+                        showReportCompleteAlert = true
+                    }
+                    Button("취소", role: .cancel) { }
+                } message: {
+                    Text("이 기도를 신고하시겠습니까?")
+                }
+                .alert("차단",
+                       isPresented: $showBlockAlert) {
+                    Button("차단", role: .destructive) {
+                        // TODO: 차단 API 연동
+                        showBlockCompleteAlert = true
+                    }
+                    Button("취소", role: .cancel) { }
+                } message: {
+                    Text("이 사용자를 차단하시겠습니까? \n차단된 사용자의 글은 더 이상 표시되지 않습니다.")
+                }
+                .alert("신고 완료",
+                       isPresented: $showReportCompleteAlert) {
+                    Button("확인", role: .cancel) { }
+                } message: {
+                    Text("신고가 접수되었습니다. \n검토 후 조치하겠습니다.")
+                }
+                .alert("차단 완료",
+                       isPresented: $showBlockCompleteAlert) {
+                    Button("확인", role: .cancel) { }
+                } message: {
+                    Text("해당 사용자가 차단되었습니다.")
                 }
                 .alert(item: $viewModel.alertType) { alert in
                     Alert(title: Text(alert.title),
