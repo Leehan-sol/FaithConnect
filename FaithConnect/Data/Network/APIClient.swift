@@ -564,44 +564,44 @@ extension APIClient {
             }
             let urlString = APIEndpoint.refreshToken.urlString
             guard let url = URL(string: urlString) else { throw APIError.invalidURL }
-            
+
             guard let refreshToken = tokenStorage.refreshToken else {
                 await handleSessionExpiration()
                 throw APIError.serverMessage(code: .refreshTokenNotFound)
             }
-            
+
             let requestBody = AccessTokenRequest(refreshToken: refreshToken)
-            
+
             var request = URLRequest(url: url)
             request.httpMethod = "POST"
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
             request.httpBody = try JSONEncoder().encode(requestBody)
-            
+
             do {
                 let (data, response) = try await URLSession.shared.data(for: request)
-                
+
                 guard let httpResponse = response as? HTTPURLResponse else {
                     throw APIError.serverMessage(code: .unknown)
                 }
-                
+
                 guard (200...299).contains(httpResponse.statusCode) else {
                     if let errorResponse = try? JSONDecoder().decode(APIErrorResponse.self, from: data) {
                         throw APIError.serverMessage(code: errorResponse.errorCode)
                     }
                     throw APIError.httpError(statusCode: httpResponse.statusCode)
                 }
-                
+
                 let apiResponse = try JSONDecoder().decode(AccessTokenResponse.self, from: data)
-                
+
                 guard !apiResponse.accessToken.isEmpty, !apiResponse.refreshToken.isEmpty else {
                     throw APIError.serverMessage(code: .unknown)
                 }
-                
+
                 await MainActor.run {
                     tokenStorage.save(accessToken: apiResponse.accessToken,
                                            refreshToken: apiResponse.refreshToken)
                 }
-                
+
             } catch {
                 // refresh Token 만료
                 await handleSessionExpiration()

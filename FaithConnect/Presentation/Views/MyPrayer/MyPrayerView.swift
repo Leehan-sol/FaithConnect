@@ -20,6 +20,7 @@ struct MyPrayerView: View {
             WrittenPrayerSectionView(
                 prayers: viewModel.writtenPrayers,
                 onTap: { prayer in
+                    selectedResponse = nil
                     selectedPrayer = prayer
                     showPrayerDetail = true
                 },
@@ -35,6 +36,7 @@ struct MyPrayerView: View {
             ParticipatedPrayerSectionView(
                 responses: viewModel.participatedPrayers,
                 onTap: { response in
+                    selectedPrayer = nil
                     selectedResponse = response
                     showPrayerDetail = true
                 },

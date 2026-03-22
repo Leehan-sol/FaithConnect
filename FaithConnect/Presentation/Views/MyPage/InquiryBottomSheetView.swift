@@ -21,6 +21,10 @@ struct InquiryBottomSheetView: View {
         !title.isEmpty && !content.isEmpty && !email.isEmpty
     }
 
+    private var hasAnyInput: Bool {
+        !title.isEmpty || !content.isEmpty || email != userEmail
+    }
+
     var body: some View {
         VStack {
             ScrollView {
@@ -82,7 +86,7 @@ struct InquiryBottomSheetView: View {
                 ActionButton(title: "취소",
                              foregroundColor: .gray,
                              backgroundColor: Color(.systemGray6)) {
-                    if isSendButtonActive {
+                    if hasAnyInput {
                         showAlert = true
                     } else {
                         onDismissSheet()

@@ -165,8 +165,9 @@ struct PrayerDetailView: View {
                        isPresented: $showDeleteAlert) {
                     Button("삭제", role: .destructive) {
                         Task {
-                            await viewModel.deletePrayer()
-                            dismiss()
+                            if await viewModel.deletePrayer() {
+                                dismiss()
+                            }
                         }
                     }
                     Button("취소", role: .cancel) { }
