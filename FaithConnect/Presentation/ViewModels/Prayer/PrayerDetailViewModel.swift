@@ -43,21 +43,24 @@ class PrayerDetailViewModel: ObservableObject {
         }
     }
     
-    func deletePrayer() async {
+    func deletePrayer() async -> Bool {
         do {
             print("삭제 API 호출")
-            guard let id = prayer?.id else { return }
+            guard let id = prayer?.id else { return false }
             try await prayerUseCase.deletePrayer(prayerRequestId: id)
+            return true
         } catch {
             let error = error.localizedDescription
             alertType = .error(title: "삭제 실패",
                                message: error)
+            return false
         }
     }
     
     func writePrayerResponse(message: String) async -> Bool {
         if message.isEmpty {
             alertType = .fieldEmpty(fieldName: "응답")
+            return false
         }
         
         guard let id = prayer?.id else {
