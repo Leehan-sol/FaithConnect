@@ -32,6 +32,7 @@ class PrayerDetailViewModel: ObservableObject {
         await loadPrayerDetail()
     }
     
+    
     private func loadPrayerDetail() async {
         do {
             let prayer = try await prayerUseCase.loadPrayerDetail(prayerRequestID: prayerRequestId)
@@ -41,6 +42,10 @@ class PrayerDetailViewModel: ObservableObject {
             alertType = .error(title: "불러오기 실패",
                                message: error.localizedDescription)
         }
+    }
+    
+    func makePrayerEditorVM() -> PrayerEditorViewModel {
+        PrayerEditorViewModel(prayerUseCase: prayerUseCase, prayer: prayer)
     }
     
     func deletePrayer() async -> Bool {
@@ -55,6 +60,14 @@ class PrayerDetailViewModel: ObservableObject {
                                message: error)
             return false
         }
+    }
+    
+    func reportWriter() {
+        alertType = .success(title: "신고 완료", message: "신고가 접수되었습니다. \n검토 후 조치하겠습니다.")
+    }
+    
+    func blockWriter() {
+        alertType = .success(title: "차단 완료", message: "해당 사용자가 차단되었습니다.")
     }
     
     func writePrayerResponse(message: String) async -> Bool {
@@ -87,10 +100,6 @@ class PrayerDetailViewModel: ObservableObject {
         }
     }
     
-    func makePrayerEditorVM() -> PrayerEditorViewModel {
-        PrayerEditorViewModel(prayerUseCase: prayerUseCase, prayer: prayer)
-    }
-
     func updatePrayerResponse(responseID: Int, message: String) async -> Bool {
         do {
             print("응답 수정 API 호출")
@@ -127,5 +136,45 @@ class PrayerDetailViewModel: ObservableObject {
                                message: error)
         }
     }
+    
+
+    // TODO: 테스트용 로컬 답글 추가
+    func addMockReply(to parentResponse: PrayerResponse, message: String) {
+        guard var prayer = prayer,
+              let index = prayer.responses?.firstIndex(where: { $0.id == parentResponse.id }) else { return }
+
+        let mockReply = PrayerResponse(
+            id: Int.random(in: 10000...99999),
+            prayerRequestId: parentResponse.prayerRequestId,
+            message: message,
+            createdAt: {
+                let formatter = DateFormatter()
+                formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS"
+                return formatter.string(from: Date())
+            }(),
+            isMine: true
+        )
+        prayer.responses?[index].replies.append(mockReply)
+        self.prayer = prayer
+    }
+
+    // TODO: 테스트용 로컬 답글 수정
+    func updateMockReply(_ reply: PrayerResponse, in parentResponse: PrayerResponse, message: String) {
+        guard var prayer = prayer,
+              let parentIndex = prayer.responses?.firstIndex(where: { $0.id == parentResponse.id }),
+              let replyIndex = prayer.responses?[parentIndex].replies.firstIndex(where: { $0.id == reply.id })
+        else { return }
+
+        let updated = PrayerResponse(
+            id: reply.id,
+            prayerRequestId: reply.prayerRequestId,
+            message: message,
+            createdAt: reply.createdAt,
+            isMine: reply.isMine
+        )
+        prayer.responses?[parentIndex].replies[replyIndex] = updated
+        self.prayer = prayer
+    }
+    
     
 }

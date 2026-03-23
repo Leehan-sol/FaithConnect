@@ -56,7 +56,7 @@ struct PrayerRowView: View {
                     .scaledToFit()
                     .frame(width: 15, height: 15)
                 
-                Text("\(prayer.participationCount)명이 기도했어요.")
+                Text("\(prayer.participationCount)명이 기도했어요")
                     .font(.caption2)
             }
             .foregroundColor(.gray)

@@ -12,11 +12,14 @@ struct PrayerResponseRowView: View {
     @State private var showDeleteAlert = false
     @State private var showReportAlert = false
     @State private var showBlockAlert = false
-    @State private var showReportCompleteAlert = false
-    @State private var showBlockCompleteAlert = false
+    @State private var resultAlert: AlertType?
+    
     let response: PrayerResponse
     let onEdit: ((PrayerResponse) -> Void)?
-    let onDelete: (PrayerResponse) -> Void
+    let onDelete: ((PrayerResponse) -> Void)?
+    let onReport: ((PrayerResponse) -> Void)?
+    let onBlock: ((PrayerResponse) -> Void)?
+    var onReply: ((PrayerResponse) -> Void)?
     
     var body: some View {
         HStack(alignment: .top, spacing: 10) {
@@ -30,9 +33,22 @@ struct PrayerResponseRowView: View {
                 Text(response.message.trimmingCharacters(in: .whitespacesAndNewlines))
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
-                Text(response.createdAt.toTimeAgoDisplay())
-                    .font(.caption2)
-                    .foregroundColor(.gray)
+                HStack(spacing: 10) {
+                    Text(response.createdAt.toTimeAgoDisplay())
+                        .font(.caption2)
+                        .foregroundColor(.gray)
+
+                    Button {
+                        onReply?(response)
+                    } label: {
+                        Text(response.replies.isEmpty
+                             ? "답글"
+                             : "답글 (\(response.replies.count))")
+                            .font(.caption2)
+                            .fontWeight(.semibold)
+                            .foregroundColor(.customBlue1)
+                    }
+                }
             }
             
             Button {
@@ -77,7 +93,7 @@ struct PrayerResponseRowView: View {
         .alert("응답 삭제",
                isPresented: $showDeleteAlert) {
             Button("삭제", role: .destructive) {
-                onDelete(response)
+                onDelete?(response)
             }
             Button("취소", role: .cancel) { }
         } message: {
@@ -86,8 +102,7 @@ struct PrayerResponseRowView: View {
         .alert("신고",
                isPresented: $showReportAlert) {
             Button("신고", role: .destructive) {
-                // TODO: 신고 API 연동
-                showReportCompleteAlert = true
+                onReport?(response)
             }
             Button("취소", role: .cancel) { }
         } message: {
@@ -96,27 +111,20 @@ struct PrayerResponseRowView: View {
         .alert("차단",
                isPresented: $showBlockAlert) {
             Button("차단", role: .destructive) {
-                // TODO: 차단 API 연동
-                showBlockCompleteAlert = true
+                onBlock?(response)
             }
             Button("취소", role: .cancel) { }
         } message: {
             Text("이 사용자를 차단하시겠습니까? \n차단된 사용자의 글은 더 이상 표시되지 않습니다.")
         }
-        .alert("신고 완료",
-               isPresented: $showReportCompleteAlert) {
-            Button("확인", role: .cancel) { }
-        } message: {
-            Text("신고가 접수되었습니다. \n검토 후 조치하겠습니다.")
-        }
-        .alert("차단 완료",
-               isPresented: $showBlockCompleteAlert) {
-            Button("확인", role: .cancel) { }
-        } message: {
-            Text("해당 사용자가 차단되었습니다.")
+        .alert(item: $resultAlert) { alert in
+            Alert(title: Text(alert.title),
+                  message: Text(alert.message),
+                  dismissButton: .default(Text("확인")))
         }
     }
 }
+
 
 #Preview {
     PrayerResponseRowView(response: PrayerResponse(id: 0,
@@ -125,6 +133,9 @@ struct PrayerResponseRowView: View {
                                                    createdAt: "2025-11-07T12:55:00.000Z",
                                                    isMine: false),
                           onEdit: nil,
-                          onDelete: { _ in })
+                          onDelete: nil,
+                          onReport: nil,
+                          onBlock: nil,
+                          onReply: nil)
     .padding()
 }

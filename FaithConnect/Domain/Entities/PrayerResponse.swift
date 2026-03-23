@@ -13,6 +13,7 @@ struct PrayerResponse: Identifiable, Equatable {
     let message: String
     let createdAt: String
     let isMine: Bool
+    var replies: [PrayerResponse] = []
 }
 
 // MARK: - Extension
