@@ -151,8 +151,10 @@ extension APIClient {
         isRetry: Bool = false,
         auth: AuthRequirement = .required
     ) async throws -> Response {
-//        print("URL: \(String(describing: request.url))")
-        
+        guard NetworkMonitor.shared.isConnected else {
+            throw APIError.noNetwork
+        }
+
         var request = request
         
         if auth == .required, let token = tokenStorage.accessToken {
