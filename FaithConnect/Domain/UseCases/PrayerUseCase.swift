@@ -17,7 +17,7 @@ protocol PrayerUseCaseProtocol {
     func writePrayer(categoryID: Int, title: String, content: String) async throws -> Prayer
     func updatePrayer(prayerRequestId: Int, categoryID: Int, title: String, content: String) async throws -> Prayer
     func deletePrayer(prayerRequestId: Int) async throws
-    func writePrayerResponse(prayerRequsetID: Int, message: String, prayerTitle: String, categoryId: Int, categoryName: String) async throws -> PrayerResponse
+    func writePrayerResponse(prayerRequestID: Int, message: String, prayerTitle: String, categoryId: Int, categoryName: String) async throws -> PrayerResponse
     func updatePrayerResponse(responseID: Int, message: String) async throws -> PrayerResponse
     func deletePrayerResponse(responseID: Int, prayerRequestId: Int) async throws
     func loadWrittenPrayers(page: Int) async throws -> PrayerPage
@@ -99,13 +99,13 @@ class PrayerUseCase: PrayerUseCaseProtocol {
         eventPublisher.send(.prayerDeleted(prayerId: prayerRequestId))
     }
     
-    func writePrayerResponse(prayerRequsetID: Int, message: String, prayerTitle: String, categoryId: Int, categoryName: String) async throws -> PrayerResponse {
-        let result = try await repository.writePrayerResponse(prayerRequsetID: prayerRequsetID, 
+    func writePrayerResponse(prayerRequestID: Int, message: String, prayerTitle: String, categoryId: Int, categoryName: String) async throws -> PrayerResponse {
+        let result = try await repository.writePrayerResponse(prayerRequestID: prayerRequestID, 
                                                               message: message)
         let prayerResponse = PrayerResponse(from: result)
 
         let myResponse = MyResponse(id: prayerResponse.id,
-                                    prayerRequestId: prayerRequsetID,
+                                    prayerRequestId: prayerRequestID,
                                     prayerRequestTitle: prayerTitle,
                                     categoryId: categoryId,
                                     categoryName: categoryName,
