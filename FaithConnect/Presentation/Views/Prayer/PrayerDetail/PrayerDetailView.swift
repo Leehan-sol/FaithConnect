@@ -7,33 +7,12 @@
 
 import SwiftUI
 
-// MARK: - BottomSheetType
-enum BottomSheetType: Identifiable {
-    case create
-    case edit(PrayerResponse)
-    
-    var id: String {
-        switch self {
-        case .create: return "create"
-        case .edit(let r): return "edit-\(r.id)"
-        }
-    }
-    
-    var editingResponse: PrayerResponse? {
-        switch self {
-        case .create: return nil
-        case .edit(let r): return r
-        }
-    }
-}
-
-
 // MARK: - PrayerDetailView
 struct PrayerDetailView: View {
     @StateObject private var viewModel: PrayerDetailViewModel
     @Environment(\.dismiss) private var dismiss
     
-    @State private var bottomSheetType: BottomSheetType?
+    @State private var prayerBottomSheetType: PrayerBottomSheetType?
     @State private var showConfirmationDialog = false
     @State private var showPrayerEditor = false
     @State private var showDeleteAlert = false
@@ -67,7 +46,7 @@ struct PrayerDetailView: View {
                 ActionButton(title: "기도 응답하기",
                              foregroundColor: .white,
                              backgroundColor: .customBlue1) {
-                    bottomSheetType = .create
+                    prayerBottomSheetType = .create
                     showConfirmationDialog = false
                 }.padding(EdgeInsets(top: 0, leading: 20, bottom: 10, trailing: 20))
             }
@@ -102,7 +81,7 @@ struct PrayerDetailView: View {
                 }
 
                 ResponseListView(viewModel: viewModel,
-                                 bottomSheetType: $bottomSheetType,
+                                 prayerBottomSheetType: $prayerBottomSheetType,
                                  replyingTo: $replyingTo,
                                  editingReply: $editingReply,
                                  replyText: $replyText,
@@ -126,11 +105,11 @@ struct PrayerDetailView: View {
             }
         }
         .customBackButtonStyle(onBeforeDismiss: {
-            if bottomSheetType != nil {
+            if prayerBottomSheetType != nil {
                 var transaction = Transaction()
                 transaction.disablesAnimations = true
                 withTransaction(transaction) {
-                    bottomSheetType = nil
+                    prayerBottomSheetType = nil
                 }
                 return true
             }
@@ -138,7 +117,7 @@ struct PrayerDetailView: View {
         }) {
             if !viewModel.isDeleted {
                 Button {
-                    bottomSheetType = nil
+                    prayerBottomSheetType = nil
                     showConfirmationDialog = true
                 } label: {
                     Image(systemName: "ellipsis")
@@ -147,10 +126,10 @@ struct PrayerDetailView: View {
                 }
             }
         }
-        .sheet(item: $bottomSheetType) { type in
+        .sheet(item: $prayerBottomSheetType) { type in
             PrayerDetailBottomSheetView(viewModel: viewModel,
                                         editingResponse: type.editingResponse,
-                                        onDismissSheet: { bottomSheetType = nil })
+                                        onDismissSheet: { prayerBottomSheetType = nil })
             .presentationDetents([.fraction(0.3), .fraction(0.75)], selection: $sheetDetent)
             .presentationDragIndicator(.visible)
             .presentationBackgroundInteraction(.enabled(upThrough: .fraction(0.3)))
@@ -286,7 +265,7 @@ struct DeletedHeaderView: View {
 // MARK: - ResponseListView
 struct ResponseListView: View {
     @ObservedObject var viewModel: PrayerDetailViewModel
-    @Binding var bottomSheetType: BottomSheetType?
+    @Binding var prayerBottomSheetType: PrayerBottomSheetType?
     @Binding var replyingTo: PrayerResponse?
     @Binding var editingReply: PrayerResponse?
     @Binding var replyText: String
@@ -300,7 +279,7 @@ struct ResponseListView: View {
                 VStack(spacing: 0) {
                     PrayerResponseRowView(response: response,
                                           onEdit: { response in
-                        bottomSheetType = .edit(response)
+                        prayerBottomSheetType = .edit(response)
                     },
                                           onDelete: { response in
                         Task {

@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -12,7 +12,6 @@
 		180939762F0B7CE600CC1BAE /* APIErrorCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180939752F0B7CE200CC1BAE /* APIErrorCode.swift */; };
 		180939782F0B894500CC1BAE /* TokenStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180939772F0B894200CC1BAE /* TokenStorage.swift */; };
 		1809B0A12F70E03B00BEAB89 /* NetworkMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1809B0A02F70E03B00BEAB89 /* NetworkMonitor.swift */; };
-		1809B0A32F70FA6100BEAB89 /* ReplyRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1809B0A22F70FA6100BEAB89 /* ReplyRowView.swift */; };
 		1841FD082F6798D6007EF11C /* DeleteAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1841FD072F6798D6007EF11C /* DeleteAccountView.swift */; };
 		1841FD0A2F67BD8A007EF11C /* DeepLinkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1841FD092F67BD8A007EF11C /* DeepLinkManager.swift */; };
 		1841FD0C2F67C10F007EF11C /* InquiryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1841FD0B2F67C10F007EF11C /* InquiryViewModel.swift */; };
@@ -36,7 +35,6 @@
 		CC1DC8EF2F66D55E00BDDE0A /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = CC1DC8EE2F66D55E00BDDE0A /* FirebaseAnalytics */; };
 		CC1DC8FB2F66D55E00BDDE0A /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = CC1DC8FA2F66D55E00BDDE0A /* FirebaseAuth */; };
 		CC1DC9192F66D55E00BDDE0A /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = CC1DC9182F66D55E00BDDE0A /* FirebaseMessaging */; };
-		CC4EA43E2EC9AC3E0097D09C /* PrayerDetailBottomSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4EA43D2EC9AC3D0097D09C /* PrayerDetailBottomSheetView.swift */; };
 		CC4EA4402EC9B7370097D09C /* FindIDResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4EA43F2EC9B7370097D09C /* FindIDResultView.swift */; };
 		CC4EA4422EC9F64A0097D09C /* CustomBackButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4EA4412EC9F64A0097D09C /* CustomBackButtonStyle.swift */; };
 		CC4EA4442EC9F6C50097D09C /* View+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4EA4432EC9F6C50097D09C /* View+Extensions.swift */; };
@@ -57,12 +55,10 @@
 		CC5B0E602EBF567F00CE79A3 /* UIApplication+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5B0E5F2EBF567F00CE79A3 /* UIApplication+Extensions.swift */; };
 		CC5B0E642EBF8BA900CE79A3 /* PrayerCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5B0E632EBF8BA900CE79A3 /* PrayerCategory.swift */; };
 		CC5B0E662EBF990A00CE79A3 /* CategoryScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5B0E652EBF990A00CE79A3 /* CategoryScrollView.swift */; };
-		CC5B0E682EBFA5A800CE79A3 /* PrayerResponseRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5B0E672EBFA5A800CE79A3 /* PrayerResponseRowView.swift */; };
 		CC5D794F2EC757F600C1CEE4 /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5D794E2EC757F600C1CEE4 /* APIClient.swift */; };
 		CC5D79592EC76B6700C1CEE4 /* InfoBoxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5D79582EC76B6700C1CEE4 /* InfoBoxView.swift */; };
 		CC6194C62EF7E030005B79A7 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6194C52EF7E030005B79A7 /* User.swift */; };
 		CC6194CA2EF7F5BB005B79A7 /* UserSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6194C92EF7F5BB005B79A7 /* UserSession.swift */; };
-		CC6437D82EBE42820079ED24 /* PrayerDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6437D72EBE42820079ED24 /* PrayerDetailView.swift */; };
 		CC6437DA2EBE42C20079ED24 /* PrayerEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6437D92EBE42C20079ED24 /* PrayerEditorView.swift */; };
 		CC6B2ADF2F24CB4B003BB246 /* PrayerRepositoryProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6B2ADE2F24CB4B003BB246 /* PrayerRepositoryProtocol.swift */; };
 		CC6B2AE32F24CB72003BB246 /* PrayerRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6B2AE22F24CB72003BB246 /* PrayerRepository.swift */; };
@@ -73,7 +69,6 @@
 		CC6EC0642F015711009D2E31 /* MyResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6EC0632F015711009D2E31 /* MyResponse.swift */; };
 		CC6EC0662F015FB2009D2E31 /* MyResponseRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6EC0652F015FB2009D2E31 /* MyResponseRowView.swift */; };
 		CC6FFE172F1390B300EB10D3 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6FFE162F1390B300EB10D3 /* SplashView.swift */; };
-		CC71D1282F6EEA4E00AE89D5 /* PrayerHeartAnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC71D1272F6EEA4E00AE89D5 /* PrayerHeartAnimationView.swift */; };
 		CC728A392EFEB13D00D93208 /* AlertType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC728A382EFEB13D00D93208 /* AlertType.swift */; };
 		CC7A00D52F0BEF14005CB132 /* APIDTOs.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC7A00D42F0BEF14005CB132 /* APIDTOs.swift */; };
 		CCAD36752EB726510028D451 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CCAD36742EB726510028D451 /* LaunchScreen.storyboard */; };
@@ -99,7 +94,6 @@
 		180939752F0B7CE200CC1BAE /* APIErrorCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIErrorCode.swift; sourceTree = "<group>"; };
 		180939772F0B894200CC1BAE /* TokenStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenStorage.swift; sourceTree = "<group>"; };
 		1809B0A02F70E03B00BEAB89 /* NetworkMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMonitor.swift; sourceTree = "<group>"; };
-		1809B0A22F70FA6100BEAB89 /* ReplyRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyRowView.swift; sourceTree = "<group>"; };
 		1841FD072F6798D6007EF11C /* DeleteAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountView.swift; sourceTree = "<group>"; };
 		1841FD092F67BD8A007EF11C /* DeepLinkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLinkManager.swift; sourceTree = "<group>"; };
 		1841FD0B2F67C10F007EF11C /* InquiryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InquiryViewModel.swift; sourceTree = "<group>"; };
@@ -120,7 +114,6 @@
 		18C747A62F56D784006BF9DF /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		BFC8B9D7289E0D82CDD4DE82 /* InquiryDTOs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InquiryDTOs.swift; sourceTree = "<group>"; };
 		CC1A00002F5B00000028D451 /* PasswordResetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordResetViewModel.swift; sourceTree = "<group>"; };
-		CC4EA43D2EC9AC3D0097D09C /* PrayerDetailBottomSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerDetailBottomSheetView.swift; sourceTree = "<group>"; };
 		CC4EA43F2EC9B7370097D09C /* FindIDResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindIDResultView.swift; sourceTree = "<group>"; };
 		CC4EA4412EC9F64A0097D09C /* CustomBackButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomBackButtonStyle.swift; sourceTree = "<group>"; };
 		CC4EA4432EC9F6C50097D09C /* View+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extensions.swift"; sourceTree = "<group>"; };
@@ -142,12 +135,10 @@
 		CC5B0E5F2EBF567F00CE79A3 /* UIApplication+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extensions.swift"; sourceTree = "<group>"; };
 		CC5B0E632EBF8BA900CE79A3 /* PrayerCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerCategory.swift; sourceTree = "<group>"; };
 		CC5B0E652EBF990A00CE79A3 /* CategoryScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryScrollView.swift; sourceTree = "<group>"; };
-		CC5B0E672EBFA5A800CE79A3 /* PrayerResponseRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerResponseRowView.swift; sourceTree = "<group>"; };
 		CC5D794E2EC757F600C1CEE4 /* APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
 		CC5D79582EC76B6700C1CEE4 /* InfoBoxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoBoxView.swift; sourceTree = "<group>"; };
 		CC6194C52EF7E030005B79A7 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		CC6194C92EF7F5BB005B79A7 /* UserSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSession.swift; sourceTree = "<group>"; };
-		CC6437D72EBE42820079ED24 /* PrayerDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerDetailView.swift; sourceTree = "<group>"; };
 		CC6437D92EBE42C20079ED24 /* PrayerEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerEditorView.swift; sourceTree = "<group>"; };
 		CC6B2ADE2F24CB4B003BB246 /* PrayerRepositoryProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerRepositoryProtocol.swift; sourceTree = "<group>"; };
 		CC6B2AE22F24CB72003BB246 /* PrayerRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerRepository.swift; sourceTree = "<group>"; };
@@ -159,7 +150,6 @@
 		CC6EC0632F015711009D2E31 /* MyResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyResponse.swift; sourceTree = "<group>"; };
 		CC6EC0652F015FB2009D2E31 /* MyResponseRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyResponseRowView.swift; sourceTree = "<group>"; };
 		CC6FFE162F1390B300EB10D3 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
-		CC71D1272F6EEA4E00AE89D5 /* PrayerHeartAnimationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerHeartAnimationView.swift; sourceTree = "<group>"; };
 		CC728A382EFEB13D00D93208 /* AlertType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertType.swift; sourceTree = "<group>"; };
 		CC7A00D42F0BEF14005CB132 /* APIDTOs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIDTOs.swift; sourceTree = "<group>"; };
 		CCAD36742EB726510028D451 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -179,6 +169,10 @@
 		CCFDC1312F2FA2C5008F9CB9 /* PrayerUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerUseCase.swift; sourceTree = "<group>"; };
 		F6464E434A280823AC492405 /* InquiryBottomSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InquiryBottomSheetView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		1809B0A42F71214900BEAB89 /* PrayerDetail */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = PrayerDetail; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		CC6C8F142E9B978300E43387 /* Frameworks */ = {
@@ -285,16 +279,12 @@
 		CC6437D62EBE422F0079ED24 /* Prayer */ = {
 			isa = PBXGroup;
 			children = (
+				1809B0A42F71214900BEAB89 /* PrayerDetail */,
 				186D4F6E2F03751F005520FD /* PrayerContextType.swift */,
-				CC6437D72EBE42820079ED24 /* PrayerDetailView.swift */,
-				CC4EA43D2EC9AC3D0097D09C /* PrayerDetailBottomSheetView.swift */,
 				CC6437D92EBE42C20079ED24 /* PrayerEditorView.swift */,
 				180228902EBA08BD00ABA95C /* PrayerRowView.swift */,
-				CC5B0E672EBFA5A800CE79A3 /* PrayerResponseRowView.swift */,
-				1809B0A22F70FA6100BEAB89 /* ReplyRowView.swift */,
 				CC6EC0652F015FB2009D2E31 /* MyResponseRowView.swift */,
 				1862C53E2EFB74BE00B0DD70 /* PrayerEmptyView.swift */,
-				CC71D1272F6EEA4E00AE89D5 /* PrayerHeartAnimationView.swift */,
 			);
 			path = Prayer;
 			sourceTree = "<group>";
@@ -555,6 +545,9 @@
 			);
 			dependencies = (
 			);
+			fileSystemSynchronizedGroups = (
+				1809B0A42F71214900BEAB89 /* PrayerDetail */,
+			);
 			name = FaithConnect;
 			packageProductDependencies = (
 				CC1DC8EE2F66D55E00BDDE0A /* FirebaseAnalytics */,
@@ -630,9 +623,7 @@
 				CC6194CA2EF7F5BB005B79A7 /* UserSession.swift in Sources */,
 				CCAD36982EB7920C0028D451 /* HomeViewModel.swift in Sources */,
 				180939762F0B7CE600CC1BAE /* APIErrorCode.swift in Sources */,
-				CC6437D82EBE42820079ED24 /* PrayerDetailView.swift in Sources */,
 				180939782F0B894500CC1BAE /* TokenStorage.swift in Sources */,
-				CC5B0E682EBFA5A800CE79A3 /* PrayerResponseRowView.swift in Sources */,
 				180228932EBA092A00ABA95C /* FloatingButton.swift in Sources */,
 				1862C5492EFBA89C00B0DD70 /* APIError.swift in Sources */,
 				CC6B2AE32F24CB72003BB246 /* PrayerRepository.swift in Sources */,
@@ -642,11 +633,9 @@
 				180228912EBA08C300ABA95C /* PrayerRowView.swift in Sources */,
 				CC6FFE172F1390B300EB10D3 /* SplashView.swift in Sources */,
 				1841FD0A2F67BD8A007EF11C /* DeepLinkManager.swift in Sources */,
-				CC71D1282F6EEA4E00AE89D5 /* PrayerHeartAnimationView.swift in Sources */,
 				CC6C8F1B2E9B978300E43387 /* FaithConnectApp.swift in Sources */,
 				186D4F6F2F037523005520FD /* PrayerContextType.swift in Sources */,
 				CCFDC1302F2F2043008F9CB9 /* PrayerEventType.swift in Sources */,
-				CC4EA43E2EC9AC3E0097D09C /* PrayerDetailBottomSheetView.swift in Sources */,
 				1862C5452EFBA77D00B0DD70 /* CategoryDTOs.swift in Sources */,
 				1862C5462EFBA77D00B0DD70 /* AuthDTOs.swift in Sources */,
 				1862C5472EFBA77D00B0DD70 /* PrayerDTOs.swift in Sources */,
@@ -694,7 +683,6 @@
 				1862C53F2EFB74C900B0DD70 /* PrayerEmptyView.swift in Sources */,
 				CC51C3A02F51B10000C94EDC /* PushTokenDTOs.swift in Sources */,
 				EB6F29681E572F7B38D34012 /* InquiryDTOs.swift in Sources */,
-				1809B0A32F70FA6100BEAB89 /* ReplyRowView.swift in Sources */,
 				1C3D198A3BAEA02F0440C1A2 /* InquiryBottomSheetView.swift in Sources */,
 				CC51C3A12F51B10000C94EDC /* AppDelegate.swift in Sources */,
 			);
