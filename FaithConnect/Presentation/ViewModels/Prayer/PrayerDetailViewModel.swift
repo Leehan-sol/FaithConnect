@@ -69,7 +69,7 @@ class PrayerDetailViewModel: ObservableObject {
         
         do {
             print("기도 응답 API 호출")
-            let response = try await prayerUseCase.writePrayerResponse(prayerRequsetID: id,
+            let response = try await prayerUseCase.writePrayerResponse(prayerRequestID: id,
                                                                       message: message,
                                                                       prayerTitle: prayer?.title ?? "",
                                                                       categoryId: prayer?.categoryId ?? 0,
