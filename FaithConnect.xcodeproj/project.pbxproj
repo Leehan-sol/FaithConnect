@@ -11,6 +11,7 @@
 		180228932EBA092A00ABA95C /* FloatingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180228922EBA091D00ABA95C /* FloatingButton.swift */; };
 		180939762F0B7CE600CC1BAE /* APIErrorCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180939752F0B7CE200CC1BAE /* APIErrorCode.swift */; };
 		180939782F0B894500CC1BAE /* TokenStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180939772F0B894200CC1BAE /* TokenStorage.swift */; };
+		1809B0A12F70E03B00BEAB89 /* NetworkMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1809B0A02F70E03B00BEAB89 /* NetworkMonitor.swift */; };
 		1841FD082F6798D6007EF11C /* DeleteAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1841FD072F6798D6007EF11C /* DeleteAccountView.swift */; };
 		1841FD0A2F67BD8A007EF11C /* DeepLinkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1841FD092F67BD8A007EF11C /* DeepLinkManager.swift */; };
 		1841FD0C2F67C10F007EF11C /* InquiryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1841FD0B2F67C10F007EF11C /* InquiryViewModel.swift */; };
@@ -96,6 +97,7 @@
 		180228922EBA091D00ABA95C /* FloatingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingButton.swift; sourceTree = "<group>"; };
 		180939752F0B7CE200CC1BAE /* APIErrorCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIErrorCode.swift; sourceTree = "<group>"; };
 		180939772F0B894200CC1BAE /* TokenStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenStorage.swift; sourceTree = "<group>"; };
+		1809B0A02F70E03B00BEAB89 /* NetworkMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMonitor.swift; sourceTree = "<group>"; };
 		1841FD072F6798D6007EF11C /* DeleteAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountView.swift; sourceTree = "<group>"; };
 		1841FD092F67BD8A007EF11C /* DeepLinkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLinkManager.swift; sourceTree = "<group>"; };
 		1841FD0B2F67C10F007EF11C /* InquiryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InquiryViewModel.swift; sourceTree = "<group>"; };
@@ -210,6 +212,7 @@
 				1862C5482EFBA89600B0DD70 /* APIError.swift */,
 				180939752F0B7CE200CC1BAE /* APIErrorCode.swift */,
 				18948E732F024C8B00C9C75C /* APIEndPoint.swift */,
+				1809B0A02F70E03B00BEAB89 /* NetworkMonitor.swift */,
 				1862C5432EFBA77D00B0DD70 /* DTOs */,
 			);
 			path = Network;
@@ -617,6 +620,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CC4EA4402EC9B7370097D09C /* FindIDResultView.swift in Sources */,
+				1809B0A12F70E03B00BEAB89 /* NetworkMonitor.swift in Sources */,
 				CCAD36852EB732FE0028D451 /* LoginViewModel.swift in Sources */,
 				CC1A00012F5B00000028D451 /* PasswordResetViewModel.swift in Sources */,
 				CC5B0E4B2EBF2DD000CE79A3 /* MyPrayerView.swift in Sources */,
