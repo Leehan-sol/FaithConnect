@@ -1,5 +1,5 @@
 //
-//  PrayerResponseRow.swift
+//  CommentRowView.swift
 //  FaithConnect
 //
 //  Created by hansol on 2025/11/09.
@@ -7,11 +7,9 @@
 
 import SwiftUI
 
-struct PrayerResponseRowView: View {
+struct CommentRowView: View {
     @State private var showConfirmationDialog = false
-    @State private var showDeleteAlert = false
-    @State private var showReportAlert = false
-    @State private var showBlockAlert = false
+    @State private var confirmAlert: ConfirmAlertType?
     @State private var resultAlert: AlertType?
     
     let response: PrayerResponse
@@ -74,48 +72,33 @@ struct PrayerResponseRowView: View {
                 Button("수정") {
                     onEdit?(response)
                 }
-
                 Button("삭제", role: .destructive) {
-                    showDeleteAlert = true
+                    confirmAlert = .delete(target: "응답")
                 }
             } else {
                 Button("신고", role: .destructive) {
-                    showReportAlert = true
+                    confirmAlert = .report(target: "응답")
                 }
-
                 Button("차단", role: .destructive) {
-                    showBlockAlert = true
+                    confirmAlert = .block
                 }
             }
-
             Button("취소", role: .cancel) { }
         }
-        .alert("응답 삭제",
-               isPresented: $showDeleteAlert) {
-            Button("삭제", role: .destructive) {
-                onDelete?(response)
+        .alert(confirmAlert?.title ?? "",
+               isPresented: Binding(get: { confirmAlert != nil },
+                                    set: { if !$0 { confirmAlert = nil } }),
+               presenting: confirmAlert) { type in
+            Button("확인", role: .destructive) {
+                switch type {
+                case .delete(_): onDelete?(response)
+                case .report(_): onReport?(response)
+                case .block: onBlock?(response)
+                }
             }
             Button("취소", role: .cancel) { }
-        } message: {
-            Text("이 응답을 삭제하시겠습니까? \n삭제된 내용은 복구할 수 없습니다.")
-        }
-        .alert("신고",
-               isPresented: $showReportAlert) {
-            Button("신고", role: .destructive) {
-                onReport?(response)
-            }
-            Button("취소", role: .cancel) { }
-        } message: {
-            Text("이 응답을 신고하시겠습니까?")
-        }
-        .alert("차단",
-               isPresented: $showBlockAlert) {
-            Button("차단", role: .destructive) {
-                onBlock?(response)
-            }
-            Button("취소", role: .cancel) { }
-        } message: {
-            Text("이 사용자를 차단하시겠습니까? \n차단된 사용자의 글은 더 이상 표시되지 않습니다.")
+        } message: { type in
+            Text(type.message)
         }
         .alert(item: $resultAlert) { alert in
             Alert(title: Text(alert.title),
@@ -127,7 +110,7 @@ struct PrayerResponseRowView: View {
 
 
 #Preview {
-    PrayerResponseRowView(response: PrayerResponse(id: 0,
+    CommentRowView(response: PrayerResponse(id: 0,
                                                    prayerRequestId: 0,
                                                    message: "어머님의 수술이 잘 되시길 기도하겠습니다. 하나님께서 함께 하실 거예요.",
                                                    createdAt: "2025-11-07T12:55:00.000Z",

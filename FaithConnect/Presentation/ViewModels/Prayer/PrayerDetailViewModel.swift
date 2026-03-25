@@ -11,12 +11,19 @@ import Foundation
 class PrayerDetailViewModel: ObservableObject {
     @Published var prayer: Prayer?
     @Published var alertType: AlertType? = nil
-    
+    @Published var isDeleted = false
+    @Published var replyingTo: PrayerResponse? // 대상 댓글
+    @Published var editingReply: PrayerResponse? // 수정 대상 대댓글
+    @Published var replyText: String = "" 
+
+    var hasReplyContent: Bool {
+        !replyText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    }
+
     private let prayerUseCase: PrayerUseCaseProtocol
     private let prayerRequestId: Int
     private var hasInitialized = false
-    @Published var isDeleted = false
-    
+
     init(prayerUseCase: PrayerUseCaseProtocol, prayerRequestId: Int) {
         self.prayerUseCase = prayerUseCase
         self.prayerRequestId = prayerRequestId
@@ -60,14 +67,6 @@ class PrayerDetailViewModel: ObservableObject {
                                message: error)
             return false
         }
-    }
-    
-    func reportWriter() {
-        alertType = .success(title: "신고 완료", message: "신고가 접수되었습니다. \n검토 후 조치하겠습니다.")
-    }
-    
-    func blockWriter() {
-        alertType = .success(title: "차단 완료", message: "해당 사용자가 차단되었습니다.")
     }
     
     func writePrayerResponse(message: String) async -> Bool {
@@ -137,9 +136,58 @@ class PrayerDetailViewModel: ObservableObject {
         }
     }
     
+    func reportWriter() {
+        // TODO: - UseCase 로직 구현
+        alertType = .success(title: "신고 완료", message: "신고가 접수되었습니다. \n검토 후 조치하겠습니다.")
+    }
+    
+    func blockWriter() {
+        // TODO: - UseCase 로직 구현
+        alertType = .success(title: "차단 완료", message: "해당 사용자가 차단되었습니다.")
+    }
 
-    // TODO: 테스트용 로컬 답글 추가
-    func addMockReply(to parentResponse: PrayerResponse, message: String) {
+    // MARK: - 대댓글
+    func startReply(to response: PrayerResponse) {
+        replyingTo = response
+    }
+
+    func startEditReply(_ reply: PrayerResponse, in response: PrayerResponse) {
+        editingReply = reply
+        replyingTo = response
+        replyText = reply.message
+    }
+
+    func cancelReply() {
+        replyText = ""
+        replyingTo = nil
+        editingReply = nil
+    }
+
+    func sendReply() -> Int? {
+        guard let parentResponse = replyingTo else { return nil }
+        let message = replyText.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !message.isEmpty else { return nil }
+
+        addMockReply(to: parentResponse, message: message)
+        let lastReplyId = prayer?.responses?
+            .first(where: { $0.id == parentResponse.id })?.replies.last?.id
+        cancelReply()
+        return lastReplyId
+    }
+    
+    func sendEditedReply() -> Int? {
+        guard let reply = editingReply, let parentResponse = replyingTo else { return nil }
+        let message = replyText.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !message.isEmpty else { return nil }
+
+        updateMockReply(reply, in: parentResponse, message: message)
+        let editedId = reply.id
+        cancelReply()
+        return editedId
+    }
+
+    // TODO: 테스트용 답글 추가
+    private func addMockReply(to parentResponse: PrayerResponse, message: String) {
         guard var prayer = prayer,
               let index = prayer.responses?.firstIndex(where: { $0.id == parentResponse.id }) else { return }
 
@@ -158,8 +206,8 @@ class PrayerDetailViewModel: ObservableObject {
         self.prayer = prayer
     }
 
-    // TODO: 테스트용 로컬 답글 수정
-    func updateMockReply(_ reply: PrayerResponse, in parentResponse: PrayerResponse, message: String) {
+    // TODO: 테스트용 답글 수정
+    private func updateMockReply(_ reply: PrayerResponse, in parentResponse: PrayerResponse, message: String) {
         guard var prayer = prayer,
               let parentIndex = prayer.responses?.firstIndex(where: { $0.id == parentResponse.id }),
               let replyIndex = prayer.responses?[parentIndex].replies.firstIndex(where: { $0.id == reply.id })
@@ -175,6 +223,4 @@ class PrayerDetailViewModel: ObservableObject {
         prayer.responses?[parentIndex].replies[replyIndex] = updated
         self.prayer = prayer
     }
-    
-    
 }
