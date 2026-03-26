@@ -40,9 +40,12 @@ struct SmallBibleVerseView: View {
                 .frame(maxHeight: .infinity)
                 .foregroundColor(.primary)
 
-            Text(entry.reference)
-                .font(.caption2)
-                .foregroundColor(.secondary)
+            HStack {
+                Spacer()
+                Text(entry.reference)
+                    .font(.caption2)
+                    .foregroundColor(.secondary)
+            }
         }
         .padding(12)
         .redacted(reason: entry.isPlaceholder ? .placeholder : [])
@@ -83,11 +86,14 @@ struct MediumBibleVerseView: View {
                     .fontWeight(.semibold)
                     .foregroundColor(Color("customBlue1"))
 
+                Spacer(minLength: 0)
+
                 Text(entry.text)
                     .font(.footnote)
                     .minimumScaleFactor(0.5)
-                    .frame(maxHeight: .infinity, alignment: .topLeading)
                     .foregroundColor(.primary)
+
+                Spacer(minLength: 0)
 
                 HStack {
                     Spacer()

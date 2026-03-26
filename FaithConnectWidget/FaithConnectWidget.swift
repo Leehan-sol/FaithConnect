@@ -44,12 +44,32 @@ struct BibleVerseWidget: Widget {
     }
 }
 
+// MARK: - 아이콘 위젯용 Provider (API 호출 없음)
+struct IconWidgetProvider: TimelineProvider {
+    struct Entry: TimelineEntry {
+        let date: Date
+    }
+
+    func placeholder(in context: Context) -> Entry {
+        Entry(date: .now)
+    }
+
+    func getSnapshot(in context: Context, completion: @escaping (Entry) -> Void) {
+        completion(Entry(date: .now))
+    }
+
+    func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> Void) {
+        let timeline = Timeline(entries: [Entry(date: .now)], policy: .never)
+        completion(timeline)
+    }
+}
+
 // MARK: - 아이콘 위젯
 struct IconWidget: Widget {
     let kind: String = "IconWidget"
 
     var body: some WidgetConfiguration {
-        StaticConfiguration(kind: kind, provider: BibleVerseProvider()) { entry in
+        StaticConfiguration(kind: kind, provider: IconWidgetProvider()) { _ in
             if #available(iOS 17.0, *) {
                 IconWidgetView()
                     .containerBackground(for: .widget) {
