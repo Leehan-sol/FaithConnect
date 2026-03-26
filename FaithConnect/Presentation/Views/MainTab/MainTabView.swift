@@ -14,6 +14,7 @@ struct MainTabView: View {
     @ObservedObject var deepLinkManager: DeepLinkManager
 
     @State private var selectedTab: Int = 0
+    @State private var homeScrollToTop: Bool = false
     @State private var showDeepLinkPrayerDetail: Bool = false
     @State private var deepLinkPrayerRequestId: Int? = nil
 
@@ -28,9 +29,9 @@ struct MainTabView: View {
     }
 
     var body: some View {
-        TabView(selection: $selectedTab) {
+        TabView(selection: tabSelection) {
             NavigationStack {
-                HomeView(viewModel: homeViewModel)
+                HomeView(viewModel: homeViewModel, scrollToTop: $homeScrollToTop)
                     .navigationDestination(isPresented: $showDeepLinkPrayerDetail) {
                         if let id = deepLinkPrayerRequestId {
                             PrayerDetailView(viewModel: {
@@ -78,6 +79,19 @@ struct MainTabView: View {
         }
     }
 
+    // MARK: - 탭 선택 (같은 탭 재탭 시 상단 이동)
+    private var tabSelection: Binding<Int> {
+        Binding(
+            get: { selectedTab },
+            set: { newTab in
+                if newTab == selectedTab && newTab == 0 {
+                    homeScrollToTop = true
+                }
+                selectedTab = newTab
+            }
+        )
+    }
+
     // MARK: - 딥링크 처리
     private func handleDeepLink(_ destination: DeepLinkDestination) {
         switch destination {
@@ -98,7 +112,7 @@ struct MainTabView: View {
     let mockAPIClient = APIClient(tokenStorage: TokenStorage())
     let mockRepo = PrayerRepository(apiClient: mockAPIClient)
     let mockUseCase = PrayerUseCase(repository: mockRepo)
-    
+
     return MainTabView(
         homeViewModel: HomeViewModel(prayerUseCase: mockUseCase),
         myPrayerViewModel: MyPrayerViewModel(prayerUseCase: mockUseCase),
