@@ -26,8 +26,8 @@ struct BibleVerseEntry: TimelineEntry {
         date: .now,
         bookName: "잠언",
         chapter: 3,
-        verse: 5,
-        text: "너는 마음을 다하여 여호와를 신뢰하고 네 명철을 의지하지 말라",
+        verse: 15,
+        text: "지혜는 진주보다 귀하니 네가 사모하는 모든 것으로도 이에 비교할 수 없도다",
         isPlaceholder: false
     )
 }

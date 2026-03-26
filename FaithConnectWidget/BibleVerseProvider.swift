@@ -8,7 +8,7 @@ struct BibleVerseProvider: TimelineProvider {
 
     func getSnapshot(in context: Context, completion: @escaping (BibleVerseEntry) -> Void) {
         if context.isPreview {
-            completion(.placeholder)
+            completion(.fallback)
             return
         }
 
