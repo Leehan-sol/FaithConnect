@@ -34,6 +34,7 @@
 		CC1DC8EF2F66D55E00BDDE0A /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = CC1DC8EE2F66D55E00BDDE0A /* FirebaseAnalytics */; };
 		CC1DC8FB2F66D55E00BDDE0A /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = CC1DC8FA2F66D55E00BDDE0A /* FirebaseAuth */; };
 		CC1DC9192F66D55E00BDDE0A /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = CC1DC9182F66D55E00BDDE0A /* FirebaseMessaging */; };
+		CC3CD1C92F7ABBB000C301C0 /* ReportDTOs.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3CD1C82F7ABBB000C301C0 /* ReportDTOs.swift */; };
 		CC4EA43E2EC9AC3E0097D09C /* PrayerDetailBottomSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4EA43D2EC9AC3D0097D09C /* PrayerDetailBottomSheetView.swift */; };
 		CC4EA4402EC9B7370097D09C /* FindIDResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4EA43F2EC9B7370097D09C /* FindIDResultView.swift */; };
 		CC4EA4422EC9F64A0097D09C /* CustomBackButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4EA4412EC9F64A0097D09C /* CustomBackButtonStyle.swift */; };
@@ -116,6 +117,7 @@
 		18C747A62F56D784006BF9DF /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		BFC8B9D7289E0D82CDD4DE82 /* InquiryDTOs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InquiryDTOs.swift; sourceTree = "<group>"; };
 		CC1A00002F5B00000028D451 /* PasswordResetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordResetViewModel.swift; sourceTree = "<group>"; };
+		CC3CD1C82F7ABBB000C301C0 /* ReportDTOs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportDTOs.swift; sourceTree = "<group>"; };
 		CC4EA43D2EC9AC3D0097D09C /* PrayerDetailBottomSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerDetailBottomSheetView.swift; sourceTree = "<group>"; };
 		CC4EA43F2EC9B7370097D09C /* FindIDResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindIDResultView.swift; sourceTree = "<group>"; };
 		CC4EA4412EC9F64A0097D09C /* CustomBackButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomBackButtonStyle.swift; sourceTree = "<group>"; };
@@ -199,6 +201,7 @@
 				1862C5422EFBA77D00B0DD70 /* PrayerDTOs.swift */,
 				CC51C39E2F51B10000C94EDC /* PushTokenDTOs.swift */,
 				BFC8B9D7289E0D82CDD4DE82 /* InquiryDTOs.swift */,
+				CC3CD1C82F7ABBB000C301C0 /* ReportDTOs.swift */,
 			);
 			path = DTOs;
 			sourceTree = "<group>";
@@ -631,6 +634,7 @@
 				CC6B2AE32F24CB72003BB246 /* PrayerRepository.swift in Sources */,
 				CCAD36892EB74F8F0028D451 /* SignUpView.swift in Sources */,
 				CCAD36872EB73F540028D451 /* LabeldTextField.swift in Sources */,
+				CC3CD1C92F7ABBB000C301C0 /* ReportDTOs.swift in Sources */,
 				CC6B2ADF2F24CB4B003BB246 /* PrayerRepositoryProtocol.swift in Sources */,
 				180228912EBA08C300ABA95C /* PrayerRowView.swift in Sources */,
 				CC6FFE172F1390B300EB10D3 /* SplashView.swift in Sources */,

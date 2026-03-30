@@ -47,6 +47,8 @@ protocol APIClientProtocol {
     func deletePrayerResponse(responseID: Int) async throws
     func loadWrittenPrayers(page: Int) async throws -> PrayerListResponse
     func loadParticipatedPrayers(page: Int) async throws -> MyResponseList
+    func reportPrayer(prayerRequestId: Int, reasonType: ReportReasonType, reasonDetail: String?) async throws
+    func reportPrayerResponse(prayerResponseId: Int, reasonType: ReportReasonType, reasonDetail: String?) async throws
 }
 
 // MARK: - APIClient
@@ -155,7 +157,7 @@ extension APIClient {
         
         var request = request
         
-        if auth == .required, let token = tokenStorage.accessToken {
+        if auth == .required, APIEnvironment.current != .mock, let token = tokenStorage.accessToken {
             request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         }
         
@@ -176,7 +178,7 @@ extension APIClient {
 
         // 토큰만료
         if httpResponse.statusCode == 401 {
-            if auth == .required, tokenStorage.accessToken != nil {
+            if auth == .required, APIEnvironment.current != .mock, tokenStorage.accessToken != nil {
                 if isRetry {
                     await handleSessionExpiration()
                     throw APIError.serverMessage(code: .expiredAccessToken)
@@ -542,11 +544,41 @@ extension APIClient {
     
     func loadParticipatedPrayers(page: Int) async throws -> MyResponseList {
         let urlString = APIEndpoint.myPrayers.urlString
-        
+
         let apiResponse: MyResponseList = try await get(path: urlString,
                                                         queryItems: [URLQueryItem(name: "page", value: "\(page)")])
-        
+
         return apiResponse
+    }
+
+    func reportPrayer(prayerRequestId: Int, reasonType: ReportReasonType, reasonDetail: String?) async throws {
+        let urlString = APIEndpoint.reportPrayer(id: prayerRequestId).urlString
+        
+        let requestBody = ReportPrayerRequest(reasonType: reasonType,
+                                              reasonDetail: reasonDetail ?? "")
+        
+        let apiResponse: ReportResponse = try await post(urlString: urlString,
+                                                         requestBody: requestBody)
+        
+        if apiResponse.success != true {
+            let code = apiResponse.errorCode ?? .unknown
+            throw APIError.serverMessage(code: code)
+        }
+    }
+
+    func reportPrayerResponse(prayerResponseId: Int, reasonType: ReportReasonType, reasonDetail: String?) async throws {
+        let urlString = APIEndpoint.reportPrayerResponse(id: prayerResponseId).urlString
+
+        let requestBody = ReportPrayerRequest(reasonType: reasonType,
+                                              reasonDetail: reasonDetail ?? "")
+
+        let apiResponse: ReportResponse = try await post(urlString: urlString,
+                                                         requestBody: requestBody)
+
+        if apiResponse.success != true {
+            let code = apiResponse.errorCode ?? .unknown
+            throw APIError.serverMessage(code: code)
+        }
     }
 }
 

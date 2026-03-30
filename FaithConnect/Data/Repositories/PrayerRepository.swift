@@ -63,5 +63,13 @@ class PrayerRepository: ObservableObject, PrayerRepositoryProtocol {
     func loadParticipatedPrayers(page: Int) async throws -> MyResponseList {
         return try await apiClient.loadParticipatedPrayers(page: page)
     }
-    
+
+    func reportPrayer(prayerRequestId: Int, reasonType: ReportReasonType, reasonDetail: String?) async throws {
+        try await apiClient.reportPrayer(prayerRequestId: prayerRequestId, reasonType: reasonType, reasonDetail: reasonDetail)
+    }
+
+    func reportPrayerResponse(prayerResponseId: Int, reasonType: ReportReasonType, reasonDetail: String?) async throws {
+        try await apiClient.reportPrayerResponse(prayerResponseId: prayerResponseId, reasonType: reasonType, reasonDetail: reasonDetail)
+    }
+
 }

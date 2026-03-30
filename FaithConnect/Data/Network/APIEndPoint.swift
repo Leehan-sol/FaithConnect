@@ -36,6 +36,8 @@ enum APIEndpoint {
     case responseDetail(id: Int)
     case myRequests
     case myPrayers
+    case reportPrayer(id: Int)
+    case reportPrayerResponse(id: Int)
     // MARK: - Push
     case pushToken
     case pushTest
@@ -50,6 +52,7 @@ enum APIEndpoint {
         case .mock:
             return "http://localhost:8080"
         case .production:
+//            return "http://localhost:8080"
             return "https://faith-connect.net"
         }
     }
@@ -105,6 +108,10 @@ enum APIEndpoint {
             return "\(basePath)/push/test/mock"
         case .inquiry:
             return "\(basePath)/inquiry"
+        case .reportPrayer(let id):
+            return "\(basePath)/requests/\(id)/report"
+        case .reportPrayerResponse(let id):
+            return "\(basePath)/responses/\(id)/report"
         case .refreshToken:
             return "\(basePath)/refresh-token"
         }
