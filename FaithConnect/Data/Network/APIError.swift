@@ -12,6 +12,7 @@ enum APIError: LocalizedError {
     case decodingError
     case httpError(statusCode: Int)
     case emptyResponse
+    case noNetwork
     case serverMessage(code: APIErrorCode)
 }
 
@@ -26,6 +27,8 @@ extension APIError {
             return "네트워크 오류 발생 (Status: \(code))"
         case .emptyResponse:
             return "네트워크 응답이 없습니다."
+        case .noNetwork:
+            return "인터넷 연결을 확인해주세요"
         case .serverMessage(let code):
             switch code {
             case .expiredAccessToken:
