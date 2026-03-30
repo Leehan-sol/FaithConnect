@@ -22,6 +22,8 @@ protocol PrayerUseCaseProtocol {
     func deletePrayerResponse(responseID: Int, prayerRequestId: Int) async throws
     func loadWrittenPrayers(page: Int) async throws -> PrayerPage
     func loadParticipatedPrayers(page: Int) async throws -> MyResponsePage
+    func reportPrayer(prayerRequestId: Int, reasonType: ReportReasonType, reasonDetail: String?) async throws
+    func reportPrayerResponse(prayerResponseId: Int, reasonType: ReportReasonType, reasonDetail: String?) async throws
 }
 
 class PrayerUseCase: PrayerUseCaseProtocol {
@@ -165,5 +167,13 @@ class PrayerUseCase: PrayerUseCaseProtocol {
                               currentPage: result.currentPage,
                               hasNext: result.hasNext)
     }
-    
+
+    func reportPrayer(prayerRequestId: Int, reasonType: ReportReasonType, reasonDetail: String?) async throws {
+        try await repository.reportPrayer(prayerRequestId: prayerRequestId, reasonType: reasonType, reasonDetail: reasonDetail)
+    }
+
+    func reportPrayerResponse(prayerResponseId: Int, reasonType: ReportReasonType, reasonDetail: String?) async throws {
+        try await repository.reportPrayerResponse(prayerResponseId: prayerResponseId, reasonType: reasonType, reasonDetail: reasonDetail)
+    }
+
 }
