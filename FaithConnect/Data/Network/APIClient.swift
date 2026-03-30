@@ -47,6 +47,8 @@ protocol APIClientProtocol {
     func deletePrayerResponse(responseID: Int) async throws
     func loadWrittenPrayers(page: Int) async throws -> PrayerListResponse
     func loadParticipatedPrayers(page: Int) async throws -> MyResponseList
+    func reportPrayer(prayerRequestId: Int, reasonType: ReportReasonType, reasonDetail: String?) async throws
+    func reportPrayerResponse(prayerResponseId: Int, reasonType: ReportReasonType, reasonDetail: String?) async throws
 }
 
 // MARK: - APIClient
@@ -544,11 +546,41 @@ extension APIClient {
     
     func loadParticipatedPrayers(page: Int) async throws -> MyResponseList {
         let urlString = APIEndpoint.myPrayers.urlString
-        
+
         let apiResponse: MyResponseList = try await get(path: urlString,
                                                         queryItems: [URLQueryItem(name: "page", value: "\(page)")])
-        
+
         return apiResponse
+    }
+
+    func reportPrayer(prayerRequestId: Int, reasonType: ReportReasonType, reasonDetail: String?) async throws {
+        let urlString = APIEndpoint.reportPrayer(id: prayerRequestId).urlString
+
+        let requestBody = ReportPrayerRequest(reasonType: reasonType,
+                                              reasonDetail: reasonDetail ?? "")
+
+        let apiResponse: ReportResponse = try await post(urlString: urlString,
+                                                         requestBody: requestBody)
+
+        if apiResponse.success != true {
+            let code = apiResponse.errorCode ?? .unknown
+            throw APIError.serverMessage(code: code)
+        }
+    }
+
+    func reportPrayerResponse(prayerResponseId: Int, reasonType: ReportReasonType, reasonDetail: String?) async throws {
+        let urlString = APIEndpoint.reportPrayerResponse(id: prayerResponseId).urlString
+
+        let requestBody = ReportPrayerRequest(reasonType: reasonType,
+                                              reasonDetail: reasonDetail ?? "")
+
+        let apiResponse: ReportResponse = try await post(urlString: urlString,
+                                                         requestBody: requestBody)
+
+        if apiResponse.success != true {
+            let code = apiResponse.errorCode ?? .unknown
+            throw APIError.serverMessage(code: code)
+        }
     }
 }
 

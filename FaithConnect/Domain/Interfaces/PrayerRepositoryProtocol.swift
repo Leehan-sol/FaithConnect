@@ -19,4 +19,6 @@ protocol PrayerRepositoryProtocol {
     func deletePrayerResponse(responseID: Int) async throws
     func loadWrittenPrayers(page: Int) async throws -> PrayerListResponse
     func loadParticipatedPrayers(page: Int) async throws -> MyResponseList
+    func reportPrayer(prayerRequestId: Int, reasonType: ReportReasonType, reasonDetail: String?) async throws
+    func reportPrayerResponse(prayerResponseId: Int, reasonType: ReportReasonType, reasonDetail: String?) async throws
 }

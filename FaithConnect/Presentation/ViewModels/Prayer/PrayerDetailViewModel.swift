@@ -136,9 +136,27 @@ class PrayerDetailViewModel: ObservableObject {
         }
     }
     
-    func reportWriter() {
-        // TODO: - UseCase 로직 구현
-        alertType = .success(title: "신고 완료", message: "신고가 접수되었습니다. \n검토 후 조치하겠습니다.")
+    func reportPrayer(reasonType: ReportReasonType, reasonDetail: String?) async -> Bool {
+        guard let id = prayer?.id else { return false }
+        do {
+            try await prayerUseCase.reportPrayer(prayerRequestId: id, reasonType: reasonType, reasonDetail: reasonDetail)
+            alertType = .success(title: "신고 완료", message: "신고가 접수되었습니다. \n검토 후 조치하겠습니다.")
+            return true
+        } catch {
+            alertType = .error(title: "신고 실패", message: error.localizedDescription)
+            return false
+        }
+    }
+
+    func reportPrayerResponse(prayerResponseId: Int, reasonType: ReportReasonType, reasonDetail: String?) async -> Bool {
+        do {
+            try await prayerUseCase.reportPrayerResponse(prayerResponseId: prayerResponseId, reasonType: reasonType, reasonDetail: reasonDetail)
+            alertType = .success(title: "신고 완료", message: "신고가 접수되었습니다. \n검토 후 조치하겠습니다.")
+            return true
+        } catch {
+            alertType = .error(title: "신고 실패", message: error.localizedDescription)
+            return false
+        }
     }
     
     func blockWriter() {

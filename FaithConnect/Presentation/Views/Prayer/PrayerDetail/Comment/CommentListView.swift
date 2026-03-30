@@ -26,9 +26,8 @@ struct CommentListView: View {
                             await viewModel.deletePrayerResponse(response: response)
                         }
                     },
-                                          onReport: { _ in
-                        // TODO: - 신고
-                        viewModel.reportWriter()
+                                          onReport: { response, reasonType, reasonDetail in
+                        await viewModel.reportPrayerResponse(prayerResponseId: response.id, reasonType: reasonType, reasonDetail: reasonDetail)
                     },
                                           onBlock: { _ in
                         // TODO: - 차단
@@ -74,8 +73,8 @@ struct CommentListView: View {
                                                  onDelete: { reply in
 
                                     },
-                                                 onReport: { _ in
-                                        viewModel.reportWriter()
+                                                 onReport: { reply, reasonType, reasonDetail in
+                                        await viewModel.reportPrayerResponse(prayerResponseId: reply.id, reasonType: reasonType, reasonDetail: reasonDetail)
                                     },
                                                  onBlock: { _ in
                                         viewModel.blockWriter()

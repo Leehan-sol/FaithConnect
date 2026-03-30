@@ -11,11 +11,14 @@ struct CommentRowView: View {
     @State private var showConfirmationDialog = false
     @State private var confirmAlert: ConfirmAlertType?
     @State private var resultAlert: AlertType?
-    
+    @State private var showReportActionSheet = false
+    @State private var showReportDetailAlert = false
+    @State private var reportReasonDetail = ""
+
     let response: PrayerResponse
     let onEdit: ((PrayerResponse) -> Void)?
     let onDelete: ((PrayerResponse) -> Void)?
-    let onReport: ((PrayerResponse) -> Void)?
+    var onReport: ((PrayerResponse, ReportReasonType, String?) async -> Bool)? = nil
     let onBlock: ((PrayerResponse) -> Void)?
     var onReply: ((PrayerResponse) -> Void)?
     
@@ -77,7 +80,7 @@ struct CommentRowView: View {
                 }
             } else {
                 Button("신고", role: .destructive) {
-                    confirmAlert = .report(target: "응답")
+                    showReportActionSheet = true
                 }
                 Button("차단", role: .destructive) {
                     confirmAlert = .block
@@ -92,13 +95,35 @@ struct CommentRowView: View {
             Button("확인", role: .destructive) {
                 switch type {
                 case .delete(_): onDelete?(response)
-                case .report(_): onReport?(response)
+                case .report(_): break
                 case .block: onBlock?(response)
                 }
             }
             Button("취소", role: .cancel) { }
         } message: { type in
             Text(type.message)
+        }
+        .confirmationDialog("신고 사유를 선택해주세요",
+                            isPresented: $showReportActionSheet,
+                            titleVisibility: .visible) {
+            Button("부적절한 내용") {
+                Task { await onReport?(response, .inappropriateContent, nil) }
+            }
+            Button("스팸/광고/중복게시") {
+                Task { await onReport?(response, .spam, nil) }
+            }
+            Button("기타") {
+                reportReasonDetail = ""
+                showReportDetailAlert = true
+            }
+            Button("취소", role: .cancel) { }
+        }
+        .alert("신고 사유 입력", isPresented: $showReportDetailAlert) {
+            TextField("신고 사유를 입력해주세요", text: $reportReasonDetail)
+            Button("신고", role: .destructive) {
+                Task { await onReport?(response, .other, reportReasonDetail) }
+            }
+            Button("취소", role: .cancel) { }
         }
         .alert(item: $resultAlert) { alert in
             Alert(title: Text(alert.title),

@@ -38,6 +38,7 @@
 		CC1DC8EF2F66D55E00BDDE0A /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = CC1DC8EE2F66D55E00BDDE0A /* FirebaseAnalytics */; };
 		CC1DC8FB2F66D55E00BDDE0A /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = CC1DC8FA2F66D55E00BDDE0A /* FirebaseAuth */; };
 		CC1DC9192F66D55E00BDDE0A /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = CC1DC9182F66D55E00BDDE0A /* FirebaseMessaging */; };
+		CC3CD1FE2F7AC64800C301C0 /* ReportDTOs.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3CD1FD2F7AC64800C301C0 /* ReportDTOs.swift */; };
 		CC4EA4402EC9B7370097D09C /* FindIDResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4EA43F2EC9B7370097D09C /* FindIDResultView.swift */; };
 		CC4EA4422EC9F64A0097D09C /* CustomBackButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4EA4412EC9F64A0097D09C /* CustomBackButtonStyle.swift */; };
 		CC4EA4442EC9F6C50097D09C /* View+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4EA4432EC9F6C50097D09C /* View+Extensions.swift */; };
@@ -144,6 +145,7 @@
 		18C747A62F56D784006BF9DF /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		BFC8B9D7289E0D82CDD4DE82 /* InquiryDTOs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InquiryDTOs.swift; sourceTree = "<group>"; };
 		CC1A00002F5B00000028D451 /* PasswordResetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordResetViewModel.swift; sourceTree = "<group>"; };
+		CC3CD1FD2F7AC64800C301C0 /* ReportDTOs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportDTOs.swift; sourceTree = "<group>"; };
 		CC4EA43F2EC9B7370097D09C /* FindIDResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindIDResultView.swift; sourceTree = "<group>"; };
 		CC4EA4412EC9F64A0097D09C /* CustomBackButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomBackButtonStyle.swift; sourceTree = "<group>"; };
 		CC4EA4432EC9F6C50097D09C /* View+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extensions.swift"; sourceTree = "<group>"; };
@@ -200,8 +202,6 @@
 		F6464E434A280823AC492405 /* InquiryBottomSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InquiryBottomSheetView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		1809B0A42F71214900BEAB89 /* PrayerDetail */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = PrayerDetail; sourceTree = "<group>"; };
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
 		1891C1E22F73DB8A00B1157C /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
@@ -213,6 +213,7 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		1809B0A42F71214900BEAB89 /* PrayerDetail */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = PrayerDetail; sourceTree = "<group>"; };
 		1891C1D02F73DB8900B1157C /* FaithConnectWidget */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (1891C1E22F73DB8A00B1157C /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = FaithConnectWidget; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
@@ -248,6 +249,7 @@
 				1862C5422EFBA77D00B0DD70 /* PrayerDTOs.swift */,
 				CC51C39E2F51B10000C94EDC /* PushTokenDTOs.swift */,
 				BFC8B9D7289E0D82CDD4DE82 /* InquiryDTOs.swift */,
+				CC3CD1FD2F7AC64800C301C0 /* ReportDTOs.swift */,
 			);
 			path = DTOs;
 			sourceTree = "<group>";
@@ -738,6 +740,7 @@
 				180228912EBA08C300ABA95C /* PrayerRowView.swift in Sources */,
 				CC6FFE172F1390B300EB10D3 /* SplashView.swift in Sources */,
 				1841FD0A2F67BD8A007EF11C /* DeepLinkManager.swift in Sources */,
+				CC3CD1FE2F7AC64800C301C0 /* ReportDTOs.swift in Sources */,
 				CC6C8F1B2E9B978300E43387 /* FaithConnectApp.swift in Sources */,
 				186D4F6F2F037523005520FD /* PrayerContextType.swift in Sources */,
 				CCFDC1302F2F2043008F9CB9 /* PrayerEventType.swift in Sources */,
