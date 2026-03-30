@@ -314,7 +314,7 @@ struct DetailView: View {
             
             Divider()
             
-            Text("\(prayer.participationCount)명이 기도했습니다.")
+            Text("\(prayer.participationCount)명이 기도했어요.")
                 .font(.headline)
                 .foregroundColor(Color(.darkGray))
         }

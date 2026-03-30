@@ -42,8 +42,8 @@ class PrayerRepository: ObservableObject, PrayerRepositoryProtocol {
         try await apiClient.deletePrayer(prayerRequestId: prayerRequestId)
     }
     
-    func writePrayerResponse(prayerRequsetID: Int, message: String) async throws -> DetailResponseItem {
-        return try await apiClient.writePrayerResponse(prayerRequsetID: prayerRequsetID, 
+    func writePrayerResponse(prayerRequestID: Int, message: String) async throws -> DetailResponseItem {
+        return try await apiClient.writePrayerResponse(prayerRequestID: prayerRequestID, 
                                                        message: message)
     }
     

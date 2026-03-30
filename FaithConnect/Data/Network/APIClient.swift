@@ -42,7 +42,7 @@ protocol APIClientProtocol {
     func writePrayer(categoryID: Int, title: String, content: String) async throws -> PrayerWriteResponse
     func updatePrayer(prayerRequestId: Int, categoryID: Int, title: String, content: String) async throws -> PrayerDetailResponse
     func deletePrayer(prayerRequestId: Int) async throws
-    func writePrayerResponse(prayerRequsetID: Int, message: String) async throws -> DetailResponseItem
+    func writePrayerResponse(prayerRequestID: Int, message: String) async throws -> DetailResponseItem
     func updatePrayerResponse(responseID: Int, message: String) async throws -> PrayerResponseUpdateResponse
     func deletePrayerResponse(responseID: Int) async throws
     func loadWrittenPrayers(page: Int) async throws -> PrayerListResponse
@@ -153,8 +153,10 @@ extension APIClient {
         isRetry: Bool = false,
         auth: AuthRequirement = .required
     ) async throws -> Response {
-//        print("URL: \(String(describing: request.url))")
-        
+        guard NetworkMonitor.shared.isConnected else {
+            throw APIError.noNetwork
+        }
+
         var request = request
         
         if auth == .required, APIEnvironment.current != .mock, let token = tokenStorage.accessToken {
@@ -500,10 +502,10 @@ extension APIClient {
         }
     }
 
-    func writePrayerResponse(prayerRequsetID: Int, message: String) async throws -> DetailResponseItem {
+    func writePrayerResponse(prayerRequestID: Int, message: String) async throws -> DetailResponseItem {
         let urlString = APIEndpoint.responses.urlString
         
-        let requestBody = PrayerResponseWriteRequest(prayerRequestId: prayerRequsetID,
+        let requestBody = PrayerResponseWriteRequest(prayerRequestId: prayerRequestID,
                                                      message: message)
         
         let apiResponse: DetailResponseItem = try await post(urlString: urlString,
