@@ -72,4 +72,8 @@ class PrayerRepository: ObservableObject, PrayerRepositoryProtocol {
         try await apiClient.reportPrayerResponse(prayerResponseId: prayerResponseId, reasonType: reasonType, reasonDetail: reasonDetail)
     }
 
+    func blockUser(userId: Int) async throws {
+        try await apiClient.blockUser(userId: userId)
+    }
+
 }

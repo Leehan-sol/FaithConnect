@@ -163,8 +163,11 @@ struct PrayerDetailView: View {
                 case .report(_):
                     break
                 case .block:
-                    // TODO: - 차단
-                    viewModel.blockWriter()
+                    Task {
+                        if let userId = viewModel.prayer?.userId {
+                            await viewModel.blockUser(userId: userId)
+                        }
+                    }
                 }
             }
             Button("취소", role: .cancel) { }

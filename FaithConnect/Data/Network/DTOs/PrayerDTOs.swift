@@ -32,6 +32,7 @@ struct PrayerDetailResponse: Decodable {
     let createdAt: String?
     let participationCount: Int
     let responses: [DetailResponseItem]?
+    let hasParticipated: Bool?
     let isMine: Bool
     let errorCode: APIErrorCode?
     let status: Int?
@@ -40,10 +41,14 @@ struct PrayerDetailResponse: Decodable {
 struct DetailResponseItem: Decodable {
     let prayerResponseId: Int
     let prayerRequestId: Int
+    let prayerUserId: Int?
+    let prayerUserName: String?
     let prayerRequestTitle: String?
     let message: String
     let createdAt: String
     let isMine: Bool
+    let parentResponseId: Int?
+    let replyCount: Int?
     let errorCode: APIErrorCode?
     let status: Int?
 }

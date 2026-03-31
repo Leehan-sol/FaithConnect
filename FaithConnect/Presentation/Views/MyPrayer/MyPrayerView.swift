@@ -42,7 +42,8 @@ struct MyPrayerView: View {
                 },
                 onDelete: { responseID, prayerRequestId in
                     Task {
-                        await viewModel.deletePrayerResponse(responseID: responseID, prayerRequestId: prayerRequestId)
+                        await viewModel.deletePrayerResponse(responseID: responseID,
+                                                             prayerRequestId: prayerRequestId)
                     }
                 },
                 onMoreTap: {

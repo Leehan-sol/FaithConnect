@@ -49,6 +49,7 @@ protocol APIClientProtocol {
     func loadParticipatedPrayers(page: Int) async throws -> MyResponseList
     func reportPrayer(prayerRequestId: Int, reasonType: ReportReasonType, reasonDetail: String?) async throws
     func reportPrayerResponse(prayerResponseId: Int, reasonType: ReportReasonType, reasonDetail: String?) async throws
+    func blockUser(userId: Int) async throws
 }
 
 // MARK: - APIClient
@@ -166,8 +167,9 @@ extension APIClient {
         let (data, response) = try await URLSession.shared.data(for: request)
 
         #if DEBUG
+        print("[\(request.httpMethod ?? "")] \(request.url?.absoluteString ?? "") 요청")
         if let requestBody = request.httpBody, let reqString = String(data: requestBody, encoding: .utf8) {
-            print("[\(request.httpMethod ?? "")] \(request.url?.path ?? "") 요청: \(reqString)")
+            print("  Body: \(reqString)")
         }
         if let jsonString = String(data: data, encoding: .utf8) {
             print("[\(request.httpMethod ?? "")] \(request.url?.path ?? "") 응답: \(jsonString)")
@@ -576,6 +578,18 @@ extension APIClient {
 
         let apiResponse: ReportResponse = try await post(urlString: urlString,
                                                          requestBody: requestBody)
+
+        if apiResponse.success != true {
+            let code = apiResponse.errorCode ?? .unknown
+            throw APIError.serverMessage(code: code)
+        }
+    }
+
+    func blockUser(userId: Int) async throws {
+        let urlString = APIEndpoint.blockUser(userId: userId).urlString
+
+        let apiResponse: BlockResponse = try await post(urlString: urlString,
+                                                        requestBody: EmptyRequest())
 
         if apiResponse.success != true {
             let code = apiResponse.errorCode ?? .unknown

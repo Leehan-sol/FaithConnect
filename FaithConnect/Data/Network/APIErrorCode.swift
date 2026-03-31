@@ -26,7 +26,7 @@ enum APIErrorCode: Int, Decodable {
     case onlyAuthorCanDeletePrayer = 52003 // 본인이 작성한 기도제목만 삭제할 수 있습니다.
     
     // MARK: - Validation
-    case invalidRequestParameter = 54001 // 입력값이 올바르지 않습니다.
+    case invalidRequestParameter = 54001 // 입력값이 올바르지 않습니다. or 이미 신고한 응답입니다. or 이미 차단한 응답입니다.
     case dataIntegrityViolation = 54002 // 데이터 무결성 오류가 발생했습니다.
     
     // MARK: - Common

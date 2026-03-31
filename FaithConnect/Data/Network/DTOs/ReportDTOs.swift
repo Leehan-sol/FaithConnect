@@ -32,3 +32,10 @@ struct ReportResponse: Decodable {
     let errorCode: APIErrorCode?
     let status: Int?
 }
+
+struct BlockResponse: Decodable {
+    let message: String
+    let success: Bool?
+    let errorCode: APIErrorCode?
+    let status: Int?
+}

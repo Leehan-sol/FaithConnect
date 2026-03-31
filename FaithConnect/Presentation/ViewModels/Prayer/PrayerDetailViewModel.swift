@@ -140,28 +140,40 @@ class PrayerDetailViewModel: ObservableObject {
         guard let id = prayer?.id else { return false }
         do {
             try await prayerUseCase.reportPrayer(prayerRequestId: id, reasonType: reasonType, reasonDetail: reasonDetail)
-            alertType = .success(title: "신고 완료", message: "신고가 접수되었습니다. \n검토 후 조치하겠습니다.")
+            alertType = .success(title: "신고 완료",
+                                 message: "신고가 접수되었습니다. \n검토 후 조치하겠습니다.")
             return true
         } catch {
-            alertType = .error(title: "신고 실패", message: error.localizedDescription)
+            alertType = .error(title: "신고 실패",
+                               message: ErrorContext.report.message(for: error))
             return false
         }
     }
 
     func reportPrayerResponse(prayerResponseId: Int, reasonType: ReportReasonType, reasonDetail: String?) async -> Bool {
         do {
-            try await prayerUseCase.reportPrayerResponse(prayerResponseId: prayerResponseId, reasonType: reasonType, reasonDetail: reasonDetail)
-            alertType = .success(title: "신고 완료", message: "신고가 접수되었습니다. \n검토 후 조치하겠습니다.")
+            try await prayerUseCase.reportPrayerResponse(prayerResponseId: prayerResponseId,
+                                                         reasonType: reasonType,
+                                                         reasonDetail: reasonDetail)
+            alertType = .success(title: "신고 완료",
+                                 message: "신고가 접수되었습니다. \n검토 후 조치하겠습니다.")
             return true
         } catch {
-            alertType = .error(title: "신고 실패", message: error.localizedDescription)
+            alertType = .error(title: "신고 실패",
+                               message: ErrorContext.report.message(for: error))
             return false
         }
     }
-    
-    func blockWriter() {
-        // TODO: - UseCase 로직 구현
-        alertType = .success(title: "차단 완료", message: "해당 사용자가 차단되었습니다.")
+
+    func blockUser(userId: Int) async {
+        do {
+            try await prayerUseCase.blockUser(userId: userId)
+            alertType = .success(title: "차단 완료",
+                                 message: "해당 사용자가 차단되었습니다.")
+        } catch {
+            alertType = .error(title: "차단 실패",
+                               message: ErrorContext.block.message(for: error))
+        }
     }
 
     // MARK: - 대댓글
@@ -212,13 +224,17 @@ class PrayerDetailViewModel: ObservableObject {
         let mockReply = PrayerResponse(
             id: Int.random(in: 10000...99999),
             prayerRequestId: parentResponse.prayerRequestId,
+            userId: 0,
+            userName: "",
             message: message,
             createdAt: {
                 let formatter = DateFormatter()
                 formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS"
                 return formatter.string(from: Date())
             }(),
-            isMine: true
+            isMine: true,
+            parentResponseId: parentResponse.id,
+            replyCount: 0
         )
         prayer.responses?[index].replies.append(mockReply)
         self.prayer = prayer
@@ -234,9 +250,13 @@ class PrayerDetailViewModel: ObservableObject {
         let updated = PrayerResponse(
             id: reply.id,
             prayerRequestId: reply.prayerRequestId,
+            userId: reply.userId,
+            userName: reply.userName,
             message: message,
             createdAt: reply.createdAt,
-            isMine: reply.isMine
+            isMine: reply.isMine,
+            parentResponseId: reply.parentResponseId,
+            replyCount: reply.replyCount
         )
         prayer.responses?[parentIndex].replies[replyIndex] = updated
         self.prayer = prayer

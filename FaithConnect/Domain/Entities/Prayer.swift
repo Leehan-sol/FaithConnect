@@ -24,6 +24,7 @@ struct Prayer: Identifiable {
     let createdAt: String
     var participationCount: Int
     var responses: [PrayerResponse]?
+    let hasParticipated: Bool
     let isMine: Bool
 }
 
@@ -41,6 +42,7 @@ extension Prayer {
         self.createdAt = dto.createdAt ?? ""
         self.participationCount = dto.participationCount
         self.responses = dto.responses?.map { PrayerResponse(from: $0) }
+        self.hasParticipated = dto.hasParticipated ?? false
         self.isMine = dto.isMine
     }
 
@@ -56,6 +58,7 @@ extension Prayer {
         self.createdAt = dto.createdAt
         self.participationCount = dto.participationCount
         self.responses = []
+        self.hasParticipated = false
         self.isMine = dto.isMine
     }
 }

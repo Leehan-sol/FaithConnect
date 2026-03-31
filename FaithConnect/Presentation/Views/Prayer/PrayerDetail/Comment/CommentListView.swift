@@ -27,11 +27,12 @@ struct CommentListView: View {
                         }
                     },
                                           onReport: { response, reasonType, reasonDetail in
-                        await viewModel.reportPrayerResponse(prayerResponseId: response.id, reasonType: reasonType, reasonDetail: reasonDetail)
+                        await viewModel.reportPrayerResponse(prayerResponseId: response.id,
+                                                             reasonType: reasonType,
+                                                             reasonDetail: reasonDetail)
                     },
-                                          onBlock: { _ in
-                        // TODO: - 차단
-                        viewModel.blockWriter()
+                                          onBlock: { response in
+                        Task { await viewModel.blockUser(userId: response.userId) }
                     },
                                           onReply: { response in
                         viewModel.startReply(to: response)
@@ -74,10 +75,12 @@ struct CommentListView: View {
 
                                     },
                                                  onReport: { reply, reasonType, reasonDetail in
-                                        await viewModel.reportPrayerResponse(prayerResponseId: reply.id, reasonType: reasonType, reasonDetail: reasonDetail)
+                                        await viewModel.reportPrayerResponse(prayerResponseId: reply.id,
+                                                                             reasonType: reasonType,
+                                                                             reasonDetail: reasonDetail)
                                     },
-                                                 onBlock: { _ in
-                                        viewModel.blockWriter()
+                                                 onBlock: { reply in
+                                        Task { await viewModel.blockUser(userId: reply.userId) }
                                     })
                                     .id(reply.id)
                                 }

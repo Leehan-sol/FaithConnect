@@ -5,6 +5,7 @@
 //  Created by Apple on 3/23/26.
 //
 
+
 // MARK: - PrayerBottomSheetType
 // 응답 작성/수정
 enum PrayerBottomSheetType: Identifiable {
@@ -25,7 +26,6 @@ enum PrayerBottomSheetType: Identifiable {
         }
     }
 }
-
 
 // MARK: - ConfirmAlertType
 // 삭제/신고/차단 확인 알림 타입 (target: 기도, 응답, 답글)
@@ -59,5 +59,24 @@ enum ConfirmAlertType: Identifiable {
         case .block:
             return "이 사용자를 차단하시겠습니까?\n차단된 사용자의 글은 더 이상 표시되지 않습니다."
         }
+    }
+}
+
+
+
+// MARK: - ErrorContext
+// 54001 에러 신고/차단 분기용
+enum ErrorContext {
+    case report, block
+
+    func message(for error: Error) -> String {
+        if case APIError.serverMessage(let code) = error,
+           code == .invalidRequestParameter {
+            switch self {
+            case .report: return "이미 신고한 게시물입니다."
+            case .block: return "이미 차단한 사용자입니다."
+            }
+        }
+        return error.localizedDescription
     }
 }

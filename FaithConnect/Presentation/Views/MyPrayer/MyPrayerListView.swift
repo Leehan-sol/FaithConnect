@@ -70,7 +70,8 @@ struct MyPrayerListView: View {
                             .swipeActions(edge: .trailing) {
                                 Button(role: .destructive) {
                                     Task {
-                                        await viewModel.deletePrayerResponse(responseID: response.id, prayerRequestId: response.prayerRequestId)
+                                        await viewModel.deletePrayerResponse(responseID: response.id,
+                                                                             prayerRequestId: response.prayerRequestId)
                                     }
                                 } label: {
                                     Label("삭제", systemImage: "trash")

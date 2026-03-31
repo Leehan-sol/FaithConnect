@@ -24,6 +24,7 @@ protocol PrayerUseCaseProtocol {
     func loadParticipatedPrayers(page: Int) async throws -> MyResponsePage
     func reportPrayer(prayerRequestId: Int, reasonType: ReportReasonType, reasonDetail: String?) async throws
     func reportPrayerResponse(prayerResponseId: Int, reasonType: ReportReasonType, reasonDetail: String?) async throws
+    func blockUser(userId: Int) async throws
 }
 
 class PrayerUseCase: PrayerUseCaseProtocol {
@@ -174,6 +175,10 @@ class PrayerUseCase: PrayerUseCaseProtocol {
 
     func reportPrayerResponse(prayerResponseId: Int, reasonType: ReportReasonType, reasonDetail: String?) async throws {
         try await repository.reportPrayerResponse(prayerResponseId: prayerResponseId, reasonType: reasonType, reasonDetail: reasonDetail)
+    }
+
+    func blockUser(userId: Int) async throws {
+        try await repository.blockUser(userId: userId)
     }
 
 }
