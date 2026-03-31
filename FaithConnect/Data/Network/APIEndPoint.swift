@@ -39,6 +39,7 @@ enum APIEndpoint {
     case reportPrayer(id: Int)
     case reportPrayerResponse(id: Int)
     case blockUser(userId: Int)
+    case replies(responseId: Int)
     // MARK: - Push
     case pushToken
     case pushTest
@@ -115,6 +116,8 @@ enum APIEndpoint {
             return "\(basePath)/responses/\(id)/report"
         case .blockUser(let userId):
             return "\(basePath)/users/\(userId)/block"
+        case .replies(let responseId):
+            return "\(basePath)/responses/\(responseId)/replies"
         case .refreshToken:
             return "\(basePath)/refresh-token"
         }

@@ -42,9 +42,9 @@ struct CommentRowView: View {
                     Button {
                         onReply?(response)
                     } label: {
-                        Text(response.replies.isEmpty
-                             ? "답글"
-                             : "답글 (\(response.replies.count))")
+                        Text(response.replyCount > 0
+                             ? "답글 (\(response.replyCount))"
+                             : "답글")
                             .font(.caption2)
                             .fontWeight(.semibold)
                             .foregroundColor(.customBlue1)

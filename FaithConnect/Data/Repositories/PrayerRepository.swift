@@ -47,7 +47,7 @@ class PrayerRepository: ObservableObject, PrayerRepositoryProtocol {
                                                        message: message)
     }
     
-    func updatePrayerResponse(responseID: Int, message: String) async throws -> PrayerResponseUpdateResponse {
+    func updatePrayerResponse(responseID: Int, message: String) async throws -> DetailResponseItem {
         return try await apiClient.updatePrayerResponse(responseID: responseID, 
                                                         message: message)
     }
@@ -74,6 +74,14 @@ class PrayerRepository: ObservableObject, PrayerRepositoryProtocol {
 
     func blockUser(userId: Int) async throws {
         try await apiClient.blockUser(userId: userId)
+    }
+
+    func writeReply(responseId: Int, message: String) async throws -> DetailResponseItem {
+        return try await apiClient.writeReply(responseId: responseId, message: message)
+    }
+
+    func loadReplies(responseId: Int, page: Int) async throws -> ReplyListResponse {
+        return try await apiClient.loadReplies(responseId: responseId, page: page)
     }
 
 }

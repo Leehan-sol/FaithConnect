@@ -53,6 +53,8 @@ extension APIError {
                 return "해당 기도를 찾을 수 없습니다."
             case .onlyAuthorCanDeletePrayer:
                 return "본인이 작성한 기도제목만 삭제할 수 있습니다."
+            case .prayerResponseNotFound:
+                return "기도응답을 찾을 수 없습니다."
             case .invalidRequestParameter:
                 return "입력값이 올바르지 않습니다."
             case .dataIntegrityViolation:

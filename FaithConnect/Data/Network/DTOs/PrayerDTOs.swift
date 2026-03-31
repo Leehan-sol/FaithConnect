@@ -53,6 +53,14 @@ struct DetailResponseItem: Decodable {
     let status: Int?
 }
 
+// MARK: - 대댓글 목록
+struct ReplyListResponse: Decodable {
+    let replies: [DetailResponseItem]
+    let currentPage: Int
+    let totalPages: Int
+    let totalElements: Int
+}
+
 // MARK: - 기도 삭제
 struct PrayerDeleteResponse: Decodable {
     let message: String
@@ -109,15 +117,13 @@ struct PrayerResponseWriteRequest: Codable {
     let message: String
 }
 
+// MARK: - 대댓글 작성
+struct ReplyWriteRequest: Codable {
+    let message: String
+}
+
 // MARK: - 기도 응답 수정
 struct PrayerResponseUpdateRequest: Codable {
     let message: String
 }
 
-struct PrayerResponseUpdateResponse: Decodable {
-    let prayerResponseId: Int
-    let prayerRequestId: Int
-    let message: String
-    let createdAt: String
-    let isMine: Bool
-}

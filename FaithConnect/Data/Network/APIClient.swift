@@ -43,13 +43,15 @@ protocol APIClientProtocol {
     func updatePrayer(prayerRequestId: Int, categoryID: Int, title: String, content: String) async throws -> PrayerDetailResponse
     func deletePrayer(prayerRequestId: Int) async throws
     func writePrayerResponse(prayerRequestID: Int, message: String) async throws -> DetailResponseItem
-    func updatePrayerResponse(responseID: Int, message: String) async throws -> PrayerResponseUpdateResponse
+    func updatePrayerResponse(responseID: Int, message: String) async throws -> DetailResponseItem
     func deletePrayerResponse(responseID: Int) async throws
     func loadWrittenPrayers(page: Int) async throws -> PrayerListResponse
     func loadParticipatedPrayers(page: Int) async throws -> MyResponseList
     func reportPrayer(prayerRequestId: Int, reasonType: ReportReasonType, reasonDetail: String?) async throws
     func reportPrayerResponse(prayerResponseId: Int, reasonType: ReportReasonType, reasonDetail: String?) async throws
     func blockUser(userId: Int) async throws
+    func writeReply(responseId: Int, message: String) async throws -> DetailResponseItem
+    func loadReplies(responseId: Int, page: Int) async throws -> ReplyListResponse
 }
 
 // MARK: - APIClient
@@ -515,14 +517,14 @@ extension APIClient {
         return apiResponse
     }
     
-    func updatePrayerResponse(responseID: Int, message: String) async throws -> PrayerResponseUpdateResponse {
+    func updatePrayerResponse(responseID: Int, message: String) async throws -> DetailResponseItem {
         let urlString = APIEndpoint.responseDetail(id: responseID).urlString
 
         let requestBody = PrayerResponseUpdateRequest(message: message)
 
-        let apiResponse: PrayerResponseUpdateResponse = try await put(urlString: urlString,
-                                                               requestBody: requestBody)
-        
+        let apiResponse: DetailResponseItem = try await put(urlString: urlString,
+                                                             requestBody: requestBody)
+
         return apiResponse
     }
     
@@ -595,6 +597,28 @@ extension APIClient {
             let code = apiResponse.errorCode ?? .unknown
             throw APIError.serverMessage(code: code)
         }
+    }
+
+    func writeReply(responseId: Int, message: String) async throws -> DetailResponseItem {
+        let urlString = APIEndpoint.replies(responseId: responseId).urlString
+
+        let requestBody = ReplyWriteRequest(message: message)
+
+        let apiResponse: DetailResponseItem = try await post(urlString: urlString,
+                                                              requestBody: requestBody)
+
+        return apiResponse
+    }
+
+    func loadReplies(responseId: Int, page: Int) async throws -> ReplyListResponse {
+        let urlString = APIEndpoint.replies(responseId: responseId).urlString
+
+        let apiResponse: ReplyListResponse = try await get(path: urlString,
+                                                            queryItems: [
+                                                                URLQueryItem(name: "page", value: "\(page)")
+                                                            ])
+
+        return apiResponse
     }
 }
 

@@ -24,7 +24,8 @@ enum APIErrorCode: Int, Decodable {
     case categoryNotFound = 52001 // 기도 카테고리를 찾을 수 없습니다.
     case prayerNotFound = 52002 // 기도 제목을 찾을 수 없습니다.
     case onlyAuthorCanDeletePrayer = 52003 // 본인이 작성한 기도제목만 삭제할 수 있습니다.
-    
+    case prayerResponseNotFound = 53001 // 기도응답을 찾을 수 없습니다.
+
     // MARK: - Validation
     case invalidRequestParameter = 54001 // 입력값이 올바르지 않습니다. or 이미 신고한 응답입니다. or 이미 차단한 응답입니다.
     case dataIntegrityViolation = 54002 // 데이터 무결성 오류가 발생했습니다.

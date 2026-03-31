@@ -23,6 +23,10 @@ class PrayerDetailViewModel: ObservableObject {
     private let prayerUseCase: PrayerUseCaseProtocol
     private let prayerRequestId: Int
     private var hasInitialized = false
+    private var replyPages: [Int: Int] = [:]       // [responseId: currentPage]
+    private var replyHasNext: [Int: Bool] = [:]    // [responseId: hasNext]
+    private var replyLoading: Set<Int> = []        // 로딩 중인 responseId
+    private var replyExpanded: Set<Int> = []       // 더보기 누른 responseId
 
     init(prayerUseCase: PrayerUseCaseProtocol, prayerRequestId: Int) {
         self.prayerUseCase = prayerUseCase
@@ -36,6 +40,10 @@ class PrayerDetailViewModel: ObservableObject {
     }
     
     func refresh() async {
+        replyPages.removeAll()
+        replyHasNext.removeAll()
+        replyLoading.removeAll()
+        replyExpanded.removeAll()
         await loadPrayerDetail()
     }
     
@@ -45,9 +53,17 @@ class PrayerDetailViewModel: ObservableObject {
             let prayer = try await prayerUseCase.loadPrayerDetail(prayerRequestID: prayerRequestId)
             self.prayer = prayer
             self.isDeleted = prayer.createdAt.isEmpty
+            Task { await loadInitialReplies() }
         } catch {
             alertType = .error(title: "불러오기 실패",
                                message: error.localizedDescription)
+        }
+    }
+
+    private func loadInitialReplies() async {
+        guard let responses = prayer?.responses else { return }
+        for response in responses where response.replyCount > 0 {
+            await loadReplies(for: response.id)
         }
     }
     
@@ -136,6 +152,21 @@ class PrayerDetailViewModel: ObservableObject {
         }
     }
     
+    func deleteReply(_ reply: PrayerResponse, from parentResponse: PrayerResponse) async {
+        do {
+            try await prayerUseCase.deletePrayerResponse(responseID: reply.id,
+                                                         prayerRequestId: reply.prayerRequestId)
+            guard var prayer = prayer,
+                  let index = prayer.responses?.firstIndex(where: { $0.id == parentResponse.id }) else { return }
+            prayer.responses?[index].replies.removeAll { $0.id == reply.id }
+            prayer.responses?[index].replyCount -= 1
+            prayer.participationCount -= 1
+            self.prayer = prayer
+        } catch {
+            alertType = .error(title: "삭제 실패", message: error.localizedDescription)
+        }
+    }
+
     func reportPrayer(reasonType: ReportReasonType, reasonDetail: String?) async -> Bool {
         guard let id = prayer?.id else { return false }
         do {
@@ -176,7 +207,46 @@ class PrayerDetailViewModel: ObservableObject {
         }
     }
 
-    // MARK: - 대댓글
+    // MARK: - 대댓글 조회
+    func isRepliesLoaded(for responseId: Int) -> Bool {
+        replyPages[responseId] != nil
+    }
+
+    func hasMoreReplies(for responseId: Int) -> Bool {
+        replyHasNext[responseId] ?? false
+    }
+
+    func isReplyExpanded(for responseId: Int) -> Bool {
+        replyExpanded.contains(responseId)
+    }
+
+    func expandReplies(for responseId: Int) async {
+        replyExpanded.insert(responseId)
+        await loadReplies(for: responseId)
+    }
+
+    func loadReplies(for responseId: Int) async {
+        guard !replyLoading.contains(responseId) else { return }
+        replyLoading.insert(responseId)
+
+        let page = (replyPages[responseId] ?? 0) + 1
+        do {
+            let result = try await prayerUseCase.loadReplies(responseId: responseId, page: page)
+            guard var prayer = prayer,
+                  let index = prayer.responses?.firstIndex(where: { $0.id == responseId }) else { return }
+
+            prayer.responses?[index].replies.append(contentsOf: result.replies)
+            replyPages[responseId] = result.currentPage
+            replyHasNext[responseId] = result.hasNext
+            self.prayer = prayer
+        } catch {
+            alertType = .error(title: "답글 불러오기 실패", message: error.localizedDescription)
+        }
+
+        replyLoading.remove(responseId)
+    }
+
+    // MARK: - 대댓글 작성
     func startReply(to response: PrayerResponse) {
         replyingTo = response
     }
@@ -193,72 +263,48 @@ class PrayerDetailViewModel: ObservableObject {
         editingReply = nil
     }
 
-    func sendReply() -> Int? {
+    func sendReply() async -> Int? {
         guard let parentResponse = replyingTo else { return nil }
         let message = replyText.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !message.isEmpty else { return nil }
 
-        addMockReply(to: parentResponse, message: message)
-        let lastReplyId = prayer?.responses?
-            .first(where: { $0.id == parentResponse.id })?.replies.last?.id
-        cancelReply()
-        return lastReplyId
+        do {
+            let reply = try await prayerUseCase.writeReply(responseId: parentResponse.id, message: message)
+            guard var prayer = prayer,
+                  let index = prayer.responses?.firstIndex(where: { $0.id == parentResponse.id }) else { return nil }
+            prayer.responses?[index].replies.append(reply)
+            prayer.responses?[index].replyCount += 1
+            prayer.participationCount += 1
+            self.prayer = prayer
+            let replyId = reply.id
+            cancelReply()
+            return replyId
+        } catch {
+            alertType = .error(title: "답글 작성 실패", message: error.localizedDescription)
+            return nil
+        }
     }
     
-    func sendEditedReply() -> Int? {
+    func sendEditedReply() async -> Int? {
         guard let reply = editingReply, let parentResponse = replyingTo else { return nil }
         let message = replyText.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !message.isEmpty else { return nil }
 
-        updateMockReply(reply, in: parentResponse, message: message)
-        let editedId = reply.id
-        cancelReply()
-        return editedId
-    }
+        do {
+            let updatedResponse = try await prayerUseCase.updatePrayerResponse(responseID: reply.id, message: message)
+            guard var prayer = prayer,
+                  let parentIndex = prayer.responses?.firstIndex(where: { $0.id == parentResponse.id }),
+                  let replyIndex = prayer.responses?[parentIndex].replies.firstIndex(where: { $0.id == reply.id })
+            else { return nil }
 
-    // TODO: 테스트용 답글 추가
-    private func addMockReply(to parentResponse: PrayerResponse, message: String) {
-        guard var prayer = prayer,
-              let index = prayer.responses?.firstIndex(where: { $0.id == parentResponse.id }) else { return }
-
-        let mockReply = PrayerResponse(
-            id: Int.random(in: 10000...99999),
-            prayerRequestId: parentResponse.prayerRequestId,
-            userId: 0,
-            userName: "",
-            message: message,
-            createdAt: {
-                let formatter = DateFormatter()
-                formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS"
-                return formatter.string(from: Date())
-            }(),
-            isMine: true,
-            parentResponseId: parentResponse.id,
-            replyCount: 0
-        )
-        prayer.responses?[index].replies.append(mockReply)
-        self.prayer = prayer
-    }
-
-    // TODO: 테스트용 답글 수정
-    private func updateMockReply(_ reply: PrayerResponse, in parentResponse: PrayerResponse, message: String) {
-        guard var prayer = prayer,
-              let parentIndex = prayer.responses?.firstIndex(where: { $0.id == parentResponse.id }),
-              let replyIndex = prayer.responses?[parentIndex].replies.firstIndex(where: { $0.id == reply.id })
-        else { return }
-
-        let updated = PrayerResponse(
-            id: reply.id,
-            prayerRequestId: reply.prayerRequestId,
-            userId: reply.userId,
-            userName: reply.userName,
-            message: message,
-            createdAt: reply.createdAt,
-            isMine: reply.isMine,
-            parentResponseId: reply.parentResponseId,
-            replyCount: reply.replyCount
-        )
-        prayer.responses?[parentIndex].replies[replyIndex] = updated
-        self.prayer = prayer
+            prayer.responses?[parentIndex].replies[replyIndex] = updatedResponse
+            self.prayer = prayer
+            let editedId = reply.id
+            cancelReply()
+            return editedId
+        } catch {
+            alertType = .error(title: "수정 실패", message: error.localizedDescription)
+            return nil
+        }
     }
 }

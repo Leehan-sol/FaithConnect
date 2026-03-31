@@ -21,11 +21,12 @@ struct ReplyRowView: View {
     var body: some View {
         HStack(alignment: .top, spacing: 10) {
             Image(systemName: "arrow.turn.down.right")
-                .font(.caption)
-                .foregroundColor(.gray)
-                .padding(.top, 4)
+                .foregroundColor(.customNavy.opacity(0.5))
+                .frame(width: 35, height: 35)
+                .background(.customBlue1.opacity(0.2))
+                .cornerRadius(15)
 
-            VStack(alignment: .leading, spacing: 10) {
+            VStack(alignment: .leading, spacing: 20) {
                 Text(reply.message.trimmingCharacters(in: .whitespacesAndNewlines))
                     .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -41,12 +42,12 @@ struct ReplyRowView: View {
                     .rotationEffect(.degrees(90))
                     .foregroundColor(.gray)
             }
-            .padding(.top, 4)
+            .padding(.top, 5)
         }
-        .padding(12)
+        .padding(15)
         .background(
             RoundedRectangle(cornerRadius: 12)
-                .fill(Color(.systemGray6).opacity(0.5))
+                .fill(Color(.systemGray6))
         )
         .confirmationDialog(
             "",

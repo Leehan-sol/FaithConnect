@@ -7,16 +7,22 @@
 
 import Foundation
 
+struct ReplyPage {
+    let replies: [PrayerResponse]
+    let currentPage: Int
+    let hasNext: Bool
+}
+
 struct PrayerResponse: Identifiable, Equatable {
     let id: Int
     let prayerRequestId: Int
     let userId: Int
     let userName: String
-    let message: String
+    var message: String
     let createdAt: String
     let isMine: Bool
     let parentResponseId: Int?
-    let replyCount: Int
+    var replyCount: Int
     var replies: [PrayerResponse] = []
 }
 
@@ -33,17 +39,5 @@ extension PrayerResponse {
         self.isMine = dto.isMine
         self.parentResponseId = dto.parentResponseId
         self.replyCount = dto.replyCount ?? 0
-    }
-
-    init(from dto: PrayerResponseUpdateResponse) {
-        self.id = dto.prayerResponseId
-        self.prayerRequestId = dto.prayerRequestId
-        self.userId = 0
-        self.userName = ""
-        self.message = dto.message
-        self.createdAt = dto.createdAt
-        self.isMine = dto.isMine
-        self.parentResponseId = nil
-        self.replyCount = 0
     }
 }

@@ -36,14 +36,19 @@ struct CommentListView: View {
                     },
                                           onReply: { response in
                         viewModel.startReply(to: response)
-                        isReplyFocused.wrappedValue = true // 키보드 올리기
+                        isReplyFocused.wrappedValue = true
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                            withAnimation {
+                                proxy?.scrollTo("replyInput-\(response.id)", anchor: .bottom)
+                            }
+                        }
                     })
                     .padding(EdgeInsets(top: 10,
                                         leading: 20,
                                         bottom: 10,
                                         trailing: 20))
 
-                    // 대댓글 존재하는 경우
+                    // 대댓글 목록
                     if !response.replies.isEmpty {
                         VStack(spacing: 6) {
                             ForEach(response.replies) { reply in
@@ -54,10 +59,12 @@ struct CommentListView: View {
                                         isReplyFocused: isReplyFocused,
                                         isEditing: true,
                                         onSend: {
-                                            if let editedId = viewModel.sendEditedReply() {
-                                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                                                    withAnimation {
-                                                        proxy?.scrollTo(editedId, anchor: .bottom)
+                                            Task {
+                                                if let editedId = await viewModel.sendEditedReply() {
+                                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                                                        withAnimation {
+                                                            proxy?.scrollTo(editedId, anchor: .bottom)
+                                                        }
                                                     }
                                                 }
                                             }
@@ -72,7 +79,9 @@ struct CommentListView: View {
                                         isReplyFocused.wrappedValue = true
                                     },
                                                  onDelete: { reply in
-
+                                        Task {
+                                            await viewModel.deleteReply(reply, from: response)
+                                        }
                                     },
                                                  onReport: { reply, reasonType, reasonDetail in
                                         await viewModel.reportPrayerResponse(prayerResponseId: reply.id,
@@ -83,11 +92,31 @@ struct CommentListView: View {
                                         Task { await viewModel.blockUser(userId: reply.userId) }
                                     })
                                     .id(reply.id)
+                                    .onAppear {
+                                        if reply.id == response.replies.last?.id,
+                                           viewModel.isReplyExpanded(for: response.id),
+                                           viewModel.hasMoreReplies(for: response.id) {
+                                            Task { await viewModel.loadReplies(for: response.id) }
+                                        }
+                                    }
+                                }
+                            }
+
+                            // 답글 더보기 버튼 (1페이지 로드 후, 더보기 누르기 전)
+                            if viewModel.hasMoreReplies(for: response.id),
+                               !viewModel.isReplyExpanded(for: response.id) {
+                                Button {
+                                    Task { await viewModel.expandReplies(for: response.id) }
+                                } label: {
+                                    Text("답글 더보기")
+                                        .font(.caption)
+                                        .fontWeight(.semibold)
+                                        .foregroundColor(.customBlue1)
                                 }
                             }
                         }
                         .padding(EdgeInsets(top: 0,
-                                            leading: 40,
+                                            leading: 20,
                                             bottom: 10,
                                             trailing: 20))
                     }
@@ -98,18 +127,21 @@ struct CommentListView: View {
                             replyText: $viewModel.replyText,
                             isReplyFocused: isReplyFocused,
                             onSend: {
-                                if let lastReplyId = viewModel.sendReply() {
-                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                                        withAnimation {
-                                            proxy?.scrollTo(lastReplyId, anchor: .bottom)
+                                Task {
+                                    if let lastReplyId = await viewModel.sendReply() {
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                                            withAnimation {
+                                                proxy?.scrollTo(lastReplyId, anchor: .bottom)
+                                            }
                                         }
                                     }
                                 }
                             },
                             onCancel: { viewModel.cancelReply() }
                         )
+                        .id("replyInput-\(response.id)")
                         .padding(EdgeInsets(top: 0,
-                                            leading: 40,
+                                            leading: 20,
                                             bottom: 10,
                                             trailing: 20))
                     }
