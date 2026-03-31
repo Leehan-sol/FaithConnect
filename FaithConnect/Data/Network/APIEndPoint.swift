@@ -7,10 +7,33 @@
 
 import Foundation
 
+
+// MARK: - 서버 주소 (dev / release)
+enum ServerEnvironment: String {
+    case dev
+    case release
+
+    static var current: ServerEnvironment {
+        let value = Bundle.main.infoDictionary?["ServerEnvironment"] as? String
+        return ServerEnvironment(rawValue: value ?? "") ?? .release
+    }
+
+    var baseURL: String {
+        switch self {
+        case .dev:
+            return "http://localhost:8080"
+        case .release:
+            return "https://faith-connect.net"
+        }
+    }
+}
+
+
+// MARK: - API 경로 (mock / production)
 enum APIEnvironment: String {
     case mock
     case production
-    
+
     static var current: APIEnvironment {
         let value = Bundle.main.infoDictionary?["APIEnvironment"] as? String
         return APIEnvironment(rawValue: value ?? "") ?? .production
@@ -50,13 +73,7 @@ enum APIEndpoint {
     case refreshToken
     
     private var baseURL: String {
-        switch APIEnvironment.current {
-        case .mock:
-            return "http://localhost:8080"
-        case .production:
-            return "http://localhost:8080"
-//            return "https://faith-connect.net"
-        }
+        ServerEnvironment.current.baseURL
     }
     
     private var basePath: String {
