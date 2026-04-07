@@ -111,6 +111,27 @@ class PrayerDetailViewModel: ObservableObject {
         }
     }
 
+    func reportPrayer(reasonType: ReportReasonType, reasonDetail: String?) async -> Bool {
+        guard let id = prayer?.id else { return false }
+        do {
+            try await prayerUseCase.reportPrayer(prayerRequestId: id, reasonType: reasonType, reasonDetail: reasonDetail)
+            return true
+        } catch {
+            alertType = .error(title: "신고 실패", message: error.localizedDescription)
+            return false
+        }
+    }
+
+    func reportPrayerResponse(prayerResponseId: Int, reasonType: ReportReasonType, reasonDetail: String?) async -> Bool {
+        do {
+            try await prayerUseCase.reportPrayerResponse(prayerResponseId: prayerResponseId, reasonType: reasonType, reasonDetail: reasonDetail)
+            return true
+        } catch {
+            alertType = .error(title: "신고 실패", message: error.localizedDescription)
+            return false
+        }
+    }
+
     func deletePrayerResponse(response: PrayerResponse) async {
         do {
             print("응답 삭제 API 호출")
