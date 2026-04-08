@@ -78,6 +78,7 @@ struct RootView: View {
                     homeViewModel: HomeViewModel(prayerUseCase: prayerUseCase),
                     myPrayerViewModel: MyPrayerViewModel(prayerUseCase: prayerUseCase),
                     myPageViewModel: MyPageViewModel(authUseCase: authUseCase,
+                                                    prayerUseCase: prayerUseCase,
                                                     userSession: session),
                     deepLinkManager: deepLinkManager
                 )

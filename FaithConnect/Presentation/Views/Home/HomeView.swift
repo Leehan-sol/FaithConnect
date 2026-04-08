@@ -52,6 +52,11 @@ struct HomeView: View {
                 PrayerDetailView(viewModel: { viewModel.makePrayerDetailVM(prayer: prayer) })
             }
         }
+        .onChange(of: showPrayerDetail) { oldValue, newValue in
+            if oldValue && !newValue {
+                Task { await viewModel.refreshPrayers() }
+            }
+        }
         .navigationDestination(isPresented: $showPrayerEditor) {
             PrayerEditorView(
                 viewModel: { viewModel.makePrayerEditorVM() })

@@ -117,6 +117,7 @@ struct MainTabView: View {
         homeViewModel: HomeViewModel(prayerUseCase: mockUseCase),
         myPrayerViewModel: MyPrayerViewModel(prayerUseCase: mockUseCase),
         myPageViewModel: MyPageViewModel(authUseCase: AuthUseCase(repository: AuthRepository(apiClient: mockAPIClient)),
+                                         prayerUseCase: mockUseCase,
                                          userSession: UserSession()),
         deepLinkManager: DeepLinkManager()
     )

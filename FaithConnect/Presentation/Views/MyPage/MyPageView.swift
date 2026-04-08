@@ -15,6 +15,9 @@ struct MyPageView: View {
     @State private var showDeleteAccount: Bool = false
     @State private var passwordResetVM: PasswordResetViewModel?
     @State private var showInquiry: Bool = false
+    @State private var showBlockList: Bool = false
+    @State private var showNicknameEdit: Bool = false
+    @State private var nicknameInput: String = ""
 
     private let versionNumber = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
     private let churchName = Bundle.main.infoDictionary?["ChurchName"] as? String
@@ -29,7 +32,7 @@ struct MyPageView: View {
                         .frame(width: 30, height: 30)
 
                     VStack(alignment: .leading, spacing: 5) {
-                        Text(viewModel.name)
+                        Text(viewModel.nickname)
 
                         Text(verbatim: viewModel.email)
                             .foregroundColor(.gray)
@@ -45,11 +48,30 @@ struct MyPageView: View {
                 SectionHeaderView(title: "계정 설정", buttonHidden: true){}
 
                 VStack {
+                    MyPageItemField(imageName: "pencil",
+                                    color: .green,
+                                    titleName: "닉네임 변경") {
+                        nicknameInput = viewModel.nickname
+                        showNicknameEdit = true
+                    }
+
+                    Divider()
+                        .foregroundColor(Color(.systemGray6))
+
                     MyPageItemField(imageName: "lock",
                                     color: .blue,
                                     titleName: "비밀번호 변경") {
                         passwordResetVM = viewModel.makePasswordResetViewModel()
                         showChangePassword = true
+                    }
+
+                    Divider()
+                        .foregroundColor(Color(.systemGray6))
+
+                    MyPageItemField(imageName: "nosign",
+                                    color: .red,
+                                    titleName: "차단 관리") {
+                        showBlockList = true
                     }
 
                     Divider()
@@ -152,6 +174,9 @@ struct MyPageView: View {
                                      initialEmail: viewModel.email)
                 }
             }
+            .navigationDestination(isPresented: $showBlockList) {
+                BlockListView(viewModel: { viewModel.makeBlockListViewModel() })
+            }
             .navigationDestination(item: $selectedPolicy) { policy in
                 PolicyWebView(viewType: selectedPolicy ?? .privacy)
             }
@@ -165,6 +190,17 @@ struct MyPageView: View {
             }
             .navigationDestination(isPresented: $showDeleteAccount) {
                 DeleteAccountView(viewModel: viewModel)
+            }
+            .alert("닉네임 변경", isPresented: $showNicknameEdit) {
+                TextField("새 닉네임을 입력하세요", text: $nicknameInput)
+                Button("변경") {
+                    Task {
+                        await viewModel.changeNickname(nickname: nicknameInput)
+                    }
+                }
+                Button("취소", role: .cancel) { }
+            } message: {
+                Text("변경할 닉네임을 입력해주세요.")
             }
             .alert("로그아웃", isPresented: $showAlert) {
                 Button("취소", role: .cancel) { }
@@ -199,10 +235,13 @@ struct MyPageView: View {
 
 #Preview {
     let mockAPIClient = APIClient(tokenStorage: TokenStorage())
-    let mockRepository = AuthRepository(apiClient: mockAPIClient)
-    let mockUseCase = AuthUseCase(repository: mockRepository)
-    
-    MyPageView(viewModel: MyPageViewModel(authUseCase: mockUseCase,
+    let mockAuthRepo = AuthRepository(apiClient: mockAPIClient)
+    let mockAuthUseCase = AuthUseCase(repository: mockAuthRepo)
+    let mockPrayerRepo = PrayerRepository(apiClient: mockAPIClient)
+    let mockPrayerUseCase = PrayerUseCase(repository: mockPrayerRepo)
+
+    MyPageView(viewModel: MyPageViewModel(authUseCase: mockAuthUseCase,
+                                          prayerUseCase: mockPrayerUseCase,
                                           userSession: UserSession()))
 }
 

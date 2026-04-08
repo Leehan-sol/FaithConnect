@@ -87,6 +87,9 @@
 		CCAD36982EB7920C0028D451 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAD36972EB7920C0028D451 /* HomeViewModel.swift */; };
 		CCAD369A2EB792140028D451 /* MyPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAD36992EB792140028D451 /* MyPageViewModel.swift */; };
 		CCAD369E2EB799B70028D451 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAD369D2EB799B70028D451 /* String+Extensions.swift */; };
+		CCD101732F86A8FE0050CAF2 /* BlockListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCD101722F86A8FE0050CAF2 /* BlockListView.swift */; };
+		CCD101752F86A9230050CAF2 /* BlockListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCD101742F86A9230050CAF2 /* BlockListViewModel.swift */; };
+		CCD101772F86A96F0050CAF2 /* BlockedUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCD101762F86A96F0050CAF2 /* BlockedUser.swift */; };
 		CCFDC1302F2F2043008F9CB9 /* PrayerEventType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCFDC12F2F2F2043008F9CB9 /* PrayerEventType.swift */; };
 		CCFDC1322F2FA2C5008F9CB9 /* PrayerUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCFDC1312F2FA2C5008F9CB9 /* PrayerUseCase.swift */; };
 		EB6F29681E572F7B38D34012 /* InquiryDTOs.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC8B9D7289E0D82CDD4DE82 /* InquiryDTOs.swift */; };
@@ -197,6 +200,9 @@
 		CCAD36992EB792140028D451 /* MyPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewModel.swift; sourceTree = "<group>"; };
 		CCAD369D2EB799B70028D451 /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
 		CCB8262B2F51AD8D002880F0 /* FaithConnect.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FaithConnect.entitlements; sourceTree = "<group>"; };
+		CCD101722F86A8FE0050CAF2 /* BlockListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockListView.swift; sourceTree = "<group>"; };
+		CCD101742F86A9230050CAF2 /* BlockListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockListViewModel.swift; sourceTree = "<group>"; };
+		CCD101762F86A96F0050CAF2 /* BlockedUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockedUser.swift; sourceTree = "<group>"; };
 		CCFDC12F2F2F2043008F9CB9 /* PrayerEventType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerEventType.swift; sourceTree = "<group>"; };
 		CCFDC1312F2FA2C5008F9CB9 /* PrayerUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerUseCase.swift; sourceTree = "<group>"; };
 		F6464E434A280823AC492405 /* InquiryBottomSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InquiryBottomSheetView.swift; sourceTree = "<group>"; };
@@ -325,6 +331,7 @@
 			children = (
 				CCAD36992EB792140028D451 /* MyPageViewModel.swift */,
 				1841FD0B2F67C10F007EF11C /* InquiryViewModel.swift */,
+				CCD101742F86A9230050CAF2 /* BlockListViewModel.swift */,
 			);
 			path = MyPage;
 			sourceTree = "<group>";
@@ -489,6 +496,7 @@
 				CCAD36952EB791110028D451 /* Prayer.swift */,
 				CC5B0E572EBF322400CE79A3 /* PrayerResponse.swift */,
 				CC6EC0632F015711009D2E31 /* MyResponse.swift */,
+				CCD101762F86A96F0050CAF2 /* BlockedUser.swift */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -591,6 +599,7 @@
 				186D4F722F03A561005520FD /* PolicyWebView.swift */,
 				F6464E434A280823AC492405 /* InquiryBottomSheetView.swift */,
 				1841FD072F6798D6007EF11C /* DeleteAccountView.swift */,
+				CCD101722F86A8FE0050CAF2 /* BlockListView.swift */,
 			);
 			path = MyPage;
 			sourceTree = "<group>";
@@ -724,10 +733,13 @@
 			files = (
 				CC4EA4402EC9B7370097D09C /* FindIDResultView.swift in Sources */,
 				1809B0A12F70E03B00BEAB89 /* NetworkMonitor.swift in Sources */,
+				CCD101732F86A8FE0050CAF2 /* BlockListView.swift in Sources */,
+				CCD101772F86A96F0050CAF2 /* BlockedUser.swift in Sources */,
 				CCAD36852EB732FE0028D451 /* LoginViewModel.swift in Sources */,
 				CC1A00012F5B00000028D451 /* PasswordResetViewModel.swift in Sources */,
 				CC5B0E4B2EBF2DD000CE79A3 /* MyPrayerView.swift in Sources */,
 				CC6194CA2EF7F5BB005B79A7 /* UserSession.swift in Sources */,
+				CCD101752F86A9230050CAF2 /* BlockListViewModel.swift in Sources */,
 				CCAD36982EB7920C0028D451 /* HomeViewModel.swift in Sources */,
 				180939762F0B7CE600CC1BAE /* APIErrorCode.swift in Sources */,
 				180939782F0B894500CC1BAE /* TokenStorage.swift in Sources */,

@@ -94,6 +94,7 @@ struct MyPrayerListView: View {
             }
         }
         .navigationTitle(prayerContextType.navigationTitle)
+        .navigationBarTitleDisplayMode(.inline)
         .customBackButtonStyle()
         .toolbarVisibility(.hidden, for: .tabBar)
                 .navigationDestination(isPresented: $showPrayerDetail) {

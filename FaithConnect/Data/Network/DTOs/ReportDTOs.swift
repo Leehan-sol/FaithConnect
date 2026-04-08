@@ -39,3 +39,18 @@ struct BlockResponse: Decodable {
     let errorCode: APIErrorCode?
     let status: Int?
 }
+
+// MARK: - 차단 목록
+struct BlockListResponse: Decodable {
+    let blocks: [BlockItem]
+    let currentPage: Int
+    let totalPages: Int
+    let totalElements: Int
+}
+
+struct BlockItem: Decodable {
+    let blockId: Int
+    let blockedUserId: Int
+    let blockedUserName: String
+    let createdAt: String
+}

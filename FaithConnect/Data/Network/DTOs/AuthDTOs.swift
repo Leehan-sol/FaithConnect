@@ -113,6 +113,19 @@ struct PasswordResetConfirmResponse: Decodable {
     let status: Int?
 }
 
+// MARK: - 닉네임 변경
+struct ChangeNicknameRequest: Encodable {
+    let nickname: String
+}
+
+struct ChangeNicknameResponse: Decodable {
+    let message: String
+    let success: Bool?
+    let nickname: String?
+    let errorCode: APIErrorCode?
+    let status: Int?
+}
+
 // MARK: - 이메일 인증 요청
 struct EmailVerificationRequest: Encodable {
     let email: String

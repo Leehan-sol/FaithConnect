@@ -76,6 +76,14 @@ class PrayerRepository: ObservableObject, PrayerRepositoryProtocol {
         try await apiClient.blockUser(userId: userId)
     }
 
+    func loadBlockList(page: Int) async throws -> BlockListResponse {
+        try await apiClient.loadBlockList(page: page)
+    }
+
+    func unblockUser(userId: Int) async throws {
+        try await apiClient.unblockUser(userId: userId)
+    }
+
     func writeReply(responseId: Int, message: String) async throws -> DetailResponseItem {
         return try await apiClient.writeReply(responseId: responseId, message: message)
     }

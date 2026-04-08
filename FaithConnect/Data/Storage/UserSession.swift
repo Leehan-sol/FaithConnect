@@ -15,7 +15,11 @@ class UserSession: ObservableObject {
     var name: String {
         user?.name ?? ""
     }
-    
+
+    var nickname: String {
+        user?.nickname ?? ""
+    }
+
     var email: String {
         user?.email ?? ""
     }
@@ -25,6 +29,11 @@ class UserSession: ObservableObject {
         self.isLoggedIn = true
     }
     
+    func updateNickname(_ nickname: String) {
+        guard let user = user else { return }
+        self.user = User(name: user.name, nickname: nickname, email: user.email)
+    }
+
     func logout() {
         self.user = nil
         self.isLoggedIn = false

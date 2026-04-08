@@ -167,12 +167,15 @@ private struct ReasonRow: View {
 
 #Preview {
     let mockAPIClient = APIClient(tokenStorage: TokenStorage())
-    let mockRepository = AuthRepository(apiClient: mockAPIClient)
-    let mockUseCase = AuthUseCase(repository: mockRepository)
+    let mockAuthRepo = AuthRepository(apiClient: mockAPIClient)
+    let mockAuthUseCase = AuthUseCase(repository: mockAuthRepo)
+    let mockPrayerRepo = PrayerRepository(apiClient: mockAPIClient)
+    let mockPrayerUseCase = PrayerUseCase(repository: mockPrayerRepo)
 
     NavigationStack {
         DeleteAccountView(
-            viewModel: MyPageViewModel(authUseCase: mockUseCase,
+            viewModel: MyPageViewModel(authUseCase: mockAuthUseCase,
+                                       prayerUseCase: mockPrayerUseCase,
                                        userSession: UserSession())
         )
     }

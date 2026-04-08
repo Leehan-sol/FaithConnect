@@ -57,6 +57,10 @@ class AuthRepository: AuthRepositoryProtocol {
                                            newPassword: newPassword)
     }
 
+    func changeNickname(nickname: String) async throws -> String {
+        try await apiClient.changeNickname(nickname: nickname)
+    }
+
     func deleteAccount() async throws {
         try await apiClient.deleteAccount()
     }

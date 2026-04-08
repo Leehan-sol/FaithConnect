@@ -51,6 +51,7 @@ enum APIEndpoint {
     case passwordReset
     case passwordResetConfirm
     case deleteAccount
+    case changeNickname
     case emailVerificationRequest
     case emailVerificationConfirm
     // MARK: - Prayer
@@ -64,6 +65,7 @@ enum APIEndpoint {
     case reportPrayer(id: Int)
     case reportPrayerResponse(id: Int)
     case blockUser(userId: Int)
+    case blockList
     case replies(responseId: Int)
     // MARK: - Push
     case pushToken
@@ -107,6 +109,8 @@ enum APIEndpoint {
             return "\(basePath)/password-reset/confirm"
         case .deleteAccount:
             return "\(basePath)/me"
+        case .changeNickname:
+            return "\(basePath)/me/nickname"
         case .emailVerificationRequest:
             return "\(basePath)/email-verification/request"
         case .emailVerificationConfirm:
@@ -139,6 +143,8 @@ enum APIEndpoint {
             return "\(basePath)/responses/\(id)/report"
         case .blockUser(let userId):
             return "\(basePath)/users/\(userId)/block"
+        case .blockList:
+            return "\(basePath)/blocks"
         case .replies(let responseId):
             return "\(basePath)/responses/\(responseId)/replies"
         case .refreshToken:

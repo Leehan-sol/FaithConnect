@@ -32,7 +32,7 @@ struct CommentListView: View {
                                                              reasonDetail: reasonDetail)
                     },
                                           onBlock: { response in
-                        Task { await viewModel.blockUser(userId: response.userId) }
+                        Task { await viewModel.blockCommentUser(response: response) }
                     },
                                           onReply: { response in
                         viewModel.startReply(to: response)
@@ -89,7 +89,7 @@ struct CommentListView: View {
                                                                              reasonDetail: reasonDetail)
                                     },
                                                  onBlock: { reply in
-                                        Task { await viewModel.blockUser(userId: reply.userId) }
+                                        Task { await viewModel.blockReplyUser(reply: reply, from: response) }
                                     })
                                     .id(reply.id)
                                     .onAppear {

@@ -17,6 +17,7 @@ protocol AuthUseCaseProtocol {
     func fetchMyInfo() async throws -> User
     func findID(name: String) async throws -> String
     func changePassword(id: Int, name: String, email: String, newPassword: String) async throws
+    func changeNickname(nickname: String) async throws -> String
     func deleteAccount() async throws
     func requestPasswordReset(email: String) async throws
     func confirmPasswordReset(email: String, code: String, newPassword: String) async throws
@@ -63,7 +64,8 @@ class AuthUseCase: AuthUseCaseProtocol {
 
     func fetchMyInfo() async throws -> User {
         let response = try await repository.fetchMyInfo()
-        return User(name: response.name, email: response.email)
+        // TODO: 서버에서 name/nickname 분리 후 각각 매핑
+        return User(name: response.name, nickname: response.name, email: response.email)
     }
 
     func findID(name: String) async throws -> String {
@@ -75,6 +77,10 @@ class AuthUseCase: AuthUseCaseProtocol {
                                             name: name,
                                             email: email,
                                             newPassword: newPassword)
+    }
+
+    func changeNickname(nickname: String) async throws -> String {
+        try await repository.changeNickname(nickname: nickname)
     }
 
     func deleteAccount() async throws {

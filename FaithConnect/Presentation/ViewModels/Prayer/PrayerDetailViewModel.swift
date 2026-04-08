@@ -196,9 +196,33 @@ class PrayerDetailViewModel: ObservableObject {
         }
     }
 
-    func blockUser(userId: Int) async {
+    func blockPrayerUser(userId: Int) async -> Bool {
         do {
             try await prayerUseCase.blockUser(userId: userId)
+            return true
+        } catch {
+            alertType = .error(title: "차단 실패",
+                               message: ErrorContext.block.message(for: error))
+            return false
+        }
+    }
+
+    func blockCommentUser(response: PrayerResponse) async {
+        do {
+            try await prayerUseCase.blockUser(userId: response.userId)
+            await refresh()
+            alertType = .success(title: "차단 완료",
+                                 message: "해당 사용자가 차단되었습니다.")
+        } catch {
+            alertType = .error(title: "차단 실패",
+                               message: ErrorContext.block.message(for: error))
+        }
+    }
+
+    func blockReplyUser(reply: PrayerResponse, from parentResponse: PrayerResponse) async {
+        do {
+            try await prayerUseCase.blockUser(userId: reply.userId)
+            await refresh()
             alertType = .success(title: "차단 완료",
                                  message: "해당 사용자가 차단되었습니다.")
         } catch {

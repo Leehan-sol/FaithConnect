@@ -25,6 +25,7 @@ protocol APIClientProtocol {
     func fetchMyInfo() async throws -> FetchMyInfoResponse
     func findID(name: String) async throws -> String
     func changePassword(id: Int, name: String, email: String, newPassword: String) async throws
+    func changeNickname(nickname: String) async throws -> String
     func deleteAccount() async throws
     func requestPasswordReset(email: String) async throws
     func confirmPasswordReset(email: String, code: String, newPassword: String) async throws
@@ -52,6 +53,8 @@ protocol APIClientProtocol {
     func reportPrayer(prayerRequestId: Int, reasonType: ReportReasonType, reasonDetail: String?) async throws
     func reportPrayerResponse(prayerResponseId: Int, reasonType: ReportReasonType, reasonDetail: String?) async throws
     func blockUser(userId: Int) async throws
+    func loadBlockList(page: Int) async throws -> BlockListResponse
+    func unblockUser(userId: Int) async throws
     func writeReply(responseId: Int, message: String) async throws -> DetailResponseItem
     func loadReplies(responseId: Int, page: Int) async throws -> ReplyListResponse
 }
@@ -354,6 +357,18 @@ extension APIClient {
         }
     }
     
+    func changeNickname(nickname: String) async throws -> String {
+        let urlString = APIEndpoint.changeNickname.urlString
+        let requestBody = ChangeNicknameRequest(nickname: nickname)
+        let apiResponse: ChangeNicknameResponse = try await put(urlString: urlString,
+                                                                 requestBody: requestBody)
+        guard apiResponse.success == true else {
+            let code = apiResponse.errorCode ?? .unknown
+            throw APIError.serverMessage(code: code)
+        }
+        return apiResponse.nickname ?? nickname
+    }
+
     func deleteAccount() async throws {
         let urlString = APIEndpoint.deleteAccount.urlString
         
@@ -617,6 +632,22 @@ extension APIClient {
         let apiResponse: BlockResponse = try await post(urlString: urlString,
                                                         requestBody: EmptyRequest())
 
+        if apiResponse.success != true {
+            let code = apiResponse.errorCode ?? .unknown
+            throw APIError.serverMessage(code: code)
+        }
+    }
+
+    func loadBlockList(page: Int) async throws -> BlockListResponse {
+        let urlString = APIEndpoint.blockList.urlString
+        let apiResponse: BlockListResponse = try await get(path: urlString,
+                                                            queryItems: [URLQueryItem(name: "page", value: "\(page)")])
+        return apiResponse
+    }
+
+    func unblockUser(userId: Int) async throws {
+        let urlString = APIEndpoint.blockUser(userId: userId).urlString
+        let apiResponse: BlockResponse = try await delete(path: urlString, requestBody: EmptyRequest())
         if apiResponse.success != true {
             let code = apiResponse.errorCode ?? .unknown
             throw APIError.serverMessage(code: code)

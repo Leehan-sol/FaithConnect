@@ -165,7 +165,9 @@ struct PrayerDetailView: View {
                 case .block:
                     Task {
                         if let userId = viewModel.prayer?.userId {
-                            await viewModel.blockUser(userId: userId)
+                            if await viewModel.blockPrayerUser(userId: userId) {
+                                dismiss()
+                            }
                         }
                     }
                 }

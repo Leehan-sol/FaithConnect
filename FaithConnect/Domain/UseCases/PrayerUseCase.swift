@@ -25,6 +25,8 @@ protocol PrayerUseCaseProtocol {
     func reportPrayer(prayerRequestId: Int, reasonType: ReportReasonType, reasonDetail: String?) async throws
     func reportPrayerResponse(prayerResponseId: Int, reasonType: ReportReasonType, reasonDetail: String?) async throws
     func blockUser(userId: Int) async throws
+    func loadBlockList(page: Int) async throws -> BlockedUserPage
+    func unblockUser(userId: Int) async throws
     func writeReply(responseId: Int, message: String) async throws -> PrayerResponse
     func loadReplies(responseId: Int, page: Int) async throws -> ReplyPage
 }
@@ -181,6 +183,19 @@ class PrayerUseCase: PrayerUseCaseProtocol {
 
     func blockUser(userId: Int) async throws {
         try await repository.blockUser(userId: userId)
+    }
+
+    func loadBlockList(page: Int) async throws -> BlockedUserPage {
+        let result = try await repository.loadBlockList(page: page)
+        return BlockedUserPage(
+            blockedUsers: result.blocks.map { BlockedUser(from: $0) },
+            currentPage: result.currentPage,
+            hasNext: result.currentPage < result.totalPages
+        )
+    }
+
+    func unblockUser(userId: Int) async throws {
+        try await repository.unblockUser(userId: userId)
     }
 
     func writeReply(responseId: Int, message: String) async throws -> PrayerResponse {
