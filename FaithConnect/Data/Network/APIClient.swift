@@ -17,11 +17,13 @@ enum AuthRequirement {
 protocol APIClientProtocol {
     var hasToken: Bool { get }
     // Auth
-    func signUp(memberID: Int, name: String, email: String, password: String, confirmPassword: String) async throws
+    func signUp(name: String, email: String, password: String, confirmPassword: String) async throws
+    func requestEmailVerification(email: String) async throws
+    func confirmEmailVerification(email: String, verificationCode: String) async throws
     func login(email: String, password: String) async throws
     func logout() async throws
     func fetchMyInfo() async throws -> FetchMyInfoResponse
-    func findID(memberID: Int, name: String) async throws -> String
+    func findID(name: String) async throws -> String
     func changePassword(id: Int, name: String, email: String, newPassword: String) async throws
     func deleteAccount() async throws
     func requestPasswordReset(email: String) async throws
@@ -241,21 +243,44 @@ extension APIClient {
 
 // MARK: - Auth
 extension APIClient {
-    func signUp(memberID: Int, name: String, email: String, password: String, confirmPassword: String) async throws {
+    func signUp(name: String, email: String, password: String, confirmPassword: String) async throws {
         let urlString = APIEndpoint.signup.urlString
-        
+
         let requestBody = SignUpRequest(
-            churchMemberId: memberID,
             name: name,
             email: email,
             password: password,
             confirmPassword: confirmPassword
         )
-        
+
         let apiResponse: SignUpResponse = try await post(urlString: urlString,
                                                          requestBody: requestBody,
                                                          auth: .none)
-        
+
+        guard apiResponse.success == true else {
+            let code = apiResponse.errorCode ?? .unknown
+            throw APIError.serverMessage(code: code)
+        }
+    }
+
+    func requestEmailVerification(email: String) async throws {
+        let urlString = APIEndpoint.emailVerificationRequest.urlString
+        let requestBody = EmailVerificationRequest(email: email)
+        let apiResponse: EmailVerificationResponse = try await post(urlString: urlString,
+                                                                     requestBody: requestBody,
+                                                                     auth: .none)
+        guard apiResponse.success == true else {
+            let code = apiResponse.errorCode ?? .unknown
+            throw APIError.serverMessage(code: code)
+        }
+    }
+
+    func confirmEmailVerification(email: String, verificationCode: String) async throws {
+        let urlString = APIEndpoint.emailVerificationConfirm.urlString
+        let requestBody = EmailVerificationConfirmRequest(email: email, verificationCode: verificationCode)
+        let apiResponse: EmailVerificationConfirmResponse = try await post(urlString: urlString,
+                                                                            requestBody: requestBody,
+                                                                            auth: .none)
         guard apiResponse.success == true else {
             let code = apiResponse.errorCode ?? .unknown
             throw APIError.serverMessage(code: code)
@@ -312,16 +337,15 @@ extension APIClient {
         return apiResponse
     }
     
-    func findID(memberID: Int, name: String) async throws -> String {
+    func findID(name: String) async throws -> String {
         let urlString = APIEndpoint.findID.urlString
-        
-        let requestBody = FindIDRequest(name: name,
-                                        churchMemberId: memberID)
-        
+
+        let requestBody = FindIDRequest(name: name)
+
         let apiResponse: FindIDResponse = try await post(urlString: urlString,
                                                          requestBody: requestBody,
                                                          auth: .none)
-        
+
         if apiResponse.success != true {
             let code = apiResponse.errorCode ?? .unknown
             throw APIError.serverMessage(code: code)

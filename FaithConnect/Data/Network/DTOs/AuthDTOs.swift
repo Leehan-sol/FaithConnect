@@ -8,8 +8,8 @@
 import Foundation
 
 // MARK: - 회원가입
+// TODO: 서버 API 변경 후 nickname 필드 추가 (name: 이름, nickname: 닉네임)
 struct SignUpRequest: Codable {
-    let churchMemberId: Int
     let name: String
     let email: String
     let password: String
@@ -51,9 +51,9 @@ struct FetchMyInfoResponse: Decodable {
 }
 
 // MARK: - 아이디 찾기
+// TODO: 서버 API 변경 후 이름(name)으로 이메일 찾기 확정 (닉네임만으로는 보안 이슈)
 struct FindIDRequest: Codable {
     let name: String
-    let churchMemberId: Int
 }
 
 struct FindIDResponse: Decodable {
@@ -109,6 +109,31 @@ struct PasswordResetConfirmRequest: Encodable {
 struct PasswordResetConfirmResponse: Decodable {
     let message: String?
     let success: Bool
+    let errorCode: APIErrorCode?
+    let status: Int?
+}
+
+// MARK: - 이메일 인증 요청
+struct EmailVerificationRequest: Encodable {
+    let email: String
+}
+
+struct EmailVerificationResponse: Decodable {
+    let message: String
+    let success: Bool?
+    let errorCode: APIErrorCode?
+    let status: Int?
+}
+
+// MARK: - 이메일 인증 확인
+struct EmailVerificationConfirmRequest: Encodable {
+    let email: String
+    let verificationCode: String
+}
+
+struct EmailVerificationConfirmResponse: Decodable {
+    let message: String
+    let success: Bool?
     let errorCode: APIErrorCode?
     let status: Int?
 }

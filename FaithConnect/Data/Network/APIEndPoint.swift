@@ -51,6 +51,8 @@ enum APIEndpoint {
     case passwordReset
     case passwordResetConfirm
     case deleteAccount
+    case emailVerificationRequest
+    case emailVerificationConfirm
     // MARK: - Prayer
     case categories
     case prayers
@@ -105,6 +107,10 @@ enum APIEndpoint {
             return "\(basePath)/password-reset/confirm"
         case .deleteAccount:
             return "\(basePath)/me"
+        case .emailVerificationRequest:
+            return "\(basePath)/email-verification/request"
+        case .emailVerificationConfirm:
+            return "\(basePath)/email-verification/confirm"
         case .categories:
             return "\(basePath)/categories"
         case .prayers:

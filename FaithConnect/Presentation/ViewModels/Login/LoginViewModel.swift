@@ -61,21 +61,16 @@ class LoginViewModel: ObservableObject {
         }
     }
     
-    func findID(memberID: Int, name: String) async -> String? {
-        print("아이디 찾기 memberID: \(memberID), name: \(name)")
-        if memberID == 0 {
-            findIDAlertType = .fieldEmpty(fieldName: "교번")
-            return nil
-        }
-        
+    func findID(name: String) async -> String? {
+        print("아이디 찾기 name: \(name)")
+
         if name.isEmpty {
-            findIDAlertType = .fieldEmpty(fieldName: "이름")
+            findIDAlertType = .fieldEmpty(fieldName: "닉네임")
             return nil
         }
-        
+
         do {
-            let foundEmail = try await authUseCase.findID(memberID: memberID,
-                                                         name: name)
+            let foundEmail = try await authUseCase.findID(name: name)
             return foundEmail
         } catch {
             findIDAlertType = .error(title: "아이디 찾기 실패",
@@ -92,54 +87,94 @@ class LoginViewModel: ObservableObject {
         InquiryViewModel(authUseCase: authUseCase)
     }
 
-    func signUp(memberID: Int, name: String, email: String, password: String, confirmPassword: String) async {
-        print("회원가입 memberID: \(memberID), name: \(name), email: \(email)")
-        if memberID == 0 {
-            signUpAlertType = .fieldEmpty(fieldName: "교번")
-            return
-        }
-        
-        if name.isEmpty {
-            signUpAlertType = .fieldEmpty(fieldName: "이름")
-            return
-        }
-        
+    func requestEmailVerification(email: String) async {
         if email.isEmpty {
             signUpAlertType = .fieldEmpty(fieldName: "이메일")
             return
         }
-        
-        if password.isEmpty {
-            signUpAlertType = .fieldEmpty(fieldName: "비밀번호")
-            return
-        }
-        
-        if confirmPassword.isEmpty {
-            signUpAlertType = .fieldEmpty(fieldName: "비밀번호 확인")
-            return
-        }
-        
-        if password != confirmPassword {
-            signUpAlertType = .error(title: "비밀번호 오류",
-                                     message: "입력하신 비밀번호와 비밀번호 확인이 일치하지 않습니다. 다시 입력해주세요.")
-            return
-        }
-        
+
         if !isValidEmail(email: email) {
             signUpAlertType = .error(title: "이메일 형식 오류",
                                      message: "올바른 이메일 형식이 아닙니다.")
             return
         }
-        
+
+        isLoading = true
+        defer { isLoading = false }
+
+        do {
+            try await authUseCase.requestEmailVerification(email: email)
+            signUpAlertType = .successEmailVerificationSent
+        } catch {
+            let error = error.localizedDescription
+            signUpAlertType = .error(title: "인증 코드 전송 실패",
+                                     message: error)
+        }
+    }
+
+    func confirmEmailVerification(email: String, verificationCode: String) async -> Bool {
+        if verificationCode.isEmpty {
+            signUpAlertType = .fieldEmpty(fieldName: "인증 코드")
+            return false
+        }
+
+        isLoading = true
+        defer { isLoading = false }
+
+        do {
+            try await authUseCase.confirmEmailVerification(email: email, verificationCode: verificationCode)
+            return true
+        } catch {
+            let error = error.localizedDescription
+            signUpAlertType = .error(title: "인증 실패",
+                                     message: error)
+            return false
+        }
+    }
+
+    func signUp(name: String, email: String, password: String, confirmPassword: String) async {
+        print("회원가입 name: \(name), email: \(email)")
+
+        if name.isEmpty {
+            signUpAlertType = .fieldEmpty(fieldName: "닉네임")
+            return
+        }
+
+        if email.isEmpty {
+            signUpAlertType = .fieldEmpty(fieldName: "이메일")
+            return
+        }
+
+        if password.isEmpty {
+            signUpAlertType = .fieldEmpty(fieldName: "비밀번호")
+            return
+        }
+
+        if confirmPassword.isEmpty {
+            signUpAlertType = .fieldEmpty(fieldName: "비밀번호 확인")
+            return
+        }
+
+        if password != confirmPassword {
+            signUpAlertType = .error(title: "비밀번호 오류",
+                                     message: "입력하신 비밀번호와 비밀번호 확인이 일치하지 않습니다. 다시 입력해주세요.")
+            return
+        }
+
+        if !isValidEmail(email: email) {
+            signUpAlertType = .error(title: "이메일 형식 오류",
+                                     message: "올바른 이메일 형식이 아닙니다.")
+            return
+        }
+
         if !isValidPassword(password: password) {
             signUpAlertType = .error(title: "비밀번호 형식 오류",
                                      message: "비밀번호는 영문과 숫자를 포함하여 8자 이상으로 설정해 주세요.")
             return
         }
-        
+
         do {
-            try await authUseCase.signUp(memberID: memberID,
-                                         name: name,
+            try await authUseCase.signUp(name: name,
                                          email: email,
                                          password: password,
                                          confirmPassword: confirmPassword)

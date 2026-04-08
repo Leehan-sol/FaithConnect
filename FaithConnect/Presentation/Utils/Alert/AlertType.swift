@@ -15,6 +15,7 @@ enum AlertType: Identifiable, Hashable {
     case registerSuccess
     case successLogout
     case successDeleteAccount
+    case successEmailVerificationSent
     case successPasswordResetEmail
     case successPasswordReset
 
@@ -36,6 +37,8 @@ enum AlertType: Identifiable, Hashable {
             return "로그아웃"
         case .successDeleteAccount:
             return "회원탈퇴"
+        case .successEmailVerificationSent:
+            return "인증 코드 전송"
         case .successPasswordResetEmail:
             return "이메일 전송 완료"
         case .successPasswordReset:
@@ -59,6 +62,8 @@ enum AlertType: Identifiable, Hashable {
             return "로그아웃되었습니다."
         case .successDeleteAccount:
             return "회원탈퇴가 완료되었습니다."
+        case .successEmailVerificationSent:
+            return "입력하신 이메일로 인증 코드를 전송했습니다."
         case .successPasswordResetEmail:
             return "입력하신 이메일로 인증코드를 전송했습니다."
         case .successPasswordReset:
