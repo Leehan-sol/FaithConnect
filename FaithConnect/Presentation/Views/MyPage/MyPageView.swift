@@ -49,7 +49,7 @@ struct MyPageView: View {
 
                 VStack {
                     MyPageItemField(imageName: "pencil",
-                                    color: .green,
+                                    color: .customBlue1,
                                     titleName: "닉네임 변경") {
                         nicknameInput = viewModel.nickname
                         showNicknameEdit = true
@@ -59,7 +59,7 @@ struct MyPageView: View {
                         .foregroundColor(Color(.systemGray6))
 
                     MyPageItemField(imageName: "lock",
-                                    color: .blue,
+                                    color: .customBlue1,
                                     titleName: "비밀번호 변경") {
                         passwordResetVM = viewModel.makePasswordResetViewModel()
                         showChangePassword = true
@@ -69,7 +69,7 @@ struct MyPageView: View {
                         .foregroundColor(Color(.systemGray6))
 
                     MyPageItemField(imageName: "nosign",
-                                    color: .red,
+                                    color: .customBlue1,
                                     titleName: "차단 관리") {
                         showBlockList = true
                     }
@@ -78,7 +78,7 @@ struct MyPageView: View {
                         .foregroundColor(Color(.systemGray6))
 
                     MyPageItemField(imageName: "rectangle.portrait.and.arrow.right",
-                                    color: .orange,
+                                    color: .customBlue1,
                                     titleName: "로그아웃") {
                         showAlert = true
                     }
@@ -97,7 +97,7 @@ struct MyPageView: View {
 
                 VStack {
                     MyPageItemField(imageName: "bell.badge",
-                                    color: .green,
+                                    color: .customBlue1,
                                     titleName: "푸시 알림 테스트") {
                         Task {
                             await viewModel.testPush()
