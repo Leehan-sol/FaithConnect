@@ -28,9 +28,15 @@ struct PrayerRowView: View {
                     .bold()
                     .font(.caption)
                     .cornerRadius(10)
-                
+
+                if cellType == .others {
+                    Text(prayer.userName)
+                        .font(.caption2)
+                        .foregroundColor(.gray)
+                }
+
                 Spacer()
-                
+
                 Text(prayer.createdAt.toTimeAgoDisplay())
                     .font(.caption2)
                     .foregroundColor(.gray)
@@ -51,13 +57,15 @@ struct PrayerRowView: View {
             
             // MARK: - Bottom
             HStack {
-                Image(systemName: "hands.clap")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 15, height: 15)
-                
-                Text("\(prayer.participationCount)명이 기도했어요")
-                    .font(.caption2)
+                HStack(spacing: 4) {
+                    Image(systemName: "hands.clap")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 15, height: 15)
+                    Text("\(prayer.participationCount)명이 기도했어요")
+                        .font(.caption2)
+                }
+
             }
             .foregroundColor(.gray)
         }

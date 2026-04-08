@@ -20,11 +20,15 @@ struct DetailHeaderView: View {
                     .bold()
                     .font(.caption)
                     .cornerRadius(10)
-                
+
+                Text(prayer.userName)
+                    .font(.caption)
+                    .foregroundColor(.gray)
+
                 Text(prayer.createdAt.toTimeAgoDisplay())
                     .font(.caption)
                     .foregroundColor(.gray)
-                
+
                 Spacer()
             }
             

@@ -29,16 +29,34 @@ struct CommentRowView: View {
                 .frame(width: 35, height: 35)
                 .background(.customBlue1.opacity(0.4))
                 .cornerRadius(15)
-            
-            VStack(alignment: .leading, spacing: 20) {
-                Text(response.message.trimmingCharacters(in: .whitespacesAndNewlines))
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                
-                HStack(spacing: 10) {
-                    Text(response.createdAt.toTimeAgoDisplay())
-                        .font(.caption2)
+
+            VStack(alignment: .leading, spacing: 6) {
+                HStack {
+                    Text(response.userName)
+                        .font(.caption)
+                        .fontWeight(.semibold)
                         .foregroundColor(.gray)
 
+                    Spacer()
+
+                    Button {
+                        showConfirmationDialog = true
+                    } label: {
+                        Image(systemName: "ellipsis")
+                            .rotationEffect(.degrees(90))
+                            .foregroundColor(.gray)
+                    }
+                }
+
+                Text(response.createdAt.toTimeAgoDisplay())
+                    .font(.caption2)
+                    .foregroundColor(.gray)
+
+                Text(response.message.trimmingCharacters(in: .whitespacesAndNewlines))
+                    .frame(maxWidth: .infinity, alignment: .leading)
+
+                HStack {
+                    Spacer()
                     Button {
                         onReply?(response)
                     } label: {
@@ -51,17 +69,8 @@ struct CommentRowView: View {
                     }
                 }
             }
-            
-            Button {
-                showConfirmationDialog = true
-            } label: {
-                Image(systemName: "ellipsis")
-                    .rotationEffect(.degrees(90))
-                    .foregroundColor(.gray)
-            }
-            .padding(.top, 5)
         }
-        .padding(15)
+        .padding(EdgeInsets(top: 15, leading: 15, bottom: 20, trailing: 15))
         .background(
             RoundedRectangle(cornerRadius: 12)
                 .fill(Color(.systemGray6))

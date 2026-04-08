@@ -26,25 +26,33 @@ struct ReplyRowView: View {
                 .background(.customBlue1.opacity(0.2))
                 .cornerRadius(15)
 
-            VStack(alignment: .leading, spacing: 20) {
-                Text(reply.message.trimmingCharacters(in: .whitespacesAndNewlines))
-                    .frame(maxWidth: .infinity, alignment: .leading)
+            VStack(alignment: .leading, spacing: 6) {
+                HStack {
+                    Text(reply.userName)
+                        .font(.caption)
+                        .fontWeight(.semibold)
+                        .foregroundColor(.gray)
+
+                    Spacer()
+
+                    Button {
+                        showConfirmationDialog = true
+                    } label: {
+                        Image(systemName: "ellipsis")
+                            .rotationEffect(.degrees(90))
+                            .foregroundColor(.gray)
+                    }
+                }
 
                 Text(reply.createdAt.toTimeAgoDisplay())
                     .font(.caption2)
                     .foregroundColor(.gray)
-            }
 
-            Button {
-                showConfirmationDialog = true
-            } label: {
-                Image(systemName: "ellipsis")
-                    .rotationEffect(.degrees(90))
-                    .foregroundColor(.gray)
+                Text(reply.message.trimmingCharacters(in: .whitespacesAndNewlines))
+                    .frame(maxWidth: .infinity, alignment: .leading)
             }
-            .padding(.top, 5)
         }
-        .padding(15)
+        .padding(EdgeInsets(top: 15, leading: 15, bottom: 20, trailing: 15))
         .background(
             RoundedRectangle(cornerRadius: 12)
                 .fill(Color(.systemGray6))
