@@ -118,12 +118,16 @@ class PrayerDetailViewModel: ObservableObject {
     func updatePrayerResponse(responseID: Int, message: String) async -> Bool {
         do {
             print("응답 수정 API 호출")
-            let updatedResponse = try await prayerUseCase.updatePrayerResponse(responseID: responseID, 
+            let updatedResponse = try await prayerUseCase.updatePrayerResponse(responseID: responseID,
                                                                                message: message)
 
             guard var prayer = prayer else { return false }
             if let index = prayer.responses?.firstIndex(where: { $0.id == responseID }) {
+                let existingReplies = prayer.responses?[index].replies ?? []
+                let existingReplyCount = prayer.responses?[index].replyCount ?? 0
                 prayer.responses?[index] = updatedResponse
+                prayer.responses?[index].replies = existingReplies
+                prayer.responses?[index].replyCount = existingReplyCount
             }
             self.prayer = prayer
             return true
@@ -264,7 +268,7 @@ class PrayerDetailViewModel: ObservableObject {
             replyHasNext[responseId] = result.hasNext
             self.prayer = prayer
         } catch {
-            alertType = .error(title: "답글 불러오기 실패", message: error.localizedDescription)
+            print("답글 불러오기 실패 (responseId: \(responseId)): \(error.localizedDescription)")
         }
 
         replyLoading.remove(responseId)

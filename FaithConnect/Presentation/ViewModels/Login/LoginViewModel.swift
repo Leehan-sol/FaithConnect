@@ -61,16 +61,21 @@ class LoginViewModel: ObservableObject {
         }
     }
     
-    func findID(name: String) async -> String? {
-        print("아이디 찾기 name: \(name)")
+    func findID(name: String, nickname: String) async -> String? {
+        print("아이디 찾기 name: \(name), nickname: \(nickname)")
 
         if name.isEmpty {
+            findIDAlertType = .fieldEmpty(fieldName: "이름")
+            return nil
+        }
+
+        if nickname.isEmpty {
             findIDAlertType = .fieldEmpty(fieldName: "닉네임")
             return nil
         }
 
         do {
-            let foundEmail = try await authUseCase.findID(name: name)
+            let foundEmail = try await authUseCase.findID(name: name, nickname: nickname)
             return foundEmail
         } catch {
             findIDAlertType = .error(title: "아이디 찾기 실패",
@@ -132,10 +137,15 @@ class LoginViewModel: ObservableObject {
         }
     }
 
-    func signUp(name: String, email: String, password: String, confirmPassword: String) async {
-        print("회원가입 name: \(name), email: \(email)")
+    func signUp(name: String, nickname: String, email: String, password: String, confirmPassword: String) async {
+        print("회원가입 name: \(name), nickname: \(nickname), email: \(email)")
 
         if name.isEmpty {
+            signUpAlertType = .fieldEmpty(fieldName: "이름")
+            return
+        }
+
+        if nickname.isEmpty {
             signUpAlertType = .fieldEmpty(fieldName: "닉네임")
             return
         }
@@ -175,6 +185,7 @@ class LoginViewModel: ObservableObject {
 
         do {
             try await authUseCase.signUp(name: name,
+                                         nickname: nickname,
                                          email: email,
                                          password: password,
                                          confirmPassword: confirmPassword)

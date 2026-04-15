@@ -18,8 +18,9 @@ class AuthRepository: AuthRepositoryProtocol {
         apiClient.hasToken
     }
 
-    func signUp(name: String, email: String, password: String, confirmPassword: String) async throws {
+    func signUp(name: String, nickname: String, email: String, password: String, confirmPassword: String) async throws {
         try await apiClient.signUp(name: name,
+                                   nickname: nickname,
                                    email: email,
                                    password: password,
                                    confirmPassword: confirmPassword)
@@ -46,8 +47,8 @@ class AuthRepository: AuthRepositoryProtocol {
         try await apiClient.fetchMyInfo()
     }
 
-    func findID(name: String) async throws -> String {
-        try await apiClient.findID(name: name)
+    func findID(name: String, nickname: String) async throws -> String {
+        try await apiClient.findID(name: name, nickname: nickname)
     }
 
     func changePassword(id: Int, name: String, email: String, newPassword: String) async throws {

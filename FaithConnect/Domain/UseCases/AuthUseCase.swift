@@ -9,13 +9,13 @@ import Foundation
 
 protocol AuthUseCaseProtocol {
     var hasToken: Bool { get }
-    func signUp(name: String, email: String, password: String, confirmPassword: String) async throws
+    func signUp(name: String, nickname: String, email: String, password: String, confirmPassword: String) async throws
     func requestEmailVerification(email: String) async throws
     func confirmEmailVerification(email: String, verificationCode: String) async throws
     func login(email: String, password: String) async throws
     func logout() async throws
     func fetchMyInfo() async throws -> User
-    func findID(name: String) async throws -> String
+    func findID(name: String, nickname: String) async throws -> String
     func changePassword(id: Int, name: String, email: String, newPassword: String) async throws
     func changeNickname(nickname: String) async throws -> String
     func deleteAccount() async throws
@@ -38,8 +38,9 @@ class AuthUseCase: AuthUseCaseProtocol {
         repository.hasToken
     }
 
-    func signUp(name: String, email: String, password: String, confirmPassword: String) async throws {
+    func signUp(name: String, nickname: String, email: String, password: String, confirmPassword: String) async throws {
         try await repository.signUp(name: name,
+                                    nickname: nickname,
                                     email: email,
                                     password: password,
                                     confirmPassword: confirmPassword)
@@ -64,12 +65,11 @@ class AuthUseCase: AuthUseCaseProtocol {
 
     func fetchMyInfo() async throws -> User {
         let response = try await repository.fetchMyInfo()
-        // TODO: 서버에서 name/nickname 분리 후 각각 매핑
         return User(name: response.name, nickname: response.name, email: response.email)
     }
 
-    func findID(name: String) async throws -> String {
-        try await repository.findID(name: name)
+    func findID(name: String, nickname: String) async throws -> String {
+        try await repository.findID(name: name, nickname: nickname)
     }
 
     func changePassword(id: Int, name: String, email: String, newPassword: String) async throws {

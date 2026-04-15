@@ -11,6 +11,7 @@ struct FindIDView: View {
     @ObservedObject var viewModel: LoginViewModel
     @Environment(\.dismiss) private var dismiss
     @State private var name: String = ""
+    @State private var nickname: String = ""
     @State private var findID: String = ""
     @State private var findingID: Bool = false
     @State private var showFindID: Bool = false
@@ -20,17 +21,20 @@ struct FindIDView: View {
             Spacer()
                 .frame(height: 10)
             
-            Text("가입 시 입력한 닉네임으로 \r이메일을 찾을 수 있습니다")
+            Text("가입 시 입력한 이름과 닉네임으로 \r이메일을 찾을 수 있습니다")
                 .font(.headline)
                 .foregroundColor(Color(.darkGray))
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .fixedSize(horizontal: false, vertical: true)
                 .padding(.bottom, 20)
 
-            // TODO: 서버 API 변경 후 이름(name)으로 찾기로 확정 (닉네임 → 이름)
+            LabeledTextField(title: "이름",
+                             placeholder: "이름을 입력하세요",
+                             text: $name)
+
             LabeledTextField(title: "닉네임",
                              placeholder: "닉네임을 입력하세요",
-                             text: $name)
+                             text: $nickname)
             .padding(.bottom, 20)
             
             ActionButton(title: findingID ? "찾는 중..." : "이메일 찾기",
@@ -40,7 +44,7 @@ struct FindIDView: View {
                     findingID = true
                     defer { findingID = false }
                     
-                    if let resultID = await viewModel.findID(name: name) {
+                    if let resultID = await viewModel.findID(name: name, nickname: nickname) {
                         findID = resultID
                         showFindID = true
                     }

@@ -9,6 +9,7 @@ import SwiftUI
 
 struct SignUpView: View {
     @ObservedObject var viewModel: LoginViewModel
+    @State private var name: String = ""
     @State private var nickname: String = ""
     @State private var email: String = ""
     @State private var verificationCode: String = ""
@@ -32,7 +33,10 @@ struct SignUpView: View {
                     .fixedSize(horizontal: false, vertical: true)
                     .padding(.bottom, 10)
 
-                // TODO: 서버 API 변경 후 이름 필드 추가 (name: 이름, nickname: 닉네임 분리)
+                LabeledTextField(title: "이름",
+                                 placeholder: "이름을 입력하세요",
+                                 text: $name)
+
                 LabeledTextField(title: "닉네임",
                                  placeholder: "닉네임을 입력하세요",
                                  text: $nickname)
@@ -122,7 +126,8 @@ struct SignUpView: View {
                              foregroundColor: .white,
                              backgroundColor: isEmailVerified ? .customBlue1 : .gray) {
                     Task {
-                        await viewModel.signUp(name: nickname,
+                        await viewModel.signUp(name: name,
+                                               nickname: nickname,
                                                email: email,
                                                password: password,
                                                confirmPassword: confirmPassword)
@@ -133,6 +138,7 @@ struct SignUpView: View {
 
                 InfoBoxView(messages: [
                     "• 이메일은 인증 목적으로만 사용되며 다른 사용자에게 공개되지 않습니다.",
+                    "• 이름은 본인 확인 용도로만 사용됩니다.",
                     "• 닉네임은 다른 사용자에게 표시될 수 있습니다.",
                     "• 개인정보는 안전하게 보호됩니다."])
 

@@ -8,9 +8,9 @@
 import Foundation
 
 // MARK: - 회원가입
-// TODO: 서버 API 변경 후 nickname 필드 추가 (name: 이름, nickname: 닉네임)
 struct SignUpRequest: Codable {
     let name: String
+    let nickname: String
     let email: String
     let password: String
     let confirmPassword: String
@@ -51,9 +51,9 @@ struct FetchMyInfoResponse: Decodable {
 }
 
 // MARK: - 아이디 찾기
-// TODO: 서버 API 변경 후 이름(name)으로 이메일 찾기 확정 (닉네임만으로는 보안 이슈)
 struct FindIDRequest: Codable {
     let name: String
+    let nickname: String
 }
 
 struct FindIDResponse: Decodable {
