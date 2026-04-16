@@ -28,6 +28,7 @@ final class HomeViewModelTests: XCTestCase {
                createdAt: "2026-01-01",
                participationCount: 0,
                responses: nil,
+               hasParticipated: false,
                isMine: true)
     }
 
@@ -118,6 +119,7 @@ final class HomeViewModelTests: XCTestCase {
                                createdAt: "2026-03-01",
                                participationCount: 0,
                                responses: nil,
+                               hasParticipated: false,
                                isMine: true)
         
         mockPrayerUseCase.eventPublisher.send(.prayerAdded(prayer: newPrayer))
@@ -156,6 +158,7 @@ final class HomeViewModelTests: XCTestCase {
                              createdAt: "2026-01-02",
                              participationCount: 0,
                              responses: nil,
+                             hasParticipated: false,
                              isMine: false)
         await initializeWithPrayers(prayers: [testPrayer, prayer2])
         XCTAssertEqual(sut.prayers[0].participationCount, 0)
@@ -193,6 +196,7 @@ final class HomeViewModelTests: XCTestCase {
                              createdAt: "2026-01-02",
                              participationCount: 5,
                              responses: nil,
+                             hasParticipated: false,
                              isMine: false)
         
         await initializeWithPrayers(prayers: [prayer1, prayer2])
@@ -226,6 +230,7 @@ final class HomeViewModelTests: XCTestCase {
                              createdAt: "2026-01-02",
                              participationCount: 0,
                              responses: nil,
+                             hasParticipated: false,
                              isMine: false)
         
         mockPrayerUseCase.stubbedPrayerPage = PrayerPage(

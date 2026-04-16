@@ -28,7 +28,7 @@ final class LoginViewModelTests: XCTestCase {
     }
 
     // MARK: - Email Validation
-    
+
     // 1. 유효한 이메일 형식 입력
     // 2. isValidEmail() == true
     func test_isValidEmail_validFormat_returnsTrue() {
@@ -46,7 +46,7 @@ final class LoginViewModelTests: XCTestCase {
     }
 
     // MARK: - Password Validation
-    
+
     // 1. 유효한 비밀번호 입력 (영문+숫자, 8자 이상)
     // 2. isValidPassword() == true
     func test_isValidPassword_validFormat_returnsTrue() {
@@ -64,7 +64,7 @@ final class LoginViewModelTests: XCTestCase {
     }
 
     // MARK: - Login
-    
+
     // 1. 빈 이메일로 login() 호출
     // 2. alertType == .fieldEmpty(fieldName: "이메일")
     // 3. mockUseCase.login 호출 안됨
@@ -90,7 +90,7 @@ final class LoginViewModelTests: XCTestCase {
     // 3. fetchMyInfo - stubbedUser 값 return
     // 4. session.isLoggedIn, session.name fetchMyInfo에서 return한 이름
     func test_login_success_setsSessionLoggedIn() async {
-        mockAuthUseCase.stubbedUser = User(name: "홍길동", email: "hong@test.com")
+        mockAuthUseCase.stubbedUser = User(name: "홍길동", nickname: "길동이", email: "hong@test.com")
 
         await sut.login(email: "hong@test.com", password: "password1")
 
@@ -130,29 +130,29 @@ final class LoginViewModelTests: XCTestCase {
     }
 
     // MARK: - Sign Up
-    
-    // 1. 교번 0으로 signUp() 호출
-    // 2. signUpAlertType == .fieldEmpty(fieldName: "교번")
-    func test_signUp_emptyMemberID_showsFieldEmptyAlert() async {
-        await sut.signUp(memberID: 0, name: "이름", email: "e@e.com",
-                         password: "password1", confirmPassword: "password1")
-
-        XCTAssertEqual(sut.signUpAlertType, .fieldEmpty(fieldName: "교번"))
-    }
 
     // 1. 빈 이름으로 signUp() 호출
     // 2. signUpAlertType == .fieldEmpty(fieldName: "이름")
     func test_signUp_emptyName_showsFieldEmptyAlert() async {
-        await sut.signUp(memberID: 1, name: "", email: "e@e.com",
+        await sut.signUp(name: "", nickname: "닉네임", email: "e@e.com",
                          password: "password1", confirmPassword: "password1")
 
         XCTAssertEqual(sut.signUpAlertType, .fieldEmpty(fieldName: "이름"))
     }
 
+    // 1. 빈 닉네임으로 signUp() 호출
+    // 2. signUpAlertType == .fieldEmpty(fieldName: "닉네임")
+    func test_signUp_emptyNickname_showsFieldEmptyAlert() async {
+        await sut.signUp(name: "이름", nickname: "", email: "e@e.com",
+                         password: "password1", confirmPassword: "password1")
+
+        XCTAssertEqual(sut.signUpAlertType, .fieldEmpty(fieldName: "닉네임"))
+    }
+
     // 1. 비밀번호 != 비밀번호 확인으로 signUp() 호출
     // 2. signUpAlertType == .error("비밀번호 오류", ...)
     func test_signUp_passwordMismatch_showsErrorAlert() async {
-        await sut.signUp(memberID: 1, name: "이름", email: "e@e.com",
+        await sut.signUp(name: "이름", nickname: "닉네임", email: "e@e.com",
                          password: "password1", confirmPassword: "different1")
 
         if case .error(let title, _) = sut.signUpAlertType {
@@ -165,7 +165,7 @@ final class LoginViewModelTests: XCTestCase {
     // 1. 유효하지 않은 이메일로 signUp() 호출
     // 2. signUpAlertType == .error("이메일 형식 오류", ...)
     func test_signUp_invalidEmail_showsErrorAlert() async {
-        await sut.signUp(memberID: 1, name: "이름", email: "invalid",
+        await sut.signUp(name: "이름", nickname: "닉네임", email: "invalid",
                          password: "password1", confirmPassword: "password1")
 
         if case .error(let title, _) = sut.signUpAlertType {
@@ -178,7 +178,7 @@ final class LoginViewModelTests: XCTestCase {
     // 1. 유효하지 않은 비밀번호로 signUp() 호출
     // 2. signUpAlertType == .error("비밀번호 형식 오류", ...)
     func test_signUp_invalidPassword_showsErrorAlert() async {
-        await sut.signUp(memberID: 1, name: "이름", email: "e@e.com",
+        await sut.signUp(name: "이름", nickname: "닉네임", email: "e@e.com",
                          password: "short", confirmPassword: "short")
 
         if case .error(let title, _) = sut.signUpAlertType {
@@ -192,16 +192,16 @@ final class LoginViewModelTests: XCTestCase {
     // 2. signUpCalledWith
     // 3. viewModel.alertType .registerSuccess
     func test_signUp_success_showsRegisterSuccessAlert() async {
-        await sut.signUp(memberID: 1,
-                         name: "이름",
+        await sut.signUp(name: "이름",
+                         nickname: "닉네임",
                          email: "e@e.com",
                          password: "password1",
                          confirmPassword: "password1")
-        
+
         XCTAssertNotNil(mockAuthUseCase.signUpCalledWith)
         XCTAssertEqual(sut.signUpAlertType, .registerSuccess)
     }
-    
+
     // 1. mockUseCase.stubbedError 값 할당
     // 2. mockUseCase.signUp
     // 3. stubbedError != nil throws error
@@ -210,8 +210,8 @@ final class LoginViewModelTests: XCTestCase {
         mockAuthUseCase.stubbedError = NSError(domain: "", code: 0,
                                                 userInfo: [NSLocalizedDescriptionKey: "이미 가입된 이메일"])
 
-        await sut.signUp(memberID: 1,
-                         name: "이름",
+        await sut.signUp(name: "이름",
+                         nickname: "닉네임",
                          email: "e@e.com",
                          password: "password1",
                          confirmPassword: "password1")
@@ -224,25 +224,25 @@ final class LoginViewModelTests: XCTestCase {
     }
 
     // MARK: - Find ID
-    
-    // 1. 교번 0으로 findID() 호출
-    // 2. result == nil
-    // 3. findIDAlertType == .fieldEmpty(fieldName: "교번")
-    func test_findID_emptyMemberID_returnsNil() async {
-        let result = await sut.findID(memberID: 0, name: "이름")
-
-        XCTAssertNil(result)
-        XCTAssertEqual(sut.findIDAlertType, .fieldEmpty(fieldName: "교번"))
-    }
 
     // 1. 빈 이름으로 findID() 호출
     // 2. result == nil
     // 3. findIDAlertType == .fieldEmpty(fieldName: "이름")
     func test_findID_emptyName_returnsNil() async {
-        let result = await sut.findID(memberID: 1, name: "")
+        let result = await sut.findID(name: "", nickname: "닉네임")
 
         XCTAssertNil(result)
         XCTAssertEqual(sut.findIDAlertType, .fieldEmpty(fieldName: "이름"))
+    }
+
+    // 1. 빈 닉네임으로 findID() 호출
+    // 2. result == nil
+    // 3. findIDAlertType == .fieldEmpty(fieldName: "닉네임")
+    func test_findID_emptyNickname_returnsNil() async {
+        let result = await sut.findID(name: "이름", nickname: "")
+
+        XCTAssertNil(result)
+        XCTAssertEqual(sut.findIDAlertType, .fieldEmpty(fieldName: "닉네임"))
     }
 
     // 1. mockUseCase.stubbedFoundEmail 값 할당
@@ -252,21 +252,21 @@ final class LoginViewModelTests: XCTestCase {
     func test_findID_success_returnsEmail() async {
         mockAuthUseCase.stubbedFoundEmail = "found@test.com"
 
-        let result = await sut.findID(memberID: 1, name: "홍길동")
+        let result = await sut.findID(name: "홍길동", nickname: "길동이")
 
-        XCTAssertEqual(mockAuthUseCase.findIDCalledWith?.memberID, 1)
         XCTAssertEqual(mockAuthUseCase.findIDCalledWith?.name, "홍길동")
+        XCTAssertEqual(mockAuthUseCase.findIDCalledWith?.nickname, "길동이")
         XCTAssertEqual(result, "found@test.com")
     }
 
     // 1. mockUseCase.stubbedError 값 할당
-    // 2. mockUseCase.fineId
+    // 2. mockUseCase.findId
     // 3. stubbedError != nil throws error
     // 4. viewModel.alertType .error
     func test_findID_failure_showsErrorAlert() async {
         mockAuthUseCase.stubbedError = NSError(domain: "", code: 0)
 
-        let result = await sut.findID(memberID: 1, name: "홍길동")
+        let result = await sut.findID(name: "홍길동", nickname: "길동이")
 
         XCTAssertNil(result)
         if case .error(let title, _) = sut.findIDAlertType {

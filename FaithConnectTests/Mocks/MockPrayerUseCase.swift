@@ -16,6 +16,8 @@ class MockPrayerUseCase: PrayerUseCaseProtocol {
     var stubbedPrayer: Prayer?
     var stubbedPrayerResponse: PrayerResponse?
     var stubbedMyResponsePage: MyResponsePage = MyResponsePage(responses: [], currentPage: 1, hasNext: false)
+    var stubbedBlockedUserPage: BlockedUserPage = BlockedUserPage(blockedUsers: [], currentPage: 1, hasNext: false)
+    var stubbedReplyPage: ReplyPage = ReplyPage(replies: [], currentPage: 1, hasNext: false)
     var stubbedError: Error?
 
     // MARK: - 호출 추적
@@ -88,5 +90,36 @@ class MockPrayerUseCase: PrayerUseCaseProtocol {
         loadParticipatedPrayersCalledWith = page
         if let error = stubbedError { throw error }
         return stubbedMyResponsePage
+    }
+
+    func reportPrayer(prayerRequestId: Int, reasonType: ReportReasonType, reasonDetail: String?) async throws {
+        if let error = stubbedError { throw error }
+    }
+
+    func reportPrayerResponse(prayerResponseId: Int, reasonType: ReportReasonType, reasonDetail: String?) async throws {
+        if let error = stubbedError { throw error }
+    }
+
+    func blockUser(userId: Int) async throws {
+        if let error = stubbedError { throw error }
+    }
+
+    func loadBlockList(page: Int) async throws -> BlockedUserPage {
+        if let error = stubbedError { throw error }
+        return stubbedBlockedUserPage
+    }
+
+    func unblockUser(userId: Int) async throws {
+        if let error = stubbedError { throw error }
+    }
+
+    func writeReply(responseId: Int, message: String) async throws -> PrayerResponse {
+        if let error = stubbedError { throw error }
+        return stubbedPrayerResponse!
+    }
+
+    func loadReplies(responseId: Int, page: Int) async throws -> ReplyPage {
+        if let error = stubbedError { throw error }
+        return stubbedReplyPage
     }
 }

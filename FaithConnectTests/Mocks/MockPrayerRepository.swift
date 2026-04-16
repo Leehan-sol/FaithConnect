@@ -14,8 +14,9 @@ class MockPrayerRepository: PrayerRepositoryProtocol {
     var stubbedPrayerDetail: PrayerDetailResponse?
     var stubbedPrayerWrite: PrayerWriteResponse?
     var stubbedResponseItem: DetailResponseItem?
-    var stubbedResponseUpdate: PrayerResponseUpdateResponse?
     var stubbedMyResponseList: MyResponseList?
+    var stubbedBlockList: BlockListResponse?
+    var stubbedReplyList: ReplyListResponse?
     var stubbedError: Error?
 
     // MARK: - 호출 추적
@@ -60,9 +61,9 @@ class MockPrayerRepository: PrayerRepositoryProtocol {
         return stubbedResponseItem!
     }
 
-    func updatePrayerResponse(responseID: Int, message: String) async throws -> PrayerResponseUpdateResponse {
+    func updatePrayerResponse(responseID: Int, message: String) async throws -> DetailResponseItem {
         if let error = stubbedError { throw error }
-        return stubbedResponseUpdate!
+        return stubbedResponseItem!
     }
 
     func deletePrayerResponse(responseID: Int) async throws {
@@ -78,5 +79,36 @@ class MockPrayerRepository: PrayerRepositoryProtocol {
     func loadParticipatedPrayers(page: Int) async throws -> MyResponseList {
         if let error = stubbedError { throw error }
         return stubbedMyResponseList!
+    }
+
+    func reportPrayer(prayerRequestId: Int, reasonType: ReportReasonType, reasonDetail: String?) async throws {
+        if let error = stubbedError { throw error }
+    }
+
+    func reportPrayerResponse(prayerResponseId: Int, reasonType: ReportReasonType, reasonDetail: String?) async throws {
+        if let error = stubbedError { throw error }
+    }
+
+    func blockUser(userId: Int) async throws {
+        if let error = stubbedError { throw error }
+    }
+
+    func loadBlockList(page: Int) async throws -> BlockListResponse {
+        if let error = stubbedError { throw error }
+        return stubbedBlockList!
+    }
+
+    func unblockUser(userId: Int) async throws {
+        if let error = stubbedError { throw error }
+    }
+
+    func writeReply(responseId: Int, message: String) async throws -> DetailResponseItem {
+        if let error = stubbedError { throw error }
+        return stubbedResponseItem!
+    }
+
+    func loadReplies(responseId: Int, page: Int) async throws -> ReplyListResponse {
+        if let error = stubbedError { throw error }
+        return stubbedReplyList!
     }
 }

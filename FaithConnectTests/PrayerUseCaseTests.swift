@@ -79,11 +79,12 @@ final class PrayerUseCaseTests: XCTestCase {
             createdAt: "2026-01-01",
             participationCount: 5,
             responses: nil,
+            hasParticipated: false,
             isMine: true,
             errorCode: nil,
             status: nil
         )
-        
+
         mockRepository.stubbedPrayerList = PrayerListResponse(
             prayerRequests: [prayerDetail],
             currentPage: 1,
@@ -173,10 +174,14 @@ final class PrayerUseCaseTests: XCTestCase {
         mockRepository.stubbedResponseItem = DetailResponseItem(
             prayerResponseId: 10,
             prayerRequestId: 1,
+            prayerUserId: 1,
+            prayerUserName: "작성자",
             prayerRequestTitle: "기도 제목",
             message: "응원합니다",
             createdAt: "2026-03-01",
             isMine: true,
+            parentResponseId: nil,
+            replyCount: 0,
             errorCode: nil,
             status: nil
         )
@@ -239,6 +244,7 @@ final class PrayerUseCaseTests: XCTestCase {
             createdAt: "2026-01-01",
             participationCount: 3,
             responses: nil,
+            hasParticipated: false,
             isMine: true,
             errorCode: nil,
             status: nil

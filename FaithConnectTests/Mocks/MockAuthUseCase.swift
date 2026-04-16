@@ -10,23 +10,32 @@ class MockAuthUseCase: AuthUseCaseProtocol {
 
     // MARK: - 스텁 설정
     var stubbedHasToken: Bool = false
-    var stubbedUser: User = User(name: "", email: "")
+    var stubbedUser: User = User(name: "", nickname: "", email: "")
     var stubbedFoundEmail: String = ""
+    var stubbedNickname: String = ""
     var stubbedError: Error?
 
     // MARK: - 호출 추적
     var loginCalledWith: (email: String, password: String)?
-    var signUpCalledWith: (memberID: Int, name: String, email: String, password: String, confirmPassword: String)?
+    var signUpCalledWith: (name: String, nickname: String, email: String, password: String, confirmPassword: String)?
     var logoutCalled = false
     var fetchMyInfoCalled = false
-    var findIDCalledWith: (memberID: Int, name: String)?
+    var findIDCalledWith: (name: String, nickname: String)?
     var registerPushTokenCalledWith: String?
 
     // MARK: - AuthUseCaseProtocol
     var hasToken: Bool { stubbedHasToken }
 
-    func signUp(memberID: Int, name: String, email: String, password: String, confirmPassword: String) async throws {
-        signUpCalledWith = (memberID, name, email, password, confirmPassword)
+    func signUp(name: String, nickname: String, email: String, password: String, confirmPassword: String) async throws {
+        signUpCalledWith = (name, nickname, email, password, confirmPassword)
+        if let error = stubbedError { throw error }
+    }
+
+    func requestEmailVerification(email: String) async throws {
+        if let error = stubbedError { throw error }
+    }
+
+    func confirmEmailVerification(email: String, verificationCode: String) async throws {
         if let error = stubbedError { throw error }
     }
 
@@ -46,14 +55,19 @@ class MockAuthUseCase: AuthUseCaseProtocol {
         return stubbedUser
     }
 
-    func findID(memberID: Int, name: String) async throws -> String {
-        findIDCalledWith = (memberID, name)
+    func findID(name: String, nickname: String) async throws -> String {
+        findIDCalledWith = (name, nickname)
         if let error = stubbedError { throw error }
         return stubbedFoundEmail
     }
 
     func changePassword(id: Int, name: String, email: String, newPassword: String) async throws {
         if let error = stubbedError { throw error }
+    }
+
+    func changeNickname(nickname: String) async throws -> String {
+        if let error = stubbedError { throw error }
+        return stubbedNickname
     }
 
     func deleteAccount() async throws {
