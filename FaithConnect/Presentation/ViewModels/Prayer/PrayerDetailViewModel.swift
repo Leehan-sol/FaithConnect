@@ -142,13 +142,9 @@ class PrayerDetailViewModel: ObservableObject {
     func deletePrayerResponse(response: PrayerResponse) async {
         do {
             print("응답 삭제 API 호출")
-            try await prayerUseCase.deletePrayerResponse(responseID: response.id, 
+            try await prayerUseCase.deletePrayerResponse(responseID: response.id,
                                                          prayerRequestId: response.prayerRequestId)
-            
-            guard var prayer = prayer else { return }
-            prayer.responses?.removeAll { $0.id == response.id }
-            prayer.participationCount -= 1
-            self.prayer = prayer
+            await refresh()
         } catch {
             let error = error.localizedDescription
             alertType = .error(title: "삭제 실패",
@@ -165,6 +161,13 @@ class PrayerDetailViewModel: ObservableObject {
             prayer.responses?[index].replies.removeAll { $0.id == reply.id }
             prayer.responses?[index].replyCount -= 1
             prayer.participationCount -= 1
+
+            // 삭제된 루트 댓글의 대댓글이 모두 사라지면 루트 댓글도 제거
+            if prayer.responses?[index].replies.isEmpty == true,
+               prayer.responses?[index].message == "삭제된 댓글입니다" {
+                prayer.responses?.remove(at: index)
+            }
+
             self.prayer = prayer
         } catch {
             alertType = .error(title: "삭제 실패", message: error.localizedDescription)

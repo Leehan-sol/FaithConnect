@@ -21,51 +21,62 @@ struct CommentRowView: View {
     var onReport: ((PrayerResponse, ReportReasonType, String?) async -> Bool)? = nil
     let onBlock: ((PrayerResponse) -> Void)?
     var onReply: ((PrayerResponse) -> Void)?
-    
+
+    private var isDeleted: Bool {
+        response.message == "삭제된 댓글입니다"
+    }
+
     var body: some View {
         HStack(alignment: .top, spacing: 10) {
             Image(systemName: "figure.and.child.holdinghands")
-                .foregroundColor(.customNavy)
+                .foregroundColor(isDeleted ? .gray : .customNavy)
                 .frame(width: 35, height: 35)
-                .background(.customBlue1.opacity(0.4))
+                .background(isDeleted ? Color(.systemGray4) : .customBlue1.opacity(0.4))
                 .cornerRadius(15)
 
             VStack(alignment: .leading, spacing: 6) {
-                HStack {
-                    Text(response.userName)
-                        .font(.caption)
-                        .fontWeight(.semibold)
+                if isDeleted {
+                    Text("삭제된 댓글입니다")
+                        .font(.subheadline)
+                        .foregroundColor(.gray)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                } else {
+                    HStack {
+                        Text(response.userName)
+                            .font(.caption)
+                            .fontWeight(.semibold)
+                            .foregroundColor(.gray)
+
+                        Spacer()
+
+                        Button {
+                            showConfirmationDialog = true
+                        } label: {
+                            Image(systemName: "ellipsis")
+                                .rotationEffect(.degrees(90))
+                                .foregroundColor(.gray)
+                        }
+                    }
+
+                    Text(response.createdAt.toTimeAgoDisplay())
+                        .font(.caption2)
                         .foregroundColor(.gray)
 
-                    Spacer()
+                    Text(response.message.trimmingCharacters(in: .whitespacesAndNewlines))
+                        .frame(maxWidth: .infinity, alignment: .leading)
 
-                    Button {
-                        showConfirmationDialog = true
-                    } label: {
-                        Image(systemName: "ellipsis")
-                            .rotationEffect(.degrees(90))
-                            .foregroundColor(.gray)
-                    }
-                }
-
-                Text(response.createdAt.toTimeAgoDisplay())
-                    .font(.caption2)
-                    .foregroundColor(.gray)
-
-                Text(response.message.trimmingCharacters(in: .whitespacesAndNewlines))
-                    .frame(maxWidth: .infinity, alignment: .leading)
-
-                HStack {
-                    Spacer()
-                    Button {
-                        onReply?(response)
-                    } label: {
-                        Text(response.replyCount > 0
-                             ? "답글 (\(response.replyCount))"
-                             : "답글")
-                            .font(.caption2)
-                            .fontWeight(.semibold)
-                            .foregroundColor(.customBlue1)
+                    HStack {
+                        Spacer()
+                        Button {
+                            onReply?(response)
+                        } label: {
+                            Text(response.replyCount > 0
+                                 ? "답글 (\(response.replyCount))"
+                                 : "답글")
+                                .font(.caption2)
+                                .fontWeight(.semibold)
+                                .foregroundColor(.customBlue1)
+                        }
                     }
                 }
             }
