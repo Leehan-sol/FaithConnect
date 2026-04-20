@@ -47,6 +47,7 @@ struct LogoutResponse: Decodable {
 // MARK: - 내 정보
 struct FetchMyInfoResponse: Decodable {
     let name: String
+    let nickname: String
     let email: String
 }
 
