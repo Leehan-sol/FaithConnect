@@ -122,7 +122,8 @@ struct CommentListView: View {
                     }
 
                     // 대댓글 존재하지 않는 경우, 대댓글 작성중
-                    if viewModel.replyingTo?.id == response.id, viewModel.editingReply == nil {
+                    if viewModel.replyingTo?.id == response.id, viewModel.editingReply == nil,
+                       response.message != "삭제된 댓글입니다" {
                         ReplyInputBar(
                             replyText: $viewModel.replyText,
                             isReplyFocused: isReplyFocused,

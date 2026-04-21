@@ -178,7 +178,7 @@ struct MyPageView: View {
                 BlockListView(viewModel: { viewModel.makeBlockListViewModel() })
             }
             .navigationDestination(item: $selectedPolicy) { policy in
-                PolicyWebView(viewType: selectedPolicy ?? .privacy)
+                PolicyWebView(viewType: policy)
             }
             .sheet(isPresented: $showInquiry) {
                 InquiryBottomSheetView(viewModel: viewModel.makeInquiryViewModel(),
