@@ -167,7 +167,7 @@ extension APIClient {
 
         var request = request
         
-        if auth == .required, let token = tokenStorage.accessToken {
+        if auth == .required, APIEnvironment.current != .mock, let token = tokenStorage.accessToken {
             request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         }
         
@@ -189,7 +189,7 @@ extension APIClient {
 
         // 토큰만료
         if httpResponse.statusCode == 401 {
-            if auth == .required, tokenStorage.accessToken != nil {
+            if auth == .required, APIEnvironment.current != .mock, tokenStorage.accessToken != nil {
                 if isRetry {
                     await handleSessionExpiration()
                     throw APIError.serverMessage(code: .expiredAccessToken)

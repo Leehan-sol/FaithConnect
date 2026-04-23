@@ -221,4 +221,5 @@ class PrayerUseCase: PrayerUseCaseProtocol {
                          hasNext: result.currentPage < result.totalPages)
     }
 
+
 }
