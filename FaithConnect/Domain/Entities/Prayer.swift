@@ -26,6 +26,7 @@ struct Prayer: Identifiable {
     var responses: [PrayerResponse]?
     let hasParticipated: Bool
     let isMine: Bool
+    let contentStatus: ContentStatus
 }
 
 
@@ -44,6 +45,7 @@ extension Prayer {
         self.responses = dto.responses?.map { PrayerResponse(from: $0) }
         self.hasParticipated = dto.hasParticipated ?? false
         self.isMine = dto.isMine
+        self.contentStatus = dto.status ?? .normal
     }
 
     init(from dto: PrayerWriteResponse) {
@@ -60,5 +62,6 @@ extension Prayer {
         self.responses = []
         self.hasParticipated = false
         self.isMine = dto.isMine
+        self.contentStatus = .normal
     }
 }

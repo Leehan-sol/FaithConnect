@@ -11,7 +11,7 @@ import Foundation
 class PrayerDetailViewModel: ObservableObject {
     @Published var prayer: Prayer?
     @Published var alertType: AlertType? = nil
-    @Published var isDeleted = false
+    @Published var isUnavailable = false
     @Published var replyingTo: PrayerResponse? // 대상 댓글
     @Published var editingReply: PrayerResponse? // 수정 대상 대댓글
     @Published var replyText: String = "" 
@@ -52,7 +52,7 @@ class PrayerDetailViewModel: ObservableObject {
         do {
             let prayer = try await prayerUseCase.loadPrayerDetail(prayerRequestID: prayerRequestId)
             self.prayer = prayer
-            self.isDeleted = prayer.createdAt.isEmpty
+            self.isUnavailable = prayer.contentStatus != .normal
             Task { await loadInitialReplies() }
         } catch {
             alertType = .error(title: "불러오기 실패",
@@ -164,7 +164,7 @@ class PrayerDetailViewModel: ObservableObject {
 
             // 삭제된 루트 댓글의 대댓글이 모두 사라지면 루트 댓글도 제거
             if prayer.responses?[index].replies.isEmpty == true,
-               prayer.responses?[index].message == "삭제된 댓글입니다" {
+               prayer.responses?[index].contentStatus != .normal {
                 prayer.responses?.remove(at: index)
             }
 
@@ -300,7 +300,12 @@ class PrayerDetailViewModel: ObservableObject {
         guard !message.isEmpty else { return nil }
 
         do {
-            let reply = try await prayerUseCase.writeReply(responseId: parentResponse.id, message: message)
+            let reply = try await prayerUseCase.writeReply(responseId: parentResponse.id,
+                                                              message: message,
+                                                              prayerRequestId: prayer?.id ?? 0,
+                                                              prayerTitle: prayer?.title ?? "",
+                                                              categoryId: prayer?.categoryId ?? 0,
+                                                              categoryName: prayer?.categoryName ?? "")
             guard var prayer = prayer,
                   let index = prayer.responses?.firstIndex(where: { $0.id == parentResponse.id }) else { return nil }
             prayer.responses?[index].replies.append(reply)

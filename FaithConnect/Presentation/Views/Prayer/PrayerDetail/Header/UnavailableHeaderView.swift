@@ -1,5 +1,5 @@
 //
-//  DeletedHeaderView.swift
+//  UnavailableHeaderView.swift
 //  FaithConnect
 //
 //  Created by Apple on 3/25/26.
@@ -7,18 +7,21 @@
 
 import SwiftUI
 
-struct DeletedHeaderView: View {
+struct UnavailableHeaderView: View {
     let participationCount: Int
+    var contentStatus: ContentStatus = .deleted
 
     var body: some View {
         VStack(spacing: 10) {
-            Image(systemName: "trash.slash")
+            Image(systemName: contentStatus == .blocked ? "nosign" : "trash.slash")
                 .font(.system(size: 28))
                 .foregroundColor(.gray)
-            Text("삭제된 기도입니다")
+            Text(contentStatus == .blocked ? "차단된 사용자의 기도입니다" : "삭제된 기도입니다")
                 .font(.headline)
                 .foregroundColor(.gray)
-            Text("이 기도는 작성자에 의해 삭제되었습니다.")
+            Text(contentStatus == .blocked
+                 ? "차단된 사용자의 게시물입니다."
+                 : "이 기도는 작성자에 의해 삭제되었습니다.")
                 .font(.subheadline)
                 .foregroundColor(.gray)
         }

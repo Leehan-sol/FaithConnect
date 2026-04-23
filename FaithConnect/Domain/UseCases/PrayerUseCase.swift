@@ -27,7 +27,7 @@ protocol PrayerUseCaseProtocol {
     func blockUser(userId: Int) async throws
     func loadBlockList(page: Int) async throws -> BlockedUserPage
     func unblockUser(userId: Int) async throws
-    func writeReply(responseId: Int, message: String) async throws -> PrayerResponse
+    func writeReply(responseId: Int, message: String, prayerRequestId: Int, prayerTitle: String, categoryId: Int, categoryName: String) async throws -> PrayerResponse
     func loadReplies(responseId: Int, page: Int) async throws -> ReplyPage
 }
 
@@ -198,9 +198,20 @@ class PrayerUseCase: PrayerUseCaseProtocol {
         try await repository.unblockUser(userId: userId)
     }
 
-    func writeReply(responseId: Int, message: String) async throws -> PrayerResponse {
+    func writeReply(responseId: Int, message: String, prayerRequestId: Int, prayerTitle: String, categoryId: Int, categoryName: String) async throws -> PrayerResponse {
         let result = try await repository.writeReply(responseId: responseId, message: message)
-        return PrayerResponse(from: result)
+        let prayerResponse = PrayerResponse(from: result)
+
+        let myResponse = MyResponse(id: prayerResponse.id,
+                                    prayerRequestId: prayerRequestId,
+                                    prayerRequestTitle: prayerTitle,
+                                    categoryId: categoryId,
+                                    categoryName: categoryName,
+                                    message: message,
+                                    createdAt: prayerResponse.createdAt)
+        eventPublisher.send(.responseAdded(response: myResponse))
+
+        return prayerResponse
     }
 
     func loadReplies(responseId: Int, page: Int) async throws -> ReplyPage {

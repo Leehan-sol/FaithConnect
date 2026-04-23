@@ -22,21 +22,23 @@ struct CommentRowView: View {
     let onBlock: ((PrayerResponse) -> Void)?
     var onReply: ((PrayerResponse) -> Void)?
 
-    private var isDeleted: Bool {
-        response.message == "삭제된 댓글입니다"
+    private var isUnavailable: Bool {
+        response.contentStatus == .deleted || response.contentStatus == .blocked
     }
 
     var body: some View {
         HStack(alignment: .top, spacing: 10) {
             Image(systemName: "figure.and.child.holdinghands")
-                .foregroundColor(isDeleted ? .gray : .customNavy)
+                .foregroundColor(isUnavailable ? .gray : .customNavy)
                 .frame(width: 35, height: 35)
-                .background(isDeleted ? Color(.systemGray4) : .customBlue1.opacity(0.4))
+                .background(isUnavailable ? Color(.systemGray4) : .customBlue1.opacity(0.4))
                 .cornerRadius(15)
 
             VStack(alignment: .leading, spacing: 6) {
-                if isDeleted {
-                    Text("삭제된 댓글입니다")
+                if isUnavailable {
+                    Text(response.contentStatus == .blocked
+                         ? "차단된 사용자의 글입니다"
+                         : "삭제된 댓글입니다")
                         .font(.subheadline)
                         .foregroundColor(.gray)
                         .frame(maxWidth: .infinity, alignment: .leading)
@@ -163,7 +165,8 @@ struct CommentRowView: View {
                                                    createdAt: "2025-11-07T12:55:00.000Z",
                                                    isMine: false,
                                                    parentResponseId: nil,
-                                                   replyCount: 0),
+                                                   replyCount: 0,
+                                                   contentStatus: .normal),
                           onEdit: nil,
                           onDelete: nil,
                           onReport: nil,

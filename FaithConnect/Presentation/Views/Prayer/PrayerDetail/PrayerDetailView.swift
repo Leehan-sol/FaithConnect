@@ -40,7 +40,7 @@ struct PrayerDetailView: View {
                 scrollContent
             }
 
-            if !viewModel.isDeleted, viewModel.prayer != nil, viewModel.replyingTo == nil {
+            if !viewModel.isUnavailable, viewModel.prayer != nil, viewModel.replyingTo == nil {
                 ActionButton(title: "기도 응답하기",
                              foregroundColor: .white,
                              backgroundColor: .customBlue1) {
@@ -72,8 +72,9 @@ struct PrayerDetailView: View {
         ScrollViewReader { proxy in
         ScrollView(.vertical, showsIndicators: false) {
             if let prayer = viewModel.prayer {
-                if viewModel.isDeleted {
-                    DeletedHeaderView(participationCount: prayer.participationCount)
+                if viewModel.isUnavailable {
+                    UnavailableHeaderView(participationCount: prayer.participationCount,
+                                      contentStatus: prayer.contentStatus)
                 } else {
                     DetailHeaderView(prayer: prayer)
                 }
@@ -112,7 +113,7 @@ struct PrayerDetailView: View {
             }
             return false
         }) {
-            if !viewModel.isDeleted {
+            if !viewModel.isUnavailable {
                 Button {
                     prayerBottomSheetType = nil
                     showConfirmationDialog = true

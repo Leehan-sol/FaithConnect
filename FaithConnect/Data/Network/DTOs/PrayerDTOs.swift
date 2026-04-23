@@ -35,7 +35,7 @@ struct PrayerDetailResponse: Decodable {
     let hasParticipated: Bool?
     let isMine: Bool
     let errorCode: APIErrorCode?
-    let status: Int?
+    let status: ContentStatus?
 }
 
 struct DetailResponseItem: Decodable {
@@ -50,7 +50,7 @@ struct DetailResponseItem: Decodable {
     let parentResponseId: Int?
     let replyCount: Int?
     let errorCode: APIErrorCode?
-    let status: Int?
+    let status: ContentStatus?
 }
 
 // MARK: - 대댓글 목록

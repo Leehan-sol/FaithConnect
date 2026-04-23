@@ -23,6 +23,7 @@ struct PrayerResponse: Identifiable, Equatable {
     let isMine: Bool
     let parentResponseId: Int?
     var replyCount: Int
+    let contentStatus: ContentStatus
     var replies: [PrayerResponse] = []
 }
 
@@ -39,5 +40,6 @@ extension PrayerResponse {
         self.isMine = dto.isMine
         self.parentResponseId = dto.parentResponseId
         self.replyCount = dto.replyCount ?? 0
+        self.contentStatus = dto.status ?? .normal
     }
 }
