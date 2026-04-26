@@ -32,7 +32,7 @@ struct DeleteAccountView: View {
                 VStack(alignment: .leading, spacing: 24) {
                     InfoBoxView(
                         messages: [
-                            "• 작성한 모든 기도제목이 삭제됩니다",
+                            "• 작성한 모든 기도제목은 삭제되지 않습니다",
                             "• 받은 응답 내역이 모두 사라집니다",
                             "• 계정 정보는 복구할 수 없습니다",
                         ],

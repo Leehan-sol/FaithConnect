@@ -26,6 +26,10 @@ struct CommentRowView: View {
         response.userName.trimmingCharacters(in: .whitespaces).isEmpty
     }
 
+    private var isWithdrawnUser: Bool {
+        response.userName == "탈퇴한 사용자"
+    }
+
     var body: some View {
         HStack(alignment: .top, spacing: 10) {
             Image(systemName: "figure.and.child.holdinghands")
@@ -49,12 +53,14 @@ struct CommentRowView: View {
 
                         Spacer()
 
-                        Button {
-                            showConfirmationDialog = true
-                        } label: {
-                            Image(systemName: "ellipsis")
-                                .rotationEffect(.degrees(90))
-                                .foregroundColor(.gray)
+                        if !isWithdrawnUser {
+                            Button {
+                                showConfirmationDialog = true
+                            } label: {
+                                Image(systemName: "ellipsis")
+                                    .rotationEffect(.degrees(90))
+                                    .foregroundColor(.gray)
+                            }
                         }
                     }
 

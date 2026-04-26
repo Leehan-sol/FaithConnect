@@ -96,7 +96,7 @@ struct PrayerDetailView: View {
             isReplyFocused = false
         }
         .refreshable {
-            await viewModel.refresh()
+            await Task { await viewModel.refresh() }.value
         }
         .onChange(of: viewModel.prayer?.responses?.count) { oldValue, newValue in
             if let oldValue, let newValue, newValue > oldValue {
@@ -116,7 +116,7 @@ struct PrayerDetailView: View {
             }
             return false
         }) {
-            if !viewModel.isUnavailable {
+            if !viewModel.isUnavailable, viewModel.prayer?.userName != "탈퇴한 사용자" {
                 Button {
                     prayerBottomSheetType = nil
                     showConfirmationDialog = true

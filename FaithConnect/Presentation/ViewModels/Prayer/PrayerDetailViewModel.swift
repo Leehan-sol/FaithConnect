@@ -56,6 +56,10 @@ class PrayerDetailViewModel: ObservableObject {
             self.prayer = prayer
             self.isUnavailable = prayer.userName.trimmingCharacters(in: .whitespaces).isEmpty
             Task { await loadInitialReplies() }
+        } catch is CancellationError {
+            // refreshable 제스처 종료 시 무시
+        } catch let error as URLError where error.code == .cancelled {
+            // 네트워크 요청 취소 시 무시
         } catch {
             if case APIError.serverMessage(let code) = error, code == .prayerNotFound {
                 shouldDismiss = true
