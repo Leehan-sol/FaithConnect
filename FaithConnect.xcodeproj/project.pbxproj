@@ -81,6 +81,7 @@
 		CC6FFE172F1390B300EB10D3 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6FFE162F1390B300EB10D3 /* SplashView.swift */; };
 		CC728A392EFEB13D00D93208 /* AlertType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC728A382EFEB13D00D93208 /* AlertType.swift */; };
 		CC7A00D52F0BEF14005CB132 /* APIDTOs.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC7A00D42F0BEF14005CB132 /* APIDTOs.swift */; };
+		CC7FC07C2F9E56A800826B98 /* Secrets.plist in Resources */ = {isa = PBXBuildFile; fileRef = CC7FC07B2F9E56A800826B98 /* Secrets.plist */; };
 		CCAD36752EB726510028D451 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CCAD36742EB726510028D451 /* LaunchScreen.storyboard */; };
 		CCAD36832EB731EF0028D451 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAD36822EB731EF0028D451 /* LoginView.swift */; };
 		CCAD36852EB732FE0028D451 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAD36842EB732FE0028D451 /* LoginViewModel.swift */; };
@@ -207,6 +208,7 @@
 		CC6FFE162F1390B300EB10D3 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 		CC728A382EFEB13D00D93208 /* AlertType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertType.swift; sourceTree = "<group>"; };
 		CC7A00D42F0BEF14005CB132 /* APIDTOs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIDTOs.swift; sourceTree = "<group>"; };
+		CC7FC07B2F9E56A800826B98 /* Secrets.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Secrets.plist; sourceTree = "<group>"; };
 		CCAD36742EB726510028D451 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CCAD36822EB731EF0028D451 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		CCAD36842EB732FE0028D451 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
@@ -500,6 +502,7 @@
 				CCB8262B2F51AD8D002880F0 /* FaithConnect.entitlements */,
 				CC57ADB62EDC3F980043A8D8 /* Info.plist */,
 				18C747A62F56D784006BF9DF /* GoogleService-Info.plist */,
+				CC7FC07B2F9E56A800826B98 /* Secrets.plist */,
 				CCAD36762EB726750028D451 /* App */,
 				CC6B2AD82F24CA9C003BB246 /* Presentation */,
 				CC6B2AD92F24CAC4003BB246 /* Domain */,
@@ -790,6 +793,7 @@
 			files = (
 				CCAD36752EB726510028D451 /* LaunchScreen.storyboard in Resources */,
 				186D4F762F03BC97005520FD /* privacy.html in Resources */,
+				CC7FC07C2F9E56A800826B98 /* Secrets.plist in Resources */,
 				CC6C8F222E9B978400E43387 /* Preview Assets.xcassets in Resources */,
 				186D4F782F03BD02005520FD /* terms.html in Resources */,
 				CC6C8F1F2E9B978400E43387 /* Assets.xcassets in Resources */,
@@ -841,7 +845,6 @@
 				CC6B2AE32F24CB72003BB246 /* PrayerRepository.swift in Sources */,
 				CCAD36892EB74F8F0028D451 /* SignUpView.swift in Sources */,
 				CCAD36872EB73F540028D451 /* LabeldTextField.swift in Sources */,
-				CC3CD1C92F7ABBB000C301C0 /* ReportDTOs.swift in Sources */,
 				CC6B2ADF2F24CB4B003BB246 /* PrayerRepositoryProtocol.swift in Sources */,
 				180228912EBA08C300ABA95C /* PrayerRowView.swift in Sources */,
 				CC6FFE172F1390B300EB10D3 /* SplashView.swift in Sources */,
