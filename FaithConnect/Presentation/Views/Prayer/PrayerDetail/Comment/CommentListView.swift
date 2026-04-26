@@ -123,7 +123,7 @@ struct CommentListView: View {
 
                     // 대댓글 존재하지 않는 경우, 대댓글 작성중
                     if viewModel.replyingTo?.id == response.id, viewModel.editingReply == nil,
-                       response.contentStatus == .normal {
+                       !response.userName.trimmingCharacters(in: .whitespaces).isEmpty {
                         ReplyInputBar(
                             replyText: $viewModel.replyText,
                             isReplyFocused: isReplyFocused,

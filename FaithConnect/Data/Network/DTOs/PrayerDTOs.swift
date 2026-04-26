@@ -24,18 +24,17 @@ struct PrayerListResponse: Decodable {
 struct PrayerDetailResponse: Decodable {
     let prayerRequestId: Int
     let prayerUserId: Int?
-    let prayerUserName: String
+    let prayerUserName: String?
     let categoryId: Int?
-    let categoryName: String
-    let title: String
-    let content: String
+    let categoryName: String?
+    let title: String?
+    let content: String?
     let createdAt: String?
     let participationCount: Int
     let responses: [DetailResponseItem]?
     let hasParticipated: Bool?
     let isMine: Bool
     let errorCode: APIErrorCode?
-    let status: ContentStatus?
 }
 
 struct DetailResponseItem: Decodable {
@@ -50,7 +49,6 @@ struct DetailResponseItem: Decodable {
     let parentResponseId: Int?
     let replyCount: Int?
     let errorCode: APIErrorCode?
-    let status: ContentStatus?
 }
 
 // MARK: - 대댓글 목록

@@ -26,7 +26,6 @@ struct Prayer: Identifiable {
     var responses: [PrayerResponse]?
     let hasParticipated: Bool
     let isMine: Bool
-    let contentStatus: ContentStatus
 }
 
 
@@ -35,17 +34,16 @@ extension Prayer {
     init(from dto: PrayerDetailResponse) {
         self.id = dto.prayerRequestId
         self.userId = dto.prayerUserId ?? 0
-        self.userName = dto.prayerUserName
+        self.userName = dto.prayerUserName ?? ""
         self.categoryId = dto.categoryId ?? 0
-        self.categoryName = dto.categoryName
-        self.title = dto.title
-        self.content = dto.content
+        self.categoryName = dto.categoryName ?? ""
+        self.title = dto.title ?? ""
+        self.content = dto.content ?? ""
         self.createdAt = dto.createdAt ?? ""
         self.participationCount = dto.participationCount
         self.responses = dto.responses?.map { PrayerResponse(from: $0) }
         self.hasParticipated = dto.hasParticipated ?? false
         self.isMine = dto.isMine
-        self.contentStatus = dto.status ?? .normal
     }
 
     init(from dto: PrayerWriteResponse) {
@@ -62,6 +60,5 @@ extension Prayer {
         self.responses = []
         self.hasParticipated = false
         self.isMine = dto.isMine
-        self.contentStatus = .normal
     }
 }

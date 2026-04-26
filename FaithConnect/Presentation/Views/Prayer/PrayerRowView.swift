@@ -96,11 +96,9 @@ struct PrayerRowView: View {
                                                             createdAt: "",
                                                             isMine: false,
                                                             parentResponseId: nil,
-                                                            replyCount: 0,
-                                                            contentStatus: .normal)],
+                                                            replyCount: 0)],
                                  hasParticipated: false,
-                                 isMine: false,
-                                 contentStatus: .normal),
+                                 isMine: false),
                   cellType: .others)
     .padding()
 }

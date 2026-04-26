@@ -18,6 +18,9 @@ struct MyPrayerListView: View {
     var body: some View {
         Group {
             if prayerContextType == .prayer {
+                if viewModel.writtenPrayers.isEmpty {
+                    PrayerEmptyView(prayerContextType: .prayer)
+                } else {
                 List {
                     ForEach(viewModel.writtenPrayers) { prayer in
                         PrayerRowView(prayer: prayer,
@@ -53,9 +56,13 @@ struct MyPrayerListView: View {
                 }
                 .listStyle(PlainListStyle())
                 .scrollIndicators(.hidden)
+                }
             }
 
             if prayerContextType == .response {
+                if viewModel.participatedPrayers.isEmpty {
+                    PrayerEmptyView(prayerContextType: .response)
+                } else {
                 List {
                     ForEach(viewModel.participatedPrayers) { response in
                         MyResponseRowView(response:response)
@@ -91,6 +98,7 @@ struct MyPrayerListView: View {
                 }
                 .listStyle(PlainListStyle())
                 .scrollIndicators(.hidden)
+                }
             }
         }
         .navigationTitle(prayerContextType.navigationTitle)

@@ -183,6 +183,7 @@ class PrayerUseCase: PrayerUseCaseProtocol {
 
     func blockUser(userId: Int) async throws {
         try await repository.blockUser(userId: userId)
+        eventPublisher.send(.userBlocked(userId: userId))
     }
 
     func loadBlockList(page: Int) async throws -> BlockedUserPage {

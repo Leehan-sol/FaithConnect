@@ -8,21 +8,16 @@
 import SwiftUI
 
 struct UnavailableHeaderView: View {
+    let content: String
     let participationCount: Int
-    var contentStatus: ContentStatus = .deleted
 
     var body: some View {
         VStack(spacing: 10) {
-            Image(systemName: contentStatus == .blocked ? "nosign" : "trash.slash")
+            Image(systemName: "exclamationmark.circle")
                 .font(.system(size: 28))
                 .foregroundColor(.gray)
-            Text(contentStatus == .blocked ? "차단된 사용자의 기도입니다" : "삭제된 기도입니다")
+            Text(content)
                 .font(.headline)
-                .foregroundColor(.gray)
-            Text(contentStatus == .blocked
-                 ? "차단된 사용자의 게시물입니다."
-                 : "이 기도는 작성자에 의해 삭제되었습니다.")
-                .font(.subheadline)
                 .foregroundColor(.gray)
         }
         .frame(maxWidth: .infinity)

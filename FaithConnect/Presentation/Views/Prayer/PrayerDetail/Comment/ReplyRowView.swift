@@ -18,38 +18,49 @@ struct ReplyRowView: View {
     var onReport: ((PrayerResponse, ReportReasonType, String?) async -> Bool)? = nil
     let onBlock: ((PrayerResponse) -> Void)?
 
+    private var isUnavailable: Bool {
+        reply.userName.trimmingCharacters(in: .whitespaces).isEmpty
+    }
+
     var body: some View {
         HStack(alignment: .top, spacing: 10) {
             Image(systemName: "arrow.turn.down.right")
-                .foregroundColor(.customNavy.opacity(0.5))
+                .foregroundColor(isUnavailable ? .gray : .customNavy.opacity(0.5))
                 .frame(width: 35, height: 35)
-                .background(.customBlue1.opacity(0.2))
+                .background(isUnavailable ? Color(.systemGray4) : .customBlue1.opacity(0.2))
                 .cornerRadius(15)
 
             VStack(alignment: .leading, spacing: 6) {
-                HStack {
-                    Text(reply.userName)
-                        .font(.caption)
-                        .fontWeight(.semibold)
+                if isUnavailable {
+                    Text(reply.message)
+                        .font(.subheadline)
+                        .foregroundColor(.gray)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                } else {
+                    HStack {
+                        Text(reply.userName)
+                            .font(.caption)
+                            .fontWeight(.semibold)
+                            .foregroundColor(.gray)
+
+                        Spacer()
+
+                        Button {
+                            showConfirmationDialog = true
+                        } label: {
+                            Image(systemName: "ellipsis")
+                                .rotationEffect(.degrees(90))
+                                .foregroundColor(.gray)
+                        }
+                    }
+
+                    Text(reply.createdAt.toTimeAgoDisplay())
+                        .font(.caption2)
                         .foregroundColor(.gray)
 
-                    Spacer()
-
-                    Button {
-                        showConfirmationDialog = true
-                    } label: {
-                        Image(systemName: "ellipsis")
-                            .rotationEffect(.degrees(90))
-                            .foregroundColor(.gray)
-                    }
+                    Text(reply.message.trimmingCharacters(in: .whitespacesAndNewlines))
+                        .frame(maxWidth: .infinity, alignment: .leading)
                 }
-
-                Text(reply.createdAt.toTimeAgoDisplay())
-                    .font(.caption2)
-                    .foregroundColor(.gray)
-
-                Text(reply.message.trimmingCharacters(in: .whitespacesAndNewlines))
-                    .frame(maxWidth: .infinity, alignment: .leading)
             }
         }
         .padding(EdgeInsets(top: 15, leading: 15, bottom: 20, trailing: 15))
@@ -129,8 +140,7 @@ struct ReplyRowView: View {
                                        createdAt: "2025-11-07T12:55:00.000Z",
                                        isMine: false,
                                        parentResponseId: nil,
-                                       replyCount: 0,
-                                       contentStatus: .normal),
+                                       replyCount: 0),
                  onEdit: nil,
                  onDelete: nil,
                  onReport: nil,

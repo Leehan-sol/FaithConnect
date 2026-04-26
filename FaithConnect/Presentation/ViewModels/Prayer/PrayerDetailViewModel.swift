@@ -12,6 +12,7 @@ class PrayerDetailViewModel: ObservableObject {
     @Published var prayer: Prayer?
     @Published var alertType: AlertType? = nil
     @Published var isUnavailable = false
+    @Published var shouldDismiss = false
     @Published var replyingTo: PrayerResponse? // 대상 댓글
     @Published var editingReply: PrayerResponse? // 수정 대상 대댓글
     @Published var replyText: String = "" 
@@ -44,6 +45,7 @@ class PrayerDetailViewModel: ObservableObject {
         replyHasNext.removeAll()
         replyLoading.removeAll()
         replyExpanded.removeAll()
+        cancelReply()
         await loadPrayerDetail()
     }
     
@@ -52,11 +54,15 @@ class PrayerDetailViewModel: ObservableObject {
         do {
             let prayer = try await prayerUseCase.loadPrayerDetail(prayerRequestID: prayerRequestId)
             self.prayer = prayer
-            self.isUnavailable = prayer.contentStatus != .normal
+            self.isUnavailable = prayer.userName.trimmingCharacters(in: .whitespaces).isEmpty
             Task { await loadInitialReplies() }
         } catch {
-            alertType = .error(title: "불러오기 실패",
-                               message: error.localizedDescription)
+            if case APIError.serverMessage(let code) = error, code == .prayerNotFound {
+                shouldDismiss = true
+            } else {
+                alertType = .error(title: "불러오기 실패",
+                                   message: error.localizedDescription)
+            }
         }
     }
 
@@ -156,19 +162,7 @@ class PrayerDetailViewModel: ObservableObject {
         do {
             try await prayerUseCase.deletePrayerResponse(responseID: reply.id,
                                                          prayerRequestId: reply.prayerRequestId)
-            guard var prayer = prayer,
-                  let index = prayer.responses?.firstIndex(where: { $0.id == parentResponse.id }) else { return }
-            prayer.responses?[index].replies.removeAll { $0.id == reply.id }
-            prayer.responses?[index].replyCount -= 1
-            prayer.participationCount -= 1
-
-            // 삭제된 루트 댓글의 대댓글이 모두 사라지면 루트 댓글도 제거
-            if prayer.responses?[index].replies.isEmpty == true,
-               prayer.responses?[index].contentStatus != .normal {
-                prayer.responses?.remove(at: index)
-            }
-
-            self.prayer = prayer
+            await refresh()
         } catch {
             alertType = .error(title: "삭제 실패", message: error.localizedDescription)
         }

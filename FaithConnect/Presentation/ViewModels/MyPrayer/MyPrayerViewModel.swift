@@ -64,6 +64,8 @@ class MyPrayerViewModel: ObservableObject {
             if let index = writtenPrayers.firstIndex(where: { $0.id == prayerRequestId }) {
                 writtenPrayers[index].participationCount -= 1
             }
+        case .userBlocked(let userId):
+            writtenPrayers.removeAll { $0.userId == userId }
         }
     }
     

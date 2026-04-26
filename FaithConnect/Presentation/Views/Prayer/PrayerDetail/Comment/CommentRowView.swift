@@ -23,7 +23,7 @@ struct CommentRowView: View {
     var onReply: ((PrayerResponse) -> Void)?
 
     private var isUnavailable: Bool {
-        response.contentStatus == .deleted || response.contentStatus == .blocked
+        response.userName.trimmingCharacters(in: .whitespaces).isEmpty
     }
 
     var body: some View {
@@ -36,9 +36,7 @@ struct CommentRowView: View {
 
             VStack(alignment: .leading, spacing: 6) {
                 if isUnavailable {
-                    Text(response.contentStatus == .blocked
-                         ? "차단된 사용자의 글입니다"
-                         : "삭제된 댓글입니다")
+                    Text(response.message)
                         .font(.subheadline)
                         .foregroundColor(.gray)
                         .frame(maxWidth: .infinity, alignment: .leading)
@@ -165,8 +163,7 @@ struct CommentRowView: View {
                                                    createdAt: "2025-11-07T12:55:00.000Z",
                                                    isMine: false,
                                                    parentResponseId: nil,
-                                                   replyCount: 0,
-                                                   contentStatus: .normal),
+                                                   replyCount: 0),
                           onEdit: nil,
                           onDelete: nil,
                           onReport: nil,

@@ -65,6 +65,9 @@ struct PrayerDetailView: View {
         .task {
             await viewModel.initializeIfNeeded()
         }
+        .onChange(of: viewModel.shouldDismiss) { _, shouldDismiss in
+            if shouldDismiss { dismiss() }
+        }
     }
 
     // MARK: - ScrollContent
@@ -73,8 +76,8 @@ struct PrayerDetailView: View {
         ScrollView(.vertical, showsIndicators: false) {
             if let prayer = viewModel.prayer {
                 if viewModel.isUnavailable {
-                    UnavailableHeaderView(participationCount: prayer.participationCount,
-                                      contentStatus: prayer.contentStatus)
+                    UnavailableHeaderView(content: prayer.content,
+                                          participationCount: prayer.participationCount)
                 } else {
                     DetailHeaderView(prayer: prayer)
                 }

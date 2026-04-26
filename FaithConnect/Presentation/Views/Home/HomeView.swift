@@ -17,11 +17,7 @@ struct HomeView: View {
     var body: some View {
         ScrollViewReader { proxy in
             ZStack {
-                if viewModel.prayers.isEmpty {
-                    emptyStateView
-                } else {
-                    prayerListView(proxy: proxy)
-                }
+                prayerListView(proxy: proxy)
 
                 FloatingButton(action: {
                     showPrayerEditor = true
@@ -46,15 +42,10 @@ struct HomeView: View {
             }
         }
         .navigationTitle("기도 모음")
-        .navigationBarTitleDisplayMode(.automatic)
+        .navigationBarTitleDisplayMode(.large)
         .navigationDestination(isPresented: $showPrayerDetail) {
             if let prayer = selectedPrayer {
                 PrayerDetailView(viewModel: { viewModel.makePrayerDetailVM(prayer: prayer) })
-            }
-        }
-        .onChange(of: showPrayerDetail) { oldValue, newValue in
-            if oldValue && !newValue {
-                Task { await viewModel.refreshPrayers() }
             }
         }
         .navigationDestination(isPresented: $showPrayerEditor) {
@@ -90,15 +81,6 @@ struct HomeView: View {
         }
     }
 
-    // MARK: - 빈 상태 뷰
-    private var emptyStateView: some View {
-        VStack {
-            categoryButtons
-                .padding(EdgeInsets(top: 10, leading: 15, bottom: 10, trailing: 0))
-            PrayerEmptyView(prayerContextType: .prayer)
-        }
-    }
-
     // MARK: - 기도 목록 뷰
     private func prayerListView(proxy: ScrollViewProxy) -> some View {
         List {
@@ -110,8 +92,16 @@ struct HomeView: View {
                     .id("top")
             }
 
-            ForEach(viewModel.prayers.filter { $0.contentStatus == .normal }) { prayer in
-                prayerRow(prayer: prayer)
+            if viewModel.prayers.isEmpty {
+                PrayerEmptyView(prayerContextType: .prayer)
+                    .frame(maxWidth: .infinity)
+                    .frame(height: UIScreen.main.bounds.height * 0.5)
+                    .listRowSeparator(.hidden)
+                    .listRowBackground(Color.clear)
+            } else {
+                ForEach(viewModel.prayers) { prayer in
+                    prayerRow(prayer: prayer)
+                }
             }
         }
         .refreshable {
@@ -162,23 +152,23 @@ struct HomeView: View {
         Prayer(id: 1, userId: 1, userName: "", categoryId: 1, categoryName: "건강",
                title: "아버지의 건강 회복을 위해",
                content: "최근 아버지께서 수술을 받으셨습니다. 빠른 회복을 위해 기도 부탁드립니다.",
-               createdAt: "2026-03-26", participationCount: 12, responses: nil, hasParticipated: false, isMine: false, contentStatus: .normal),
+               createdAt: "2026-03-26", participationCount: 12, responses: nil, hasParticipated: false, isMine: false),
         Prayer(id: 2, userId: 2, userName: "", categoryId: 2, categoryName: "가정",
                title: "가정의 평안을 위한 기도",
                content: "가족 간에 갈등이 있습니다. 서로 이해하고 사랑할 수 있도록 기도해주세요.",
-               createdAt: "2026-03-25", participationCount: 8, responses: nil, hasParticipated: false, isMine: false, contentStatus: .normal),
+               createdAt: "2026-03-25", participationCount: 8, responses: nil, hasParticipated: false, isMine: false),
         Prayer(id: 3, userId: 3, userName: "", categoryId: 3, categoryName: "학업",
                title: "시험 준비를 위한 기도",
                content: "다음 주 중요한 시험이 있습니다. 집중력과 지혜를 주시길 기도합니다.",
-               createdAt: "2026-03-25", participationCount: 5, responses: nil, hasParticipated: false, isMine: false, contentStatus: .normal),
+               createdAt: "2026-03-25", participationCount: 5, responses: nil, hasParticipated: false, isMine: false),
         Prayer(id: 4, userId: 4, userName: "", categoryId: 4, categoryName: "직장",
                title: "새 직장 적응을 위해",
                content: "이번 주부터 새 직장에 출근합니다. 잘 적응할 수 있도록 기도 부탁드립니다.",
-               createdAt: "2026-03-24", participationCount: 15, responses: nil, hasParticipated: false, isMine: true, contentStatus: .normal),
+               createdAt: "2026-03-24", participationCount: 15, responses: nil, hasParticipated: false, isMine: true),
         Prayer(id: 5, userId: 5, userName: "", categoryId: 5, categoryName: "감사",
                title: "감사 기도",
                content: "올 한 해 건강하게 보낼 수 있어서 감사합니다. 함께 감사 기도 나눠요.",
-               createdAt: "2026-03-24", participationCount: 20, responses: nil, hasParticipated: false, isMine: false, contentStatus: .normal),
+               createdAt: "2026-03-24", participationCount: 20, responses: nil, hasParticipated: false, isMine: false),
     ]
 
     return NavigationStack {

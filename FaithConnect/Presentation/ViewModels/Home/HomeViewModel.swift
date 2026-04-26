@@ -74,6 +74,8 @@ class HomeViewModel: ObservableObject {
             }
         case .responseUpdated:
             break
+        case .userBlocked(let userId):
+            prayers.removeAll { $0.userId == userId }
         }
     }
     
