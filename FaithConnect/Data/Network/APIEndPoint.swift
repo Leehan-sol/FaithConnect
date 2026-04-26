@@ -21,7 +21,12 @@ enum ServerEnvironment: String {
     var baseURL: String {
         switch self {
         case .dev:
-            return "http://localhost:8080"
+            guard let path = Bundle.main.path(forResource: "Secrets", ofType: "plist"),
+                  let dict = NSDictionary(contentsOfFile: path),
+                  let url = dict["DevBaseURL"] as? String else {
+                fatalError("Secrets.plist에 DevBaseURL이 설정되어 있지 않습니다")
+            }
+            return url
         case .release:
             return "https://faith-connect.net"
         }
