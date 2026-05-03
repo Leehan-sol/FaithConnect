@@ -682,61 +682,71 @@ extension APIClient {
 extension APIClient {
     private func refreshAccessToken() async throws {
         print("refreshAccessToken")
-        if let ongoingTask = await MainActor.run(body: { return refreshTask }) {
-            return try await ongoingTask.value
-        }
-        
-        let task = Task<Void, Error> {
-            defer {
-                Task { @MainActor in refreshTask = nil }
-            }
-            let urlString = APIEndpoint.refreshToken.urlString
-            guard let url = URL(string: urlString) else { throw APIError.invalidURL }
 
-            guard let refreshToken = tokenStorage.refreshToken else {
-                await handleSessionExpiration()
-                throw APIError.serverMessage(code: .refreshTokenNotFound)
+        // 체크와 할당을 원자적으로 처리하여 중복 리프레시 요청 방지
+        let task: Task<Void, Error> = await MainActor.run {
+            if let ongoingTask = refreshTask {
+                return ongoingTask
             }
 
-            let requestBody = AccessTokenRequest(refreshToken: refreshToken)
-
-            var request = URLRequest(url: url)
-            request.httpMethod = "POST"
-            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-            request.httpBody = try JSONEncoder().encode(requestBody)
-
-            do {
-                let (data, response) = try await URLSession.shared.data(for: request)
-
-                guard let httpResponse = response as? HTTPURLResponse else {
-                    throw APIError.serverMessage(code: .unknown)
+            let newTask = Task<Void, Error> {
+                defer {
+                    Task { @MainActor in self.refreshTask = nil }
                 }
 
-                guard (200...299).contains(httpResponse.statusCode) else {
-                    if let errorResponse = try? JSONDecoder().decode(APIErrorResponse.self, from: data) {
-                        throw APIError.serverMessage(code: errorResponse.errorCode)
+                let urlString = APIEndpoint.refreshToken.urlString
+                guard let url = URL(string: urlString) else { throw APIError.invalidURL }
+
+                guard let refreshToken = self.tokenStorage.refreshToken else {
+                    await self.handleSessionExpiration()
+                    throw APIError.serverMessage(code: .refreshTokenNotFound)
+                }
+
+                let requestBody = AccessTokenRequest(refreshToken: refreshToken)
+
+                var request = URLRequest(url: url)
+                request.httpMethod = "POST"
+                request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+                request.httpBody = try JSONEncoder().encode(requestBody)
+
+                do {
+                    let (data, response) = try await URLSession.shared.data(for: request)
+
+                    guard let httpResponse = response as? HTTPURLResponse else {
+                        throw APIError.serverMessage(code: .unknown)
                     }
-                    throw APIError.httpError(statusCode: httpResponse.statusCode)
+
+                    guard (200...299).contains(httpResponse.statusCode) else {
+                        if let errorResponse = try? JSONDecoder().decode(APIErrorResponse.self, from: data) {
+                            throw APIError.serverMessage(code: errorResponse.errorCode)
+                        }
+                        throw APIError.httpError(statusCode: httpResponse.statusCode)
+                    }
+
+                    let apiResponse = try JSONDecoder().decode(AccessTokenResponse.self, from: data)
+
+                    guard !apiResponse.accessToken.isEmpty, !apiResponse.refreshToken.isEmpty else {
+                        throw APIError.serverMessage(code: .unknown)
+                    }
+
+                    await MainActor.run {
+                        self.tokenStorage.save(accessToken: apiResponse.accessToken,
+                                               refreshToken: apiResponse.refreshToken)
+                    }
+
+                } catch {
+                    if case .serverMessage(let code) = error as? APIError,
+                       code == .expiredRefreshToken || code == .refreshTokenNotFound {
+                        await self.handleSessionExpiration()
+                    }
+                    throw error
                 }
-
-                let apiResponse = try JSONDecoder().decode(AccessTokenResponse.self, from: data)
-
-                guard !apiResponse.accessToken.isEmpty, !apiResponse.refreshToken.isEmpty else {
-                    throw APIError.serverMessage(code: .unknown)
-                }
-
-                await MainActor.run {
-                    tokenStorage.save(accessToken: apiResponse.accessToken,
-                                           refreshToken: apiResponse.refreshToken)
-                }
-
-            } catch {
-                // refresh Token 만료
-                await handleSessionExpiration()
-                throw error
             }
+
+            self.refreshTask = newTask
+            return newTask
         }
-        await MainActor.run { self.refreshTask = task }
+
         return try await task.value
     }
     
