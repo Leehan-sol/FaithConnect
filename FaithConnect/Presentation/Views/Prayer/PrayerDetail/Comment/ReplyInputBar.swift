@@ -16,6 +16,10 @@ struct ReplyInputBar: View {
 
     @State private var showCancelAlert: Bool = false
 
+    private var wordCount: Int {
+        replyText.count
+    }
+
     private var isSendActive: Bool {
         !replyText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
@@ -27,6 +31,11 @@ struct ReplyInputBar: View {
                     .frame(minHeight: 80)
                     .scrollContentBackground(.hidden)
                     .focused(isReplyFocused)
+                    .onChange(of: replyText) { oldValue, newValue in
+                        if newValue.count > 500 {
+                            replyText = String(newValue.prefix(500))
+                        }
+                    }
 
                 if replyText.isEmpty {
                     Text("답글을 입력하세요")
@@ -36,6 +45,14 @@ struct ReplyInputBar: View {
                 }
             }
             .padding(EdgeInsets(top: 10, leading: 10, bottom: 4, trailing: 10))
+
+            HStack {
+                Spacer()
+                Text("\(wordCount) / 500")
+                    .font(.caption)
+                    .foregroundColor(wordCount >= 500 ? .red : .gray)
+            }
+            .padding(EdgeInsets(top: 0, leading: 10, bottom: 4, trailing: 10))
 
             HStack(spacing: 10) {
                 Button {

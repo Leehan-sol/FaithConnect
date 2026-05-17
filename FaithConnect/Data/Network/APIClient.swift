@@ -735,8 +735,9 @@ extension APIClient {
                     }
 
                 } catch {
-                    if case .serverMessage(let code) = error as? APIError,
-                       code == .expiredRefreshToken || code == .refreshTokenNotFound {
+                    if error is URLError {
+                        // 네트워크 일시 장애 — 로그아웃하지 않음
+                    } else {
                         await self.handleSessionExpiration()
                     }
                     throw error

@@ -251,6 +251,14 @@ class PrayerDetailViewModel: ObservableObject {
 
     func expandReplies(for responseId: Int) async {
         replyExpanded.insert(responseId)
+        // 펼칠 때 항상 1페이지부터 새로 로드하여 중복 방지
+        replyPages.removeValue(forKey: responseId)
+        replyHasNext.removeValue(forKey: responseId)
+        if var prayer = prayer,
+           let index = prayer.responses?.firstIndex(where: { $0.id == responseId }) {
+            prayer.responses?[index].replies = []
+            self.prayer = prayer
+        }
         await loadReplies(for: responseId)
     }
 
@@ -306,10 +314,21 @@ class PrayerDetailViewModel: ObservableObject {
                                                               categoryName: prayer?.categoryName ?? "")
             guard var prayer = prayer,
                   let index = prayer.responses?.firstIndex(where: { $0.id == parentResponse.id }) else { return nil }
-            prayer.responses?[index].replies.append(reply)
             prayer.responses?[index].replyCount += 1
             prayer.participationCount += 1
             self.prayer = prayer
+
+            // 1페이지를 새로 로드하여 중복 방지
+            replyPages.removeValue(forKey: parentResponse.id)
+            replyHasNext.removeValue(forKey: parentResponse.id)
+            if var updatedPrayer = self.prayer,
+               let idx = updatedPrayer.responses?.firstIndex(where: { $0.id == parentResponse.id }) {
+                updatedPrayer.responses?[idx].replies = []
+                self.prayer = updatedPrayer
+            }
+            replyExpanded.insert(parentResponse.id)
+            await loadReplies(for: parentResponse.id)
+
             let replyId = reply.id
             cancelReply()
             return replyId
