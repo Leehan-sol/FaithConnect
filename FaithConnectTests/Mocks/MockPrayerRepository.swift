@@ -9,14 +9,13 @@ import Foundation
 class MockPrayerRepository: PrayerRepositoryProtocol {
 
     // MARK: - 스텁 설정
-    var stubbedCategories: [CategoryResponse] = []
-    var stubbedPrayerList: PrayerListResponse?
-    var stubbedPrayerDetail: PrayerDetailResponse?
-    var stubbedPrayerWrite: PrayerWriteResponse?
-    var stubbedResponseItem: DetailResponseItem?
-    var stubbedMyResponseList: MyResponseList?
-    var stubbedBlockList: BlockListResponse?
-    var stubbedReplyList: ReplyListResponse?
+    var stubbedCategories: [PrayerCategory] = []
+    var stubbedPrayerPage: PrayerPage?
+    var stubbedPrayer: Prayer?
+    var stubbedPrayerResponse: PrayerResponse?
+    var stubbedMyResponsePage: MyResponsePage?
+    var stubbedBlockedUserPage: BlockedUserPage?
+    var stubbedReplyPage: ReplyPage?
     var stubbedError: Error?
 
     // MARK: - 호출 추적
@@ -25,30 +24,30 @@ class MockPrayerRepository: PrayerRepositoryProtocol {
     var deletePrayerResponseCalledWith: Int?
 
     // MARK: - PrayerRepositoryProtocol
-    func loadCategories() async throws -> [CategoryResponse] {
+    func loadCategories() async throws -> [PrayerCategory] {
         loadCategoriesCalled = true
         if let error = stubbedError { throw error }
         return stubbedCategories
     }
 
-    func loadPrayers(categoryID: Int, page: Int) async throws -> PrayerListResponse {
+    func loadPrayers(categoryID: Int, page: Int) async throws -> PrayerPage {
         if let error = stubbedError { throw error }
-        return stubbedPrayerList!
+        return stubbedPrayerPage!
     }
 
-    func loadPrayerDetail(prayerRequestID: Int) async throws -> PrayerDetailResponse {
+    func loadPrayerDetail(prayerRequestID: Int) async throws -> Prayer {
         if let error = stubbedError { throw error }
-        return stubbedPrayerDetail!
+        return stubbedPrayer!
     }
 
-    func writePrayer(categoryID: Int, title: String, content: String) async throws -> PrayerWriteResponse {
+    func writePrayer(categoryID: Int, title: String, content: String) async throws -> Prayer {
         if let error = stubbedError { throw error }
-        return stubbedPrayerWrite!
+        return stubbedPrayer!
     }
 
-    func updatePrayer(prayerRequestId: Int, categoryID: Int, title: String, content: String) async throws -> PrayerDetailResponse {
+    func updatePrayer(prayerRequestId: Int, categoryID: Int, title: String, content: String) async throws -> Prayer {
         if let error = stubbedError { throw error }
-        return stubbedPrayerDetail!
+        return stubbedPrayer!
     }
 
     func deletePrayer(prayerRequestId: Int) async throws {
@@ -56,14 +55,14 @@ class MockPrayerRepository: PrayerRepositoryProtocol {
         if let error = stubbedError { throw error }
     }
 
-    func writePrayerResponse(prayerRequestID: Int, message: String) async throws -> DetailResponseItem {
+    func writePrayerResponse(prayerRequestID: Int, message: String) async throws -> PrayerResponse {
         if let error = stubbedError { throw error }
-        return stubbedResponseItem!
+        return stubbedPrayerResponse!
     }
 
-    func updatePrayerResponse(responseID: Int, message: String) async throws -> DetailResponseItem {
+    func updatePrayerResponse(responseID: Int, message: String) async throws -> PrayerResponse {
         if let error = stubbedError { throw error }
-        return stubbedResponseItem!
+        return stubbedPrayerResponse!
     }
 
     func deletePrayerResponse(responseID: Int) async throws {
@@ -71,14 +70,14 @@ class MockPrayerRepository: PrayerRepositoryProtocol {
         if let error = stubbedError { throw error }
     }
 
-    func loadWrittenPrayers(page: Int) async throws -> PrayerListResponse {
+    func loadWrittenPrayers(page: Int) async throws -> PrayerPage {
         if let error = stubbedError { throw error }
-        return stubbedPrayerList!
+        return stubbedPrayerPage!
     }
 
-    func loadParticipatedPrayers(page: Int) async throws -> MyResponseList {
+    func loadParticipatedPrayers(page: Int) async throws -> MyResponsePage {
         if let error = stubbedError { throw error }
-        return stubbedMyResponseList!
+        return stubbedMyResponsePage!
     }
 
     func reportPrayer(prayerRequestId: Int, reasonType: ReportReasonType, reasonDetail: String?) async throws {
@@ -93,22 +92,22 @@ class MockPrayerRepository: PrayerRepositoryProtocol {
         if let error = stubbedError { throw error }
     }
 
-    func loadBlockList(page: Int) async throws -> BlockListResponse {
+    func loadBlockList(page: Int) async throws -> BlockedUserPage {
         if let error = stubbedError { throw error }
-        return stubbedBlockList!
+        return stubbedBlockedUserPage!
     }
 
     func unblockUser(userId: Int) async throws {
         if let error = stubbedError { throw error }
     }
 
-    func writeReply(responseId: Int, message: String) async throws -> DetailResponseItem {
+    func writeReply(responseId: Int, message: String) async throws -> PrayerResponse {
         if let error = stubbedError { throw error }
-        return stubbedResponseItem!
+        return stubbedPrayerResponse!
     }
 
-    func loadReplies(responseId: Int, page: Int) async throws -> ReplyListResponse {
+    func loadReplies(responseId: Int, page: Int) async throws -> ReplyPage {
         if let error = stubbedError { throw error }
-        return stubbedReplyList!
+        return stubbedReplyPage!
     }
 }

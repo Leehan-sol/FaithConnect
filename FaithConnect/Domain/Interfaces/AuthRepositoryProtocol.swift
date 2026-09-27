@@ -14,7 +14,7 @@ protocol AuthRepositoryProtocol {
     func confirmEmailVerification(email: String, verificationCode: String) async throws
     func login(email: String, password: String) async throws
     func logout() async throws
-    func fetchMyInfo() async throws -> FetchMyInfoResponse
+    func fetchMyInfo() async throws -> User
     func findID(name: String, nickname: String) async throws -> String
     func changePassword(id: Int, name: String, email: String, newPassword: String) async throws
     func changeNickname(nickname: String) async throws -> String

@@ -64,9 +64,7 @@ class AuthUseCase: AuthUseCaseProtocol {
     }
 
     func fetchMyInfo() async throws -> User {
-        let response = try await repository.fetchMyInfo()
-        let nickname = (response.nickname?.isEmpty ?? true) ? response.name : response.nickname!
-        return User(name: response.name, nickname: nickname, email: response.email)
+        return try await repository.fetchMyInfo()
     }
 
     func findID(name: String, nickname: String) async throws -> String {

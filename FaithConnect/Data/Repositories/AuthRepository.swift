@@ -43,8 +43,10 @@ class AuthRepository: AuthRepositoryProtocol {
         try await apiClient.logout()
     }
 
-    func fetchMyInfo() async throws -> FetchMyInfoResponse {
-        try await apiClient.fetchMyInfo()
+    func fetchMyInfo() async throws -> User {
+        let response = try await apiClient.fetchMyInfo()
+        let nickname = (response.nickname?.isEmpty ?? true) ? response.name : response.nickname!
+        return User(name: response.name, nickname: nickname, email: response.email)
     }
 
     func findID(name: String, nickname: String) async throws -> String {
