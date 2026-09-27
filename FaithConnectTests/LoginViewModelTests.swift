@@ -90,7 +90,9 @@ final class LoginViewModelTests: XCTestCase {
     // 3. fetchMyInfo - stubbedUser 값 return
     // 4. session.isLoggedIn, session.name fetchMyInfo에서 return한 이름
     func test_login_success_setsSessionLoggedIn() async {
-        mockAuthUseCase.stubbedUser = User(name: "홍길동", nickname: "길동이", email: "hong@test.com")
+        mockAuthUseCase.stubbedUser = User(name: "홍길동", nickname: "길동이", email: "hong@test.com",
+                                                churchName: "만나교회", workspaceType: .default,
+                                                community: nil, role: .member)
 
         await sut.login(email: "hong@test.com", password: "password1")
 

@@ -49,6 +49,10 @@ struct FetchMyInfoResponse: Decodable {
     let name: String
     let nickname: String?
     let email: String
+    let churchName: String?
+    let workspaceType: String?
+    let community: String?
+    let role: String?
 }
 
 // MARK: - 아이디 찾기

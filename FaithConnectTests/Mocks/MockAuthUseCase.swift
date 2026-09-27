@@ -10,7 +10,9 @@ class MockAuthUseCase: AuthUseCaseProtocol {
 
     // MARK: - 스텁 설정
     var stubbedHasToken: Bool = false
-    var stubbedUser: User = User(name: "", nickname: "", email: "")
+    var stubbedUser: User = User(name: "", nickname: "", email: "",
+                                     churchName: "", workspaceType: .default,
+                                     community: nil, role: .member)
     var stubbedFoundEmail: String = ""
     var stubbedNickname: String = ""
     var stubbedError: Error?

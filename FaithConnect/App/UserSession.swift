@@ -23,6 +23,10 @@ class UserSession: ObservableObject {
     var email: String {
         user?.email ?? ""
     }
+
+    var isManna: Bool {
+        user?.isManna ?? false
+    }
     
     func login(user: User) {
         self.user = user
@@ -31,7 +35,9 @@ class UserSession: ObservableObject {
     
     func updateNickname(_ nickname: String) {
         guard let user = user else { return }
-        self.user = User(name: user.name, nickname: nickname, email: user.email)
+        self.user = User(name: user.name, nickname: nickname, email: user.email,
+                         churchName: user.churchName, workspaceType: user.workspaceType,
+                         community: user.community, role: user.role)
     }
 
     func logout() {
