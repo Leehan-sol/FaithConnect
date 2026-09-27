@@ -104,6 +104,15 @@
 		CCFDC1302F2F2043008F9CB9 /* PrayerEventType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCFDC12F2F2F2043008F9CB9 /* PrayerEventType.swift */; };
 		CCFDC1322F2FA2C5008F9CB9 /* PrayerUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCFDC1312F2FA2C5008F9CB9 /* PrayerUseCase.swift */; };
 		EB6F29681E572F7B38D34012 /* InquiryDTOs.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC8B9D7289E0D82CDD4DE82 /* InquiryDTOs.swift */; };
+		AA300001000000000000AA01 /* WorkspaceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA300001000000000000AA02 /* WorkspaceType.swift */; };
+		AA300001000000000000AA03 /* UserRole.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA300001000000000000AA04 /* UserRole.swift */; };
+		AA300001000000000000AA05 /* Community.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA300001000000000000AA06 /* Community.swift */; };
+		AA300001000000000000AA07 /* Visibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA300001000000000000AA08 /* Visibility.swift */; };
+		AA300001000000000000AA09 /* DisplayNameType.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA300001000000000000AA0A /* DisplayNameType.swift */; };
+		AA300001000000000000AA0B /* Church.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA300001000000000000AA0C /* Church.swift */; };
+		AA300001000000000000AA0D /* SignUpChurchSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA300001000000000000AA0E /* SignUpChurchSearchView.swift */; };
+		AA300001000000000000AA0F /* CommunitySelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA300001000000000000AA10 /* CommunitySelectionView.swift */; };
+		AA300001000000000000AA11 /* SignUpFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA300001000000000000AA12 /* SignUpFormView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -236,6 +245,15 @@
 		AA100001000000000000AA06 /* ReportReasonType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportReasonType.swift; sourceTree = "<group>"; };
 		AA200001000000000000AA02 /* MockAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAPIClient.swift; sourceTree = "<group>"; };
 		AA200001000000000000AA04 /* PrayerRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerRepositoryTests.swift; sourceTree = "<group>"; };
+		AA300001000000000000AA02 /* WorkspaceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceType.swift; sourceTree = "<group>"; };
+		AA300001000000000000AA04 /* UserRole.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRole.swift; sourceTree = "<group>"; };
+		AA300001000000000000AA06 /* Community.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Community.swift; sourceTree = "<group>"; };
+		AA300001000000000000AA08 /* Visibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Visibility.swift; sourceTree = "<group>"; };
+		AA300001000000000000AA0A /* DisplayNameType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayNameType.swift; sourceTree = "<group>"; };
+		AA300001000000000000AA0C /* Church.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Church.swift; sourceTree = "<group>"; };
+		AA300001000000000000AA0E /* SignUpChurchSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpChurchSearchView.swift; sourceTree = "<group>"; };
+		AA300001000000000000AA10 /* CommunitySelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunitySelectionView.swift; sourceTree = "<group>"; };
+		AA300001000000000000AA12 /* SignUpFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpFormView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -562,6 +580,12 @@
 				CCD101762F86A96F0050CAF2 /* BlockedUser.swift */,
 				AA100001000000000000AA04 /* DomainError.swift */,
 				AA100001000000000000AA06 /* ReportReasonType.swift */,
+				AA300001000000000000AA02 /* WorkspaceType.swift */,
+				AA300001000000000000AA04 /* UserRole.swift */,
+				AA300001000000000000AA06 /* Community.swift */,
+				AA300001000000000000AA08 /* Visibility.swift */,
+				AA300001000000000000AA0A /* DisplayNameType.swift */,
+				AA300001000000000000AA0C /* Church.swift */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -637,6 +661,9 @@
 				CC4EA43F2EC9B7370097D09C /* FindIDResultView.swift */,
 				CC5B0E5B2EBF368900CE79A3 /* FindPasswordView.swift */,
 				18B32D4B2F59494A00A171B2 /* ResetPasswordView.swift */,
+				AA300001000000000000AA0E /* SignUpChurchSearchView.swift */,
+				AA300001000000000000AA10 /* CommunitySelectionView.swift */,
+				AA300001000000000000AA12 /* SignUpFormView.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -919,6 +946,15 @@
 				AA100001000000000000AA01 /* UserSession.swift in Sources */,
 				AA100001000000000000AA03 /* DomainError.swift in Sources */,
 				AA100001000000000000AA05 /* ReportReasonType.swift in Sources */,
+				AA300001000000000000AA01 /* WorkspaceType.swift in Sources */,
+				AA300001000000000000AA03 /* UserRole.swift in Sources */,
+				AA300001000000000000AA05 /* Community.swift in Sources */,
+				AA300001000000000000AA07 /* Visibility.swift in Sources */,
+				AA300001000000000000AA09 /* DisplayNameType.swift in Sources */,
+				AA300001000000000000AA0B /* Church.swift in Sources */,
+				AA300001000000000000AA0D /* SignUpChurchSearchView.swift in Sources */,
+				AA300001000000000000AA0F /* CommunitySelectionView.swift in Sources */,
+				AA300001000000000000AA11 /* SignUpFormView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
