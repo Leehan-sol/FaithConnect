@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AA100001000000000000AA01 /* UserSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA100001000000000000AA02 /* UserSession.swift */; };
+		AA100001000000000000AA03 /* DomainError.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA100001000000000000AA04 /* DomainError.swift */; };
+		AA100001000000000000AA05 /* ReportReasonType.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA100001000000000000AA06 /* ReportReasonType.swift */; };
+		AA200001000000000000AA01 /* MockAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA200001000000000000AA02 /* MockAPIClient.swift */; };
+		AA200001000000000000AA03 /* PrayerRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA200001000000000000AA04 /* PrayerRepositoryTests.swift */; };
 		180228912EBA08C300ABA95C /* PrayerRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180228902EBA08BD00ABA95C /* PrayerRowView.swift */; };
 		180228932EBA092A00ABA95C /* FloatingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180228922EBA091D00ABA95C /* FloatingButton.swift */; };
 		180939762F0B7CE600CC1BAE /* APIErrorCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180939752F0B7CE200CC1BAE /* APIErrorCode.swift */; };
@@ -68,7 +73,6 @@
 		CC5D794F2EC757F600C1CEE4 /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5D794E2EC757F600C1CEE4 /* APIClient.swift */; };
 		CC5D79592EC76B6700C1CEE4 /* InfoBoxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5D79582EC76B6700C1CEE4 /* InfoBoxView.swift */; };
 		CC6194C62EF7E030005B79A7 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6194C52EF7E030005B79A7 /* User.swift */; };
-		CC6194CA2EF7F5BB005B79A7 /* UserSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6194C92EF7F5BB005B79A7 /* UserSession.swift */; };
 		CC6437DA2EBE42C20079ED24 /* PrayerEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6437D92EBE42C20079ED24 /* PrayerEditorView.swift */; };
 		CC6B2ADF2F24CB4B003BB246 /* PrayerRepositoryProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6B2ADE2F24CB4B003BB246 /* PrayerRepositoryProtocol.swift */; };
 		CC6B2AE32F24CB72003BB246 /* PrayerRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6B2AE22F24CB72003BB246 /* PrayerRepository.swift */; };
@@ -194,7 +198,6 @@
 		CC5D794E2EC757F600C1CEE4 /* APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
 		CC5D79582EC76B6700C1CEE4 /* InfoBoxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoBoxView.swift; sourceTree = "<group>"; };
 		CC6194C52EF7E030005B79A7 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
-		CC6194C92EF7F5BB005B79A7 /* UserSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSession.swift; sourceTree = "<group>"; };
 		CC6437D92EBE42C20079ED24 /* PrayerEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerEditorView.swift; sourceTree = "<group>"; };
 		CC6B2ADE2F24CB4B003BB246 /* PrayerRepositoryProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerRepositoryProtocol.swift; sourceTree = "<group>"; };
 		CC6B2AE22F24CB72003BB246 /* PrayerRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerRepository.swift; sourceTree = "<group>"; };
@@ -228,6 +231,11 @@
 		CCFDC12F2F2F2043008F9CB9 /* PrayerEventType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerEventType.swift; sourceTree = "<group>"; };
 		CCFDC1312F2FA2C5008F9CB9 /* PrayerUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerUseCase.swift; sourceTree = "<group>"; };
 		F6464E434A280823AC492405 /* InquiryBottomSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InquiryBottomSheetView.swift; sourceTree = "<group>"; };
+		AA100001000000000000AA02 /* UserSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSession.swift; sourceTree = "<group>"; };
+		AA100001000000000000AA04 /* DomainError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainError.swift; sourceTree = "<group>"; };
+		AA100001000000000000AA06 /* ReportReasonType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportReasonType.swift; sourceTree = "<group>"; };
+		AA200001000000000000AA02 /* MockAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAPIClient.swift; sourceTree = "<group>"; };
+		AA200001000000000000AA04 /* PrayerRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerRepositoryTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -327,6 +335,7 @@
 				AA000001300000000000AA10 /* LoginViewModelTests.swift */,
 				AA000001300000000000AA11 /* HomeViewModelTests.swift */,
 				AA000001300000000000AA12 /* PrayerUseCaseTests.swift */,
+				AA200001000000000000AA04 /* PrayerRepositoryTests.swift */,
 				AA000001300000000000AA0C /* Mocks */,
 			);
 			path = FaithConnectTests;
@@ -338,6 +347,7 @@
 				AA000001300000000000AA13 /* MockAuthUseCase.swift */,
 				AA000001300000000000AA14 /* MockPrayerUseCase.swift */,
 				AA000001300000000000AA15 /* MockPrayerRepository.swift */,
+				AA200001000000000000AA02 /* MockAPIClient.swift */,
 			);
 			path = Mocks;
 			sourceTree = "<group>";
@@ -441,7 +451,6 @@
 		CC6B2ADB2F24CB10003BB246 /* Storage */ = {
 			isa = PBXGroup;
 			children = (
-				CC6194C92EF7F5BB005B79A7 /* UserSession.swift */,
 				180939772F0B894200CC1BAE /* TokenStorage.swift */,
 			);
 			path = Storage;
@@ -537,6 +546,7 @@
 				1841FD092F67BD8A007EF11C /* DeepLinkManager.swift */,
 				CC6FFE162F1390B300EB10D3 /* SplashView.swift */,
 				CCAD36742EB726510028D451 /* LaunchScreen.storyboard */,
+				AA100001000000000000AA02 /* UserSession.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -550,6 +560,8 @@
 				CC5B0E572EBF322400CE79A3 /* PrayerResponse.swift */,
 				CC6EC0632F015711009D2E31 /* MyResponse.swift */,
 				CCD101762F86A96F0050CAF2 /* BlockedUser.swift */,
+				AA100001000000000000AA04 /* DomainError.swift */,
+				AA100001000000000000AA06 /* ReportReasonType.swift */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -821,6 +833,8 @@
 				AA000001300000000000AA23 /* MockAuthUseCase.swift in Sources */,
 				AA000001300000000000AA24 /* MockPrayerUseCase.swift in Sources */,
 				AA000001300000000000AA25 /* MockPrayerRepository.swift in Sources */,
+				AA200001000000000000AA01 /* MockAPIClient.swift in Sources */,
+				AA200001000000000000AA03 /* PrayerRepositoryTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -902,6 +916,9 @@
 				EB6F29681E572F7B38D34012 /* InquiryDTOs.swift in Sources */,
 				1C3D198A3BAEA02F0440C1A2 /* InquiryBottomSheetView.swift in Sources */,
 				CC51C3A12F51B10000C94EDC /* AppDelegate.swift in Sources */,
+				AA100001000000000000AA01 /* UserSession.swift in Sources */,
+				AA100001000000000000AA03 /* DomainError.swift in Sources */,
+				AA100001000000000000AA05 /* ReportReasonType.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1160,7 +1177,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2;
+				MARKETING_VERSION = 1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = hansol.FaithConnect;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1198,7 +1215,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2;
+				MARKETING_VERSION = 1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = hansol.FaithConnect;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
