@@ -61,7 +61,7 @@ class PrayerDetailViewModel: ObservableObject {
         } catch let error as URLError where error.code == .cancelled {
             // 네트워크 요청 취소 시 무시
         } catch {
-            if case APIError.serverMessage(let code) = error, code == .prayerNotFound {
+            if case DomainError.prayerNotFound = error {
                 shouldDismiss = true
             } else {
                 alertType = .error(title: "불러오기 실패",

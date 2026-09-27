@@ -65,18 +65,11 @@ enum ConfirmAlertType: Identifiable {
 
 
 // MARK: - ErrorContext
-// 54001 에러 신고/차단 분기용
+// 신고/차단 에러 메시지
 enum ErrorContext {
     case report, block
 
     func message(for error: Error) -> String {
-        if case APIError.serverMessage(let code) = error,
-           code == .invalidRequestParameter {
-            switch self {
-            case .report: return "이미 신고한 게시물입니다."
-            case .block: return "이미 차단한 사용자입니다."
-            }
-        }
         return error.localizedDescription
     }
 }
