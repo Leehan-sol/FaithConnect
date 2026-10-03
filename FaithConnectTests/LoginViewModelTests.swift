@@ -133,11 +133,14 @@ final class LoginViewModelTests: XCTestCase {
 
     // MARK: - Sign Up
 
+    private let testChurch = Church(id: "8239253", name: "만나교회", roadAddress: "경기 성남시 분당구 양현로 353", isManna: true)
+
     // 1. 빈 이름으로 signUp() 호출
     // 2. signUpAlertType == .fieldEmpty(fieldName: "이름")
     func test_signUp_emptyName_showsFieldEmptyAlert() async {
         await sut.signUp(name: "", nickname: "닉네임", email: "e@e.com",
-                         password: "password1", confirmPassword: "password1")
+                         password: "password1", confirmPassword: "password1",
+                         church: testChurch, community: .joseph)
 
         XCTAssertEqual(sut.signUpAlertType, .fieldEmpty(fieldName: "이름"))
     }
@@ -146,7 +149,8 @@ final class LoginViewModelTests: XCTestCase {
     // 2. signUpAlertType == .fieldEmpty(fieldName: "닉네임")
     func test_signUp_emptyNickname_showsFieldEmptyAlert() async {
         await sut.signUp(name: "이름", nickname: "", email: "e@e.com",
-                         password: "password1", confirmPassword: "password1")
+                         password: "password1", confirmPassword: "password1",
+                         church: testChurch, community: .joseph)
 
         XCTAssertEqual(sut.signUpAlertType, .fieldEmpty(fieldName: "닉네임"))
     }
@@ -155,7 +159,8 @@ final class LoginViewModelTests: XCTestCase {
     // 2. signUpAlertType == .error("비밀번호 오류", ...)
     func test_signUp_passwordMismatch_showsErrorAlert() async {
         await sut.signUp(name: "이름", nickname: "닉네임", email: "e@e.com",
-                         password: "password1", confirmPassword: "different1")
+                         password: "password1", confirmPassword: "different1",
+                         church: testChurch, community: .joseph)
 
         if case .error(let title, _) = sut.signUpAlertType {
             XCTAssertEqual(title, "비밀번호 오류")
@@ -168,7 +173,8 @@ final class LoginViewModelTests: XCTestCase {
     // 2. signUpAlertType == .error("이메일 형식 오류", ...)
     func test_signUp_invalidEmail_showsErrorAlert() async {
         await sut.signUp(name: "이름", nickname: "닉네임", email: "invalid",
-                         password: "password1", confirmPassword: "password1")
+                         password: "password1", confirmPassword: "password1",
+                         church: testChurch, community: .joseph)
 
         if case .error(let title, _) = sut.signUpAlertType {
             XCTAssertEqual(title, "이메일 형식 오류")
@@ -181,7 +187,8 @@ final class LoginViewModelTests: XCTestCase {
     // 2. signUpAlertType == .error("비밀번호 형식 오류", ...)
     func test_signUp_invalidPassword_showsErrorAlert() async {
         await sut.signUp(name: "이름", nickname: "닉네임", email: "e@e.com",
-                         password: "short", confirmPassword: "short")
+                         password: "short", confirmPassword: "short",
+                         church: testChurch, community: .joseph)
 
         if case .error(let title, _) = sut.signUpAlertType {
             XCTAssertEqual(title, "비밀번호 형식 오류")
@@ -190,17 +197,41 @@ final class LoginViewModelTests: XCTestCase {
         }
     }
 
-    // 1. mockUseCase.signUp
-    // 2. signUpCalledWith
-    // 3. viewModel.alertType .registerSuccess
+    // 1. mockUseCase.signUp 호출
+    // 2. signUpCalledWith에 교회/공동체 정보 포함 확인
+    // 3. viewModel.signUpAlertType .registerSuccess
     func test_signUp_success_showsRegisterSuccessAlert() async {
         await sut.signUp(name: "이름",
                          nickname: "닉네임",
                          email: "e@e.com",
                          password: "password1",
-                         confirmPassword: "password1")
+                         confirmPassword: "password1",
+                         church: testChurch,
+                         community: .joseph)
 
         XCTAssertNotNil(mockAuthUseCase.signUpCalledWith)
+        XCTAssertEqual(mockAuthUseCase.signUpCalledWith?.churchPlaceId, "8239253")
+        XCTAssertEqual(mockAuthUseCase.signUpCalledWith?.churchName, "만나교회")
+        XCTAssertEqual(mockAuthUseCase.signUpCalledWith?.community, .joseph)
+        XCTAssertEqual(sut.signUpAlertType, .registerSuccess)
+    }
+
+    // 1. 교회가 만나교회가 아닌 경우, community nil로 전달
+    // 2. signUpCalledWith.community == nil
+    func test_signUp_nonMannaChurch_communityNil() async {
+        let nonMannaChurch = Church(id: "1000001", name: "사랑의교회", roadAddress: "서울 서초구 반포대로 121", isManna: false)
+
+        await sut.signUp(name: "이름",
+                         nickname: "닉네임",
+                         email: "e@e.com",
+                         password: "password1",
+                         confirmPassword: "password1",
+                         church: nonMannaChurch,
+                         community: nil)
+
+        XCTAssertNotNil(mockAuthUseCase.signUpCalledWith)
+        XCTAssertEqual(mockAuthUseCase.signUpCalledWith?.churchPlaceId, "1000001")
+        XCTAssertNil(mockAuthUseCase.signUpCalledWith?.community)
         XCTAssertEqual(sut.signUpAlertType, .registerSuccess)
     }
 
@@ -216,13 +247,66 @@ final class LoginViewModelTests: XCTestCase {
                          nickname: "닉네임",
                          email: "e@e.com",
                          password: "password1",
-                         confirmPassword: "password1")
+                         confirmPassword: "password1",
+                         church: testChurch,
+                         community: .joseph)
 
         if case .error(let title, _) = sut.signUpAlertType {
             XCTAssertEqual(title, "회원가입 실패")
         } else {
             XCTFail("signUpAlertType이 .error가 아닙니다")
         }
+    }
+
+    // MARK: - Church Search
+
+    // 1. mockUseCase.stubbedChurches 설정
+    // 2. performChurchSearch 직접 호출 (디바운스 우회)
+    // 3. churchSearchResults에 결과 반영
+    func test_searchChurches_success_updatesResults() async {
+        let churches = [
+            Church(id: "1", name: "만나교회", roadAddress: "경기 성남시", isManna: true),
+            Church(id: "2", name: "만나교회 강남", roadAddress: "서울 강남구", isManna: false),
+        ]
+        mockAuthUseCase.stubbedChurches = churches
+
+        // 디바운스 우회하여 직접 검색 트리거
+        sut.searchChurches(query: "만나")
+        // 디바운스 대기
+        try? await Task.sleep(nanoseconds: 500_000_000)
+
+        XCTAssertEqual(mockAuthUseCase.searchChurchesCalledWith?.query, "만나")
+        XCTAssertEqual(sut.churchSearchResults.count, 2)
+        XCTAssertEqual(sut.churchSearchResults.first?.name, "만나교회")
+    }
+
+    // 1. 빈 검색어로 검색
+    // 2. API 호출 없이 결과 비움
+    func test_searchChurches_emptyQuery_clearsResults() {
+        sut.searchChurches(query: "")
+
+        XCTAssertTrue(sut.churchSearchResults.isEmpty)
+        XCTAssertNil(mockAuthUseCase.searchChurchesCalledWith)
+    }
+
+    // 1. 공백만 있는 검색어
+    // 2. API 호출 없이 결과 비움
+    func test_searchChurches_whitespaceOnly_clearsResults() {
+        sut.searchChurches(query: "   ")
+
+        XCTAssertTrue(sut.churchSearchResults.isEmpty)
+        XCTAssertNil(mockAuthUseCase.searchChurchesCalledWith)
+    }
+
+    // 1. 검색 에러 발생
+    // 2. 결과 비움
+    func test_searchChurches_failure_clearsResults() async {
+        mockAuthUseCase.stubbedError = NSError(domain: "", code: 0)
+
+        sut.searchChurches(query: "교회")
+        try? await Task.sleep(nanoseconds: 500_000_000)
+
+        XCTAssertTrue(sut.churchSearchResults.isEmpty)
     }
 
     // MARK: - Find ID

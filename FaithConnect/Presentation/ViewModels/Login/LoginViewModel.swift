@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Combine
 
 @MainActor
 class LoginViewModel: ObservableObject {
@@ -13,14 +14,53 @@ class LoginViewModel: ObservableObject {
     @Published var signUpAlertType: AlertType? = nil
     @Published var findIDAlertType: AlertType? = nil
     @Published var isLoading: Bool = false
-    
+    @Published var churchSearchResults: [Church] = []
+    @Published var isSearchingChurches: Bool = false
+    @Published var signUpCompleted: Bool = false
+
     private let authUseCase: AuthUseCaseProtocol
     private let session: UserSession
-    
+    private let churchSearchSubject = PassthroughSubject<String, Never>()
+    private var cancellables = Set<AnyCancellable>()
+
     init(authUseCase: AuthUseCaseProtocol,
          session: UserSession) {
         self.authUseCase = authUseCase
         self.session = session
+        setupChurchSearchDebounce()
+    }
+
+    private func setupChurchSearchDebounce() {
+        churchSearchSubject
+            .debounce(for: .milliseconds(300), scheduler: RunLoop.main)
+            .removeDuplicates()
+            .sink { [weak self] query in
+                guard let self else { return }
+                Task { await self.performChurchSearch(query: query) }
+            }
+            .store(in: &cancellables)
+    }
+
+    func searchChurches(query: String) {
+        let trimmed = query.trimmingCharacters(in: .whitespaces)
+        guard !trimmed.isEmpty else {
+            churchSearchResults = []
+            return
+        }
+        churchSearchSubject.send(trimmed)
+    }
+
+    private func performChurchSearch(query: String) async {
+        isSearchingChurches = true
+        defer { isSearchingChurches = false }
+
+        do {
+            let results = try await authUseCase.searchChurches(query: query, page: 1)
+            churchSearchResults = results
+        } catch {
+            print("교회 검색 실패: \(error)")
+            churchSearchResults = []
+        }
     }
     
     func login(email: String, password: String) async {
@@ -137,8 +177,8 @@ class LoginViewModel: ObservableObject {
         }
     }
 
-    func signUp(name: String, nickname: String, email: String, password: String, confirmPassword: String) async {
-        print("회원가입 name: \(name), nickname: \(nickname), email: \(email)")
+    func signUp(name: String, nickname: String, email: String, password: String, confirmPassword: String, church: Church, community: Community?) async {
+        print("회원가입 name: \(name), nickname: \(nickname), email: \(email), church: \(church.name)")
 
         if name.isEmpty {
             signUpAlertType = .fieldEmpty(fieldName: "이름")
@@ -188,7 +228,12 @@ class LoginViewModel: ObservableObject {
                                          nickname: nickname,
                                          email: email,
                                          password: password,
-                                         confirmPassword: confirmPassword)
+                                         confirmPassword: confirmPassword,
+                                         churchPlaceId: church.id,
+                                         churchName: church.name,
+                                         churchRoadAddress: church.roadAddress,
+                                         community: community)
+            signUpCompleted = true
             signUpAlertType = .registerSuccess
         } catch {
             let error = error.localizedDescription

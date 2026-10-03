@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>ServerEnvironment</key>
-	<string>release</string>
+	<string>dev</string>
 	<key>APIEnvironment</key>
 	<string>production</string>
 	<key>ChurchName</key>

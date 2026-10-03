@@ -49,6 +49,7 @@ enum APIEndpoint {
     // MARK: - Auth
     case signup
     case login
+    case searchChurches
     case logout
     case fetchMyInfo
     case findID
@@ -98,6 +99,8 @@ enum APIEndpoint {
         switch self {
         case .signup:
             return "\(basePath)/signup"
+        case .searchChurches:
+            return "\(basePath)/churches"
         case .login:
             return "\(basePath)/login"
         case .logout:

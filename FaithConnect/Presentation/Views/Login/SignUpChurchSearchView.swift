@@ -6,8 +6,8 @@
 import SwiftUI
 
 struct SignUpChurchSearchView: View {
+    @ObservedObject var viewModel: LoginViewModel
     @State private var query = ""
-    @State private var results: [Church] = []
 
     var body: some View {
         VStack(spacing: 0) {
@@ -27,38 +27,30 @@ struct SignUpChurchSearchView: View {
                 TextField("교회명 검색", text: $query)
                     .autocapitalization(.none)
                     .onChange(of: query) { _ in
-                        searchChurches()
+                        viewModel.searchChurches(query: query)
                     }
+                if viewModel.isSearchingChurches {
+                    ProgressView()
+                        .scaleEffect(0.8)
+                }
             }
             .padding(12)
             .background(Color(.systemGray6))
             .cornerRadius(10)
             .padding(.horizontal, 16)
 
-            List(results) { church in
+            List(viewModel.churchSearchResults) { church in
                 NavigationLink {
                     if church.isManna {
-                        CommunitySelectionView(church: church)
+                        CommunitySelectionView(church: church, viewModel: viewModel)
                     } else {
-                        SignUpFormView(church: church, community: nil)
+                        SignUpFormView(church: church, community: nil, viewModel: viewModel)
                     }
                 } label: {
                     VStack(alignment: .leading, spacing: 3) {
-                        HStack {
-                            Text(church.name)
-                                .font(.subheadline)
-                                .fontWeight(.medium)
-                            if church.isManna {
-                                Text("MANNA")
-                                    .font(.caption2)
-                                    .fontWeight(.bold)
-                                    .padding(.horizontal, 6)
-                                    .padding(.vertical, 2)
-                                    .background(Color.orange.opacity(0.15))
-                                    .foregroundColor(.orange)
-                                    .clipShape(Capsule())
-                            }
-                        }
+                        Text(church.name)
+                            .font(.subheadline)
+                            .fontWeight(.medium)
                         Text(church.roadAddress)
                             .font(.caption)
                             .foregroundColor(.secondary)
@@ -72,7 +64,7 @@ struct SignUpChurchSearchView: View {
                         .font(.subheadline)
                         .foregroundColor(.secondary)
                         .multilineTextAlignment(.center)
-                } else if results.isEmpty {
+                } else if viewModel.churchSearchResults.isEmpty && !viewModel.isSearchingChurches {
                     Text("검색 결과가 없습니다.")
                         .font(.subheadline)
                         .foregroundColor(.secondary)
@@ -82,22 +74,5 @@ struct SignUpChurchSearchView: View {
         .navigationTitle("회원가입")
         .navigationBarTitleDisplayMode(.inline)
         .customBackButtonStyle()
-    }
-
-    private func searchChurches() {
-        // TODO: 실제 API 연동 시 교체
-        let q = query.trimmingCharacters(in: .whitespaces)
-        guard !q.isEmpty else {
-            results = []
-            return
-        }
-        let mockChurches: [Church] = [
-            Church(id: "8239253", name: "만나교회", roadAddress: "경기 성남시 분당구 양현로 353", isManna: true),
-            Church(id: "1000001", name: "만나교회", roadAddress: "서울 강남구 테헤란로 1", isManna: false),
-            Church(id: "1000002", name: "사랑의교회", roadAddress: "서울 서초구 반포대로 121", isManna: false),
-            Church(id: "1000003", name: "온누리교회", roadAddress: "서울 용산구 이촌로 347", isManna: false),
-            Church(id: "1000004", name: "높은뜻교회", roadAddress: "서울 강북구 삼양로 1", isManna: false),
-        ]
-        results = mockChurches.filter { $0.name.contains(q) || $0.roadAddress.contains(q) }
     }
 }

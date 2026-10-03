@@ -18,12 +18,26 @@ class AuthRepository: AuthRepositoryProtocol {
         apiClient.hasToken
     }
 
-    func signUp(name: String, nickname: String, email: String, password: String, confirmPassword: String) async throws {
+    func searchChurches(query: String, page: Int) async throws -> [Church] {
+        let response = try await apiClient.searchChurches(query: query, page: page)
+        return response.churches.map { item in
+            Church(id: item.placeId,
+                   name: item.name,
+                   roadAddress: item.roadAddress,
+                   isManna: item.isManna)
+        }
+    }
+
+    func signUp(name: String, nickname: String, email: String, password: String, confirmPassword: String, churchPlaceId: String, churchName: String, churchRoadAddress: String, community: Community?) async throws {
         try await apiClient.signUp(name: name,
                                    nickname: nickname,
                                    email: email,
                                    password: password,
-                                   confirmPassword: confirmPassword)
+                                   confirmPassword: confirmPassword,
+                                   churchPlaceId: churchPlaceId,
+                                   churchName: churchName,
+                                   churchRoadAddress: churchRoadAddress,
+                                   community: community)
     }
 
     func requestEmailVerification(email: String) async throws {

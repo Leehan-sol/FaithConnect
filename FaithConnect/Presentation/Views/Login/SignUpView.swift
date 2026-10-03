@@ -126,11 +126,14 @@ struct SignUpView: View {
                              foregroundColor: .white,
                              backgroundColor: isEmailVerified ? .customBlue1 : .gray) {
                     Task {
+                        let defaultChurch = Church(id: "", name: "", roadAddress: "", isManna: false)
                         await viewModel.signUp(name: name,
                                                nickname: nickname,
                                                email: email,
                                                password: password,
-                                               confirmPassword: confirmPassword)
+                                               confirmPassword: confirmPassword,
+                                               church: defaultChurch,
+                                               community: nil)
                     }
                 }
                 .disabled(!isEmailVerified)

@@ -7,6 +7,7 @@ import SwiftUI
 
 struct CommunitySelectionView: View {
     let church: Church
+    @ObservedObject var viewModel: LoginViewModel
     @State private var selected: Community?
     @State private var goForm = false
 
@@ -51,7 +52,7 @@ struct CommunitySelectionView: View {
         .customBackButtonStyle()
         .navigationDestination(isPresented: $goForm) {
             if let selected = selected {
-                SignUpFormView(church: church, community: selected)
+                SignUpFormView(church: church, community: selected, viewModel: viewModel)
             }
         }
     }

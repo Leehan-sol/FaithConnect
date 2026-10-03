@@ -15,11 +15,13 @@ class MockAuthUseCase: AuthUseCaseProtocol {
                                      community: nil, role: .member)
     var stubbedFoundEmail: String = ""
     var stubbedNickname: String = ""
+    var stubbedChurches: [Church] = []
     var stubbedError: Error?
 
     // MARK: - 호출 추적
     var loginCalledWith: (email: String, password: String)?
-    var signUpCalledWith: (name: String, nickname: String, email: String, password: String, confirmPassword: String)?
+    var signUpCalledWith: (name: String, nickname: String, email: String, password: String, confirmPassword: String, churchPlaceId: String, churchName: String, churchRoadAddress: String, community: Community?)?
+    var searchChurchesCalledWith: (query: String, page: Int)?
     var logoutCalled = false
     var fetchMyInfoCalled = false
     var findIDCalledWith: (name: String, nickname: String)?
@@ -28,8 +30,14 @@ class MockAuthUseCase: AuthUseCaseProtocol {
     // MARK: - AuthUseCaseProtocol
     var hasToken: Bool { stubbedHasToken }
 
-    func signUp(name: String, nickname: String, email: String, password: String, confirmPassword: String) async throws {
-        signUpCalledWith = (name, nickname, email, password, confirmPassword)
+    func searchChurches(query: String, page: Int) async throws -> [Church] {
+        searchChurchesCalledWith = (query, page)
+        if let error = stubbedError { throw error }
+        return stubbedChurches
+    }
+
+    func signUp(name: String, nickname: String, email: String, password: String, confirmPassword: String, churchPlaceId: String, churchName: String, churchRoadAddress: String, community: Community?) async throws {
+        signUpCalledWith = (name, nickname, email, password, confirmPassword, churchPlaceId, churchName, churchRoadAddress, community)
         if let error = stubbedError { throw error }
     }
 

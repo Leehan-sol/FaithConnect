@@ -7,6 +7,20 @@
 
 import Foundation
 
+// MARK: - 교회 검색
+struct ChurchSearchResponseItem: Decodable {
+    let placeId: String
+    let name: String
+    let roadAddress: String
+    let address: String
+    let phone: String?
+    let isManna: Bool
+}
+
+struct ChurchSearchResponse: Decodable {
+    let churches: [ChurchSearchResponseItem]
+}
+
 // MARK: - 회원가입
 struct SignUpRequest: Codable {
     let name: String
@@ -14,6 +28,10 @@ struct SignUpRequest: Codable {
     let email: String
     let password: String
     let confirmPassword: String
+    let churchPlaceId: String
+    let churchName: String
+    let churchRoadAddress: String
+    let community: String?
 }
 
 struct SignUpResponse: Decodable {

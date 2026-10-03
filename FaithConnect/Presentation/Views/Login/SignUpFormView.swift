@@ -8,7 +8,7 @@ import SwiftUI
 struct SignUpFormView: View {
     let church: Church
     let community: Community?
-    @StateObject private var viewModel: LoginViewModel
+    @ObservedObject var viewModel: LoginViewModel
     @State private var name = ""
     @State private var nickname = ""
     @State private var email = ""
@@ -18,19 +18,6 @@ struct SignUpFormView: View {
     @State private var password = ""
     @State private var confirmPassword = ""
     @Environment(\.dismiss) private var dismiss
-
-    init(church: Church, community: Community?, viewModel: LoginViewModel? = nil) {
-        self.church = church
-        self.community = community
-        if let viewModel = viewModel {
-            _viewModel = StateObject(wrappedValue: viewModel)
-        } else {
-            // Preview/fallback용
-            let apiClient = APIClient(tokenStorage: TokenStorage())
-            let authUseCase = AuthUseCase(repository: AuthRepository(apiClient: apiClient))
-            _viewModel = StateObject(wrappedValue: LoginViewModel(authUseCase: authUseCase, session: UserSession()))
-        }
-    }
 
     var body: some View {
         ScrollView {
@@ -173,7 +160,9 @@ struct SignUpFormView: View {
                                                nickname: nickname,
                                                email: email,
                                                password: password,
-                                               confirmPassword: confirmPassword)
+                                               confirmPassword: confirmPassword,
+                                               church: church,
+                                               community: community)
                     }
                 }
                 .disabled(!isEmailVerified)

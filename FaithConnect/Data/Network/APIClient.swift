@@ -17,7 +17,8 @@ enum AuthRequirement {
 protocol APIClientProtocol {
     var hasToken: Bool { get }
     // Auth
-    func signUp(name: String, nickname: String, email: String, password: String, confirmPassword: String) async throws
+    func searchChurches(query: String, page: Int) async throws -> ChurchSearchResponse
+    func signUp(name: String, nickname: String, email: String, password: String, confirmPassword: String, churchPlaceId: String, churchName: String, churchRoadAddress: String, community: Community?) async throws
     func requestEmailVerification(email: String) async throws
     func confirmEmailVerification(email: String, verificationCode: String) async throws
     func login(email: String, password: String) async throws
@@ -40,7 +41,7 @@ protocol APIClientProtocol {
 
     // Prayer
     func loadCategories() async throws -> [CategoryResponse]
-    func loadPrayers(categoryID: Int, page: Int) async throws -> PrayerListResponse
+    func loadPrayers(categoryID: Int?, community: String?, page: Int) async throws -> PrayerListResponse
     func loadPrayerDetail(prayerRequestID: Int) async throws -> PrayerDetailResponse
     func writePrayer(categoryID: Int, title: String, content: String) async throws -> PrayerWriteResponse
     func updatePrayer(prayerRequestId: Int, categoryID: Int, title: String, content: String) async throws -> PrayerDetailResponse
@@ -246,7 +247,20 @@ extension APIClient {
 
 // MARK: - Auth
 extension APIClient {
-    func signUp(name: String, nickname: String, email: String, password: String, confirmPassword: String) async throws {
+    func searchChurches(query: String, page: Int) async throws -> ChurchSearchResponse {
+        let urlString = APIEndpoint.searchChurches.urlString
+        let apiResponse: ChurchSearchResponse = try await get(
+            path: urlString,
+            queryItems: [
+                URLQueryItem(name: "query", value: query),
+                URLQueryItem(name: "page", value: "\(page)")
+            ],
+            auth: .none
+        )
+        return apiResponse
+    }
+
+    func signUp(name: String, nickname: String, email: String, password: String, confirmPassword: String, churchPlaceId: String, churchName: String, churchRoadAddress: String, community: Community?) async throws {
         let urlString = APIEndpoint.signup.urlString
 
         let requestBody = SignUpRequest(
@@ -254,7 +268,11 @@ extension APIClient {
             nickname: nickname,
             email: email,
             password: password,
-            confirmPassword: confirmPassword
+            confirmPassword: confirmPassword,
+            churchPlaceId: churchPlaceId,
+            churchName: churchName,
+            churchRoadAddress: churchRoadAddress,
+            community: community?.rawValue
         )
 
         let apiResponse: SignUpResponse = try await post(urlString: urlString,
@@ -485,15 +503,20 @@ extension APIClient {
         return apiResponse
     }
     
-    func loadPrayers(categoryID: Int, page: Int) async throws -> PrayerListResponse {
+    func loadPrayers(categoryID: Int?, community: String?, page: Int) async throws -> PrayerListResponse {
         let urlString = APIEndpoint.prayers.urlString
-        
+
+        var queryItems = [URLQueryItem(name: "page", value: "\(page)")]
+        if let categoryID = categoryID {
+            queryItems.append(URLQueryItem(name: "categoryId", value: "\(categoryID)"))
+        }
+        if let community = community {
+            queryItems.append(URLQueryItem(name: "community", value: community))
+        }
+
         let apiResponse: PrayerListResponse = try await get(path: urlString,
-                                                            queryItems: [
-                                                                URLQueryItem(name: "categoryId", value: "\(categoryID)"),
-                                                                URLQueryItem(name: "page", value: "\(page)")
-                                                            ])
-        
+                                                            queryItems: queryItems)
+
         return apiResponse
     }
     

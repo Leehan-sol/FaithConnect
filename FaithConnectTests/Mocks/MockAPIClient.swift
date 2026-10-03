@@ -27,7 +27,12 @@ class MockAPIClient: APIClientProtocol {
     var hasToken: Bool { stubbedHasToken }
 
     // MARK: - Auth
-    func signUp(name: String, nickname: String, email: String, password: String, confirmPassword: String) async throws {
+    func searchChurches(query: String, page: Int) async throws -> ChurchSearchResponse {
+        if let error = stubbedError { throw error }
+        return ChurchSearchResponse(churches: [])
+    }
+
+    func signUp(name: String, nickname: String, email: String, password: String, confirmPassword: String, churchPlaceId: String, churchName: String, churchRoadAddress: String, community: Community?) async throws {
         if let error = stubbedError { throw error }
     }
 
@@ -102,7 +107,7 @@ class MockAPIClient: APIClientProtocol {
         return stubbedCategories
     }
 
-    func loadPrayers(categoryID: Int, page: Int) async throws -> PrayerListResponse {
+    func loadPrayers(categoryID: Int?, community: String?, page: Int) async throws -> PrayerListResponse {
         if let error = stubbedError { throw error }
         return stubbedPrayerList!
     }

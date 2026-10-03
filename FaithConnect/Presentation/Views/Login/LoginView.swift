@@ -119,7 +119,13 @@ struct LoginView: View {
             }
             .navigationBarHidden(true)
             .navigationDestination(isPresented: $showSignUp) {
-                SignUpChurchSearchView()
+                SignUpChurchSearchView(viewModel: viewModel)
+            }
+            .onChange(of: viewModel.signUpCompleted) { completed in
+                if completed {
+                    showSignUp = false
+                    viewModel.signUpCompleted = false
+                }
             }
             .navigationDestination(isPresented: $showFindID) {
                 FindIDView(viewModel: viewModel)

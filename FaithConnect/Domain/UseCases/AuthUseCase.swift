@@ -9,7 +9,8 @@ import Foundation
 
 protocol AuthUseCaseProtocol {
     var hasToken: Bool { get }
-    func signUp(name: String, nickname: String, email: String, password: String, confirmPassword: String) async throws
+    func searchChurches(query: String, page: Int) async throws -> [Church]
+    func signUp(name: String, nickname: String, email: String, password: String, confirmPassword: String, churchPlaceId: String, churchName: String, churchRoadAddress: String, community: Community?) async throws
     func requestEmailVerification(email: String) async throws
     func confirmEmailVerification(email: String, verificationCode: String) async throws
     func login(email: String, password: String) async throws
@@ -38,12 +39,20 @@ class AuthUseCase: AuthUseCaseProtocol {
         repository.hasToken
     }
 
-    func signUp(name: String, nickname: String, email: String, password: String, confirmPassword: String) async throws {
+    func searchChurches(query: String, page: Int) async throws -> [Church] {
+        try await repository.searchChurches(query: query, page: page)
+    }
+
+    func signUp(name: String, nickname: String, email: String, password: String, confirmPassword: String, churchPlaceId: String, churchName: String, churchRoadAddress: String, community: Community?) async throws {
         try await repository.signUp(name: name,
                                     nickname: nickname,
                                     email: email,
                                     password: password,
-                                    confirmPassword: confirmPassword)
+                                    confirmPassword: confirmPassword,
+                                    churchPlaceId: churchPlaceId,
+                                    churchName: churchName,
+                                    churchRoadAddress: churchRoadAddress,
+                                    community: community)
     }
 
     func requestEmailVerification(email: String) async throws {
