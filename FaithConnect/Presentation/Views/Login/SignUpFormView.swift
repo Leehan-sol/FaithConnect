@@ -49,7 +49,7 @@ struct SignUpFormView: View {
                                 Text("공동체")
                                     .foregroundColor(.secondary)
                                     .frame(width: 60, alignment: .leading)
-                                Text("\(community.emoji) \(community.displayName)")
+                                Text(community.displayName)
                                     .foregroundColor(.blue)
                             }
                         }

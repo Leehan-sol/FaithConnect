@@ -17,8 +17,8 @@ struct MyResponse: Identifiable {
     let id: Int // prayerRequestId
     let prayerRequestId: Int
     let prayerRequestTitle: String
-    let categoryId: Int
-    let categoryName: String
+    let categoryId: Int?
+    let categoryName: String?
     var message: String
     let createdAt: String
 }

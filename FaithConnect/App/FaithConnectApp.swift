@@ -75,7 +75,7 @@ struct RootView: View {
                 SplashView()
             } else if session.isLoggedIn {
                 MainTabView(
-                    homeViewModel: HomeViewModel(prayerUseCase: prayerUseCase),
+                    homeViewModel: HomeViewModel(prayerUseCase: prayerUseCase, isManna: session.isManna, userCommunity: session.user?.community),
                     myPrayerViewModel: MyPrayerViewModel(prayerUseCase: prayerUseCase),
                     myPageViewModel: MyPageViewModel(authUseCase: authUseCase,
                                                     prayerUseCase: prayerUseCase,

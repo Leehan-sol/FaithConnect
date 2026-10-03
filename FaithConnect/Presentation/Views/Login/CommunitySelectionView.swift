@@ -30,8 +30,6 @@ struct CommunitySelectionView: View {
                         goForm = true
                     } label: {
                         VStack(spacing: 8) {
-                            Text(community.emoji)
-                                .font(.system(size: 36))
                             Text(community.displayName)
                                 .font(.headline)
                         }
