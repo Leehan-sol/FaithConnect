@@ -31,15 +31,39 @@ struct MyPageView: View {
                         .foregroundColor(Color(.darkGray))
                         .frame(width: 30, height: 30)
 
-                    VStack(alignment: .leading, spacing: 5) {
+                    VStack(alignment: .leading, spacing: 8) {
                         Text(viewModel.nickname)
+                            .font(.headline)
 
                         Text(verbatim: viewModel.email)
                             .foregroundColor(.gray)
                             .font(.footnote)
+
+                        if !viewModel.churchName.isEmpty {
+                            HStack(spacing: 6) {
+                                Label(viewModel.churchName, systemImage: "building.2")
+                                    .font(.caption)
+                                    .padding(.horizontal, 10)
+                                    .padding(.vertical, 6)
+                                    .background(Color(.systemGray5))
+                                    .foregroundColor(.primary)
+                                    .cornerRadius(14)
+
+                                if let community = viewModel.community {
+                                    Text(community.displayName)
+                                        .font(.caption)
+                                        .padding(.horizontal, 10)
+                                        .padding(.vertical, 6)
+                                        .background(Color.customBlue1.opacity(0.15))
+                                        .foregroundColor(.customBlue1)
+                                        .cornerRadius(14)
+                                }
+                            }
+                            .padding(.top, 2)
+                        }
                     }
                 }
-                .padding(30)
+                .padding(20)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .background(Color(.systemGray6))
                 .cornerRadius(10)
