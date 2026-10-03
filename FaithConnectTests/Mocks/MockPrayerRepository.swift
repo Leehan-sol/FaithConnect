@@ -40,12 +40,12 @@ class MockPrayerRepository: PrayerRepositoryProtocol {
         return stubbedPrayer!
     }
 
-    func writePrayer(categoryID: Int?, community: Community?, title: String, content: String) async throws -> Prayer {
+    func writePrayer(categoryID: Int?, community: Community?, visibility: Visibility?, displayNameType: DisplayNameType?, title: String, content: String) async throws -> Prayer {
         if let error = stubbedError { throw error }
         return stubbedPrayer!
     }
 
-    func updatePrayer(prayerRequestId: Int, categoryID: Int?, community: Community?, title: String, content: String) async throws -> Prayer {
+    func updatePrayer(prayerRequestId: Int, categoryID: Int?, community: Community?, visibility: Visibility?, displayNameType: DisplayNameType?, title: String, content: String) async throws -> Prayer {
         if let error = stubbedError { throw error }
         return stubbedPrayer!
     }
@@ -55,7 +55,7 @@ class MockPrayerRepository: PrayerRepositoryProtocol {
         if let error = stubbedError { throw error }
     }
 
-    func writePrayerResponse(prayerRequestID: Int, message: String) async throws -> PrayerResponse {
+    func writePrayerResponse(prayerRequestID: Int, message: String, visibility: Visibility?, displayNameType: DisplayNameType?) async throws -> PrayerResponse {
         if let error = stubbedError { throw error }
         return stubbedPrayerResponse!
     }
@@ -101,7 +101,7 @@ class MockPrayerRepository: PrayerRepositoryProtocol {
         if let error = stubbedError { throw error }
     }
 
-    func writeReply(responseId: Int, message: String) async throws -> PrayerResponse {
+    func writeReply(responseId: Int, message: String, visibility: Visibility?, displayNameType: DisplayNameType?) async throws -> PrayerResponse {
         if let error = stubbedError { throw error }
         return stubbedPrayerResponse!
     }

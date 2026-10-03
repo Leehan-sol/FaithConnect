@@ -36,15 +36,17 @@ class PrayerRepository: PrayerRepositoryProtocol {
         }
     }
 
-    func writePrayer(categoryID: Int?, community: Community?, title: String, content: String) async throws -> Prayer {
-        let result = try await apiClient.writePrayer(categoryID: categoryID, community: community?.rawValue, title: title, content: content)
+    func writePrayer(categoryID: Int?, community: Community?, visibility: Visibility?, displayNameType: DisplayNameType?, title: String, content: String) async throws -> Prayer {
+        let result = try await apiClient.writePrayer(categoryID: categoryID, community: community?.rawValue, visibility: visibility?.rawValue, displayNameType: displayNameType?.rawValue, title: title, content: content)
         return Prayer(from: result)
     }
 
-    func updatePrayer(prayerRequestId: Int, categoryID: Int?, community: Community?, title: String, content: String) async throws -> Prayer {
+    func updatePrayer(prayerRequestId: Int, categoryID: Int?, community: Community?, visibility: Visibility?, displayNameType: DisplayNameType?, title: String, content: String) async throws -> Prayer {
         let result = try await apiClient.updatePrayer(prayerRequestId: prayerRequestId,
                                                        categoryID: categoryID,
                                                        community: community?.rawValue,
+                                                       visibility: visibility?.rawValue,
+                                                       displayNameType: displayNameType?.rawValue,
                                                        title: title,
                                                        content: content)
         return Prayer(from: result)
@@ -54,9 +56,11 @@ class PrayerRepository: PrayerRepositoryProtocol {
         try await apiClient.deletePrayer(prayerRequestId: prayerRequestId)
     }
 
-    func writePrayerResponse(prayerRequestID: Int, message: String) async throws -> PrayerResponse {
+    func writePrayerResponse(prayerRequestID: Int, message: String, visibility: Visibility?, displayNameType: DisplayNameType?) async throws -> PrayerResponse {
         let result = try await apiClient.writePrayerResponse(prayerRequestID: prayerRequestID,
-                                                              message: message)
+                                                              message: message,
+                                                              visibility: visibility?.rawValue,
+                                                              displayNameType: displayNameType?.rawValue)
         return PrayerResponse(from: result)
     }
 
@@ -121,8 +125,8 @@ class PrayerRepository: PrayerRepositoryProtocol {
         try await apiClient.unblockUser(userId: userId)
     }
 
-    func writeReply(responseId: Int, message: String) async throws -> PrayerResponse {
-        let result = try await apiClient.writeReply(responseId: responseId, message: message)
+    func writeReply(responseId: Int, message: String, visibility: Visibility?, displayNameType: DisplayNameType?) async throws -> PrayerResponse {
+        let result = try await apiClient.writeReply(responseId: responseId, message: message, visibility: visibility?.rawValue, displayNameType: displayNameType?.rawValue)
         return PrayerResponse(from: result)
     }
 

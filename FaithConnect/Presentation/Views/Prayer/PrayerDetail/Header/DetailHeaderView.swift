@@ -14,11 +14,12 @@ struct DetailHeaderView: View {
         VStack(alignment: .leading, spacing: 25) {
             HStack {
                 Text(prayer.displayLabel)
-                    .frame(minWidth: 40, minHeight: 30)
-                    .foregroundColor(.customNavy)
-                    .background(.customBlue1.opacity(0.2))
-                    .bold()
                     .font(.caption)
+                    .bold()
+                    .foregroundColor(.customNavy)
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 6)
+                    .background(.customBlue1.opacity(0.2))
                     .cornerRadius(10)
 
                 Text(prayer.userName)

@@ -22,11 +22,12 @@ struct PrayerRowView: View {
             // MARK: - Header
             HStack {
                 Text(prayer.displayLabel)
-                    .frame(minWidth: 40, minHeight: 30)
-                    .foregroundColor(.customNavy)
-                    .background(.customBlue1.opacity(0.2))
-                    .bold()
                     .font(.caption)
+                    .bold()
+                    .foregroundColor(.customNavy)
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 6)
+                    .background(.customBlue1.opacity(0.2))
                     .cornerRadius(10)
 
                 if cellType == .others {
@@ -84,7 +85,7 @@ struct PrayerRowView: View {
                                  userName: "",
                                  categoryId: 0,
                                  categoryName: "건강",
-                                 community: nil,
+                                 community: nil, visibility: nil, displayNameType: nil,
                                  title: "제목",
                                  content: "내용",
                                  createdAt: "날짜",

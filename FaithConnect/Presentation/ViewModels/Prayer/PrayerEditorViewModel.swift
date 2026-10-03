@@ -12,6 +12,9 @@ import Combine
 class PrayerEditorViewModel: ObservableObject {
     @Published var categories: [PrayerCategory] = []
     @Published var alertType: AlertType? = nil
+    @Published var selectedCommunity: Community = .joseph
+    @Published var selectedVisibility: Visibility = .publicAll
+    @Published var selectedDisplayNameType: DisplayNameType = .nickname
 
     private let prayerUseCase: PrayerUseCaseProtocol
     private var cancellables = Set<AnyCancellable>()
@@ -26,6 +29,7 @@ class PrayerEditorViewModel: ObservableObject {
         self.prayer = prayer
         self.isManna = isManna
         self.userCommunity = userCommunity
+        self.selectedCommunity = userCommunity ?? .joseph
     }
 
     func fetchCategories() async {
@@ -38,7 +42,7 @@ class PrayerEditorViewModel: ObservableObject {
         }
     }
 
-    func savePrayer(categoryId: Int?, community: Community?, title: String, content: String) async {
+    func savePrayer(categoryId: Int?, community: Community?, visibility: Visibility?, displayNameType: DisplayNameType?, title: String, content: String) async {
         if !isManna && (categoryId == nil || categoryId == 0) {
             alertType = .error(message: "카테고리를 선택해 주세요.")
             return
@@ -59,11 +63,15 @@ class PrayerEditorViewModel: ObservableObject {
                 let _ = try await prayerUseCase.updatePrayer(prayerRequestId: prayer.id,
                                                              categoryID: categoryId,
                                                              community: community,
+                                                             visibility: visibility,
+                                                             displayNameType: displayNameType,
                                                              title: title,
                                                              content: content)
             } else {
                 let _ = try await prayerUseCase.writePrayer(categoryID: categoryId,
                                                             community: community,
+                                                            visibility: visibility,
+                                                            displayNameType: displayNameType,
                                                             title: title,
                                                             content: content)
             }

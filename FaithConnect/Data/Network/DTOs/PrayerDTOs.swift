@@ -29,6 +29,8 @@ struct PrayerDetailResponse: Decodable {
     let categoryName: String?
     let community: String?
     let communityName: String?
+    let visibility: String?
+    let displayNameType: String?
     let title: String?
     let content: String?
     let createdAt: String?
@@ -46,6 +48,8 @@ struct DetailResponseItem: Decodable {
     let prayerUserName: String?
     let prayerRequestTitle: String?
     let message: String
+    let visibility: String?
+    let displayNameType: String?
     let createdAt: String
     let isMine: Bool
     let parentResponseId: Int?
@@ -93,6 +97,8 @@ struct MyResponseItem: Decodable {
 struct PrayerWriteRequest: Codable {
     let categoryId: Int?
     let community: String?
+    let visibility: String?
+    let displayNameType: String?
     let title: String
     let content: String
 }
@@ -104,6 +110,8 @@ struct PrayerWriteResponse: Decodable {
     let categoryId: Int?
     let categoryName: String?
     let community: String?
+    let visibility: String?
+    let displayNameType: String?
     let title: String
     let content: String
     let createdAt: String
@@ -117,11 +125,15 @@ struct PrayerWriteResponse: Decodable {
 struct PrayerResponseWriteRequest: Codable {
     let prayerRequestId: Int
     let message: String
+    let visibility: String?
+    let displayNameType: String?
 }
 
 // MARK: - 대댓글 작성
 struct ReplyWriteRequest: Codable {
     let message: String
+    let visibility: String?
+    let displayNameType: String?
 }
 
 // MARK: - 기도 응답 수정

@@ -20,6 +20,8 @@ struct Prayer: Identifiable {
     let categoryId: Int?
     let categoryName: String?
     let community: String?
+    let visibility: Visibility?
+    let displayNameType: DisplayNameType?
     let title: String
     let content: String
     let createdAt: String
@@ -50,6 +52,8 @@ extension Prayer {
         self.categoryId = dto.categoryId ?? 0
         self.categoryName = dto.categoryName ?? ""
         self.community = dto.community
+        self.visibility = dto.visibility.flatMap { Visibility(rawValue: $0) }
+        self.displayNameType = dto.displayNameType.flatMap { DisplayNameType(rawValue: $0) }
         self.title = dto.title ?? ""
         self.content = dto.content ?? ""
         self.createdAt = dto.createdAt ?? ""
@@ -66,6 +70,8 @@ extension Prayer {
         self.categoryId = dto.categoryId ?? 0
         self.categoryName = dto.categoryName ?? ""
         self.community = dto.community
+        self.visibility = dto.visibility.flatMap { Visibility(rawValue: $0) }
+        self.displayNameType = dto.displayNameType.flatMap { DisplayNameType(rawValue: $0) }
         self.title = dto.title
         self.content = dto.content
         self.createdAt = dto.createdAt

@@ -117,12 +117,12 @@ class MockAPIClient: APIClientProtocol {
         return stubbedPrayerDetail!
     }
 
-    func writePrayer(categoryID: Int?, community: String?, title: String, content: String) async throws -> PrayerWriteResponse {
+    func writePrayer(categoryID: Int?, community: String?, visibility: String?, displayNameType: String?, title: String, content: String) async throws -> PrayerWriteResponse {
         if let error = stubbedError { throw error }
         return stubbedPrayerWrite!
     }
 
-    func updatePrayer(prayerRequestId: Int, categoryID: Int?, community: String?, title: String, content: String) async throws -> PrayerDetailResponse {
+    func updatePrayer(prayerRequestId: Int, categoryID: Int?, community: String?, visibility: String?, displayNameType: String?, title: String, content: String) async throws -> PrayerDetailResponse {
         if let error = stubbedError { throw error }
         return stubbedPrayerDetail!
     }
@@ -131,7 +131,7 @@ class MockAPIClient: APIClientProtocol {
         if let error = stubbedError { throw error }
     }
 
-    func writePrayerResponse(prayerRequestID: Int, message: String) async throws -> DetailResponseItem {
+    func writePrayerResponse(prayerRequestID: Int, message: String, visibility: String?, displayNameType: String?) async throws -> DetailResponseItem {
         if let error = stubbedError { throw error }
         return stubbedResponseItem!
     }
@@ -176,7 +176,7 @@ class MockAPIClient: APIClientProtocol {
         if let error = stubbedError { throw error }
     }
 
-    func writeReply(responseId: Int, message: String) async throws -> DetailResponseItem {
+    func writeReply(responseId: Int, message: String, visibility: String?, displayNameType: String?) async throws -> DetailResponseItem {
         if let error = stubbedError { throw error }
         return stubbedResponseItem!
     }

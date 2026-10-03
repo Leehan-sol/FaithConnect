@@ -13,7 +13,6 @@ struct PrayerDetailView: View {
     @Environment(\.dismiss) private var dismiss
     
     @State private var prayerBottomSheetType: PrayerBottomSheetType?
-    @State private var showConfirmationDialog = false
     @State private var showPrayerEditor = false
     @State private var confirmAlert: ConfirmAlertType?
     @State private var showReportActionSheet = false
@@ -21,7 +20,7 @@ struct PrayerDetailView: View {
     @State private var reportReasonDetail = ""
 
     @FocusState private var isReplyFocused: Bool
-    @State private var sheetDetent: PresentationDetent = .fraction(0.75)
+    @State private var sheetDetent: PresentationDetent = .medium
     @State private var showHeartAnimation = false
     
     init(viewModel: @escaping () -> PrayerDetailViewModel) {
@@ -45,7 +44,6 @@ struct PrayerDetailView: View {
                              foregroundColor: .white,
                              backgroundColor: .customBlue1) {
                     prayerBottomSheetType = .create
-                    showConfirmationDialog = false
                 }.padding(EdgeInsets(top: 0, leading: 20, bottom: 10, trailing: 20))
             }
         }
@@ -117,9 +115,22 @@ struct PrayerDetailView: View {
             return false
         }) {
             if !viewModel.isUnavailable, viewModel.prayer?.userName != "탈퇴한 사용자" {
-                Button {
-                    prayerBottomSheetType = nil
-                    showConfirmationDialog = true
+                Menu {
+                    if viewModel.prayer?.isMine == true {
+                        Button { showPrayerEditor = true } label: {
+                            Label("수정", systemImage: "pencil")
+                        }
+                        Button(role: .destructive) { confirmAlert = .delete(target: "기도") } label: {
+                            Label("삭제", systemImage: "trash")
+                        }
+                    } else {
+                        Button(role: .destructive) { showReportActionSheet = true } label: {
+                            Label("신고", systemImage: "exclamationmark.triangle")
+                        }
+                        Button(role: .destructive) { confirmAlert = .block } label: {
+                            Label("차단", systemImage: "hand.raised")
+                        }
+                    }
                 } label: {
                     Image(systemName: "ellipsis")
                         .rotationEffect(.degrees(90))
@@ -130,21 +141,11 @@ struct PrayerDetailView: View {
         .sheet(item: $prayerBottomSheetType) { type in
             PrayerDetailBottomSheetView(viewModel: viewModel,
                                         editingResponse: type.editingResponse,
+                                        isManna: viewModel.prayer?.community != nil,
                                         onDismissSheet: { prayerBottomSheetType = nil })
-            .presentationDetents([.fraction(0.3), .fraction(0.75)], selection: $sheetDetent)
+            .presentationDetents([.medium, .large], selection: $sheetDetent)
             .presentationDragIndicator(.visible)
-            .presentationBackgroundInteraction(.enabled(upThrough: .fraction(0.3)))
             .interactiveDismissDisabled(true)
-        }
-        .confirmationDialog("", isPresented: $showConfirmationDialog, titleVisibility: .hidden) {
-            if viewModel.prayer?.isMine == true {
-                Button("수정") { showPrayerEditor = true }
-                Button("삭제", role: .destructive) { confirmAlert = .delete(target: "기도") }
-            } else {
-                Button("신고", role: .destructive) { showReportActionSheet = true }
-                Button("차단", role: .destructive) { confirmAlert = .block }
-            }
-            Button("취소", role: .cancel) { }
         }
         .navigationDestination(isPresented: $showPrayerEditor) {
             PrayerEditorView(viewModel: { viewModel.makePrayerEditorVM() })

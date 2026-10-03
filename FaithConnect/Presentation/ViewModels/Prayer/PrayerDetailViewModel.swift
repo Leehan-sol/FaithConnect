@@ -78,12 +78,12 @@ class PrayerDetailViewModel: ObservableObject {
     }
     
     func makePrayerEditorVM() -> PrayerEditorViewModel {
-        PrayerEditorViewModel(prayerUseCase: prayerUseCase, prayer: prayer)
+        let community = prayer?.community.flatMap { Community(rawValue: $0) }
+        return PrayerEditorViewModel(prayerUseCase: prayerUseCase, prayer: prayer, isManna: community != nil, userCommunity: community)
     }
     
     func deletePrayer() async -> Bool {
         do {
-            print("삭제 API 호출")
             guard let id = prayer?.id else { return false }
             try await prayerUseCase.deletePrayer(prayerRequestId: id)
             return true
@@ -95,20 +95,21 @@ class PrayerDetailViewModel: ObservableObject {
         }
     }
     
-    func writePrayerResponse(message: String) async -> Bool {
+    func writePrayerResponse(message: String, visibility: Visibility? = nil, displayNameType: DisplayNameType? = nil) async -> Bool {
         if message.isEmpty {
             alertType = .fieldEmpty(fieldName: "응답")
             return false
         }
-        
+
         guard let id = prayer?.id else {
             return false
         }
-        
+
         do {
-            print("기도 응답 API 호출")
             let response = try await prayerUseCase.writePrayerResponse(prayerRequestID: id,
                                                                       message: message,
+                                                                      visibility: visibility,
+                                                                      displayNameType: displayNameType,
                                                                       prayerTitle: prayer?.title ?? "",
                                                                       categoryId: prayer?.categoryId ?? 0,
                                                                       categoryName: prayer?.categoryName ?? "")
@@ -127,7 +128,6 @@ class PrayerDetailViewModel: ObservableObject {
     
     func updatePrayerResponse(responseID: Int, message: String) async -> Bool {
         do {
-            print("응답 수정 API 호출")
             let updatedResponse = try await prayerUseCase.updatePrayerResponse(responseID: responseID,
                                                                                message: message)
 
@@ -151,7 +151,6 @@ class PrayerDetailViewModel: ObservableObject {
 
     func deletePrayerResponse(response: PrayerResponse) async {
         do {
-            print("응답 삭제 API 호출")
             try await prayerUseCase.deletePrayerResponse(responseID: response.id,
                                                          prayerRequestId: response.prayerRequestId)
             await refresh()
@@ -277,7 +276,7 @@ class PrayerDetailViewModel: ObservableObject {
             replyHasNext[responseId] = result.hasNext
             self.prayer = prayer
         } catch {
-            print("답글 불러오기 실패 (responseId: \(responseId)): \(error.localizedDescription)")
+            // 답글 로드 실패는 무시
         }
 
         replyLoading.remove(responseId)
@@ -300,7 +299,7 @@ class PrayerDetailViewModel: ObservableObject {
         editingReply = nil
     }
 
-    func sendReply() async -> Int? {
+    func sendReply(visibility: Visibility? = nil, displayNameType: DisplayNameType? = nil) async -> Int? {
         guard let parentResponse = replyingTo else { return nil }
         let message = replyText.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !message.isEmpty else { return nil }
@@ -308,6 +307,8 @@ class PrayerDetailViewModel: ObservableObject {
         do {
             let reply = try await prayerUseCase.writeReply(responseId: parentResponse.id,
                                                               message: message,
+                                                              visibility: visibility,
+                                                              displayNameType: displayNameType,
                                                               prayerRequestId: prayer?.id ?? 0,
                                                               prayerTitle: prayer?.title ?? "",
                                                               categoryId: prayer?.categoryId ?? 0,

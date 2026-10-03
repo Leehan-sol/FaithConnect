@@ -27,7 +27,7 @@ struct PrayerEditorView: View {
 
             VStack(alignment: .leading, spacing: 10) {
                 if viewModel.isManna {
-                    communityInfo
+                    communitySelector
                 } else {
                     categorySelector
                 }
@@ -62,6 +62,10 @@ struct PrayerEditorView: View {
                 }
                 .padding(.bottom, 20)
 
+                if viewModel.isManna {
+                    visibilitySettings
+                }
+
                 InfoBoxView(messages: [
                     "• 기도제목은 익명으로 공유됩니다.",
                     "• 이름과 연락처 등 개인정보는 작성하지 말아주세요.",
@@ -90,7 +94,9 @@ struct PrayerEditorView: View {
                         Task {
                             await viewModel.savePrayer(
                                 categoryId: viewModel.isManna ? nil : selectedCategoryId,
-                                community: viewModel.isManna ? viewModel.userCommunity : nil,
+                                community: viewModel.isManna ? viewModel.selectedCommunity : nil,
+                                visibility: viewModel.isManna ? viewModel.selectedVisibility : nil,
+                                displayNameType: viewModel.isManna ? viewModel.selectedDisplayNameType : nil,
                                 title: title,
                                 content: content)
                             if viewModel.alertType == nil {
@@ -119,6 +125,11 @@ struct PrayerEditorView: View {
                     selectedCategoryId = prayer.categoryId ?? 0
                     title = prayer.title
                     content = prayer.content
+                    if let c = prayer.community, let community = Community(rawValue: c) {
+                        viewModel.selectedCommunity = community
+                    }
+                    if let v = prayer.visibility { viewModel.selectedVisibility = v }
+                    if let d = prayer.displayNameType { viewModel.selectedDisplayNameType = d }
                 }
             }
         }
@@ -148,23 +159,77 @@ struct PrayerEditorView: View {
         }
     }
 
-    // MARK: - 공동체 표시 (MANNA)
-    private var communityInfo: some View {
+    // MARK: - 공동체 선택 (MANNA)
+    private var communitySelector: some View {
         VStack(alignment: .leading, spacing: 10) {
             Text("공동체")
                 .font(.subheadline)
                 .bold()
 
-            if let community = viewModel.userCommunity {
-                Text(community.displayName)
-                    .font(.subheadline)
-                    .fontWeight(.bold)
-                    .padding(.horizontal, 14)
-                    .padding(.vertical, 8)
-                    .background(Color.customBlue1)
-                    .foregroundColor(.white)
-                    .cornerRadius(20)
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 8) {
+                    ForEach(Community.allCases) { community in
+                        let isSelected = viewModel.selectedCommunity == community
+                        Button {
+                            viewModel.selectedCommunity = community
+                        } label: {
+                            Text(community.displayName)
+                                .font(.subheadline)
+                                .fontWeight(isSelected ? .bold : .regular)
+                                .padding(.horizontal, 14)
+                                .padding(.vertical, 8)
+                                .background(isSelected ? Color.customBlue1 : Color(.systemGray6))
+                                .foregroundColor(isSelected ? .white : .primary)
+                                .cornerRadius(20)
+                        }
+                    }
+                }
             }
+        }
+        .padding(.bottom, 20)
+    }
+
+    // MARK: - 공개 설정 (MANNA)
+    private var visibilitySettings: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("공개 설정")
+                .font(.subheadline)
+                .bold()
+
+            VStack(spacing: 0) {
+                HStack {
+                    Text("공개범위")
+                        .font(.subheadline)
+                    Spacer()
+                    Picker("", selection: $viewModel.selectedVisibility) {
+                        ForEach(Visibility.allCases) { v in
+                            Text(v.displayName).tag(v)
+                        }
+                    }
+                    .tint(.primary)
+                }
+                .padding(.horizontal, 16)
+                .padding(.vertical, 12)
+
+                Divider()
+                    .padding(.leading, 16)
+
+                HStack {
+                    Text("표시이름")
+                        .font(.subheadline)
+                    Spacer()
+                    Picker("", selection: $viewModel.selectedDisplayNameType) {
+                        ForEach(DisplayNameType.allCases, id: \.self) { t in
+                            Text(t.displayName).tag(t)
+                        }
+                    }
+                    .tint(.primary)
+                }
+                .padding(.horizontal, 16)
+                .padding(.vertical, 12)
+            }
+            .background(Color(.systemGray6))
+            .cornerRadius(10)
         }
         .padding(.bottom, 20)
     }
@@ -175,5 +240,7 @@ struct PrayerEditorView: View {
     let mockRepo = PrayerRepository(apiClient: mockAPIClient)
     let mockUseCase = PrayerUseCase(repository: mockRepo)
 
-    return PrayerEditorView(viewModel: { PrayerEditorViewModel(prayerUseCase: mockUseCase) })
+    return NavigationStack {
+        PrayerEditorView(viewModel: { PrayerEditorViewModel(prayerUseCase: mockUseCase, isManna: true, userCommunity: .joseph) })
+    }
 }

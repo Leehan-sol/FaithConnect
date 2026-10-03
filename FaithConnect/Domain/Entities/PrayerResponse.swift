@@ -30,7 +30,6 @@ struct PrayerResponse: Identifiable, Equatable {
 extension PrayerResponse {
     init(from dto: DetailResponseItem) {
         self.id = dto.prayerResponseId
-//        self.id = UUID().hashValue // 테스트코드
         self.prayerRequestId = dto.prayerRequestId
         self.userId = dto.prayerUserId ?? 0
         self.userName = dto.prayerUserName ?? ""

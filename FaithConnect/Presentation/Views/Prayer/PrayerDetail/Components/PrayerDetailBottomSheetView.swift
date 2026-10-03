@@ -10,15 +10,19 @@ import SwiftUI
 struct PrayerDetailBottomSheetView: View {
     @ObservedObject var viewModel: PrayerDetailViewModel
     let editingResponse: PrayerResponse?
+    let isManna: Bool
     var onDismissSheet: () -> Void
     @State var content: String = ""
     @State var wordCount: Int = 0
     @State var showAlert: Bool = false
     @State private var localAlert: AlertType?
+    @State private var selectedVisibility: Visibility = .publicAll
+    @State private var selectedDisplayNameType: DisplayNameType = .nickname
 
-    init(viewModel: PrayerDetailViewModel, editingResponse: PrayerResponse? = nil, onDismissSheet: @escaping () -> Void) {
+    init(viewModel: PrayerDetailViewModel, editingResponse: PrayerResponse? = nil, isManna: Bool = false, onDismissSheet: @escaping () -> Void) {
         self.viewModel = viewModel
         self.editingResponse = editingResponse
+        self.isManna = isManna
         self.onDismissSheet = onDismissSheet
     }
 
@@ -39,11 +43,12 @@ struct PrayerDetailBottomSheetView: View {
                     
                     VStack(alignment: .leading, spacing: 15) {
                         Text(viewModel.prayer?.displayLabel ?? "")
-                            .frame(minWidth: 40, minHeight: 30)
-                            .foregroundColor(.customNavy)
-                            .background(.customBlue1.opacity(0.2))
-                            .bold()
                             .font(.caption)
+                            .bold()
+                            .foregroundColor(.customNavy)
+                            .padding(.horizontal, 10)
+                            .padding(.vertical, 6)
+                            .background(.customBlue1.opacity(0.2))
                             .cornerRadius(10)
 
                         Text(viewModel.prayer?.title ?? "")
@@ -80,6 +85,48 @@ struct PrayerDetailBottomSheetView: View {
                         }
                     }
                     
+                    if isManna {
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text("공개 설정")
+                                .font(.subheadline)
+                                .bold()
+
+                            VStack(spacing: 0) {
+                                HStack {
+                                    Text("공개범위")
+                                        .font(.subheadline)
+                                    Spacer()
+                                    Picker("", selection: $selectedVisibility) {
+                                        Text("전체").tag(Visibility.publicAll)
+                                        Text("비밀").tag(Visibility.privateOnly)
+                                    }
+                                    .tint(.primary)
+                                }
+                                .padding(.horizontal, 16)
+                                .padding(.vertical, 12)
+
+                                Divider()
+                                    .padding(.leading, 16)
+
+                                HStack {
+                                    Text("표시이름")
+                                        .font(.subheadline)
+                                    Spacer()
+                                    Picker("", selection: $selectedDisplayNameType) {
+                                        ForEach(DisplayNameType.allCases, id: \.self) { t in
+                                            Text(t.displayName).tag(t)
+                                        }
+                                    }
+                                    .tint(.primary)
+                                }
+                                .padding(.horizontal, 16)
+                                .padding(.vertical, 12)
+                            }
+                            .background(Color(.systemGray6))
+                            .cornerRadius(10)
+                        }
+                    }
+
                     Text("💡 따뜻한 격려의 메시지를 보내주세요.")
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .font(.caption)
@@ -116,7 +163,9 @@ struct PrayerDetailBottomSheetView: View {
                             if let editing = editingResponse {
                                 result = await viewModel.updatePrayerResponse(responseID: editing.id, message: content)
                             } else {
-                                result = await viewModel.writePrayerResponse(message: content)
+                                let vis = isManna ? selectedVisibility : nil
+                                let dnt = isManna ? selectedDisplayNameType : nil
+                                result = await viewModel.writePrayerResponse(message: content, visibility: vis, displayNameType: dnt)
                             }
                             if result {
                                 onDismissSheet()
