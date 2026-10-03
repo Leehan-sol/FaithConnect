@@ -9,10 +9,10 @@ import Foundation
 
 protocol PrayerRepositoryProtocol {
     func loadCategories() async throws -> [PrayerCategory]
-    func loadPrayers(categoryID: Int, page: Int) async throws -> PrayerPage
+    func loadPrayers(categoryID: Int?, community: Community?, page: Int) async throws -> PrayerPage
     func loadPrayerDetail(prayerRequestID: Int) async throws -> Prayer
-    func writePrayer(categoryID: Int, title: String, content: String) async throws -> Prayer
-    func updatePrayer(prayerRequestId: Int, categoryID: Int, title: String, content: String) async throws -> Prayer
+    func writePrayer(categoryID: Int?, community: Community?, title: String, content: String) async throws -> Prayer
+    func updatePrayer(prayerRequestId: Int, categoryID: Int?, community: Community?, title: String, content: String) async throws -> Prayer
     func deletePrayer(prayerRequestId: Int) async throws
     func writePrayerResponse(prayerRequestID: Int, message: String) async throws -> PrayerResponse
     func updatePrayerResponse(responseID: Int, message: String) async throws -> PrayerResponse

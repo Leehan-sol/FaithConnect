@@ -38,8 +38,8 @@ struct PrayerDetailBottomSheetView: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                     
                     VStack(alignment: .leading, spacing: 15) {
-                        Text(viewModel.prayer?.categoryName ?? "")
-                            .frame(width: 40, height: 30)
+                        Text(viewModel.prayer?.displayLabel ?? "")
+                            .frame(minWidth: 40, minHeight: 30)
                             .foregroundColor(.customNavy)
                             .background(.customBlue1.opacity(0.2))
                             .bold()

@@ -22,7 +22,7 @@ class MockPrayerUseCase: PrayerUseCaseProtocol {
 
     // MARK: - 호출 추적
     var loadCategoriesCalled = false
-    var loadPrayersCalledWith: (categoryID: Int, page: Int)?
+    var loadPrayersCalledWith: (categoryID: Int?, community: Community?, page: Int)?
     var loadPrayerDetailCalledWith: Int?
     var writePrayerCalledWith: (categoryID: Int, title: String, content: String)?
     var deletePrayerCalledWith: Int?
@@ -37,8 +37,8 @@ class MockPrayerUseCase: PrayerUseCaseProtocol {
         return stubbedCategories
     }
 
-    func loadPrayers(categoryID: Int, page: Int) async throws -> PrayerPage {
-        loadPrayersCalledWith = (categoryID, page)
+    func loadPrayers(categoryID: Int?, community: Community?, page: Int) async throws -> PrayerPage {
+        loadPrayersCalledWith = (categoryID, community, page)
         if let error = stubbedError { throw error }
         return stubbedPrayerPage
     }
@@ -49,13 +49,13 @@ class MockPrayerUseCase: PrayerUseCaseProtocol {
         return stubbedPrayer!
     }
 
-    func writePrayer(categoryID: Int, title: String, content: String) async throws -> Prayer {
+    func writePrayer(categoryID: Int?, community: Community?, title: String, content: String) async throws -> Prayer {
         writePrayerCalledWith = (categoryID, title, content)
         if let error = stubbedError { throw error }
         return stubbedPrayer!
     }
 
-    func updatePrayer(prayerRequestId: Int, categoryID: Int, title: String, content: String) async throws -> Prayer {
+    func updatePrayer(prayerRequestId: Int, categoryID: Int?, community: Community?, title: String, content: String) async throws -> Prayer {
         if let error = stubbedError { throw error }
         return stubbedPrayer!
     }

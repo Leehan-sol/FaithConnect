@@ -27,6 +27,8 @@ struct PrayerDetailResponse: Decodable {
     let prayerUserName: String?
     let categoryId: Int?
     let categoryName: String?
+    let community: String?
+    let communityName: String?
     let title: String?
     let content: String?
     let createdAt: String?
@@ -81,15 +83,16 @@ struct MyResponseItem: Decodable {
     let prayerResponseId: Int
     let prayerRequestId: Int
     let prayerRequestTitle: String
-    let categoryId: Int
-    let categoryName: String
+    let categoryId: Int?
+    let categoryName: String?
     let message: String
     let createdAt: String
 }
 
 // MARK: - 기도 작성
 struct PrayerWriteRequest: Codable {
-    let categoryId: Int
+    let categoryId: Int?
+    let community: String?
     let title: String
     let content: String
 }
@@ -98,8 +101,9 @@ struct PrayerWriteResponse: Decodable {
     let prayerRequestId: Int
     let prayerUserId: Int
     let prayerUserName: String
-    let categoryId: Int
-    let categoryName: String
+    let categoryId: Int?
+    let categoryName: String?
+    let community: String?
     let title: String
     let content: String
     let createdAt: String

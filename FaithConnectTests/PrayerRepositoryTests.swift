@@ -69,7 +69,7 @@ final class PrayerRepositoryTests: XCTestCase {
             status: nil
         )
 
-        let result = try await sut.loadPrayers(categoryID: 2, page: 1)
+        let result = try await sut.loadPrayers(categoryID: 2, community: nil, page: 1)
 
         XCTAssertEqual(result.prayers.count, 1)
         XCTAssertEqual(result.prayers[0].id, 1)

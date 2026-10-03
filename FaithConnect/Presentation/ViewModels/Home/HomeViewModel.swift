@@ -15,31 +15,44 @@ class HomeViewModel: ObservableObject {
     @Published var isRefreshing: Bool = false
     @Published var isLoading: Bool = false
     @Published var selectedCategoryId: Int = 0
+    @Published var selectedCommunity: Community? = nil
     @Published var alertType: AlertType? = nil
-    
+
     private let prayerUseCase: PrayerUseCaseProtocol
+    private let isManna: Bool
+    private let userCommunity: Community?
     private var cancellables = Set<AnyCancellable>()
-    
+
     private var currentPage: Int = 1
     private var hasNext: Bool = true
     private var hasInitialized: Bool = false
-    
-    init(prayerUseCase: PrayerUseCaseProtocol) {
+
+    init(prayerUseCase: PrayerUseCaseProtocol, isManna: Bool = false, userCommunity: Community? = nil) {
         self.prayerUseCase = prayerUseCase
+        self.isManna = isManna
+        self.userCommunity = userCommunity
         bindRepositoryEvents()
     }
-    
+
     func initializeIfNeeded() async {
         guard !hasInitialized else { return }
         hasInitialized = true
-        do {
-            categories = try await prayerUseCase.loadCategories()
-            guard let firstCategoryId = categories.first?.id else { return }
-            selectedCategoryId = firstCategoryId
-            try await loadPrayers(categoryID: firstCategoryId,
-                                  reset: true)
-        } catch {
-            alertType = .error(message: error.localizedDescription)
+
+        if isManna {
+            do {
+                try await loadPrayers(reset: true)
+            } catch {
+                alertType = .error(message: error.localizedDescription)
+            }
+        } else {
+            do {
+                categories = try await prayerUseCase.loadCategories()
+                guard let firstCategoryId = categories.first?.id else { return }
+                selectedCategoryId = firstCategoryId
+                try await loadPrayers(reset: true)
+            } catch {
+                alertType = .error(message: error.localizedDescription)
+            }
         }
     }
 
@@ -51,12 +64,18 @@ class HomeViewModel: ObservableObject {
             }
             .store(in: &cancellables)
     }
-    
+
     private func handle(event: PrayerEventType) {
         switch event {
         case .prayerAdded(let prayer):
-            if selectedCategoryId == 1 || selectedCategoryId == prayer.categoryId {
-                prayers.insert(prayer, at: 0)
+            if isManna {
+                if selectedCommunity == nil || selectedCommunity?.rawValue == prayer.community {
+                    prayers.insert(prayer, at: 0)
+                }
+            } else {
+                if selectedCategoryId == 1 || selectedCategoryId == prayer.categoryId {
+                    prayers.insert(prayer, at: 0)
+                }
             }
         case .prayerUpdated(let prayer):
             if let index = prayers.firstIndex(where: { $0.id == prayer.id }) {
@@ -78,59 +97,79 @@ class HomeViewModel: ObservableObject {
             prayers.removeAll { $0.userId == userId }
         }
     }
-    
+
     func selectCategory(categoryID: Int) async {
         guard !isLoading else { return }
-        
+
         if selectedCategoryId == categoryID {
             await refreshPrayers()
         } else {
             selectedCategoryId = categoryID
-            
             do {
-                try await loadPrayers(categoryID: categoryID, reset: true)
+                try await loadPrayers(reset: true)
             } catch {
                 alertType = .error(message: error.localizedDescription)
             }
-            
         }
     }
-    
+
+    func selectCommunity(_ community: Community?) async {
+        guard !isLoading else { return }
+
+        if selectedCommunity == community {
+            await refreshPrayers()
+        } else {
+            selectedCommunity = community
+            do {
+                try await loadPrayers(reset: true)
+            } catch {
+                alertType = .error(message: error.localizedDescription)
+            }
+        }
+    }
+
     func refreshPrayers() async {
         guard !isRefreshing else { return }
         isRefreshing = true
         defer { isRefreshing = false }
         do {
-            try await loadPrayers(categoryID: selectedCategoryId,
-                                  reset: true)
+            try await loadPrayers(reset: true)
         } catch {
             alertType = .error(message: error.localizedDescription)
         }
     }
-    
+
     func loadMorePrayers() async {
         do {
-            try await loadPrayers(categoryID: selectedCategoryId,
-                                  reset: false)
+            try await loadPrayers(reset: false)
         } catch {
             alertType = .error(message: error.localizedDescription)
         }
     }
-    
-    func loadPrayers(categoryID: Int, reset: Bool) async throws {
+
+    func loadPrayers(reset: Bool) async throws {
         guard !isLoading && (reset || hasNext) else { return }
         isLoading = true
         defer { isLoading = false }
-        
+
         let pageToLoad = reset ? 1 : currentPage + 1
-        
+
+        let categoryID: Int? = isManna ? nil : selectedCategoryId
+        let community: Community? = isManna ? selectedCommunity : nil
+
         let prayerPage = try await prayerUseCase.loadPrayers(
             categoryID: categoryID,
+            community: community,
             page: pageToLoad
         )
-        
-        guard categoryID == self.selectedCategoryId else { return }
-        
+
+        // 요청 중 필터가 바뀌었으면 무시
+        if isManna {
+            guard community == self.selectedCommunity else { return }
+        } else {
+            guard categoryID == self.selectedCategoryId else { return }
+        }
+
         if reset {
             prayers = prayerPage.prayers
             currentPage = 1
@@ -138,10 +177,10 @@ class HomeViewModel: ObservableObject {
             prayers.append(contentsOf: prayerPage.prayers)
             currentPage = pageToLoad
         }
-        
+
         hasNext = prayerPage.hasNext
     }
-    
+
     func makePrayerDetailVM(prayer: Prayer) -> PrayerDetailViewModel {
         return PrayerDetailViewModel(prayerUseCase: prayerUseCase,
                                      prayerRequestId: prayer.id)
@@ -151,9 +190,9 @@ class HomeViewModel: ObservableObject {
         return PrayerDetailViewModel(prayerUseCase: prayerUseCase,
                                      prayerRequestId: prayerRequestId)
     }
-    
+
     func makePrayerEditorVM() -> PrayerEditorViewModel {
-        return PrayerEditorViewModel(prayerUseCase: prayerUseCase)
+        return PrayerEditorViewModel(prayerUseCase: prayerUseCase, isManna: isManna, userCommunity: userCommunity)
     }
 
 }

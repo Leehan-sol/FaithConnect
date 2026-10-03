@@ -43,8 +43,8 @@ protocol APIClientProtocol {
     func loadCategories() async throws -> [CategoryResponse]
     func loadPrayers(categoryID: Int?, community: String?, page: Int) async throws -> PrayerListResponse
     func loadPrayerDetail(prayerRequestID: Int) async throws -> PrayerDetailResponse
-    func writePrayer(categoryID: Int, title: String, content: String) async throws -> PrayerWriteResponse
-    func updatePrayer(prayerRequestId: Int, categoryID: Int, title: String, content: String) async throws -> PrayerDetailResponse
+    func writePrayer(categoryID: Int?, community: String?, title: String, content: String) async throws -> PrayerWriteResponse
+    func updatePrayer(prayerRequestId: Int, categoryID: Int?, community: String?, title: String, content: String) async throws -> PrayerDetailResponse
     func deletePrayer(prayerRequestId: Int) async throws
     func writePrayerResponse(prayerRequestID: Int, message: String) async throws -> DetailResponseItem
     func updatePrayerResponse(responseID: Int, message: String) async throws -> DetailResponseItem
@@ -528,11 +528,12 @@ extension APIClient {
         return apiResponse
     }
     
-    func writePrayer(categoryID: Int, title: String, content: String) async throws -> PrayerWriteResponse {
+    func writePrayer(categoryID: Int?, community: String?, title: String, content: String) async throws -> PrayerWriteResponse {
         let urlString = APIEndpoint.prayers.urlString
-        
+
         let requestBody = PrayerWriteRequest(
             categoryId: categoryID,
+            community: community,
             title: title,
             content: content
         )
@@ -543,11 +544,12 @@ extension APIClient {
         return apiResponse
     }
     
-    func updatePrayer(prayerRequestId: Int, categoryID: Int, title: String, content: String) async throws -> PrayerDetailResponse {
+    func updatePrayer(prayerRequestId: Int, categoryID: Int?, community: String?, title: String, content: String) async throws -> PrayerDetailResponse {
         let urlString = APIEndpoint.prayerDetail(id: prayerRequestId).urlString
 
         let requestBody = PrayerWriteRequest(
             categoryId: categoryID,
+            community: community,
             title: title,
             content: content
         )

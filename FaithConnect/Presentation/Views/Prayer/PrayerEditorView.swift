@@ -26,24 +26,11 @@ struct PrayerEditorView: View {
                 .frame(height: 20)
 
             VStack(alignment: .leading, spacing: 10) {
-                Text("카테고리")
-                    .font(.subheadline)
-                    .bold()
-
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 10) {
-                        ForEach(viewModel.categories, id: \.self) { category in
-                            CategoryButtonView(
-                                category: category,
-                                isSelected: category.id == selectedCategoryId,
-                                action: {
-                                    selectedCategoryId = category.id
-                                }
-                            )
-                        }
-                    }
+                if viewModel.isManna {
+                    communityInfo
+                } else {
+                    categorySelector
                 }
-                .padding(EdgeInsets(top: 10, leading: 0, bottom: 20, trailing: 0))
 
                 LabeledTextField(title: "제목", placeholder: "기도 제목을 입력하세요", text: $title)
                     .padding(.bottom, 20)
@@ -101,9 +88,11 @@ struct PrayerEditorView: View {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
                         Task {
-                            await viewModel.savePrayer(categoryId: selectedCategoryId,
-                                                      title: title,
-                                                      content: content)
+                            await viewModel.savePrayer(
+                                categoryId: viewModel.isManna ? nil : selectedCategoryId,
+                                community: viewModel.isManna ? viewModel.userCommunity : nil,
+                                title: title,
+                                content: content)
                             if viewModel.alertType == nil {
                                 dismiss()
                             }
@@ -127,12 +116,57 @@ struct PrayerEditorView: View {
             .task {
                 await viewModel.fetchCategories()
                 if let prayer = viewModel.prayer {
-                    selectedCategoryId = prayer.categoryId
+                    selectedCategoryId = prayer.categoryId ?? 0
                     title = prayer.title
                     content = prayer.content
                 }
             }
         }
+    }
+
+    // MARK: - 카테고리 선택 (DEFAULT)
+    private var categorySelector: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text("카테고리")
+                .font(.subheadline)
+                .bold()
+
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 10) {
+                    ForEach(viewModel.categories, id: \.self) { category in
+                        CategoryButtonView(
+                            category: category,
+                            isSelected: category.id == selectedCategoryId,
+                            action: {
+                                selectedCategoryId = category.id
+                            }
+                        )
+                    }
+                }
+            }
+            .padding(EdgeInsets(top: 10, leading: 0, bottom: 20, trailing: 0))
+        }
+    }
+
+    // MARK: - 공동체 표시 (MANNA)
+    private var communityInfo: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text("공동체")
+                .font(.subheadline)
+                .bold()
+
+            if let community = viewModel.userCommunity {
+                Text(community.displayName)
+                    .font(.subheadline)
+                    .fontWeight(.bold)
+                    .padding(.horizontal, 14)
+                    .padding(.vertical, 8)
+                    .background(Color.customBlue1)
+                    .foregroundColor(.white)
+                    .cornerRadius(20)
+            }
+        }
+        .padding(.bottom, 20)
     }
 }
 

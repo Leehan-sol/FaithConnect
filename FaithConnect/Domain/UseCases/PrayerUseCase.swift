@@ -12,10 +12,10 @@ protocol PrayerUseCaseProtocol {
     var eventPublisher: PassthroughSubject<PrayerEventType, Never> { get }
 
     func loadCategories() async throws -> [PrayerCategory]
-    func loadPrayers(categoryID: Int, page: Int) async throws -> PrayerPage
+    func loadPrayers(categoryID: Int?, community: Community?, page: Int) async throws -> PrayerPage
     func loadPrayerDetail(prayerRequestID: Int) async throws -> Prayer
-    func writePrayer(categoryID: Int, title: String, content: String) async throws -> Prayer
-    func updatePrayer(prayerRequestId: Int, categoryID: Int, title: String, content: String) async throws -> Prayer
+    func writePrayer(categoryID: Int?, community: Community?, title: String, content: String) async throws -> Prayer
+    func updatePrayer(prayerRequestId: Int, categoryID: Int?, community: Community?, title: String, content: String) async throws -> Prayer
     func deletePrayer(prayerRequestId: Int) async throws
     func writePrayerResponse(prayerRequestID: Int, message: String, prayerTitle: String, categoryId: Int, categoryName: String) async throws -> PrayerResponse
     func updatePrayerResponse(responseID: Int, message: String) async throws -> PrayerResponse
@@ -40,42 +40,22 @@ class PrayerUseCase: PrayerUseCaseProtocol {
     }
 
     func loadCategories() async throws -> [PrayerCategory] {
-        let result = try await repository.loadCategories()
-
-        print("카테고리:", result.count)
-        result.forEach { category in
-            print("""
-                      ─────────────
-                      id: \(category.id)
-                      name: \(category.categoryName)
-                      """)
-        }
-
-        return result
+        return try await repository.loadCategories()
     }
 
-    func loadPrayers(categoryID: Int, page: Int) async throws -> PrayerPage {
-        let result = try await repository.loadPrayers(categoryID: categoryID,
-                                                      page: page)
-
-        result.prayers.forEach { prayer in
-            print("""
-                  ─────────────
-                  id: \(prayer.id)
-                  title: \(prayer.title)
-                  categoryId: \(prayer.categoryId)
-                  """)
-        }
-
-        return result
+    func loadPrayers(categoryID: Int?, community: Community?, page: Int) async throws -> PrayerPage {
+        return try await repository.loadPrayers(categoryID: categoryID,
+                                                community: community,
+                                                page: page)
     }
 
     func loadPrayerDetail(prayerRequestID: Int) async throws -> Prayer {
         return try await repository.loadPrayerDetail(prayerRequestID: prayerRequestID)
     }
 
-    func writePrayer(categoryID: Int, title: String, content: String) async throws -> Prayer {
+    func writePrayer(categoryID: Int?, community: Community?, title: String, content: String) async throws -> Prayer {
         let prayer = try await repository.writePrayer(categoryID: categoryID,
+                                                      community: community,
                                                       title: title,
                                                       content: content)
 
@@ -84,9 +64,10 @@ class PrayerUseCase: PrayerUseCaseProtocol {
         return prayer
     }
 
-    func updatePrayer(prayerRequestId: Int, categoryID: Int, title: String, content: String) async throws -> Prayer {
+    func updatePrayer(prayerRequestId: Int, categoryID: Int?, community: Community?, title: String, content: String) async throws -> Prayer {
         let prayer = try await repository.updatePrayer(prayerRequestId: prayerRequestId,
                                                        categoryID: categoryID,
+                                                       community: community,
                                                        title: title,
                                                        content: content)
         eventPublisher.send(.prayerUpdated(prayer: prayer))
@@ -128,35 +109,11 @@ class PrayerUseCase: PrayerUseCaseProtocol {
     }
 
     func loadWrittenPrayers(page: Int) async throws -> PrayerPage {
-        let result = try await repository.loadWrittenPrayers(page: page)
-
-        print("내 기도:", result.prayers.count)
-        result.prayers.forEach { prayer in
-            print("""
-                  ─────────────
-                  id: \(prayer.id)
-                  title: \(prayer.title)
-                  categoryId: \(prayer.categoryId)
-                  """)
-        }
-
-        return result
+        return try await repository.loadWrittenPrayers(page: page)
     }
 
     func loadParticipatedPrayers(page: Int) async throws -> MyResponsePage {
-        let result = try await repository.loadParticipatedPrayers(page: page)
-
-        print("내 응답:", result.responses.count)
-        result.responses.forEach { response in
-            print("""
-                  ─────────────
-                  id: \(response.id)
-                  title: \(response.message)
-                  categoryId: \(response.categoryId)
-                  """)
-        }
-
-        return result
+        return try await repository.loadParticipatedPrayers(page: page)
     }
 
     func reportPrayer(prayerRequestId: Int, reasonType: ReportReasonType, reasonDetail: String?) async throws {
@@ -198,6 +155,5 @@ class PrayerUseCase: PrayerUseCaseProtocol {
     func loadReplies(responseId: Int, page: Int) async throws -> ReplyPage {
         return try await repository.loadReplies(responseId: responseId, page: page)
     }
-
 
 }

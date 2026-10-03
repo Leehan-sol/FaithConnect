@@ -30,7 +30,7 @@ class MockPrayerRepository: PrayerRepositoryProtocol {
         return stubbedCategories
     }
 
-    func loadPrayers(categoryID: Int, page: Int) async throws -> PrayerPage {
+    func loadPrayers(categoryID: Int?, community: Community?, page: Int) async throws -> PrayerPage {
         if let error = stubbedError { throw error }
         return stubbedPrayerPage!
     }
@@ -40,12 +40,12 @@ class MockPrayerRepository: PrayerRepositoryProtocol {
         return stubbedPrayer!
     }
 
-    func writePrayer(categoryID: Int, title: String, content: String) async throws -> Prayer {
+    func writePrayer(categoryID: Int?, community: Community?, title: String, content: String) async throws -> Prayer {
         if let error = stubbedError { throw error }
         return stubbedPrayer!
     }
 
-    func updatePrayer(prayerRequestId: Int, categoryID: Int, title: String, content: String) async throws -> Prayer {
+    func updatePrayer(prayerRequestId: Int, categoryID: Int?, community: Community?, title: String, content: String) async throws -> Prayer {
         if let error = stubbedError { throw error }
         return stubbedPrayer!
     }

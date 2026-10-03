@@ -62,22 +62,47 @@ struct HomeView: View {
         }
     }
 
-    // MARK: - 카테고리 버튼
-    private var categoryButtons: some View {
+    // MARK: - 필터 버튼 (카테고리 또는 공동체)
+    private var filterButtons: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 10) {
-                ForEach(viewModel.categories) { category in
-                    CategoryButtonView(
-                        category: category,
-                        isSelected: category.id == viewModel.selectedCategoryId,
-                        action: {
-                            Task {
-                                await viewModel.selectCategory(categoryID: category.id)
+                if viewModel.categories.isEmpty {
+                    communityButton(label: "전체", community: nil)
+                    ForEach(Community.allCases) { community in
+                        communityButton(label: community.displayName, community: community)
+                    }
+                } else {
+                    ForEach(viewModel.categories) { category in
+                        CategoryButtonView(
+                            category: category,
+                            isSelected: category.id == viewModel.selectedCategoryId,
+                            action: {
+                                Task {
+                                    await viewModel.selectCategory(categoryID: category.id)
+                                }
                             }
-                        }
-                    )
+                        )
+                    }
                 }
             }
+        }
+    }
+
+    private func communityButton(label: String, community: Community?) -> some View {
+        let isSelected = viewModel.selectedCommunity == community
+        return Button {
+            Task {
+                await viewModel.selectCommunity(community)
+            }
+        } label: {
+            Text(label)
+                .font(.subheadline)
+                .fontWeight(isSelected ? .bold : .regular)
+                .padding(.horizontal, 14)
+                .padding(.vertical, 8)
+                .background(isSelected ? Color.customBlue1 : Color(.systemGray6))
+                .foregroundColor(isSelected ? .white : .primary)
+                .cornerRadius(20)
         }
     }
 
@@ -85,7 +110,7 @@ struct HomeView: View {
     private func prayerListView(proxy: ScrollViewProxy) -> some View {
         List {
             Section {
-                categoryButtons
+                filterButtons
                     .listRowInsets(EdgeInsets(top: 10, leading: 15, bottom: 10, trailing: 0))
                     .listRowSeparator(.hidden)
                     .listRowBackground(Color.clear)
@@ -149,23 +174,23 @@ struct HomeView: View {
     ]
 
     vm.prayers = [
-        Prayer(id: 1, userId: 1, userName: "", categoryId: 1, categoryName: "건강",
+        Prayer(id: 1, userId: 1, userName: "", categoryId: 1, categoryName: "건강", community: nil,
                title: "아버지의 건강 회복을 위해",
                content: "최근 아버지께서 수술을 받으셨습니다. 빠른 회복을 위해 기도 부탁드립니다.",
                createdAt: "2026-03-26", participationCount: 12, responses: nil, hasParticipated: false, isMine: false),
-        Prayer(id: 2, userId: 2, userName: "", categoryId: 2, categoryName: "가정",
+        Prayer(id: 2, userId: 2, userName: "", categoryId: 2, categoryName: "가정", community: nil,
                title: "가정의 평안을 위한 기도",
                content: "가족 간에 갈등이 있습니다. 서로 이해하고 사랑할 수 있도록 기도해주세요.",
                createdAt: "2026-03-25", participationCount: 8, responses: nil, hasParticipated: false, isMine: false),
-        Prayer(id: 3, userId: 3, userName: "", categoryId: 3, categoryName: "학업",
+        Prayer(id: 3, userId: 3, userName: "", categoryId: 3, categoryName: "학업", community: nil,
                title: "시험 준비를 위한 기도",
                content: "다음 주 중요한 시험이 있습니다. 집중력과 지혜를 주시길 기도합니다.",
                createdAt: "2026-03-25", participationCount: 5, responses: nil, hasParticipated: false, isMine: false),
-        Prayer(id: 4, userId: 4, userName: "", categoryId: 4, categoryName: "직장",
+        Prayer(id: 4, userId: 4, userName: "", categoryId: 4, categoryName: "직장", community: nil,
                title: "새 직장 적응을 위해",
                content: "이번 주부터 새 직장에 출근합니다. 잘 적응할 수 있도록 기도 부탁드립니다.",
                createdAt: "2026-03-24", participationCount: 15, responses: nil, hasParticipated: false, isMine: true),
-        Prayer(id: 5, userId: 5, userName: "", categoryId: 5, categoryName: "감사",
+        Prayer(id: 5, userId: 5, userName: "", categoryId: 5, categoryName: "감사", community: nil,
                title: "감사 기도",
                content: "올 한 해 건강하게 보낼 수 있어서 감사합니다. 함께 감사 기도 나눠요.",
                createdAt: "2026-03-24", participationCount: 20, responses: nil, hasParticipated: false, isMine: false),

@@ -12,19 +12,24 @@ import Combine
 class PrayerEditorViewModel: ObservableObject {
     @Published var categories: [PrayerCategory] = []
     @Published var alertType: AlertType? = nil
-    
+
     private let prayerUseCase: PrayerUseCaseProtocol
     private var cancellables = Set<AnyCancellable>()
     let prayer: Prayer?
+    let isManna: Bool
+    let userCommunity: Community?
 
     var isEditMode: Bool { prayer != nil }
 
-    init(prayerUseCase: PrayerUseCaseProtocol, prayer: Prayer? = nil) {
+    init(prayerUseCase: PrayerUseCaseProtocol, prayer: Prayer? = nil, isManna: Bool = false, userCommunity: Community? = nil) {
         self.prayerUseCase = prayerUseCase
         self.prayer = prayer
+        self.isManna = isManna
+        self.userCommunity = userCommunity
     }
-    
+
     func fetchCategories() async {
+        guard !isManna else { return }
         do {
             let allCategories = try await prayerUseCase.loadCategories()
             categories = allCategories.filter { $0.categoryCode != 1 }
@@ -32,9 +37,9 @@ class PrayerEditorViewModel: ObservableObject {
             alertType = .error(message: error.localizedDescription)
         }
     }
-    
-    func savePrayer(categoryId: Int, title: String, content: String) async {
-        if categoryId == 0 {
+
+    func savePrayer(categoryId: Int?, community: Community?, title: String, content: String) async {
+        if !isManna && (categoryId == nil || categoryId == 0) {
             alertType = .error(message: "카테고리를 선택해 주세요.")
             return
         }
@@ -53,10 +58,12 @@ class PrayerEditorViewModel: ObservableObject {
             if let prayer {
                 let _ = try await prayerUseCase.updatePrayer(prayerRequestId: prayer.id,
                                                              categoryID: categoryId,
+                                                             community: community,
                                                              title: title,
                                                              content: content)
             } else {
                 let _ = try await prayerUseCase.writePrayer(categoryID: categoryId,
+                                                            community: community,
                                                             title: title,
                                                             content: content)
             }

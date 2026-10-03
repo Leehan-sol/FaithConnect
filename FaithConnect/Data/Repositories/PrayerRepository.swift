@@ -20,8 +20,8 @@ class PrayerRepository: PrayerRepositoryProtocol {
         return result.map { PrayerCategory(from: $0) }
     }
 
-    func loadPrayers(categoryID: Int, page: Int) async throws -> PrayerPage {
-        let result = try await apiClient.loadPrayers(categoryID: categoryID, page: page)
+    func loadPrayers(categoryID: Int?, community: Community?, page: Int) async throws -> PrayerPage {
+        let result = try await apiClient.loadPrayers(categoryID: categoryID, community: community?.rawValue, page: page)
         return PrayerPage(prayers: result.prayerRequests.map { Prayer(from: $0) },
                           currentPage: result.currentPage,
                           hasNext: result.hasNext)
@@ -36,14 +36,15 @@ class PrayerRepository: PrayerRepositoryProtocol {
         }
     }
 
-    func writePrayer(categoryID: Int, title: String, content: String) async throws -> Prayer {
-        let result = try await apiClient.writePrayer(categoryID: categoryID, title: title, content: content)
+    func writePrayer(categoryID: Int?, community: Community?, title: String, content: String) async throws -> Prayer {
+        let result = try await apiClient.writePrayer(categoryID: categoryID, community: community?.rawValue, title: title, content: content)
         return Prayer(from: result)
     }
 
-    func updatePrayer(prayerRequestId: Int, categoryID: Int, title: String, content: String) async throws -> Prayer {
+    func updatePrayer(prayerRequestId: Int, categoryID: Int?, community: Community?, title: String, content: String) async throws -> Prayer {
         let result = try await apiClient.updatePrayer(prayerRequestId: prayerRequestId,
                                                        categoryID: categoryID,
+                                                       community: community?.rawValue,
                                                        title: title,
                                                        content: content)
         return Prayer(from: result)

@@ -13,8 +13,8 @@ struct DetailHeaderView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 25) {
             HStack {
-                Text(prayer.categoryName)
-                    .frame(width: 40, height: 30)
+                Text(prayer.displayLabel)
+                    .frame(minWidth: 40, minHeight: 30)
                     .foregroundColor(.customNavy)
                     .background(.customBlue1.opacity(0.2))
                     .bold()

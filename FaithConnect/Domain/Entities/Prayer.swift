@@ -17,8 +17,9 @@ struct Prayer: Identifiable {
     let id: Int // prayerRequestId
     let userId: Int
     let userName: String
-    let categoryId: Int
-    let categoryName: String
+    let categoryId: Int?
+    let categoryName: String?
+    let community: String?
     let title: String
     let content: String
     let createdAt: String
@@ -29,6 +30,17 @@ struct Prayer: Identifiable {
 }
 
 
+// MARK: - Computed
+extension Prayer {
+    var displayLabel: String {
+        if let community = community,
+           let c = Community(rawValue: community) {
+            return c.displayName
+        }
+        return categoryName ?? ""
+    }
+}
+
 // MARK: - Extension
 extension Prayer {
     init(from dto: PrayerDetailResponse) {
@@ -37,6 +49,7 @@ extension Prayer {
         self.userName = dto.prayerUserName ?? ""
         self.categoryId = dto.categoryId ?? 0
         self.categoryName = dto.categoryName ?? ""
+        self.community = dto.community
         self.title = dto.title ?? ""
         self.content = dto.content ?? ""
         self.createdAt = dto.createdAt ?? ""
@@ -48,11 +61,11 @@ extension Prayer {
 
     init(from dto: PrayerWriteResponse) {
         self.id = dto.prayerRequestId
-//        self.id = UUID().hashValue // 테스트코드
         self.userId = dto.prayerUserId
         self.userName = dto.prayerUserName
-        self.categoryId = dto.categoryId
-        self.categoryName = dto.categoryName
+        self.categoryId = dto.categoryId ?? 0
+        self.categoryName = dto.categoryName ?? ""
+        self.community = dto.community
         self.title = dto.title
         self.content = dto.content
         self.createdAt = dto.createdAt
