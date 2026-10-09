@@ -30,13 +30,6 @@ struct PrayerRowView: View {
                     .background(.customBlue1.opacity(0.2))
                     .cornerRadius(10)
 
-                if let visibility = prayer.visibility,
-                   let iconName = visibility.iconName {
-                    Image(systemName: iconName)
-                        .font(.caption2)
-                        .foregroundColor(.orange)
-                }
-
                 if cellType == .others {
                     Text(prayer.userName)
                         .font(.caption2)
@@ -44,6 +37,16 @@ struct PrayerRowView: View {
                 }
 
                 Spacer()
+
+                if let visibility = prayer.visibility, visibility != .publicAll {
+                    Text(visibility.displayName)
+                        .font(.caption2)
+                        .foregroundColor(.customPurple)
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 4)
+                        .background(Color.customPurple.opacity(0.15))
+                        .cornerRadius(8)
+                }
 
                 Text(prayer.createdAt.toTimeAgoDisplay())
                     .font(.caption2)
@@ -102,6 +105,8 @@ struct PrayerRowView: View {
                                                             userId: 0,
                                                             userName: "",
                                                             message: "응답",
+                                                            visibility: nil,
+                                                            displayNameType: nil,
                                                             createdAt: "",
                                                             isMine: false,
                                                             parentResponseId: nil,

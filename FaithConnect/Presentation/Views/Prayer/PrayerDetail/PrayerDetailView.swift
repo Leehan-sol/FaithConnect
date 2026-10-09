@@ -15,7 +15,6 @@ struct PrayerDetailView: View {
     @State private var prayerBottomSheetType: PrayerBottomSheetType?
     @State private var showPrayerEditor = false
     @State private var confirmAlert: ConfirmAlertType?
-    @State private var showReportActionSheet = false
     @State private var showReportDetailAlert = false
     @State private var reportReasonDetail = ""
 
@@ -124,7 +123,18 @@ struct PrayerDetailView: View {
                             Label("삭제", systemImage: "trash")
                         }
                     } else {
-                        Button(role: .destructive) { showReportActionSheet = true } label: {
+                        Menu {
+                            Button("부적절한 내용") {
+                                Task { await viewModel.reportPrayer(reasonType: .inappropriateContent, reasonDetail: nil) }
+                            }
+                            Button("스팸/광고/중복게시") {
+                                Task { await viewModel.reportPrayer(reasonType: .spam, reasonDetail: nil) }
+                            }
+                            Button("기타") {
+                                reportReasonDetail = ""
+                                showReportDetailAlert = true
+                            }
+                        } label: {
                             Label("신고", systemImage: "exclamationmark.triangle")
                         }
                         Button(role: .destructive) { confirmAlert = .block } label: {
@@ -180,21 +190,6 @@ struct PrayerDetailView: View {
             Button("취소", role: .cancel) { }
         } message: { type in
             Text(type.message)
-        }
-        .confirmationDialog("신고 사유를 선택해주세요",
-                            isPresented: $showReportActionSheet,
-                            titleVisibility: .visible) {
-            Button("부적절한 내용") {
-                Task { await viewModel.reportPrayer(reasonType: .inappropriateContent, reasonDetail: nil) }
-            }
-            Button("스팸/광고/중복게시") {
-                Task { await viewModel.reportPrayer(reasonType: .spam, reasonDetail: nil) }
-            }
-            Button("기타") {
-                reportReasonDetail = ""
-                showReportDetailAlert = true
-            }
-            Button("취소", role: .cancel) { }
         }
         .alert("신고 사유 입력", isPresented: $showReportDetailAlert) {
             TextField("신고 사유를 입력해주세요", text: $reportReasonDetail)

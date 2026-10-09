@@ -22,6 +22,7 @@ class MyPageViewModel: ObservableObject {
     var churchName: String { userSession.user?.churchName ?? "" }
     var community: Community? { userSession.user?.community }
     var isManna: Bool { userSession.isManna }
+    var isPastor: Bool { userSession.user?.role == .pastor }
 
     init(authUseCase: AuthUseCaseProtocol, prayerUseCase: PrayerUseCaseProtocol, userSession: UserSession) {
         self.authUseCase = authUseCase

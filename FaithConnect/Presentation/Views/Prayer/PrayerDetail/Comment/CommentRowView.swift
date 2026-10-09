@@ -8,10 +8,8 @@
 import SwiftUI
 
 struct CommentRowView: View {
-    @State private var showConfirmationDialog = false
     @State private var confirmAlert: ConfirmAlertType?
     @State private var resultAlert: AlertType?
-    @State private var showReportActionSheet = false
     @State private var showReportDetailAlert = false
     @State private var reportReasonDetail = ""
 
@@ -53,9 +51,44 @@ struct CommentRowView: View {
 
                         Spacer()
 
+                        if response.visibility == .pastorOnly {
+                            Text("비공개")
+                                .font(.caption2)
+                                .foregroundColor(.customPurple)
+                                .padding(.horizontal, 6)
+                                .padding(.vertical, 2)
+                                .background(Color.customPurple.opacity(0.15))
+                                .cornerRadius(6)
+                        }
+
                         if !isWithdrawnUser {
-                            Button {
-                                showConfirmationDialog = true
+                            Menu {
+                                if response.isMine == true {
+                                    Button { onEdit?(response) } label: {
+                                        Label("수정", systemImage: "pencil")
+                                    }
+                                    Button(role: .destructive) { confirmAlert = .delete(target: "응답") } label: {
+                                        Label("삭제", systemImage: "trash")
+                                    }
+                                } else {
+                                    Menu {
+                                        Button("부적절한 내용") {
+                                            Task { await onReport?(response, .inappropriateContent, nil) }
+                                        }
+                                        Button("스팸/광고/중복게시") {
+                                            Task { await onReport?(response, .spam, nil) }
+                                        }
+                                        Button("기타") {
+                                            reportReasonDetail = ""
+                                            showReportDetailAlert = true
+                                        }
+                                    } label: {
+                                        Label("신고", systemImage: "exclamationmark.triangle")
+                                    }
+                                    Button(role: .destructive) { confirmAlert = .block } label: {
+                                        Label("차단", systemImage: "hand.raised")
+                                    }
+                                }
                             } label: {
                                 Image(systemName: "ellipsis")
                                     .rotationEffect(.degrees(90))
@@ -92,28 +125,6 @@ struct CommentRowView: View {
             RoundedRectangle(cornerRadius: 12)
                 .fill(Color(.systemGray6))
         )
-        .confirmationDialog(
-            "",
-            isPresented: $showConfirmationDialog,
-            titleVisibility: .hidden
-        ) {
-            if response.isMine == true {
-                Button("수정") {
-                    onEdit?(response)
-                }
-                Button("삭제", role: .destructive) {
-                    confirmAlert = .delete(target: "응답")
-                }
-            } else {
-                Button("신고", role: .destructive) {
-                    showReportActionSheet = true
-                }
-                Button("차단", role: .destructive) {
-                    confirmAlert = .block
-                }
-            }
-            Button("취소", role: .cancel) { }
-        }
         .alert(confirmAlert?.title ?? "",
                isPresented: Binding(get: { confirmAlert != nil },
                                     set: { if !$0 { confirmAlert = nil } }),
@@ -128,21 +139,6 @@ struct CommentRowView: View {
             Button("취소", role: .cancel) { }
         } message: { type in
             Text(type.message)
-        }
-        .confirmationDialog("신고 사유를 선택해주세요",
-                            isPresented: $showReportActionSheet,
-                            titleVisibility: .visible) {
-            Button("부적절한 내용") {
-                Task { await onReport?(response, .inappropriateContent, nil) }
-            }
-            Button("스팸/광고/중복게시") {
-                Task { await onReport?(response, .spam, nil) }
-            }
-            Button("기타") {
-                reportReasonDetail = ""
-                showReportDetailAlert = true
-            }
-            Button("취소", role: .cancel) { }
         }
         .alert("신고 사유 입력", isPresented: $showReportDetailAlert) {
             TextField("신고 사유를 입력해주세요", text: $reportReasonDetail)
@@ -166,6 +162,8 @@ struct CommentRowView: View {
                                                    userId: 0,
                                                    userName: "",
                                                    message: "어머님의 수술이 잘 되시길 기도하겠습니다. 하나님께서 함께 하실 거예요.",
+                                                   visibility: nil,
+                                                   displayNameType: nil,
                                                    createdAt: "2025-11-07T12:55:00.000Z",
                                                    isMine: false,
                                                    parentResponseId: nil,

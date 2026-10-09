@@ -22,22 +22,25 @@ struct DetailHeaderView: View {
                     .background(.customBlue1.opacity(0.2))
                     .cornerRadius(10)
 
-                if let visibility = prayer.visibility,
-                   let iconName = visibility.iconName {
-                    Image(systemName: iconName)
-                        .font(.caption)
-                        .foregroundColor(.orange)
-                }
-
                 Text(prayer.userName)
                     .font(.caption)
                     .foregroundColor(.gray)
 
+                Spacer()
+
+                if let visibility = prayer.visibility, visibility != .publicAll {
+                    Text(visibility.displayName)
+                        .font(.caption2)
+                        .foregroundColor(.customPurple)
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 4)
+                        .background(Color.customPurple.opacity(0.15))
+                        .cornerRadius(8)
+                }
+
                 Text(prayer.createdAt.toTimeAgoDisplay())
                     .font(.caption)
                     .foregroundColor(.gray)
-
-                Spacer()
             }
             
             Text(prayer.title)

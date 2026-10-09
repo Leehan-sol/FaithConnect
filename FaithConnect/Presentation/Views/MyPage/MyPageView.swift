@@ -26,10 +26,24 @@ struct MyPageView: View {
         ScrollView {
             VStack(spacing: 10) {
                 HStack(spacing: 30) {
-                    Image(systemName:"person.fill")
-                        .resizable()
-                        .foregroundColor(Color(.darkGray))
-                        .frame(width: 30, height: 30)
+                    ZStack(alignment: .bottomTrailing) {
+                        Image(systemName: "person.fill")
+                            .resizable()
+                            .foregroundColor(Color(.darkGray))
+                            .frame(width: 30, height: 30)
+
+                        if viewModel.isPastor {
+                            ZStack {
+                                Image(systemName: "seal.fill")
+                                    .foregroundColor(.customPurple)
+                                Image(systemName: "cross.fill")
+                                    .foregroundColor(.white)
+                                    .font(.system(size: 7))
+                            }
+                            .font(.subheadline)
+                            .offset(x: 8, y: 5)
+                        }
+                    }
 
                     VStack(alignment: .leading, spacing: 8) {
                         Text(viewModel.nickname)
@@ -217,6 +231,11 @@ struct MyPageView: View {
             }
             .alert("닉네임 변경", isPresented: $showNicknameEdit) {
                 TextField("새 닉네임을 입력하세요", text: $nicknameInput)
+                    .onChange(of: nicknameInput) { newValue in
+                        if newValue.count > 50 {
+                            nicknameInput = String(newValue.prefix(50))
+                        }
+                    }
                 Button("변경") {
                     Task {
                         await viewModel.changeNickname(nickname: nicknameInput)

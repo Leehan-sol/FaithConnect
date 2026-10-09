@@ -23,8 +23,8 @@ enum Visibility: String, CaseIterable, Identifiable, Codable {
     var iconName: String? {
         switch self {
         case .publicAll: return nil
-        case .pastorOnly: return "lock.fill"
-        case .privateOnly: return "eye.slash.fill"
+        case .pastorOnly: return "hands.clap.fill"
+        case .privateOnly: return "lock.fill"
         }
     }
 }
