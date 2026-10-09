@@ -51,6 +51,11 @@ class PrayerEditorViewModel: ObservableObject {
     }
 
     func savePrayer(categoryId: Int?, community: Community?, visibility: Visibility?, displayNameType: DisplayNameType?, title: String, content: String) async {
+        if isManna && community == nil {
+            alertType = .error(message: "공동체를 선택해 주세요.")
+            return
+        }
+
         if !isManna && (categoryId == nil || categoryId == 0) {
             alertType = .error(message: "카테고리를 선택해 주세요.")
             return

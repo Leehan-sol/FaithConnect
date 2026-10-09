@@ -347,7 +347,7 @@ class PrayerDetailViewModel: ObservableObject {
         guard !message.isEmpty else { return nil }
 
         do {
-            let updatedResponse = try await prayerUseCase.updatePrayerResponse(responseID: reply.id, message: message, visibility: nil, displayNameType: nil)
+            let updatedResponse = try await prayerUseCase.updatePrayerResponse(responseID: reply.id, message: message, visibility: reply.visibility, displayNameType: reply.displayNameType)
             guard var prayer = prayer,
                   let parentIndex = prayer.responses?.firstIndex(where: { $0.id == parentResponse.id }),
                   let replyIndex = prayer.responses?[parentIndex].replies.firstIndex(where: { $0.id == reply.id })

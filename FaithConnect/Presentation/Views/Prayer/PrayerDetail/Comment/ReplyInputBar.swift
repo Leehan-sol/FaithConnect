@@ -120,7 +120,7 @@ struct ReplyInputBar: View {
                 }
 
                 Button {
-                    let vis = isManna ? selectedVisibility : nil
+                    let vis = isManna ? (isVisibilityLocked ? .pastorOnly : selectedVisibility) : nil
                     let dnt = isManna ? selectedDisplayNameType : nil
                     onSend(vis, dnt)
                 } label: {
