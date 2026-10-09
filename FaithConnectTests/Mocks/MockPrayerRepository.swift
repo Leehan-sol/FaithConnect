@@ -24,6 +24,11 @@ class MockPrayerRepository: PrayerRepositoryProtocol {
     var deletePrayerResponseCalledWith: Int?
 
     // MARK: - PrayerRepositoryProtocol
+    func loadCommunities() async throws -> [CommunityItem] {
+        if let error = stubbedError { throw error }
+        return []
+    }
+
     func loadCategories() async throws -> [PrayerCategory] {
         loadCategoriesCalled = true
         if let error = stubbedError { throw error }

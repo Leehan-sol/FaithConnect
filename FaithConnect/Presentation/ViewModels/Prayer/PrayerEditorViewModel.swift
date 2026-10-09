@@ -10,6 +10,7 @@ import Combine
 
 @MainActor
 class PrayerEditorViewModel: ObservableObject {
+    @Published var communities: [CommunityItem] = []
     @Published var categories: [PrayerCategory] = []
     @Published var alertType: AlertType? = nil
     @Published var selectedCommunity: Community = .joseph
@@ -32,13 +33,20 @@ class PrayerEditorViewModel: ObservableObject {
         self.selectedCommunity = userCommunity ?? .joseph
     }
 
-    func fetchCategories() async {
-        guard !isManna else { return }
-        do {
-            let allCategories = try await prayerUseCase.loadCategories()
-            categories = allCategories.filter { $0.categoryCode != 1 }
-        } catch {
-            alertType = .error(message: error.localizedDescription)
+    func fetchInitialData() async {
+        if isManna {
+            do {
+                communities = try await prayerUseCase.loadCommunities()
+            } catch {
+                alertType = .error(message: error.localizedDescription)
+            }
+        } else {
+            do {
+                let allCategories = try await prayerUseCase.loadCategories()
+                categories = allCategories.filter { $0.categoryCode != 1 }
+            } catch {
+                alertType = .error(message: error.localizedDescription)
+            }
         }
     }
 

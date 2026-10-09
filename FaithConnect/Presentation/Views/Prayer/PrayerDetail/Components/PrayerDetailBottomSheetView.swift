@@ -98,7 +98,7 @@ struct PrayerDetailBottomSheetView: View {
                                     Spacer()
                                     Picker("", selection: $selectedVisibility) {
                                         Text("전체").tag(Visibility.publicAll)
-                                        Text("비밀").tag(Visibility.privateOnly)
+                                        Text("비밀").tag(Visibility.pastorOnly)
                                     }
                                     .tint(.primary)
                                 }

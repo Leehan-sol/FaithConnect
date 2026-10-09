@@ -11,6 +11,7 @@ import Combine
 protocol PrayerUseCaseProtocol {
     var eventPublisher: PassthroughSubject<PrayerEventType, Never> { get }
 
+    func loadCommunities() async throws -> [CommunityItem]
     func loadCategories() async throws -> [PrayerCategory]
     func loadPrayers(categoryID: Int?, community: Community?, page: Int) async throws -> PrayerPage
     func loadPrayerDetail(prayerRequestID: Int) async throws -> Prayer
@@ -37,6 +38,10 @@ class PrayerUseCase: PrayerUseCaseProtocol {
 
     init(repository: PrayerRepositoryProtocol) {
         self.repository = repository
+    }
+
+    func loadCommunities() async throws -> [CommunityItem] {
+        return try await repository.loadCommunities()
     }
 
     func loadCategories() async throws -> [PrayerCategory] {

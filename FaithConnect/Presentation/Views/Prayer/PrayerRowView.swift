@@ -30,6 +30,13 @@ struct PrayerRowView: View {
                     .background(.customBlue1.opacity(0.2))
                     .cornerRadius(10)
 
+                if let visibility = prayer.visibility,
+                   let iconName = visibility.iconName {
+                    Image(systemName: iconName)
+                        .font(.caption2)
+                        .foregroundColor(.orange)
+                }
+
                 if cellType == .others {
                     Text(prayer.userName)
                         .font(.caption2)

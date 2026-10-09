@@ -66,12 +66,12 @@ struct HomeView: View {
     private var filterButtons: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 10) {
-                if viewModel.categories.isEmpty {
+                if !viewModel.communities.isEmpty {
                     communityButton(label: "전체", community: nil)
-                    ForEach(Community.allCases) { community in
-                        communityButton(label: community.displayName, community: community)
+                    ForEach(viewModel.communities) { item in
+                        communityButton(label: item.displayName, community: Community(rawValue: item.community))
                     }
-                } else {
+                } else if !viewModel.categories.isEmpty {
                     ForEach(viewModel.categories) { category in
                         CategoryButtonView(
                             category: category,

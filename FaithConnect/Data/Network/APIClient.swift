@@ -40,6 +40,7 @@ protocol APIClientProtocol {
     func sendInquiry(title: String, content: String, userEmail: String) async throws
 
     // Prayer
+    func loadCommunities() async throws -> [CommunityResponse]
     func loadCategories() async throws -> [CategoryResponse]
     func loadPrayers(categoryID: Int?, community: String?, page: Int) async throws -> PrayerListResponse
     func loadPrayerDetail(prayerRequestID: Int) async throws -> PrayerDetailResponse
@@ -495,6 +496,12 @@ extension APIClient {
 
 // MARK: - Prayer
 extension APIClient {
+    func loadCommunities() async throws -> [CommunityResponse] {
+        let urlString = APIEndpoint.communities.urlString
+        let apiResponse: [CommunityResponse] = try await get(path: urlString, auth: .none)
+        return apiResponse
+    }
+
     func loadCategories() async throws -> [CategoryResponse] {
         let urlString = APIEndpoint.categories.urlString
         
@@ -714,7 +721,6 @@ extension APIClient {
 // MARK: - Token
 extension APIClient {
     private func refreshAccessToken() async throws {
-        print("refreshAccessToken")
 
         // 체크와 할당을 원자적으로 처리하여 중복 리프레시 요청 방지
         let task: Task<Void, Error> = await MainActor.run {

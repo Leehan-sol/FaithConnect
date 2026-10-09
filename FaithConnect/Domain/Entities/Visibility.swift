@@ -20,11 +20,11 @@ enum Visibility: String, CaseIterable, Identifiable, Codable {
         }
     }
 
-    var icon: String {
+    var iconName: String? {
         switch self {
-        case .publicAll: return ""
-        case .pastorOnly: return "🔒"
-        case .privateOnly: return "🔐"
+        case .publicAll: return nil
+        case .pastorOnly: return "lock.fill"
+        case .privateOnly: return "eye.slash.fill"
         }
     }
 }

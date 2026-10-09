@@ -7,6 +7,12 @@
 
 import Foundation
 
+// MARK: - 공동체 목록
+struct CommunityResponse: Decodable {
+    let community: String
+    let displayName: String
+}
+
 // MARK: - 기도 목록
 struct PrayerListResponse: Decodable {
     let prayerRequests: [PrayerDetailResponse]

@@ -102,6 +102,11 @@ class MockAPIClient: APIClientProtocol {
     }
 
     // MARK: - Prayer
+    func loadCommunities() async throws -> [CommunityResponse] {
+        if let error = stubbedError { throw error }
+        return []
+    }
+
     func loadCategories() async throws -> [CategoryResponse] {
         if let error = stubbedError { throw error }
         return stubbedCategories

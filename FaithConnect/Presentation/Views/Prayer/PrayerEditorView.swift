@@ -120,7 +120,7 @@ struct PrayerEditorView: View {
                       dismissButton: .default(Text("확인")))
             }
             .task {
-                await viewModel.fetchCategories()
+                await viewModel.fetchInitialData()
                 if let prayer = viewModel.prayer {
                     selectedCategoryId = prayer.categoryId ?? 0
                     title = prayer.title
@@ -168,12 +168,13 @@ struct PrayerEditorView: View {
 
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 8) {
-                    ForEach(Community.allCases) { community in
+                    ForEach(viewModel.communities) { item in
+                        let community = Community(rawValue: item.community)
                         let isSelected = viewModel.selectedCommunity == community
                         Button {
-                            viewModel.selectedCommunity = community
+                            if let community { viewModel.selectedCommunity = community }
                         } label: {
-                            Text(community.displayName)
+                            Text(item.displayName)
                                 .font(.subheadline)
                                 .fontWeight(isSelected ? .bold : .regular)
                                 .padding(.horizontal, 14)

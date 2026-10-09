@@ -10,6 +10,7 @@ import Combine
 
 @MainActor
 class HomeViewModel: ObservableObject {
+    @Published var communities: [CommunityItem] = []
     @Published var categories: [PrayerCategory] = []
     @Published var prayers: [Prayer] = []
     @Published var isRefreshing: Bool = false
@@ -40,6 +41,7 @@ class HomeViewModel: ObservableObject {
 
         if isManna {
             do {
+                communities = try await prayerUseCase.loadCommunities()
                 try await loadPrayers(reset: true)
             } catch {
                 alertType = .error(message: error.localizedDescription)

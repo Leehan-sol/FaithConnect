@@ -15,6 +15,11 @@ class PrayerRepository: PrayerRepositoryProtocol {
         self.apiClient = apiClient
     }
 
+    func loadCommunities() async throws -> [CommunityItem] {
+        let result = try await apiClient.loadCommunities()
+        return result.map { CommunityItem(community: $0.community, displayName: $0.displayName) }
+    }
+
     func loadCategories() async throws -> [PrayerCategory] {
         let result = try await apiClient.loadCategories()
         return result.map { PrayerCategory(from: $0) }

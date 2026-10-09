@@ -5,6 +5,13 @@
 
 import Foundation
 
+struct CommunityItem: Identifiable, Equatable {
+    let community: String
+    let displayName: String
+
+    var id: String { community }
+}
+
 enum Community: String, CaseIterable, Identifiable, Codable {
     case joseph = "JOSEPH"
     case david = "DAVID"
@@ -21,16 +28,6 @@ enum Community: String, CaseIterable, Identifiable, Codable {
         case .esther: return "에스더"
         case .joshua: return "여호수아"
         case .daniel: return "다니엘"
-        }
-    }
-
-    var emoji: String {
-        switch self {
-        case .joseph: return "🌾"
-        case .david: return "🎵"
-        case .esther: return "👑"
-        case .joshua: return "⚔️"
-        case .daniel: return "🦁"
         }
     }
 }

@@ -8,6 +8,7 @@
 import Foundation
 
 protocol PrayerRepositoryProtocol {
+    func loadCommunities() async throws -> [CommunityItem]
     func loadCategories() async throws -> [PrayerCategory]
     func loadPrayers(categoryID: Int?, community: Community?, page: Int) async throws -> PrayerPage
     func loadPrayerDetail(prayerRequestID: Int) async throws -> Prayer

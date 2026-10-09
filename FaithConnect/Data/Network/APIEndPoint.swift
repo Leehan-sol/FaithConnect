@@ -61,6 +61,7 @@ enum APIEndpoint {
     case emailVerificationRequest
     case emailVerificationConfirm
     // MARK: - Prayer
+    case communities
     case categories
     case prayers
     case prayerDetail(id: Int)
@@ -123,6 +124,8 @@ enum APIEndpoint {
             return "\(basePath)/email-verification/request"
         case .emailVerificationConfirm:
             return "\(basePath)/email-verification/confirm"
+        case .communities:
+            return "\(basePath)/communities"
         case .categories:
             return "\(basePath)/categories"
         case .prayers:
