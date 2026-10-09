@@ -39,6 +39,7 @@ struct SignUpView: View {
 
                 LabeledTextField(title: "닉네임",
                                  placeholder: "닉네임을 입력하세요",
+                                 maxLength: 50,
                                  text: $nickname)
 
                 // MARK: - 이메일 + 인증

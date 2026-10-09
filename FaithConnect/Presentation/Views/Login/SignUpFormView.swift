@@ -30,35 +30,31 @@ struct SignUpFormView: View {
                         .font(.subheadline)
                         .bold()
 
-                    VStack(alignment: .leading, spacing: 4) {
-                        HStack {
-                            Text("교회")
-                                .foregroundColor(.secondary)
-                                .frame(width: 60, alignment: .leading)
-                            Text(church.name)
-                        }
-                        HStack {
-                            Text("주소")
-                                .foregroundColor(.secondary)
-                                .frame(width: 60, alignment: .leading)
-                            Text(church.roadAddress)
+                    VStack(alignment: .leading, spacing: 6) {
+                        HStack(spacing: 6) {
+                            Label(church.name, systemImage: "building.2")
                                 .font(.caption)
-                        }
-                        if let community = community {
-                            HStack {
-                                Text("공동체")
-                                    .foregroundColor(.secondary)
-                                    .frame(width: 60, alignment: .leading)
+                                .padding(.horizontal, 10)
+                                .padding(.vertical, 6)
+                                .background(Color(.systemGray5))
+                                .foregroundColor(.primary)
+                                .cornerRadius(14)
+
+                            if let community = community {
                                 Text(community.displayName)
-                                    .foregroundColor(.blue)
+                                    .font(.caption)
+                                    .padding(.horizontal, 10)
+                                    .padding(.vertical, 6)
+                                    .background(Color.customBlue1.opacity(0.15))
+                                    .foregroundColor(.customBlue1)
+                                    .cornerRadius(14)
                             }
                         }
+
+                        Text(church.roadAddress)
+                            .font(.caption)
+                            .foregroundColor(.secondary)
                     }
-                    .font(.subheadline)
-                    .padding(12)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .background(Color(.systemGray6))
-                    .cornerRadius(10)
                 }
                 .padding(.bottom, 10)
 
@@ -69,6 +65,7 @@ struct SignUpFormView: View {
 
                 LabeledTextField(title: "닉네임",
                                  placeholder: "닉네임을 입력하세요",
+                                 maxLength: 50,
                                  text: $nickname)
 
                 // MARK: - 이메일 인증

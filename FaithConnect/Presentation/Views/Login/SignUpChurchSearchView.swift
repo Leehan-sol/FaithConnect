@@ -74,5 +74,6 @@ struct SignUpChurchSearchView: View {
         .navigationTitle("회원가입")
         .navigationBarTitleDisplayMode(.inline)
         .customBackButtonStyle()
+        .scrollDismissesKeyboard(.interactively)
     }
 }

@@ -14,6 +14,7 @@ struct LabeledTextField: View {
     var placeholder: String
     var keyboardType: UIKeyboardType = .default
     var isSecure: Bool = false
+    var maxLength: Int? = nil
     @Binding var text: String
 
     var body: some View {
@@ -52,6 +53,11 @@ struct LabeledTextField: View {
                     .padding()
                     .background(Color(.systemGray6))
                     .cornerRadius(10)
+                    .onChange(of: text) { newValue in
+                        if let maxLength, newValue.count > maxLength {
+                            text = String(newValue.prefix(maxLength))
+                        }
+                    }
             }
         }
     }
