@@ -65,7 +65,7 @@ class MockPrayerRepository: PrayerRepositoryProtocol {
         return stubbedPrayerResponse!
     }
 
-    func updatePrayerResponse(responseID: Int, message: String) async throws -> PrayerResponse {
+    func updatePrayerResponse(responseID: Int, message: String, visibility: Visibility?, displayNameType: DisplayNameType?) async throws -> PrayerResponse {
         if let error = stubbedError { throw error }
         return stubbedPrayerResponse!
     }

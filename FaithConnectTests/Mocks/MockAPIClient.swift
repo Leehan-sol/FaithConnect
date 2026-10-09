@@ -141,7 +141,7 @@ class MockAPIClient: APIClientProtocol {
         return stubbedResponseItem!
     }
 
-    func updatePrayerResponse(responseID: Int, message: String) async throws -> DetailResponseItem {
+    func updatePrayerResponse(responseID: Int, message: String, visibility: String?, displayNameType: String?) async throws -> DetailResponseItem {
         if let error = stubbedError { throw error }
         return stubbedResponseItem!
     }

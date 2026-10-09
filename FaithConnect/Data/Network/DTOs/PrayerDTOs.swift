@@ -145,5 +145,7 @@ struct ReplyWriteRequest: Codable {
 // MARK: - 기도 응답 수정
 struct PrayerResponseUpdateRequest: Codable {
     let message: String
+    let visibility: String?
+    let displayNameType: String?
 }
 

@@ -98,7 +98,7 @@ struct PrayerDetailBottomSheetView: View {
                                     Spacer()
                                     Picker("", selection: $selectedVisibility) {
                                         Text("전체").tag(Visibility.publicAll)
-                                        Text("비밀").tag(Visibility.pastorOnly)
+                                        Text("비공개").tag(Visibility.pastorOnly)
                                     }
                                     .tint(.primary)
                                 }
@@ -161,7 +161,9 @@ struct PrayerDetailBottomSheetView: View {
                         Task {
                             let result: Bool
                             if let editing = editingResponse {
-                                result = await viewModel.updatePrayerResponse(responseID: editing.id, message: content)
+                                let vis = isManna ? selectedVisibility : nil
+                                let dnt = isManna ? selectedDisplayNameType : nil
+                                result = await viewModel.updatePrayerResponse(responseID: editing.id, message: content, visibility: vis, displayNameType: dnt)
                             } else {
                                 let vis = isManna ? selectedVisibility : nil
                                 let dnt = isManna ? selectedDisplayNameType : nil
@@ -197,6 +199,8 @@ struct PrayerDetailBottomSheetView: View {
             if let editing = editingResponse {
                 content = editing.message
                 wordCount = editing.message.count
+                if let v = editing.visibility { selectedVisibility = v }
+                if let d = editing.displayNameType { selectedDisplayNameType = d }
             }
         }
         .onTapGesture {

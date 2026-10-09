@@ -16,7 +16,7 @@ protocol PrayerRepositoryProtocol {
     func updatePrayer(prayerRequestId: Int, categoryID: Int?, community: Community?, visibility: Visibility?, displayNameType: DisplayNameType?, title: String, content: String) async throws -> Prayer
     func deletePrayer(prayerRequestId: Int) async throws
     func writePrayerResponse(prayerRequestID: Int, message: String, visibility: Visibility?, displayNameType: DisplayNameType?) async throws -> PrayerResponse
-    func updatePrayerResponse(responseID: Int, message: String) async throws -> PrayerResponse
+    func updatePrayerResponse(responseID: Int, message: String, visibility: Visibility?, displayNameType: DisplayNameType?) async throws -> PrayerResponse
     func deletePrayerResponse(responseID: Int) async throws
     func loadWrittenPrayers(page: Int) async throws -> PrayerPage
     func loadParticipatedPrayers(page: Int) async throws -> MyResponsePage

@@ -19,7 +19,7 @@ protocol PrayerUseCaseProtocol {
     func updatePrayer(prayerRequestId: Int, categoryID: Int?, community: Community?, visibility: Visibility?, displayNameType: DisplayNameType?, title: String, content: String) async throws -> Prayer
     func deletePrayer(prayerRequestId: Int) async throws
     func writePrayerResponse(prayerRequestID: Int, message: String, visibility: Visibility?, displayNameType: DisplayNameType?, prayerTitle: String, categoryId: Int, categoryName: String) async throws -> PrayerResponse
-    func updatePrayerResponse(responseID: Int, message: String) async throws -> PrayerResponse
+    func updatePrayerResponse(responseID: Int, message: String, visibility: Visibility?, displayNameType: DisplayNameType?) async throws -> PrayerResponse
     func deletePrayerResponse(responseID: Int, prayerRequestId: Int) async throws
     func loadWrittenPrayers(page: Int) async throws -> PrayerPage
     func loadParticipatedPrayers(page: Int) async throws -> MyResponsePage
@@ -112,9 +112,11 @@ class PrayerUseCase: PrayerUseCaseProtocol {
         eventPublisher.send(.responseDeleted(responseId: responseID, prayerRequestId: prayerRequestId))
     }
 
-    func updatePrayerResponse(responseID: Int, message: String) async throws -> PrayerResponse {
+    func updatePrayerResponse(responseID: Int, message: String, visibility: Visibility?, displayNameType: DisplayNameType?) async throws -> PrayerResponse {
         let prayerResponse = try await repository.updatePrayerResponse(responseID: responseID,
-                                                                        message: message)
+                                                                        message: message,
+                                                                        visibility: visibility,
+                                                                        displayNameType: displayNameType)
         eventPublisher.send(.responseUpdated(response: prayerResponse))
         return prayerResponse
     }

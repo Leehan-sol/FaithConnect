@@ -126,10 +126,12 @@ class PrayerDetailViewModel: ObservableObject {
         }
     }
     
-    func updatePrayerResponse(responseID: Int, message: String) async -> Bool {
+    func updatePrayerResponse(responseID: Int, message: String, visibility: Visibility? = nil, displayNameType: DisplayNameType? = nil) async -> Bool {
         do {
             let updatedResponse = try await prayerUseCase.updatePrayerResponse(responseID: responseID,
-                                                                               message: message)
+                                                                               message: message,
+                                                                               visibility: visibility,
+                                                                               displayNameType: displayNameType)
 
             guard var prayer = prayer else { return false }
             if let index = prayer.responses?.firstIndex(where: { $0.id == responseID }) {
@@ -345,7 +347,7 @@ class PrayerDetailViewModel: ObservableObject {
         guard !message.isEmpty else { return nil }
 
         do {
-            let updatedResponse = try await prayerUseCase.updatePrayerResponse(responseID: reply.id, message: message)
+            let updatedResponse = try await prayerUseCase.updatePrayerResponse(responseID: reply.id, message: message, visibility: nil, displayNameType: nil)
             guard var prayer = prayer,
                   let parentIndex = prayer.responses?.firstIndex(where: { $0.id == parentResponse.id }),
                   let replyIndex = prayer.responses?[parentIndex].replies.firstIndex(where: { $0.id == reply.id })

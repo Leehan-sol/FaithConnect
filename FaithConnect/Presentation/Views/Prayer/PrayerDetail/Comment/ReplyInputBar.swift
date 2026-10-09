@@ -11,10 +11,18 @@ struct ReplyInputBar: View {
     @Binding var replyText: String
     var isReplyFocused: FocusState<Bool>.Binding
     var isEditing: Bool = false
-    let onSend: () -> Void
+    var isManna: Bool = false
+    var parentVisibility: Visibility? = nil
+    let onSend: (_ visibility: Visibility?, _ displayNameType: DisplayNameType?) -> Void
     let onCancel: () -> Void
 
     @State private var showCancelAlert: Bool = false
+    @State private var selectedVisibility: Visibility = .publicAll
+    @State private var selectedDisplayNameType: DisplayNameType = .nickname
+
+    private var isVisibilityLocked: Bool {
+        parentVisibility == .pastorOnly
+    }
 
     private var wordCount: Int {
         replyText.count
@@ -54,6 +62,46 @@ struct ReplyInputBar: View {
             }
             .padding(EdgeInsets(top: 0, leading: 10, bottom: 4, trailing: 10))
 
+            if isManna {
+                VStack(spacing: 0) {
+                    if !isVisibilityLocked {
+                        HStack {
+                            Text("공개범위")
+                                .font(.caption)
+                            Spacer()
+                            Picker("", selection: $selectedVisibility) {
+                                Text("전체").tag(Visibility.publicAll)
+                                Text("비공개").tag(Visibility.pastorOnly)
+                            }
+                            .tint(.primary)
+                        }
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 8)
+
+                        Divider()
+                            .padding(.leading, 12)
+                    }
+
+                    HStack {
+                        Text("표시이름")
+                            .font(.caption)
+                        Spacer()
+                        Picker("", selection: $selectedDisplayNameType) {
+                            ForEach(DisplayNameType.allCases, id: \.self) { t in
+                                Text(t.displayName).tag(t)
+                            }
+                        }
+                        .tint(.primary)
+                    }
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 8)
+                }
+                .background(Color(.systemGray5))
+                .cornerRadius(8)
+                .padding(.horizontal, 10)
+                .padding(.bottom, 6)
+            }
+
             HStack(spacing: 10) {
                 Button {
                     if isSendActive {
@@ -72,7 +120,9 @@ struct ReplyInputBar: View {
                 }
 
                 Button {
-                    onSend()
+                    let vis = isManna ? selectedVisibility : nil
+                    let dnt = isManna ? selectedDisplayNameType : nil
+                    onSend(vis, dnt)
                 } label: {
                     Text(isEditing ? "수정" : "전송")
                         .font(.subheadline)
@@ -88,6 +138,11 @@ struct ReplyInputBar: View {
         }
         .background(Color(.systemGray6))
         .cornerRadius(10)
+        .onAppear {
+            if isVisibilityLocked {
+                selectedVisibility = .pastorOnly
+            }
+        }
         .alert(isEditing ? "수정 취소" : "작성 취소",
                isPresented: $showCancelAlert) {
             Button("취소", role: .cancel) { }
@@ -104,7 +159,7 @@ struct ReplyInputBar: View {
     @FocusState var focused: Bool
     ReplyInputBar(replyText: .constant("테스트 답글 내용"),
                   isReplyFocused: $focused,
-                  onSend: {},
+                  onSend: { _, _ in },
                   onCancel: {})
     .padding(.horizontal, 40)
     .padding(.vertical, 10)

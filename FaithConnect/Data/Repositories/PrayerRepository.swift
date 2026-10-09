@@ -69,9 +69,11 @@ class PrayerRepository: PrayerRepositoryProtocol {
         return PrayerResponse(from: result)
     }
 
-    func updatePrayerResponse(responseID: Int, message: String) async throws -> PrayerResponse {
+    func updatePrayerResponse(responseID: Int, message: String, visibility: Visibility?, displayNameType: DisplayNameType?) async throws -> PrayerResponse {
         let result = try await apiClient.updatePrayerResponse(responseID: responseID,
-                                                               message: message)
+                                                               message: message,
+                                                               visibility: visibility?.rawValue,
+                                                               displayNameType: displayNameType?.rawValue)
         return PrayerResponse(from: result)
     }
 
