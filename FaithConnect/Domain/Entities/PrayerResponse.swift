@@ -21,6 +21,7 @@ struct PrayerResponse: Identifiable, Equatable {
     var message: String
     let visibility: Visibility?
     let displayNameType: DisplayNameType?
+    let role: UserRole?
     let createdAt: String
     let isMine: Bool
     let parentResponseId: Int?
@@ -38,6 +39,7 @@ extension PrayerResponse {
         self.message = dto.message
         self.visibility = dto.visibility.flatMap { Visibility(rawValue: $0) }
         self.displayNameType = dto.displayNameType.flatMap { DisplayNameType(rawValue: $0) }
+        self.role = dto.role.flatMap { UserRole(rawValue: $0) }
         self.createdAt = dto.createdAt
         self.isMine = dto.isMine
         self.parentResponseId = dto.parentResponseId

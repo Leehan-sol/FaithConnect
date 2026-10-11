@@ -34,6 +34,11 @@ struct PrayerRowView: View {
                     Text(prayer.userName)
                         .font(.caption2)
                         .foregroundColor(.gray)
+                    if prayer.role == .pastor {
+                        Image(systemName: "cross.fill")
+                            .font(.system(size: 8))
+                            .foregroundColor(.customPurple)
+                    }
                 }
 
                 Spacer()
@@ -95,7 +100,7 @@ struct PrayerRowView: View {
                                  userName: "",
                                  categoryId: 0,
                                  categoryName: "건강",
-                                 community: nil, visibility: nil, displayNameType: nil,
+                                 community: nil, visibility: nil, displayNameType: nil, role: nil,
                                  title: "제목",
                                  content: "내용",
                                  createdAt: "날짜",
@@ -107,6 +112,7 @@ struct PrayerRowView: View {
                                                             message: "응답",
                                                             visibility: nil,
                                                             displayNameType: nil,
+                                                            role: nil,
                                                             createdAt: "",
                                                             isMine: false,
                                                             parentResponseId: nil,

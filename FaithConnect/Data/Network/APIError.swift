@@ -47,6 +47,10 @@ extension APIError {
                 return "입력하신 정보가 올바르지 않습니다."
             case .userExistByEmail:
                 return "이미 사용중인 이메일입니다."
+            case .invalidEmailFormat:
+                return "이메일 형식이 올바르지 않습니다."
+            case .nicknameAlreadyExists:
+                return "이미 사용 중인 닉네임입니다."
             case .categoryNotFound:
                 return "해당 카테고리를 찾을 수 없습니다. 다시 시도해주세요."
             case .prayerNotFound:

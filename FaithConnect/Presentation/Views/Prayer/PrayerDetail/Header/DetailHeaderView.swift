@@ -25,6 +25,11 @@ struct DetailHeaderView: View {
                 Text(prayer.userName)
                     .font(.caption)
                     .foregroundColor(.gray)
+                if prayer.role == .pastor {
+                    Image(systemName: "cross.fill")
+                        .font(.system(size: 8))
+                        .foregroundColor(.customPurple)
+                }
 
                 Spacer()
 

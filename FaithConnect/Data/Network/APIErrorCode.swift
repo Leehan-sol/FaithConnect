@@ -19,7 +19,9 @@ enum APIErrorCode: Int, Decodable {
     case passwordMismatch = 51003 // 비밀번호가 일치하지 않습니다.
     case invalidUserInformation = 51004 // 입력하신 정보가 올바르지 않습니다.
     case userExistByEmail = 51005 // 이미 사용 중인 이메일입니다.
-    
+    case invalidEmailFormat = 51006 // 이메일 형식이 올바르지 않습니다.
+    case nicknameAlreadyExists = 51007 // 이미 사용 중인 닉네임입니다.
+
     // MARK: - Prayer
     case categoryNotFound = 52001 // 기도 카테고리를 찾을 수 없습니다.
     case prayerNotFound = 52002 // 기도 제목을 찾을 수 없습니다.

@@ -22,6 +22,7 @@ struct Prayer: Identifiable {
     let community: String?
     let visibility: Visibility?
     let displayNameType: DisplayNameType?
+    let role: UserRole?
     let title: String
     let content: String
     let createdAt: String
@@ -54,6 +55,7 @@ extension Prayer {
         self.community = dto.community
         self.visibility = dto.visibility.flatMap { Visibility(rawValue: $0) }
         self.displayNameType = dto.displayNameType.flatMap { DisplayNameType(rawValue: $0) }
+        self.role = dto.role.flatMap { UserRole(rawValue: $0) }
         self.title = dto.title ?? ""
         self.content = dto.content ?? ""
         self.createdAt = dto.createdAt ?? ""
@@ -72,6 +74,7 @@ extension Prayer {
         self.community = dto.community
         self.visibility = dto.visibility.flatMap { Visibility(rawValue: $0) }
         self.displayNameType = dto.displayNameType.flatMap { DisplayNameType(rawValue: $0) }
+        self.role = dto.role.flatMap { UserRole(rawValue: $0) }
         self.title = dto.title
         self.content = dto.content
         self.createdAt = dto.createdAt

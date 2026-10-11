@@ -48,6 +48,11 @@ struct CommentRowView: View {
                             .font(.caption)
                             .fontWeight(.semibold)
                             .foregroundColor(.gray)
+                        if response.role == .pastor {
+                            Image(systemName: "cross.fill")
+                                .font(.system(size: 8))
+                                .foregroundColor(.customPurple)
+                        }
 
                         Spacer()
 
@@ -164,6 +169,7 @@ struct CommentRowView: View {
                                                    message: "어머님의 수술이 잘 되시길 기도하겠습니다. 하나님께서 함께 하실 거예요.",
                                                    visibility: nil,
                                                    displayNameType: nil,
+                                                   role: nil,
                                                    createdAt: "2025-11-07T12:55:00.000Z",
                                                    isMine: false,
                                                    parentResponseId: nil,

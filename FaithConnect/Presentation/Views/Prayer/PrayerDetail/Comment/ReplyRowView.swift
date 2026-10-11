@@ -44,6 +44,11 @@ struct ReplyRowView: View {
                             .font(.caption)
                             .fontWeight(.semibold)
                             .foregroundColor(.gray)
+                        if reply.role == .pastor {
+                            Image(systemName: "cross.fill")
+                                .font(.system(size: 8))
+                                .foregroundColor(.customPurple)
+                        }
 
                         Spacer()
 
@@ -141,6 +146,7 @@ struct ReplyRowView: View {
                                        message: "감사합니다. 함께 기도해주셔서 힘이 됩니다.",
                                        visibility: nil,
                                        displayNameType: nil,
+                                       role: nil,
                                        createdAt: "2025-11-07T12:55:00.000Z",
                                        isMine: false,
                                        parentResponseId: nil,

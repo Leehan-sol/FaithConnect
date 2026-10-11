@@ -37,6 +37,7 @@ struct PrayerDetailResponse: Decodable {
     let communityName: String?
     let visibility: String?
     let displayNameType: String?
+    let role: String?
     let title: String?
     let content: String?
     let createdAt: String?
@@ -56,6 +57,7 @@ struct DetailResponseItem: Decodable {
     let message: String
     let visibility: String?
     let displayNameType: String?
+    let role: String?
     let createdAt: String
     let isMine: Bool
     let parentResponseId: Int?
@@ -118,6 +120,7 @@ struct PrayerWriteResponse: Decodable {
     let community: String?
     let visibility: String?
     let displayNameType: String?
+    let role: String?
     let title: String
     let content: String
     let createdAt: String
