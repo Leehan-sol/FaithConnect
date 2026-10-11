@@ -11,6 +11,7 @@ class MockPrayerUseCase: PrayerUseCaseProtocol {
 
     // MARK: - 스텁 설정
     var eventPublisher = PassthroughSubject<PrayerEventType, Never>()
+    var stubbedCommunities: [CommunityItem] = []
     var stubbedCategories: [PrayerCategory] = []
     var stubbedPrayerPage: PrayerPage = PrayerPage(prayers: [], currentPage: 1, hasNext: false)
     var stubbedPrayer: Prayer?
@@ -33,7 +34,7 @@ class MockPrayerUseCase: PrayerUseCaseProtocol {
     // MARK: - PrayerUseCaseProtocol
     func loadCommunities() async throws -> [CommunityItem] {
         if let error = stubbedError { throw error }
-        return []
+        return stubbedCommunities
     }
 
     func loadCategories() async throws -> [PrayerCategory] {

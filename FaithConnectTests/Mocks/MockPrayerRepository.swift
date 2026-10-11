@@ -9,6 +9,7 @@ import Foundation
 class MockPrayerRepository: PrayerRepositoryProtocol {
 
     // MARK: - 스텁 설정
+    var stubbedCommunities: [CommunityItem] = []
     var stubbedCategories: [PrayerCategory] = []
     var stubbedPrayerPage: PrayerPage?
     var stubbedPrayer: Prayer?
@@ -22,11 +23,12 @@ class MockPrayerRepository: PrayerRepositoryProtocol {
     var loadCategoriesCalled = false
     var deletePrayerCalledWith: Int?
     var deletePrayerResponseCalledWith: Int?
+    var writePrayerCalledWith: (categoryID: Int?, community: Community?, visibility: Visibility?, displayNameType: DisplayNameType?, title: String, content: String)?
 
     // MARK: - PrayerRepositoryProtocol
     func loadCommunities() async throws -> [CommunityItem] {
         if let error = stubbedError { throw error }
-        return []
+        return stubbedCommunities
     }
 
     func loadCategories() async throws -> [PrayerCategory] {
@@ -46,6 +48,7 @@ class MockPrayerRepository: PrayerRepositoryProtocol {
     }
 
     func writePrayer(categoryID: Int?, community: Community?, visibility: Visibility?, displayNameType: DisplayNameType?, title: String, content: String) async throws -> Prayer {
+        writePrayerCalledWith = (categoryID, community, visibility, displayNameType, title, content)
         if let error = stubbedError { throw error }
         return stubbedPrayer!
     }

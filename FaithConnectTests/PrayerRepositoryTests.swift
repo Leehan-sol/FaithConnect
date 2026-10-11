@@ -47,6 +47,11 @@ final class PrayerRepositoryTests: XCTestCase {
             prayerUserName: "홍길동",
             categoryId: 2,
             categoryName: "가족",
+            community: nil,
+            communityName: nil,
+            visibility: nil,
+            displayNameType: nil,
+            role: nil,
             title: "기도 제목",
             content: "기도 내용",
             createdAt: "2026-01-01",
@@ -86,6 +91,11 @@ final class PrayerRepositoryTests: XCTestCase {
             prayerUserName: "홍길동",
             categoryId: 2,
             categoryName: "가족",
+            community: nil,
+            communityName: nil,
+            visibility: nil,
+            displayNameType: nil,
+            role: nil,
             title: "기도 제목",
             content: "기도 내용",
             createdAt: "2026-01-01",
@@ -116,6 +126,10 @@ final class PrayerRepositoryTests: XCTestCase {
             prayerUserName: "작성자",
             categoryId: 2,
             categoryName: "감사",
+            community: nil,
+            visibility: nil,
+            displayNameType: nil,
+            role: nil,
             title: "새 기도",
             content: "내용",
             createdAt: "2026-03-01",
@@ -125,7 +139,7 @@ final class PrayerRepositoryTests: XCTestCase {
             status: nil
         )
 
-        let result = try await sut.writePrayer(categoryID: 2, title: "새 기도", content: "내용")
+        let result = try await sut.writePrayer(categoryID: 2, community: nil, visibility: nil, displayNameType: nil, title: "새 기도", content: "내용")
 
         XCTAssertEqual(result.id, 99)
         XCTAssertEqual(result.userName, "작성자")
@@ -141,15 +155,17 @@ final class PrayerRepositoryTests: XCTestCase {
             prayerUserName: "응답자",
             prayerRequestTitle: "기도 제목",
             message: "응원합니다",
+            visibility: nil,
+            displayNameType: nil,
+            role: nil,
             createdAt: "2026-03-01",
             isMine: true,
             parentResponseId: nil,
             replyCount: 0,
-            errorCode: nil,
-            status: nil
+            errorCode: nil
         )
 
-        let result = try await sut.writePrayerResponse(prayerRequestID: 1, message: "응원합니다")
+        let result = try await sut.writePrayerResponse(prayerRequestID: 1, message: "응원합니다", visibility: nil, displayNameType: nil)
 
         XCTAssertEqual(result.id, 10)
         XCTAssertEqual(result.prayerRequestId, 1)
@@ -218,12 +234,14 @@ final class PrayerRepositoryTests: XCTestCase {
                     prayerUserName: "답글 작성자",
                     prayerRequestTitle: nil,
                     message: "답글 내용",
+                    visibility: nil,
+                    displayNameType: nil,
+                    role: nil,
                     createdAt: "2026-03-01",
                     isMine: false,
                     parentResponseId: 10,
                     replyCount: 0,
-                    errorCode: nil,
-                    status: nil
+                    errorCode: nil
                 )
             ],
             currentPage: 1,
@@ -239,6 +257,23 @@ final class PrayerRepositoryTests: XCTestCase {
         XCTAssertEqual(result.replies[0].parentResponseId, 10)
         XCTAssertEqual(result.currentPage, 1)
         XCTAssertFalse(result.hasNext)
+    }
+
+    // MARK: - 공동체
+
+    func test_loadCommunities_mapsDTOToEntity() async throws {
+        mockAPIClient.stubbedCommunities = [
+            CommunityResponse(community: "JOSEPH", displayName: "요셉"),
+            CommunityResponse(community: "DAVID", displayName: "다윗")
+        ]
+
+        let result = try await sut.loadCommunities()
+
+        XCTAssertEqual(result.count, 2)
+        XCTAssertEqual(result[0].community, "JOSEPH")
+        XCTAssertEqual(result[0].displayName, "요셉")
+        XCTAssertEqual(result[1].community, "DAVID")
+        XCTAssertEqual(result[1].displayName, "다윗")
     }
 
     // MARK: - 에러 변환 (APIError → DomainError)

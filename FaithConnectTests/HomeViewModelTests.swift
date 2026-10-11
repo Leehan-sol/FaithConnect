@@ -155,6 +155,7 @@ final class HomeViewModelTests: XCTestCase {
                              userName: "테스트",
                              categoryId: 2,
                              categoryName: "가족",
+                             community: nil, visibility: nil, displayNameType: nil, role: nil,
                              title: "제목2",
                              content: "내용2",
                              createdAt: "2026-01-02",
@@ -187,12 +188,13 @@ final class HomeViewModelTests: XCTestCase {
     func test_responseDeletedEvent_decrementsOnlyMatchingPrayer() async {
         var prayer1 = testPrayer
         prayer1.participationCount = 3
-        
+
         let prayer2 = Prayer(id: 2,
                              userId: 1,
                              userName: "테스트",
                              categoryId: 2,
                              categoryName: "가족",
+                             community: nil, visibility: nil, displayNameType: nil, role: nil,
                              title: "제목2",
                              content: "내용2",
                              createdAt: "2026-01-02",
@@ -227,6 +229,7 @@ final class HomeViewModelTests: XCTestCase {
                              userName: "테스트",
                              categoryId: 2,
                              categoryName: "감사",
+                             community: nil, visibility: nil, displayNameType: nil, role: nil,
                              title: "제목2",
                              content: "내용2",
                              createdAt: "2026-01-02",
@@ -317,5 +320,68 @@ final class HomeViewModelTests: XCTestCase {
         } else {
             XCTFail("alertType이 .error가 아닙니다")
         }
+    }
+
+    // MARK: - MANNA 모드
+
+    func test_initializeIfNeeded_manna_loadsCommunities() async {
+        let mannaSut = HomeViewModel(prayerUseCase: mockPrayerUseCase,
+                                      isManna: true,
+                                      userCommunity: .joseph)
+
+        mockPrayerUseCase.stubbedCommunities = [
+            CommunityItem(community: "JOSEPH", displayName: "요셉"),
+            CommunityItem(community: "DAVID", displayName: "다윗")
+        ]
+        mockPrayerUseCase.stubbedPrayerPage = PrayerPage(
+            prayers: [testPrayer], currentPage: 1, hasNext: false
+        )
+
+        await mannaSut.initializeIfNeeded()
+
+        XCTAssertEqual(mannaSut.communities.count, 2)
+        XCTAssertEqual(mannaSut.communities[0].community, "JOSEPH")
+        XCTAssertEqual(mannaSut.prayers.count, 1)
+        XCTAssertTrue(mannaSut.categories.isEmpty)
+    }
+
+    func test_selectCommunity_filtersPrayers() async {
+        let mannaSut = HomeViewModel(prayerUseCase: mockPrayerUseCase,
+                                      isManna: true,
+                                      userCommunity: .joseph)
+
+        mockPrayerUseCase.stubbedCommunities = [
+            CommunityItem(community: "JOSEPH", displayName: "요셉")
+        ]
+        mockPrayerUseCase.stubbedPrayerPage = PrayerPage(
+            prayers: [testPrayer], currentPage: 1, hasNext: false
+        )
+
+        await mannaSut.initializeIfNeeded()
+
+        let filteredPrayer = Prayer(id: 10,
+                                    userId: 1,
+                                    userName: "테스트",
+                                    categoryId: nil,
+                                    categoryName: nil,
+                                    community: "JOSEPH", visibility: nil, displayNameType: nil, role: nil,
+                                    title: "공동체 기도",
+                                    content: "내용",
+                                    createdAt: "2026-01-01",
+                                    participationCount: 0,
+                                    responses: nil,
+                                    hasParticipated: false,
+                                    isMine: true)
+
+        mockPrayerUseCase.stubbedPrayerPage = PrayerPage(
+            prayers: [filteredPrayer], currentPage: 1, hasNext: false
+        )
+
+        await mannaSut.selectCommunity(.joseph)
+
+        XCTAssertEqual(mannaSut.selectedCommunity, .joseph)
+        XCTAssertEqual(mockPrayerUseCase.loadPrayersCalledWith?.community, .joseph)
+        XCTAssertEqual(mannaSut.prayers.count, 1)
+        XCTAssertEqual(mannaSut.prayers[0].id, 10)
     }
 }

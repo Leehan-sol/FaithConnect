@@ -61,6 +61,7 @@ final class PrayerUseCaseTests: XCTestCase {
         let prayer = Prayer(
             id: 1, userId: 10, userName: "홍길동",
             categoryId: 2, categoryName: "가족",
+            community: nil, visibility: nil, displayNameType: nil, role: nil,
             title: "기도 제목", content: "기도 내용",
             createdAt: "2026-01-01", participationCount: 5,
             responses: nil, hasParticipated: false, isMine: true
@@ -86,6 +87,7 @@ final class PrayerUseCaseTests: XCTestCase {
         mockRepository.stubbedPrayer = Prayer(
             id: 99, userId: 1, userName: "작성자",
             categoryId: 2, categoryName: "감사",
+            community: nil, visibility: nil, displayNameType: nil, role: nil,
             title: "새 기도", content: "내용",
             createdAt: "2026-03-01", participationCount: 0,
             responses: [], hasParticipated: false, isMine: true
@@ -96,7 +98,7 @@ final class PrayerUseCaseTests: XCTestCase {
             .sink { receivedEvent = $0 }
             .store(in: &cancellables)
 
-        _ = try await sut.writePrayer(categoryID: 2, title: "새 기도", content: "내용")
+        _ = try await sut.writePrayer(categoryID: 2, community: nil, visibility: nil, displayNameType: nil, title: "새 기도", content: "내용")
 
         if case .prayerAdded(let prayer) = receivedEvent {
             XCTAssertEqual(prayer.id, 99)
@@ -125,7 +127,9 @@ final class PrayerUseCaseTests: XCTestCase {
     func test_writePrayerResponse_success_publishesResponseAddedEvent() async throws {
         mockRepository.stubbedPrayerResponse = PrayerResponse(
             id: 10, prayerRequestId: 1, userId: 1, userName: "작성자",
-            message: "응원합니다", createdAt: "2026-03-01",
+            message: "응원합니다",
+            visibility: nil, displayNameType: nil, role: nil,
+            createdAt: "2026-03-01",
             isMine: true, parentResponseId: nil, replyCount: 0
         )
 
@@ -136,6 +140,7 @@ final class PrayerUseCaseTests: XCTestCase {
 
         _ = try await sut.writePrayerResponse(
             prayerRequestID: 1, message: "응원합니다",
+            visibility: nil, displayNameType: nil,
             prayerTitle: "기도 제목", categoryId: 2, categoryName: "감사"
         )
 
@@ -164,10 +169,52 @@ final class PrayerUseCaseTests: XCTestCase {
         }
     }
 
+    // MARK: - 공동체
+
+    func test_loadCommunities_success() async throws {
+        mockRepository.stubbedCommunities = [
+            CommunityItem(community: "JOSEPH", displayName: "요셉"),
+            CommunityItem(community: "DAVID", displayName: "다윗")
+        ]
+
+        let result = try await sut.loadCommunities()
+
+        XCTAssertEqual(result.count, 2)
+        XCTAssertEqual(result[0].community, "JOSEPH")
+        XCTAssertEqual(result[0].displayName, "요셉")
+        XCTAssertEqual(result[1].community, "DAVID")
+    }
+
+    func test_writePrayer_withVisibility_passesCorrectly() async throws {
+        mockRepository.stubbedPrayer = Prayer(
+            id: 50, userId: 1, userName: "작성자",
+            categoryId: nil, categoryName: nil,
+            community: "JOSEPH", visibility: .pastorOnly, displayNameType: .realName, role: nil,
+            title: "비공개 기도", content: "내용",
+            createdAt: "2026-03-01", participationCount: 0,
+            responses: [], hasParticipated: false, isMine: true
+        )
+
+        let result = try await sut.writePrayer(
+            categoryID: nil, community: .joseph,
+            visibility: .pastorOnly, displayNameType: .realName,
+            title: "비공개 기도", content: "내용"
+        )
+
+        XCTAssertEqual(result.id, 50)
+        XCTAssertEqual(result.visibility, .pastorOnly)
+        XCTAssertEqual(result.displayNameType, .realName)
+        XCTAssertEqual(mockRepository.writePrayerCalledWith?.visibility, .pastorOnly)
+        XCTAssertEqual(mockRepository.writePrayerCalledWith?.displayNameType, .realName)
+    }
+
+    // MARK: - 수정
+
     func test_updatePrayer_success_publishesPrayerUpdatedEvent() async throws {
         mockRepository.stubbedPrayer = Prayer(
             id: 1, userId: 10, userName: "홍길동",
             categoryId: 2, categoryName: "감사",
+            community: nil, visibility: nil, displayNameType: nil, role: nil,
             title: "수정된 제목", content: "수정된 내용",
             createdAt: "2026-01-01", participationCount: 3,
             responses: nil, hasParticipated: false, isMine: true
@@ -179,6 +226,7 @@ final class PrayerUseCaseTests: XCTestCase {
             .store(in: &cancellables)
 
         _ = try await sut.updatePrayer(prayerRequestId: 1, categoryID: 2,
+                                        community: nil, visibility: nil, displayNameType: nil,
                                         title: "수정된 제목", content: "수정된 내용")
 
         if case .prayerUpdated(let prayer) = receivedEvent {

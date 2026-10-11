@@ -21,6 +21,7 @@ class MockAPIClient: APIClientProtocol {
     var stubbedMyInfo: FetchMyInfoResponse?
     var stubbedFoundEmail: String = ""
     var stubbedNickname: String = ""
+    var stubbedCommunities: [CommunityResponse] = []
     var stubbedError: Error?
 
     // MARK: - APIClientProtocol
@@ -104,7 +105,7 @@ class MockAPIClient: APIClientProtocol {
     // MARK: - Prayer
     func loadCommunities() async throws -> [CommunityResponse] {
         if let error = stubbedError { throw error }
-        return []
+        return stubbedCommunities
     }
 
     func loadCategories() async throws -> [CategoryResponse] {
