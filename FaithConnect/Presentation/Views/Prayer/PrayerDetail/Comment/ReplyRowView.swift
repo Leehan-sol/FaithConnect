@@ -45,9 +45,15 @@ struct ReplyRowView: View {
                             .fontWeight(.semibold)
                             .foregroundColor(.gray)
                         if reply.role == .pastor {
-                            Image(systemName: "cross.fill")
-                                .font(.system(size: 8))
-                                .foregroundColor(.customPurple)
+                            ZStack {
+                                Image(systemName: "seal.fill")
+                                    .foregroundColor(.customPurple)
+                                Image(systemName: "cross.fill")
+                                    .foregroundColor(.white)
+                                    .font(.system(size: 5))
+                            }
+                            .font(.caption2)
+                            .offset(x: -4)
                         }
 
                         Spacer()

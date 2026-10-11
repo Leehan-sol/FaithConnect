@@ -341,13 +341,13 @@ class PrayerDetailViewModel: ObservableObject {
         }
     }
     
-    func sendEditedReply() async -> Int? {
+    func sendEditedReply(visibility: Visibility? = nil, displayNameType: DisplayNameType? = nil) async -> Int? {
         guard let reply = editingReply, let parentResponse = replyingTo else { return nil }
         let message = replyText.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !message.isEmpty else { return nil }
 
         do {
-            let updatedResponse = try await prayerUseCase.updatePrayerResponse(responseID: reply.id, message: message, visibility: reply.visibility, displayNameType: reply.displayNameType)
+            let updatedResponse = try await prayerUseCase.updatePrayerResponse(responseID: reply.id, message: message, visibility: visibility ?? reply.visibility, displayNameType: displayNameType ?? reply.displayNameType)
             guard var prayer = prayer,
                   let parentIndex = prayer.responses?.firstIndex(where: { $0.id == parentResponse.id }),
                   let replyIndex = prayer.responses?[parentIndex].replies.firstIndex(where: { $0.id == reply.id })

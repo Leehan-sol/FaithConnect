@@ -59,9 +59,9 @@ struct CommentListView: View {
                                         isReplyFocused: isReplyFocused,
                                         isEditing: true,
                                         isManna: viewModel.prayer?.community != nil,
-                                        onSend: { _, _ in
+                                        onSend: { vis, dnt in
                                             Task {
-                                                if let editedId = await viewModel.sendEditedReply() {
+                                                if let editedId = await viewModel.sendEditedReply(visibility: vis, displayNameType: dnt) {
                                                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                                                         withAnimation {
                                                             proxy?.scrollTo(editedId, anchor: .bottom)
@@ -129,7 +129,6 @@ struct CommentListView: View {
                             replyText: $viewModel.replyText,
                             isReplyFocused: isReplyFocused,
                             isManna: viewModel.prayer?.community != nil,
-                            parentVisibility: response.visibility,
                             onSend: { vis, dnt in
                                 Task {
                                     if let lastReplyId = await viewModel.sendReply(visibility: vis, displayNameType: dnt) {

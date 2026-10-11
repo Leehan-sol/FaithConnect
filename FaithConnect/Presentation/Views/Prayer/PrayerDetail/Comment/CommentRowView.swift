@@ -29,7 +29,7 @@ struct CommentRowView: View {
     }
 
     var body: some View {
-        HStack(alignment: .top, spacing: 10) {
+        HStack(alignment: isUnavailable ? .center : .top, spacing: 10) {
             Image(systemName: "figure.and.child.holdinghands")
                 .foregroundColor(isUnavailable ? .gray : .customNavy)
                 .frame(width: 35, height: 35)
@@ -49,9 +49,15 @@ struct CommentRowView: View {
                             .fontWeight(.semibold)
                             .foregroundColor(.gray)
                         if response.role == .pastor {
-                            Image(systemName: "cross.fill")
-                                .font(.system(size: 8))
-                                .foregroundColor(.customPurple)
+                            ZStack {
+                                Image(systemName: "seal.fill")
+                                    .foregroundColor(.customPurple)
+                                Image(systemName: "cross.fill")
+                                    .foregroundColor(.white)
+                                    .font(.system(size: 5))
+                            }
+                            .font(.caption2)
+                            .offset(x: -4)
                         }
 
                         Spacer()

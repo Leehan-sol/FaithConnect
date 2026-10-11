@@ -35,9 +35,15 @@ struct PrayerRowView: View {
                         .font(.caption2)
                         .foregroundColor(.gray)
                     if prayer.role == .pastor {
-                        Image(systemName: "cross.fill")
-                            .font(.system(size: 8))
-                            .foregroundColor(.customPurple)
+                        ZStack {
+                            Image(systemName: "seal.fill")
+                                .foregroundColor(.customPurple)
+                            Image(systemName: "cross.fill")
+                                .foregroundColor(.white)
+                                .font(.system(size: 5))
+                        }
+                        .font(.caption2)
+                        .offset(x: -4)
                     }
                 }
 

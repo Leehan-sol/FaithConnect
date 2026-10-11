@@ -12,7 +12,6 @@ struct ReplyInputBar: View {
     var isReplyFocused: FocusState<Bool>.Binding
     var isEditing: Bool = false
     var isManna: Bool = false
-    var parentVisibility: Visibility? = nil
     let onSend: (_ visibility: Visibility?, _ displayNameType: DisplayNameType?) -> Void
     let onCancel: () -> Void
 
@@ -20,9 +19,6 @@ struct ReplyInputBar: View {
     @State private var selectedVisibility: Visibility = .publicAll
     @State private var selectedDisplayNameType: DisplayNameType = .nickname
 
-    private var isVisibilityLocked: Bool {
-        parentVisibility == .pastorOnly
-    }
 
     private var wordCount: Int {
         replyText.count
@@ -64,23 +60,21 @@ struct ReplyInputBar: View {
 
             if isManna {
                 VStack(spacing: 0) {
-                    if !isVisibilityLocked {
-                        HStack {
-                            Text("공개범위")
-                                .font(.caption)
-                            Spacer()
-                            Picker("", selection: $selectedVisibility) {
-                                Text("전체").tag(Visibility.publicAll)
-                                Text("비공개").tag(Visibility.pastorOnly)
-                            }
-                            .tint(.primary)
+                    HStack {
+                        Text("공개범위")
+                            .font(.caption)
+                        Spacer()
+                        Picker("", selection: $selectedVisibility) {
+                            Text("전체").tag(Visibility.publicAll)
+                            Text("비공개").tag(Visibility.pastorOnly)
                         }
-                        .padding(.horizontal, 12)
-                        .padding(.vertical, 8)
-
-                        Divider()
-                            .padding(.leading, 12)
+                        .tint(.primary)
                     }
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 8)
+
+                    Divider()
+                        .padding(.leading, 12)
 
                     HStack {
                         Text("표시이름")
@@ -120,7 +114,7 @@ struct ReplyInputBar: View {
                 }
 
                 Button {
-                    let vis = isManna ? (isVisibilityLocked ? .pastorOnly : selectedVisibility) : nil
+                    let vis = isManna ? selectedVisibility : nil
                     let dnt = isManna ? selectedDisplayNameType : nil
                     onSend(vis, dnt)
                 } label: {
@@ -138,11 +132,6 @@ struct ReplyInputBar: View {
         }
         .background(Color(.systemGray6))
         .cornerRadius(10)
-        .onAppear {
-            if isVisibilityLocked {
-                selectedVisibility = .pastorOnly
-            }
-        }
         .alert(isEditing ? "수정 취소" : "작성 취소",
                isPresented: $showCancelAlert) {
             Button("취소", role: .cancel) { }
