@@ -13,6 +13,7 @@ struct HomeView: View {
     @State private var showPrayerDetail: Bool = false
     @State private var showPrayerEditor: Bool = false
     @Binding var scrollToTop: Bool
+    @State private var listHeight: CGFloat = 0
 
     var body: some View {
         ScrollViewReader { proxy in
@@ -29,7 +30,7 @@ struct HomeView: View {
                         .scaleEffect(1.5)
                 }
             }
-            .onChange(of: scrollToTop) { _ in
+            .onChange(of: scrollToTop) {
                 if scrollToTop {
                     withAnimation {
                         proxy.scrollTo("top", anchor: .top)
@@ -120,7 +121,7 @@ struct HomeView: View {
             if viewModel.prayers.isEmpty {
                 PrayerEmptyView(prayerContextType: .prayer)
                     .frame(maxWidth: .infinity)
-                    .frame(height: UIScreen.main.bounds.height * 0.5)
+                    .frame(height: listHeight * 0.5)
                     .listRowSeparator(.hidden)
                     .listRowBackground(Color.clear)
             } else {
@@ -132,6 +133,8 @@ struct HomeView: View {
         .refreshable {
             await viewModel.refreshPrayers()
         }
+        // 셀 안에서는 상대 높이가 셀 크기에 반영되지 않아, 빈 화면 높이용으로 목록 높이를 잰다.
+        .onGeometryChange(for: CGFloat.self) { $0.size.height } action: { listHeight = $0 }
         .listStyle(PlainListStyle())
         .scrollIndicators(.hidden)
     }

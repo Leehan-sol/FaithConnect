@@ -28,7 +28,7 @@ struct SignUpChurchSearchView: View {
                     .foregroundColor(.secondary)
                 TextField("교회명 검색", text: $query)
                     .autocapitalization(.none)
-                    .onChange(of: query) { _ in
+                    .onChange(of: query) {
                         viewModel.searchChurches(query: query)
                     }
                 if viewModel.isSearchingChurches {

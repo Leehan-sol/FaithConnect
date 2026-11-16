@@ -17,7 +17,9 @@ class DeepLinkManager: ObservableObject {
 
     func handleNotification(userInfo: [AnyHashable: Any]) {
         guard let prayerRequestId = parsePrayerRequestId(from: userInfo) else {
+            #if DEBUG
             print("prayerRequestId 파싱 실패: \(userInfo)")
+            #endif
             return
         }
         pendingDestination = .prayerDetail(prayerRequestId: prayerRequestId)

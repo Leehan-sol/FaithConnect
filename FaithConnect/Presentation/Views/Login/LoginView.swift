@@ -121,7 +121,7 @@ struct LoginView: View {
             .navigationDestination(isPresented: $showSignUp) {
                 SignUpChurchSearchView(viewModel: viewModel)
             }
-            .onChange(of: viewModel.signUpCompleted) { completed in
+            .onChange(of: viewModel.signUpCompleted) { _, completed in
                 if completed {
                     showSignUp = false
                     viewModel.signUpCompleted = false

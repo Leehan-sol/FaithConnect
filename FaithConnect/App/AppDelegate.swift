@@ -95,7 +95,9 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         withCompletionHandler completionHandler: @escaping () -> Void
     ) {
         let userInfo = response.notification.request.content.userInfo
+        #if DEBUG
         print("알림 탭: \(userInfo)")
+        #endif
 
         Task { @MainActor in
             deepLinkManager?.handleNotification(userInfo: userInfo)

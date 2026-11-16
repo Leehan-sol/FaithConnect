@@ -46,7 +46,7 @@ struct PrayerEditorView: View {
                         .background(Color(.systemGray6))
                         .cornerRadius(10)
                         .scrollContentBackground(.hidden)
-                        .onChange(of: content) { newValue in
+                        .onChange(of: content) { _, newValue in
                             if newValue.count > 2000 {
                                 content = String(newValue.prefix(2000))
                             }

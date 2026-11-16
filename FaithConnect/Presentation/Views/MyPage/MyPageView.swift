@@ -231,7 +231,7 @@ struct MyPageView: View {
             }
             .alert("닉네임 변경", isPresented: $showNicknameEdit) {
                 TextField("새 닉네임을 입력하세요", text: $nicknameInput)
-                    .onChange(of: nicknameInput) { newValue in
+                    .onChange(of: nicknameInput) { _, newValue in
                         if newValue.count > 50 {
                             nicknameInput = String(newValue.prefix(50))
                         }

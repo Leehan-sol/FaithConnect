@@ -53,7 +53,7 @@ struct LabeledTextField: View {
                     .padding()
                     .background(Color(.systemGray6))
                     .cornerRadius(10)
-                    .onChange(of: text) { newValue in
+                    .onChange(of: text) { _, newValue in
                         if let maxLength, newValue.count > maxLength {
                             text = String(newValue.prefix(maxLength))
                         }
