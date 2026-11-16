@@ -203,7 +203,7 @@ struct MyPageView: View {
                 .foregroundColor(.gray)
 
             }
-            .navigationTitle("마이페이지")
+            .toolbar(.hidden, for: .navigationBar)
             .navigationDestination(isPresented: $showChangePassword) {
                 if let vm = passwordResetVM {
                     FindPasswordView(viewModel: vm,
@@ -272,6 +272,9 @@ struct MyPageView: View {
                              dismissButton: .default(Text("확인"),
                                                      action: dismissAction))
             }
+        }
+        .safeAreaInset(edge: .top, spacing: 0) {
+            TabHeaderView(title: "마이페이지")
         }
     }
 }

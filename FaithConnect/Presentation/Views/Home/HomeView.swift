@@ -18,7 +18,10 @@ struct HomeView: View {
     var body: some View {
         ScrollViewReader { proxy in
             ZStack {
-                prayerListView(proxy: proxy)
+                VStack(spacing: 0) {
+                    homeHeader
+                    prayerListView(proxy: proxy)
+                }
 
                 FloatingButton(action: {
                     showPrayerEditor = true
@@ -42,8 +45,7 @@ struct HomeView: View {
                 }
             }
         }
-        .navigationTitle("기도 모음")
-        .navigationBarTitleDisplayMode(.large)
+        .toolbar(.hidden, for: .navigationBar)
         .navigationDestination(isPresented: $showPrayerDetail) {
             if let prayer = selectedPrayer {
                 PrayerDetailView(viewModel: { viewModel.makePrayerDetailVM(prayer: prayer) })
@@ -61,6 +63,11 @@ struct HomeView: View {
                   message: Text(alert.message),
                   dismissButton: .default(Text("확인")))
         }
+    }
+
+    // MARK: - 상단 헤더
+    private var homeHeader: some View {
+        TabHeaderView(title: "Faith Connect", showsLogo: true)
     }
 
     // MARK: - 필터 버튼 (카테고리 또는 공동체)

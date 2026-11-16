@@ -58,7 +58,10 @@ struct MyPrayerView: View {
             await viewModel.refreshWrittenPrayers()
             await viewModel.refreshParticipatedPrayers()
         }
-        .navigationTitle("내 기도")
+        .safeAreaInset(edge: .top, spacing: 0) {
+            TabHeaderView(title: "내 기도")
+        }
+        .toolbar(.hidden, for: .navigationBar)
         .navigationDestination(isPresented: $showPrayerDetail) {
             if let prayer = selectedPrayer {
                 PrayerDetailView(
