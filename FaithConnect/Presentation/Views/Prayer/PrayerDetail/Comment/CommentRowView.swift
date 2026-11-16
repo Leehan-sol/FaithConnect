@@ -101,9 +101,12 @@ struct CommentRowView: View {
                                     }
                                 }
                             } label: {
+                                // 회전은 그림만 돌리고 자리는 가로로 남아, 메뉴가 닫힐 때 가운데 점만 보이므로 정사각 자리를 준다.
                                 Image(systemName: "ellipsis")
                                     .rotationEffect(.degrees(90))
                                     .foregroundColor(.gray)
+                                    .frame(width: 24, height: 24)
+                                    .contentShape(Rectangle())
                             }
                         }
                     }
