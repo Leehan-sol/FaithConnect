@@ -33,7 +33,7 @@ class MockAPIClient: APIClientProtocol {
         return ChurchSearchResponse(churches: [])
     }
 
-    func signUp(name: String, nickname: String, email: String, password: String, confirmPassword: String, churchPlaceId: String, churchName: String, churchRoadAddress: String, community: Community?) async throws {
+    func signUp(name: String, nickname: String, email: String, password: String, confirmPassword: String, churchPlaceId: String, churchName: String, churchRoadAddress: String, community: String?) async throws {
         if let error = stubbedError { throw error }
     }
 

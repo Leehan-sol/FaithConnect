@@ -7,7 +7,7 @@ import SwiftUI
 
 struct SignUpFormView: View {
     let church: Church
-    let community: Community?
+    let community: CommunityItem?
     @ObservedObject var viewModel: LoginViewModel
     @State private var name = ""
     @State private var nickname = ""
@@ -25,36 +25,53 @@ struct SignUpFormView: View {
                 Spacer().frame(height: 10)
 
                 // MARK: - 소속 정보
-                VStack(alignment: .leading, spacing: 6) {
+                VStack(alignment: .leading, spacing: 10) {
                     Text("소속")
                         .font(.subheadline)
                         .bold()
 
-                    VStack(alignment: .leading, spacing: 6) {
-                        HStack(spacing: 6) {
-                            Label(church.name, systemImage: "building.2")
-                                .font(.caption)
-                                .padding(.horizontal, 10)
-                                .padding(.vertical, 6)
-                                .background(Color(.systemGray5))
-                                .foregroundColor(.primary)
-                                .cornerRadius(14)
+                    HStack(alignment: .center, spacing: 12) {
+                        Image(systemName: "building.2.fill")
+                            .font(.system(size: 16))
+                            .foregroundColor(.customBlue1)
+                            .frame(width: 40, height: 40)
+                            .background(Color.customBlue1.opacity(0.12))
+                            .clipShape(Circle())
 
-                            if let community = community {
-                                Text(community.displayName)
+                        VStack(alignment: .leading, spacing: 4) {
+                            HStack(spacing: 6) {
+                                Text(church.name)
+                                    .font(.subheadline)
+                                    .fontWeight(.semibold)
+                                    .foregroundColor(.primary)
+                                    .lineLimit(1)
+
+                                if let community = community {
+                                    Text(community.displayName)
+                                        .font(.caption2)
+                                        .fontWeight(.semibold)
+                                        .padding(.horizontal, 8)
+                                        .padding(.vertical, 3)
+                                        .background(Color.customBlue1.opacity(0.15))
+                                        .foregroundColor(.customBlue1)
+                                        .clipShape(Capsule())
+                                }
+                            }
+
+                            if !church.roadAddress.isEmpty {
+                                Text(church.roadAddress)
                                     .font(.caption)
-                                    .padding(.horizontal, 10)
-                                    .padding(.vertical, 6)
-                                    .background(Color.customBlue1.opacity(0.15))
-                                    .foregroundColor(.customBlue1)
-                                    .cornerRadius(14)
+                                    .foregroundColor(.secondary)
+                                    .fixedSize(horizontal: false, vertical: true)
                             }
                         }
 
-                        Text(church.roadAddress)
-                            .font(.caption)
-                            .foregroundColor(.secondary)
+                        Spacer(minLength: 0)
                     }
+                    .padding()
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .background(Color(.systemGray6))
+                    .cornerRadius(10)
                 }
                 .padding(.bottom, 10)
 

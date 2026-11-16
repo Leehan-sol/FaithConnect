@@ -17,6 +17,9 @@ class LoginViewModel: ObservableObject {
     @Published var churchSearchResults: [Church] = []
     @Published var isSearchingChurches: Bool = false
     @Published var signUpCompleted: Bool = false
+    @Published var communities: [CommunityItem] = []
+    @Published var isLoadingCommunities: Bool = false
+    @Published var communitiesLoadFailed: Bool = false
 
     private let authUseCase: AuthUseCaseProtocol
     private let session: UserSession
@@ -177,7 +180,19 @@ class LoginViewModel: ObservableObject {
         }
     }
 
-    func signUp(name: String, nickname: String, email: String, password: String, confirmPassword: String, church: Church, community: Community?) async {
+    func loadCommunities() async {
+        guard !isLoadingCommunities else { return }
+        isLoadingCommunities = true
+        communitiesLoadFailed = false
+        defer { isLoadingCommunities = false }
+        do {
+            communities = try await authUseCase.loadCommunities()
+        } catch {
+            communitiesLoadFailed = true
+        }
+    }
+
+    func signUp(name: String, nickname: String, email: String, password: String, confirmPassword: String, church: Church, community: CommunityItem?) async {
         print("회원가입 name: \(name), nickname: \(nickname), email: \(email), church: \(church.name)")
 
         if name.isEmpty {
@@ -232,7 +247,7 @@ class LoginViewModel: ObservableObject {
                                          churchPlaceId: church.id,
                                          churchName: church.name,
                                          churchRoadAddress: church.roadAddress,
-                                         community: community)
+                                         community: community?.community)
             signUpCompleted = true
             signUpAlertType = .registerSuccess
         } catch {

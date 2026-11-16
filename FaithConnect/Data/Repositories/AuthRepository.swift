@@ -28,7 +28,12 @@ class AuthRepository: AuthRepositoryProtocol {
         }
     }
 
-    func signUp(name: String, nickname: String, email: String, password: String, confirmPassword: String, churchPlaceId: String, churchName: String, churchRoadAddress: String, community: Community?) async throws {
+    func loadCommunities() async throws -> [CommunityItem] {
+        let result = try await apiClient.loadCommunities()
+        return result.map { CommunityItem(community: $0.community, displayName: $0.displayName) }
+    }
+
+    func signUp(name: String, nickname: String, email: String, password: String, confirmPassword: String, churchPlaceId: String, churchName: String, churchRoadAddress: String, community: String?) async throws {
         try await apiClient.signUp(name: name,
                                    nickname: nickname,
                                    email: email,

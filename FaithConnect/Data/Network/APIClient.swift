@@ -18,7 +18,7 @@ protocol APIClientProtocol {
     var hasToken: Bool { get }
     // Auth
     func searchChurches(query: String, page: Int) async throws -> ChurchSearchResponse
-    func signUp(name: String, nickname: String, email: String, password: String, confirmPassword: String, churchPlaceId: String, churchName: String, churchRoadAddress: String, community: Community?) async throws
+    func signUp(name: String, nickname: String, email: String, password: String, confirmPassword: String, churchPlaceId: String, churchName: String, churchRoadAddress: String, community: String?) async throws
     func requestEmailVerification(email: String) async throws
     func confirmEmailVerification(email: String, verificationCode: String) async throws
     func login(email: String, password: String) async throws
@@ -261,7 +261,7 @@ extension APIClient {
         return apiResponse
     }
 
-    func signUp(name: String, nickname: String, email: String, password: String, confirmPassword: String, churchPlaceId: String, churchName: String, churchRoadAddress: String, community: Community?) async throws {
+    func signUp(name: String, nickname: String, email: String, password: String, confirmPassword: String, churchPlaceId: String, churchName: String, churchRoadAddress: String, community: String?) async throws {
         let urlString = APIEndpoint.signup.urlString
 
         let requestBody = SignUpRequest(
@@ -273,7 +273,7 @@ extension APIClient {
             churchPlaceId: churchPlaceId,
             churchName: churchName,
             churchRoadAddress: churchRoadAddress,
-            community: community?.rawValue
+            community: community
         )
 
         let apiResponse: SignUpResponse = try await post(urlString: urlString,

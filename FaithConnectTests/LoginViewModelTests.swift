@@ -140,7 +140,7 @@ final class LoginViewModelTests: XCTestCase {
     func test_signUp_emptyName_showsFieldEmptyAlert() async {
         await sut.signUp(name: "", nickname: "닉네임", email: "e@e.com",
                          password: "password1", confirmPassword: "password1",
-                         church: testChurch, community: .joseph)
+                         church: testChurch, community: CommunityItem(community: "JOSEPH", displayName: "요셉"))
 
         XCTAssertEqual(sut.signUpAlertType, .fieldEmpty(fieldName: "이름"))
     }
@@ -150,7 +150,7 @@ final class LoginViewModelTests: XCTestCase {
     func test_signUp_emptyNickname_showsFieldEmptyAlert() async {
         await sut.signUp(name: "이름", nickname: "", email: "e@e.com",
                          password: "password1", confirmPassword: "password1",
-                         church: testChurch, community: .joseph)
+                         church: testChurch, community: CommunityItem(community: "JOSEPH", displayName: "요셉"))
 
         XCTAssertEqual(sut.signUpAlertType, .fieldEmpty(fieldName: "닉네임"))
     }
@@ -160,7 +160,7 @@ final class LoginViewModelTests: XCTestCase {
     func test_signUp_passwordMismatch_showsErrorAlert() async {
         await sut.signUp(name: "이름", nickname: "닉네임", email: "e@e.com",
                          password: "password1", confirmPassword: "different1",
-                         church: testChurch, community: .joseph)
+                         church: testChurch, community: CommunityItem(community: "JOSEPH", displayName: "요셉"))
 
         if case .error(let title, _) = sut.signUpAlertType {
             XCTAssertEqual(title, "비밀번호 오류")
@@ -174,7 +174,7 @@ final class LoginViewModelTests: XCTestCase {
     func test_signUp_invalidEmail_showsErrorAlert() async {
         await sut.signUp(name: "이름", nickname: "닉네임", email: "invalid",
                          password: "password1", confirmPassword: "password1",
-                         church: testChurch, community: .joseph)
+                         church: testChurch, community: CommunityItem(community: "JOSEPH", displayName: "요셉"))
 
         if case .error(let title, _) = sut.signUpAlertType {
             XCTAssertEqual(title, "이메일 형식 오류")
@@ -188,7 +188,7 @@ final class LoginViewModelTests: XCTestCase {
     func test_signUp_invalidPassword_showsErrorAlert() async {
         await sut.signUp(name: "이름", nickname: "닉네임", email: "e@e.com",
                          password: "short", confirmPassword: "short",
-                         church: testChurch, community: .joseph)
+                         church: testChurch, community: CommunityItem(community: "JOSEPH", displayName: "요셉"))
 
         if case .error(let title, _) = sut.signUpAlertType {
             XCTAssertEqual(title, "비밀번호 형식 오류")
@@ -207,12 +207,12 @@ final class LoginViewModelTests: XCTestCase {
                          password: "password1",
                          confirmPassword: "password1",
                          church: testChurch,
-                         community: .joseph)
+                         community: CommunityItem(community: "JOSEPH", displayName: "요셉"))
 
         XCTAssertNotNil(mockAuthUseCase.signUpCalledWith)
         XCTAssertEqual(mockAuthUseCase.signUpCalledWith?.churchPlaceId, "8239253")
         XCTAssertEqual(mockAuthUseCase.signUpCalledWith?.churchName, "만나교회")
-        XCTAssertEqual(mockAuthUseCase.signUpCalledWith?.community, .joseph)
+        XCTAssertEqual(mockAuthUseCase.signUpCalledWith?.community, "JOSEPH")
         XCTAssertEqual(sut.signUpAlertType, .registerSuccess)
     }
 
@@ -249,7 +249,7 @@ final class LoginViewModelTests: XCTestCase {
                          password: "password1",
                          confirmPassword: "password1",
                          church: testChurch,
-                         community: .joseph)
+                         community: CommunityItem(community: "JOSEPH", displayName: "요셉"))
 
         if case .error(let title, _) = sut.signUpAlertType {
             XCTAssertEqual(title, "회원가입 실패")

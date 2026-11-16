@@ -10,7 +10,8 @@ import Foundation
 protocol AuthRepositoryProtocol {
     var hasToken: Bool { get }
     func searchChurches(query: String, page: Int) async throws -> [Church]
-    func signUp(name: String, nickname: String, email: String, password: String, confirmPassword: String, churchPlaceId: String, churchName: String, churchRoadAddress: String, community: Community?) async throws
+    func loadCommunities() async throws -> [CommunityItem]
+    func signUp(name: String, nickname: String, email: String, password: String, confirmPassword: String, churchPlaceId: String, churchName: String, churchRoadAddress: String, community: String?) async throws
     func requestEmailVerification(email: String) async throws
     func confirmEmailVerification(email: String, verificationCode: String) async throws
     func login(email: String, password: String) async throws

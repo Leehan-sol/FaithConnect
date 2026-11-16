@@ -14,12 +14,14 @@ struct SignUpChurchSearchView: View {
             VStack(alignment: .leading, spacing: 6) {
                 Text("교회를 검색해 선택해주세요")
                     .font(.headline)
+                    .foregroundColor(Color(.darkGray))
                 Text("소속 교회를 선택하면 해당 교회의 기도 공동체에 참여할 수 있습니다.")
                     .font(.caption)
                     .foregroundColor(.secondary)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(16)
+            .fixedSize(horizontal: false, vertical: true)
+            .padding(EdgeInsets(top: 20, leading: 20, bottom: 20, trailing: 20))
 
             HStack {
                 Image(systemName: "magnifyingglass")
@@ -37,7 +39,7 @@ struct SignUpChurchSearchView: View {
             .padding(12)
             .background(Color(.systemGray6))
             .cornerRadius(10)
-            .padding(.horizontal, 16)
+            .padding(.horizontal, 20)
 
             List(viewModel.churchSearchResults) { church in
                 NavigationLink {
