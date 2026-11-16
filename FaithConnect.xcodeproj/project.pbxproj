@@ -98,6 +98,7 @@
 		CCAD36752EB726510028D451 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CCAD36742EB726510028D451 /* LaunchScreen.storyboard */; };
 		CCAD36832EB731EF0028D451 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAD36822EB731EF0028D451 /* LoginView.swift */; };
 		CCAD36852EB732FE0028D451 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAD36842EB732FE0028D451 /* LoginViewModel.swift */; };
+		6E2D0F1B48A004774A540876 /* EdgeFadeWhenScrollable.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD3CF85BA29566A8BA87C3B /* EdgeFadeWhenScrollable.swift */; };
 		CCAD36872EB73F540028D451 /* LabeldTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAD36862EB73F540028D451 /* LabeldTextField.swift */; };
 		CCAD368E2EB782A00028D451 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAD368D2EB782A00028D451 /* MainTabView.swift */; };
 		CCAD36922EB78D010028D451 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAD36912EB78D010028D451 /* HomeView.swift */; };
@@ -237,6 +238,7 @@
 		CCAD36742EB726510028D451 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CCAD36822EB731EF0028D451 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		CCAD36842EB732FE0028D451 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
+		BCD3CF85BA29566A8BA87C3B /* EdgeFadeWhenScrollable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EdgeFadeWhenScrollable.swift; sourceTree = "<group>"; };
 		CCAD36862EB73F540028D451 /* LabeldTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabeldTextField.swift; sourceTree = "<group>"; };
 		CCAD368D2EB782A00028D451 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
 		CCAD36912EB78D010028D451 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
@@ -644,6 +646,7 @@
 				180228922EBA091D00ABA95C /* FloatingButton.swift */,
 				CC5B0E5D2EBF387000CE79A3 /* ActionButton.swift */,
 				CC5B0E652EBF990A00CE79A3 /* CategoryScrollView.swift */,
+				BCD3CF85BA29566A8BA87C3B /* EdgeFadeWhenScrollable.swift */,
 				CC5D79582EC76B6700C1CEE4 /* InfoBoxView.swift */,
 				CC6E3DF72ED1A19500B0EF4D /* MyPageItemField.swift */,
 			);
@@ -903,6 +906,7 @@
 				CC5D79592EC76B6700C1CEE4 /* InfoBoxView.swift in Sources */,
 				CC5B0E5E2EBF387000CE79A3 /* ActionButton.swift in Sources */,
 				CC5B0E662EBF990A00CE79A3 /* CategoryScrollView.swift in Sources */,
+				6E2D0F1B48A004774A540876 /* EdgeFadeWhenScrollable.swift in Sources */,
 				CC5B0E642EBF8BA900CE79A3 /* PrayerCategory.swift in Sources */,
 				1841FD0C2F67C10F007EF11C /* InquiryViewModel.swift in Sources */,
 				18B32D4C2F59494A00A171B2 /* ResetPasswordView.swift in Sources */,

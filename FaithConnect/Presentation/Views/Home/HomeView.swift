@@ -87,6 +87,7 @@ struct HomeView: View {
                 }
             }
         }
+        .edgeFadeWhenScrollable()
     }
 
     private func communityButton(label: String, community: String?) -> some View {
