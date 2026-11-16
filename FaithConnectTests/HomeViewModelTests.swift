@@ -385,4 +385,66 @@ final class HomeViewModelTests: XCTestCase {
         XCTAssertEqual(mannaSut.prayers.count, 1)
         XCTAssertEqual(mannaSut.prayers[0].id, 10)
     }
+
+    // MARK: - MANNA 공동체 목록
+
+    private func makeMannaSut(userCommunity: String?) -> HomeViewModel {
+        HomeViewModel(prayerUseCase: mockPrayerUseCase, isManna: true, userCommunity: userCommunity)
+    }
+
+    // 본인 공동체가 서버 목록에 없으면 전체(nil)로 시작한다
+    func test_initializeIfNeeded_manna_userCommunityNotInList_staysAll() async {
+        let mannaSut = makeMannaSut(userCommunity: "SAMUEL")
+        mockPrayerUseCase.stubbedCommunities = [
+            CommunityItem(community: "JOSEPH", displayName: "요셉"),
+            CommunityItem(community: "DAVID", displayName: "다윗")
+        ]
+
+        await mannaSut.initializeIfNeeded()
+
+        XCTAssertNil(mannaSut.selectedCommunity)
+        XCTAssertNotNil(mockPrayerUseCase.loadPrayersCalledWith)
+        XCTAssertNil(mockPrayerUseCase.loadPrayersCalledWith?.community)
+    }
+
+    // 공동체 목록만 실패하면 오류 창 없이 전체 기도를 보여 준다
+    func test_initializeIfNeeded_manna_communitiesFail_stillLoadsPrayers() async {
+        let mannaSut = makeMannaSut(userCommunity: "JOSEPH")
+        mockPrayerUseCase.stubbedCommunitiesError = NSError(domain: "", code: 0)
+        mockPrayerUseCase.stubbedPrayerPage = PrayerPage(prayers: [testPrayer], currentPage: 1, hasNext: false)
+
+        await mannaSut.initializeIfNeeded()
+
+        XCTAssertNil(mannaSut.alertType)
+        XCTAssertTrue(mannaSut.communities.isEmpty)
+        XCTAssertNil(mannaSut.selectedCommunity)
+        XCTAssertEqual(mannaSut.prayers.count, 1)
+    }
+
+    // 새로고침 때 공동체 목록이 비어 있으면 다시 받고 본인 공동체를 고른다
+    func test_refreshPrayers_manna_emptyCommunities_refetchesAndSelectsUserCommunity() async {
+        let mannaSut = makeMannaSut(userCommunity: "JOSEPH")
+        mockPrayerUseCase.stubbedCommunitiesError = NSError(domain: "", code: 0)
+        await mannaSut.initializeIfNeeded()
+
+        mockPrayerUseCase.stubbedCommunitiesError = nil
+        mockPrayerUseCase.stubbedCommunities = [CommunityItem(community: "JOSEPH", displayName: "요셉")]
+        await mannaSut.refreshPrayers()
+
+        XCTAssertEqual(mockPrayerUseCase.loadCommunitiesCallCount, 2)
+        XCTAssertEqual(mannaSut.communities.count, 1)
+        XCTAssertEqual(mannaSut.selectedCommunity, "JOSEPH")
+        XCTAssertEqual(mockPrayerUseCase.loadPrayersCalledWith?.community, "JOSEPH")
+    }
+
+    // 새로고침 때 공동체 목록이 이미 있으면 다시 요청하지 않는다
+    func test_refreshPrayers_manna_hasCommunities_doesNotRefetch() async {
+        let mannaSut = makeMannaSut(userCommunity: "JOSEPH")
+        mockPrayerUseCase.stubbedCommunities = [CommunityItem(community: "JOSEPH", displayName: "요셉")]
+        await mannaSut.initializeIfNeeded()
+
+        await mannaSut.refreshPrayers()
+
+        XCTAssertEqual(mockPrayerUseCase.loadCommunitiesCallCount, 1)
+    }
 }

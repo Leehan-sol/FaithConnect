@@ -127,6 +127,7 @@ final class PrayerRepositoryTests: XCTestCase {
             categoryId: 2,
             categoryName: "감사",
             community: nil,
+            communityName: nil,
             visibility: nil,
             displayNameType: nil,
             role: nil,

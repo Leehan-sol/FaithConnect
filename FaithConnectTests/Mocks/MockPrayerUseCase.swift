@@ -20,12 +20,14 @@ class MockPrayerUseCase: PrayerUseCaseProtocol {
     var stubbedBlockedUserPage: BlockedUserPage = BlockedUserPage(blockedUsers: [], currentPage: 1, hasNext: false)
     var stubbedReplyPage: ReplyPage = ReplyPage(replies: [], currentPage: 1, hasNext: false)
     var stubbedError: Error?
+    var stubbedCommunitiesError: Error?
 
     // MARK: - 호출 추적
     var loadCategoriesCalled = false
+    var loadCommunitiesCallCount = 0
     var loadPrayersCalledWith: (categoryID: Int?, community: String?, page: Int)?
     var loadPrayerDetailCalledWith: Int?
-    var writePrayerCalledWith: (categoryID: Int, title: String, content: String)?
+    var writePrayerCalledWith: (categoryID: Int?, title: String, content: String)?
     var deletePrayerCalledWith: Int?
     var writePrayerResponseCalledWith: (prayerRequestID: Int, message: String)?
     var loadWrittenPrayersCalledWith: Int?
@@ -33,7 +35,8 @@ class MockPrayerUseCase: PrayerUseCaseProtocol {
 
     // MARK: - PrayerUseCaseProtocol
     func loadCommunities() async throws -> [CommunityItem] {
-        if let error = stubbedError { throw error }
+        loadCommunitiesCallCount += 1
+        if let error = stubbedCommunitiesError ?? stubbedError { throw error }
         return stubbedCommunities
     }
 

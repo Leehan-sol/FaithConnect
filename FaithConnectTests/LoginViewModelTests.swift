@@ -361,4 +361,29 @@ final class LoginViewModelTests: XCTestCase {
             XCTFail("findIDAlertType이 .error가 아닙니다")
         }
     }
+
+    // MARK: - 회원가입 공동체 목록
+
+    func test_loadCommunities_success_setsCommunities() async {
+        mockAuthUseCase.stubbedCommunities = [
+            CommunityItem(community: "JOSEPH", displayName: "요셉"),
+            CommunityItem(community: "DAVID", displayName: "다윗")
+        ]
+
+        await sut.loadCommunities()
+
+        XCTAssertEqual(sut.communities.map(\.community), ["JOSEPH", "DAVID"])
+        XCTAssertFalse(sut.communitiesLoadFailed)
+        XCTAssertFalse(sut.isLoadingCommunities)
+    }
+
+    func test_loadCommunities_failure_setsLoadFailed() async {
+        mockAuthUseCase.stubbedError = NSError(domain: "", code: 0)
+
+        await sut.loadCommunities()
+
+        XCTAssertTrue(sut.communities.isEmpty)
+        XCTAssertTrue(sut.communitiesLoadFailed)
+        XCTAssertFalse(sut.isLoadingCommunities)
+    }
 }

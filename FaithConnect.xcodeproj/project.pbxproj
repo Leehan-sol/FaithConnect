@@ -44,6 +44,8 @@
 		AA100001000000000000AA03 /* DomainError.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA100001000000000000AA04 /* DomainError.swift */; };
 		AA100001000000000000AA05 /* ReportReasonType.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA100001000000000000AA06 /* ReportReasonType.swift */; };
 		AA200001000000000000AA01 /* MockAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA200001000000000000AA02 /* MockAPIClient.swift */; };
+		9B32AC668262EAE248F3738E /* PrayerEditorViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 475CA82004ED7497A5B2CAB5 /* PrayerEditorViewModelTests.swift */; };
+		1DB3766FC060FE575C5D7ED9 /* PrayerEntityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A177E80CE439E25BEFCC2D01 /* PrayerEntityTests.swift */; };
 		AA200001000000000000AA03 /* PrayerRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA200001000000000000AA04 /* PrayerRepositoryTests.swift */; };
 		AA300001000000000000AA01 /* WorkspaceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA300001000000000000AA02 /* WorkspaceType.swift */; };
 		AA300001000000000000AA03 /* UserRole.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA300001000000000000AA04 /* UserRole.swift */; };
@@ -185,6 +187,8 @@
 		AA100001000000000000AA04 /* DomainError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainError.swift; sourceTree = "<group>"; };
 		AA100001000000000000AA06 /* ReportReasonType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportReasonType.swift; sourceTree = "<group>"; };
 		AA200001000000000000AA02 /* MockAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAPIClient.swift; sourceTree = "<group>"; };
+		475CA82004ED7497A5B2CAB5 /* PrayerEditorViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerEditorViewModelTests.swift; sourceTree = "<group>"; };
+		A177E80CE439E25BEFCC2D01 /* PrayerEntityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerEntityTests.swift; sourceTree = "<group>"; };
 		AA200001000000000000AA04 /* PrayerRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerRepositoryTests.swift; sourceTree = "<group>"; };
 		AA300001000000000000AA02 /* WorkspaceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceType.swift; sourceTree = "<group>"; };
 		AA300001000000000000AA04 /* UserRole.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRole.swift; sourceTree = "<group>"; };
@@ -356,6 +360,8 @@
 				AA000001300000000000AA11 /* HomeViewModelTests.swift */,
 				AA000001300000000000AA12 /* PrayerUseCaseTests.swift */,
 				AA200001000000000000AA04 /* PrayerRepositoryTests.swift */,
+				A177E80CE439E25BEFCC2D01 /* PrayerEntityTests.swift */,
+				475CA82004ED7497A5B2CAB5 /* PrayerEditorViewModelTests.swift */,
 				AA000001300000000000AA0C /* Mocks */,
 			);
 			path = FaithConnectTests;
@@ -865,6 +871,8 @@
 				AA000001300000000000AA25 /* MockPrayerRepository.swift in Sources */,
 				AA200001000000000000AA01 /* MockAPIClient.swift in Sources */,
 				AA200001000000000000AA03 /* PrayerRepositoryTests.swift in Sources */,
+				1DB3766FC060FE575C5D7ED9 /* PrayerEntityTests.swift in Sources */,
+				9B32AC668262EAE248F3738E /* PrayerEditorViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
