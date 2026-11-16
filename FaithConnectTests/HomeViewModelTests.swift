@@ -341,6 +341,7 @@ final class HomeViewModelTests: XCTestCase {
 
         XCTAssertEqual(mannaSut.communities.count, 2)
         XCTAssertEqual(mannaSut.communities[0].community, "JOSEPH")
+        XCTAssertEqual(mannaSut.selectedCommunity, .joseph)
         XCTAssertEqual(mannaSut.prayers.count, 1)
         XCTAssertTrue(mannaSut.categories.isEmpty)
     }

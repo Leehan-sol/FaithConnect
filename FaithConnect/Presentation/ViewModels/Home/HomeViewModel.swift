@@ -42,6 +42,10 @@ class HomeViewModel: ObservableObject {
         if isManna {
             do {
                 communities = try await prayerUseCase.loadCommunities()
+                // 목록에 없는 공동체면 어느 버튼도 켜지지 않으므로 전체로 둔다.
+                if let userCommunity, communities.contains(where: { $0.community == userCommunity.rawValue }) {
+                    selectedCommunity = userCommunity
+                }
                 try await loadPrayers(reset: true)
             } catch {
                 alertType = .error(message: error.localizedDescription)
