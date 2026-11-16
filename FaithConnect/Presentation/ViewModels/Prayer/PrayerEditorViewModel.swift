@@ -13,7 +13,7 @@ class PrayerEditorViewModel: ObservableObject {
     @Published var communities: [CommunityItem] = []
     @Published var categories: [PrayerCategory] = []
     @Published var alertType: AlertType? = nil
-    @Published var selectedCommunity: Community = .joseph
+    @Published var selectedCommunity: String? = nil
     @Published var selectedVisibility: Visibility = .publicAll
     @Published var selectedDisplayNameType: DisplayNameType = .nickname
 
@@ -21,22 +21,25 @@ class PrayerEditorViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     let prayer: Prayer?
     let isManna: Bool
-    let userCommunity: Community?
+    let userCommunity: String?
 
     var isEditMode: Bool { prayer != nil }
 
-    init(prayerUseCase: PrayerUseCaseProtocol, prayer: Prayer? = nil, isManna: Bool = false, userCommunity: Community? = nil) {
+    init(prayerUseCase: PrayerUseCaseProtocol, prayer: Prayer? = nil, isManna: Bool = false, userCommunity: String? = nil) {
         self.prayerUseCase = prayerUseCase
         self.prayer = prayer
         self.isManna = isManna
         self.userCommunity = userCommunity
-        self.selectedCommunity = userCommunity ?? .joseph
+        self.selectedCommunity = userCommunity
     }
 
     func fetchInitialData() async {
         if isManna {
             do {
                 communities = try await prayerUseCase.loadCommunities()
+                if selectedCommunity == nil {
+                    selectedCommunity = communities.first?.community
+                }
             } catch {
                 alertType = .error(message: error.localizedDescription)
             }
@@ -50,7 +53,7 @@ class PrayerEditorViewModel: ObservableObject {
         }
     }
 
-    func savePrayer(categoryId: Int?, community: Community?, visibility: Visibility?, displayNameType: DisplayNameType?, title: String, content: String) async {
+    func savePrayer(categoryId: Int?, community: String?, visibility: Visibility?, displayNameType: DisplayNameType?, title: String, content: String) async {
         if isManna && community == nil {
             alertType = .error(message: "공동체를 선택해 주세요.")
             return

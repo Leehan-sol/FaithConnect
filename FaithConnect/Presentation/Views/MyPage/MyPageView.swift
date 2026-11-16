@@ -63,8 +63,8 @@ struct MyPageView: View {
                                     .foregroundColor(.primary)
                                     .cornerRadius(14)
 
-                                if let community = viewModel.community {
-                                    Text(community.displayName)
+                                if let communityName = viewModel.communityName {
+                                    Text(communityName)
                                         .font(.caption)
                                         .padding(.horizontal, 10)
                                         .padding(.vertical, 6)

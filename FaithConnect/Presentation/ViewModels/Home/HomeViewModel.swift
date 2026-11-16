@@ -16,19 +16,19 @@ class HomeViewModel: ObservableObject {
     @Published var isRefreshing: Bool = false
     @Published var isLoading: Bool = false
     @Published var selectedCategoryId: Int = 0
-    @Published var selectedCommunity: Community? = nil
+    @Published var selectedCommunity: String? = nil
     @Published var alertType: AlertType? = nil
 
     private let prayerUseCase: PrayerUseCaseProtocol
     private let isManna: Bool
-    private let userCommunity: Community?
+    private let userCommunity: String?
     private var cancellables = Set<AnyCancellable>()
 
     private var currentPage: Int = 1
     private var hasNext: Bool = true
     private var hasInitialized: Bool = false
 
-    init(prayerUseCase: PrayerUseCaseProtocol, isManna: Bool = false, userCommunity: Community? = nil) {
+    init(prayerUseCase: PrayerUseCaseProtocol, isManna: Bool = false, userCommunity: String? = nil) {
         self.prayerUseCase = prayerUseCase
         self.isManna = isManna
         self.userCommunity = userCommunity
@@ -43,7 +43,7 @@ class HomeViewModel: ObservableObject {
             do {
                 communities = try await prayerUseCase.loadCommunities()
                 // 목록에 없는 공동체면 어느 버튼도 켜지지 않으므로 전체로 둔다.
-                if let userCommunity, communities.contains(where: { $0.community == userCommunity.rawValue }) {
+                if let userCommunity, communities.contains(where: { $0.community == userCommunity }) {
                     selectedCommunity = userCommunity
                 }
                 try await loadPrayers(reset: true)
@@ -75,7 +75,7 @@ class HomeViewModel: ObservableObject {
         switch event {
         case .prayerAdded(let prayer):
             if isManna {
-                if selectedCommunity == nil || selectedCommunity?.rawValue == prayer.community {
+                if selectedCommunity == nil || selectedCommunity == prayer.community {
                     prayers.insert(prayer, at: 0)
                 }
             } else {
@@ -119,7 +119,7 @@ class HomeViewModel: ObservableObject {
         }
     }
 
-    func selectCommunity(_ community: Community?) async {
+    func selectCommunity(_ community: String?) async {
         guard !isLoading else { return }
 
         if selectedCommunity == community {
@@ -161,7 +161,7 @@ class HomeViewModel: ObservableObject {
         let pageToLoad = reset ? 1 : currentPage + 1
 
         let categoryID: Int? = isManna ? nil : selectedCategoryId
-        let community: Community? = isManna ? selectedCommunity : nil
+        let community: String? = isManna ? selectedCommunity : nil
 
         let prayerPage = try await prayerUseCase.loadPrayers(
             categoryID: categoryID,

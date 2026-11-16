@@ -69,7 +69,7 @@ struct HomeView: View {
                 if !viewModel.communities.isEmpty {
                     communityButton(label: "전체", community: nil)
                     ForEach(viewModel.communities) { item in
-                        communityButton(label: item.displayName, community: Community(rawValue: item.community))
+                        communityButton(label: item.displayName, community: item.community)
                     }
                 } else if !viewModel.categories.isEmpty {
                     ForEach(viewModel.categories) { category in
@@ -88,7 +88,7 @@ struct HomeView: View {
         }
     }
 
-    private func communityButton(label: String, community: Community?) -> some View {
+    private func communityButton(label: String, community: String?) -> some View {
         let isSelected = viewModel.selectedCommunity == community
         return Button {
             Task {

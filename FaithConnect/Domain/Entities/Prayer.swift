@@ -20,6 +20,7 @@ struct Prayer: Identifiable {
     let categoryId: Int?
     let categoryName: String?
     let community: String?
+    var communityName: String? = nil
     let visibility: Visibility?
     let displayNameType: DisplayNameType?
     let role: UserRole?
@@ -36,9 +37,8 @@ struct Prayer: Identifiable {
 // MARK: - Computed
 extension Prayer {
     var displayLabel: String {
-        if let community = community,
-           let c = Community(rawValue: community) {
-            return c.displayName
+        if let community, !community.isEmpty {
+            return communityName ?? community
         }
         return categoryName ?? ""
     }
@@ -53,6 +53,7 @@ extension Prayer {
         self.categoryId = dto.categoryId ?? 0
         self.categoryName = dto.categoryName ?? ""
         self.community = dto.community
+        self.communityName = dto.communityName
         self.visibility = dto.visibility.flatMap { Visibility(rawValue: $0) }
         self.displayNameType = dto.displayNameType.flatMap { DisplayNameType(rawValue: $0) }
         self.role = dto.role.flatMap { UserRole(rawValue: $0) }
@@ -72,6 +73,7 @@ extension Prayer {
         self.categoryId = dto.categoryId ?? 0
         self.categoryName = dto.categoryName ?? ""
         self.community = dto.community
+        self.communityName = dto.communityName
         self.visibility = dto.visibility.flatMap { Visibility(rawValue: $0) }
         self.displayNameType = dto.displayNameType.flatMap { DisplayNameType(rawValue: $0) }
         self.role = dto.role.flatMap { UserRole(rawValue: $0) }

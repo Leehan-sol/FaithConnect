@@ -327,7 +327,7 @@ final class HomeViewModelTests: XCTestCase {
     func test_initializeIfNeeded_manna_loadsCommunities() async {
         let mannaSut = HomeViewModel(prayerUseCase: mockPrayerUseCase,
                                       isManna: true,
-                                      userCommunity: .joseph)
+                                      userCommunity: "JOSEPH")
 
         mockPrayerUseCase.stubbedCommunities = [
             CommunityItem(community: "JOSEPH", displayName: "요셉"),
@@ -341,7 +341,7 @@ final class HomeViewModelTests: XCTestCase {
 
         XCTAssertEqual(mannaSut.communities.count, 2)
         XCTAssertEqual(mannaSut.communities[0].community, "JOSEPH")
-        XCTAssertEqual(mannaSut.selectedCommunity, .joseph)
+        XCTAssertEqual(mannaSut.selectedCommunity, "JOSEPH")
         XCTAssertEqual(mannaSut.prayers.count, 1)
         XCTAssertTrue(mannaSut.categories.isEmpty)
     }
@@ -349,7 +349,7 @@ final class HomeViewModelTests: XCTestCase {
     func test_selectCommunity_filtersPrayers() async {
         let mannaSut = HomeViewModel(prayerUseCase: mockPrayerUseCase,
                                       isManna: true,
-                                      userCommunity: .joseph)
+                                      userCommunity: "JOSEPH")
 
         mockPrayerUseCase.stubbedCommunities = [
             CommunityItem(community: "JOSEPH", displayName: "요셉")
@@ -378,10 +378,10 @@ final class HomeViewModelTests: XCTestCase {
             prayers: [filteredPrayer], currentPage: 1, hasNext: false
         )
 
-        await mannaSut.selectCommunity(.joseph)
+        await mannaSut.selectCommunity("JOSEPH")
 
-        XCTAssertEqual(mannaSut.selectedCommunity, .joseph)
-        XCTAssertEqual(mockPrayerUseCase.loadPrayersCalledWith?.community, .joseph)
+        XCTAssertEqual(mannaSut.selectedCommunity, "JOSEPH")
+        XCTAssertEqual(mockPrayerUseCase.loadPrayersCalledWith?.community, "JOSEPH")
         XCTAssertEqual(mannaSut.prayers.count, 1)
         XCTAssertEqual(mannaSut.prayers[0].id, 10)
     }

@@ -20,7 +20,7 @@ class MyPageViewModel: ObservableObject {
     var nickname: String { userSession.nickname }
     var email: String { userSession.email }
     var churchName: String { userSession.user?.churchName ?? "" }
-    var community: Community? { userSession.user?.community }
+    var communityName: String? { userSession.user?.communityName ?? userSession.user?.community }
     var isManna: Bool { userSession.isManna }
     var isPastor: Bool { userSession.user?.role == .pastor }
 

@@ -118,6 +118,7 @@ struct PrayerWriteResponse: Decodable {
     let categoryId: Int?
     let categoryName: String?
     let community: String?
+    let communityName: String?
     let visibility: String?
     let displayNameType: String?
     let role: String?

@@ -78,7 +78,7 @@ class PrayerDetailViewModel: ObservableObject {
     }
     
     func makePrayerEditorVM() -> PrayerEditorViewModel {
-        let community = prayer?.community.flatMap { Community(rawValue: $0) }
+        let community = prayer?.community.flatMap { $0.isEmpty ? nil : $0 }
         return PrayerEditorViewModel(prayerUseCase: prayerUseCase, prayer: prayer, isManna: community != nil, userCommunity: community)
     }
     

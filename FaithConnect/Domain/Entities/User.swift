@@ -13,7 +13,8 @@ struct User {
     let email: String
     let churchName: String
     let workspaceType: WorkspaceType
-    let community: Community?
+    let community: String?
+    var communityName: String? = nil
     let role: UserRole
 
     var isManna: Bool { workspaceType == .manna }

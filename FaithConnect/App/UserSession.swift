@@ -37,7 +37,7 @@ class UserSession: ObservableObject {
         guard let user = user else { return }
         self.user = User(name: user.name, nickname: nickname, email: user.email,
                          churchName: user.churchName, workspaceType: user.workspaceType,
-                         community: user.community, role: user.role)
+                         community: user.community, communityName: user.communityName, role: user.role)
     }
 
     func logout() {

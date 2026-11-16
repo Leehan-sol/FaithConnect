@@ -196,7 +196,7 @@ final class PrayerUseCaseTests: XCTestCase {
         )
 
         let result = try await sut.writePrayer(
-            categoryID: nil, community: .joseph,
+            categoryID: nil, community: "JOSEPH",
             visibility: .pastorOnly, displayNameType: .realName,
             title: "비공개 기도", content: "내용"
         )

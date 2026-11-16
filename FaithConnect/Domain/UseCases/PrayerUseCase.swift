@@ -13,10 +13,10 @@ protocol PrayerUseCaseProtocol {
 
     func loadCommunities() async throws -> [CommunityItem]
     func loadCategories() async throws -> [PrayerCategory]
-    func loadPrayers(categoryID: Int?, community: Community?, page: Int) async throws -> PrayerPage
+    func loadPrayers(categoryID: Int?, community: String?, page: Int) async throws -> PrayerPage
     func loadPrayerDetail(prayerRequestID: Int) async throws -> Prayer
-    func writePrayer(categoryID: Int?, community: Community?, visibility: Visibility?, displayNameType: DisplayNameType?, title: String, content: String) async throws -> Prayer
-    func updatePrayer(prayerRequestId: Int, categoryID: Int?, community: Community?, visibility: Visibility?, displayNameType: DisplayNameType?, title: String, content: String) async throws -> Prayer
+    func writePrayer(categoryID: Int?, community: String?, visibility: Visibility?, displayNameType: DisplayNameType?, title: String, content: String) async throws -> Prayer
+    func updatePrayer(prayerRequestId: Int, categoryID: Int?, community: String?, visibility: Visibility?, displayNameType: DisplayNameType?, title: String, content: String) async throws -> Prayer
     func deletePrayer(prayerRequestId: Int) async throws
     func writePrayerResponse(prayerRequestID: Int, message: String, visibility: Visibility?, displayNameType: DisplayNameType?, prayerTitle: String, categoryId: Int, categoryName: String) async throws -> PrayerResponse
     func updatePrayerResponse(responseID: Int, message: String, visibility: Visibility?, displayNameType: DisplayNameType?) async throws -> PrayerResponse
@@ -48,7 +48,7 @@ class PrayerUseCase: PrayerUseCaseProtocol {
         return try await repository.loadCategories()
     }
 
-    func loadPrayers(categoryID: Int?, community: Community?, page: Int) async throws -> PrayerPage {
+    func loadPrayers(categoryID: Int?, community: String?, page: Int) async throws -> PrayerPage {
         return try await repository.loadPrayers(categoryID: categoryID,
                                                 community: community,
                                                 page: page)
@@ -58,7 +58,7 @@ class PrayerUseCase: PrayerUseCaseProtocol {
         return try await repository.loadPrayerDetail(prayerRequestID: prayerRequestID)
     }
 
-    func writePrayer(categoryID: Int?, community: Community?, visibility: Visibility?, displayNameType: DisplayNameType?, title: String, content: String) async throws -> Prayer {
+    func writePrayer(categoryID: Int?, community: String?, visibility: Visibility?, displayNameType: DisplayNameType?, title: String, content: String) async throws -> Prayer {
         let prayer = try await repository.writePrayer(categoryID: categoryID,
                                                       community: community,
                                                       visibility: visibility,
@@ -71,7 +71,7 @@ class PrayerUseCase: PrayerUseCaseProtocol {
         return prayer
     }
 
-    func updatePrayer(prayerRequestId: Int, categoryID: Int?, community: Community?, visibility: Visibility?, displayNameType: DisplayNameType?, title: String, content: String) async throws -> Prayer {
+    func updatePrayer(prayerRequestId: Int, categoryID: Int?, community: String?, visibility: Visibility?, displayNameType: DisplayNameType?, title: String, content: String) async throws -> Prayer {
         let prayer = try await repository.updatePrayer(prayerRequestId: prayerRequestId,
                                                        categoryID: categoryID,
                                                        community: community,

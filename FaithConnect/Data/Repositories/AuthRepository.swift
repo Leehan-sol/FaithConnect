@@ -68,7 +68,8 @@ class AuthRepository: AuthRepositoryProtocol {
         return User(name: response.name, nickname: nickname, email: response.email,
                     churchName: response.churchName ?? "",
                     workspaceType: WorkspaceType(rawValue: response.workspaceType ?? "") ?? .default,
-                    community: Community(rawValue: response.community ?? ""),
+                    community: (response.community?.isEmpty ?? true) ? nil : response.community,
+                    communityName: response.communityName,
                     role: UserRole(rawValue: response.role ?? "") ?? .member)
     }
 

@@ -23,7 +23,7 @@ class MockPrayerRepository: PrayerRepositoryProtocol {
     var loadCategoriesCalled = false
     var deletePrayerCalledWith: Int?
     var deletePrayerResponseCalledWith: Int?
-    var writePrayerCalledWith: (categoryID: Int?, community: Community?, visibility: Visibility?, displayNameType: DisplayNameType?, title: String, content: String)?
+    var writePrayerCalledWith: (categoryID: Int?, community: String?, visibility: Visibility?, displayNameType: DisplayNameType?, title: String, content: String)?
 
     // MARK: - PrayerRepositoryProtocol
     func loadCommunities() async throws -> [CommunityItem] {
@@ -37,7 +37,7 @@ class MockPrayerRepository: PrayerRepositoryProtocol {
         return stubbedCategories
     }
 
-    func loadPrayers(categoryID: Int?, community: Community?, page: Int) async throws -> PrayerPage {
+    func loadPrayers(categoryID: Int?, community: String?, page: Int) async throws -> PrayerPage {
         if let error = stubbedError { throw error }
         return stubbedPrayerPage!
     }
@@ -47,13 +47,13 @@ class MockPrayerRepository: PrayerRepositoryProtocol {
         return stubbedPrayer!
     }
 
-    func writePrayer(categoryID: Int?, community: Community?, visibility: Visibility?, displayNameType: DisplayNameType?, title: String, content: String) async throws -> Prayer {
+    func writePrayer(categoryID: Int?, community: String?, visibility: Visibility?, displayNameType: DisplayNameType?, title: String, content: String) async throws -> Prayer {
         writePrayerCalledWith = (categoryID, community, visibility, displayNameType, title, content)
         if let error = stubbedError { throw error }
         return stubbedPrayer!
     }
 
-    func updatePrayer(prayerRequestId: Int, categoryID: Int?, community: Community?, visibility: Visibility?, displayNameType: DisplayNameType?, title: String, content: String) async throws -> Prayer {
+    func updatePrayer(prayerRequestId: Int, categoryID: Int?, community: String?, visibility: Visibility?, displayNameType: DisplayNameType?, title: String, content: String) async throws -> Prayer {
         if let error = stubbedError { throw error }
         return stubbedPrayer!
     }

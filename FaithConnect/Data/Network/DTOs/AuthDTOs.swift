@@ -70,6 +70,7 @@ struct FetchMyInfoResponse: Decodable {
     let churchName: String?
     let workspaceType: String?
     let community: String?
+    let communityName: String?
     let role: String?
 }
 

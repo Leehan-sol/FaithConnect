@@ -125,8 +125,8 @@ struct PrayerEditorView: View {
                     selectedCategoryId = prayer.categoryId ?? 0
                     title = prayer.title
                     content = prayer.content
-                    if let c = prayer.community, let community = Community(rawValue: c) {
-                        viewModel.selectedCommunity = community
+                    if let c = prayer.community, !c.isEmpty {
+                        viewModel.selectedCommunity = c
                     }
                     if let v = prayer.visibility { viewModel.selectedVisibility = v }
                     if let d = prayer.displayNameType { viewModel.selectedDisplayNameType = d }
@@ -169,10 +169,9 @@ struct PrayerEditorView: View {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 8) {
                     ForEach(viewModel.communities) { item in
-                        let community = Community(rawValue: item.community)
-                        let isSelected = viewModel.selectedCommunity == community
+                        let isSelected = viewModel.selectedCommunity == item.community
                         Button {
-                            if let community { viewModel.selectedCommunity = community }
+                            viewModel.selectedCommunity = item.community
                         } label: {
                             Text(item.displayName)
                                 .font(.subheadline)
@@ -242,6 +241,6 @@ struct PrayerEditorView: View {
     let mockUseCase = PrayerUseCase(repository: mockRepo)
 
     return NavigationStack {
-        PrayerEditorView(viewModel: { PrayerEditorViewModel(prayerUseCase: mockUseCase, isManna: true, userCommunity: .joseph) })
+        PrayerEditorView(viewModel: { PrayerEditorViewModel(prayerUseCase: mockUseCase, isManna: true, userCommunity: "JOSEPH") })
     }
 }

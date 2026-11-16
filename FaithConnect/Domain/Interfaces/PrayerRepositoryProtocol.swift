@@ -10,10 +10,10 @@ import Foundation
 protocol PrayerRepositoryProtocol {
     func loadCommunities() async throws -> [CommunityItem]
     func loadCategories() async throws -> [PrayerCategory]
-    func loadPrayers(categoryID: Int?, community: Community?, page: Int) async throws -> PrayerPage
+    func loadPrayers(categoryID: Int?, community: String?, page: Int) async throws -> PrayerPage
     func loadPrayerDetail(prayerRequestID: Int) async throws -> Prayer
-    func writePrayer(categoryID: Int?, community: Community?, visibility: Visibility?, displayNameType: DisplayNameType?, title: String, content: String) async throws -> Prayer
-    func updatePrayer(prayerRequestId: Int, categoryID: Int?, community: Community?, visibility: Visibility?, displayNameType: DisplayNameType?, title: String, content: String) async throws -> Prayer
+    func writePrayer(categoryID: Int?, community: String?, visibility: Visibility?, displayNameType: DisplayNameType?, title: String, content: String) async throws -> Prayer
+    func updatePrayer(prayerRequestId: Int, categoryID: Int?, community: String?, visibility: Visibility?, displayNameType: DisplayNameType?, title: String, content: String) async throws -> Prayer
     func deletePrayer(prayerRequestId: Int) async throws
     func writePrayerResponse(prayerRequestID: Int, message: String, visibility: Visibility?, displayNameType: DisplayNameType?) async throws -> PrayerResponse
     func updatePrayerResponse(responseID: Int, message: String, visibility: Visibility?, displayNameType: DisplayNameType?) async throws -> PrayerResponse
