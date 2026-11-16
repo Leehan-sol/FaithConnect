@@ -99,7 +99,6 @@
 		CCAD36832EB731EF0028D451 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAD36822EB731EF0028D451 /* LoginView.swift */; };
 		CCAD36852EB732FE0028D451 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAD36842EB732FE0028D451 /* LoginViewModel.swift */; };
 		CCAD36872EB73F540028D451 /* LabeldTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAD36862EB73F540028D451 /* LabeldTextField.swift */; };
-		CCAD36892EB74F8F0028D451 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAD36882EB74F8F0028D451 /* SignUpView.swift */; };
 		CCAD368E2EB782A00028D451 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAD368D2EB782A00028D451 /* MainTabView.swift */; };
 		CCAD36922EB78D010028D451 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAD36912EB78D010028D451 /* HomeView.swift */; };
 		CCAD36942EB78D290028D451 /* MyPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAD36932EB78D290028D451 /* MyPageView.swift */; };
@@ -239,7 +238,6 @@
 		CCAD36822EB731EF0028D451 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		CCAD36842EB732FE0028D451 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		CCAD36862EB73F540028D451 /* LabeldTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabeldTextField.swift; sourceTree = "<group>"; };
-		CCAD36882EB74F8F0028D451 /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 		CCAD368D2EB782A00028D451 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
 		CCAD36912EB78D010028D451 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		CCAD36932EB78D290028D451 /* MyPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageView.swift; sourceTree = "<group>"; };
@@ -656,7 +654,6 @@
 			isa = PBXGroup;
 			children = (
 				CCAD36822EB731EF0028D451 /* LoginView.swift */,
-				CCAD36882EB74F8F0028D451 /* SignUpView.swift */,
 				CC5B0E592EBF367900CE79A3 /* FindIDView.swift */,
 				CC4EA43F2EC9B7370097D09C /* FindIDResultView.swift */,
 				CC5B0E5B2EBF368900CE79A3 /* FindPasswordView.swift */,
@@ -883,7 +880,6 @@
 				180228932EBA092A00ABA95C /* FloatingButton.swift in Sources */,
 				1862C5492EFBA89C00B0DD70 /* APIError.swift in Sources */,
 				CC6B2AE32F24CB72003BB246 /* PrayerRepository.swift in Sources */,
-				CCAD36892EB74F8F0028D451 /* SignUpView.swift in Sources */,
 				CCAD36872EB73F540028D451 /* LabeldTextField.swift in Sources */,
 				CC6B2ADF2F24CB4B003BB246 /* PrayerRepositoryProtocol.swift in Sources */,
 				180228912EBA08C300ABA95C /* PrayerRowView.swift in Sources */,

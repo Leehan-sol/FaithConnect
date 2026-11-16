@@ -67,7 +67,9 @@ class LoginViewModel: ObservableObject {
     }
     
     func login(email: String, password: String) async {
+        #if DEBUG
         print("로그인 email: \(email)")
+        #endif
         
         isLoading = true
         defer { isLoading = false }
@@ -105,7 +107,9 @@ class LoginViewModel: ObservableObject {
     }
     
     func findID(name: String, nickname: String) async -> String? {
+        #if DEBUG
         print("아이디 찾기 name: \(name), nickname: \(nickname)")
+        #endif
 
         if name.isEmpty {
             findIDAlertType = .fieldEmpty(fieldName: "이름")
@@ -193,7 +197,9 @@ class LoginViewModel: ObservableObject {
     }
 
     func signUp(name: String, nickname: String, email: String, password: String, confirmPassword: String, church: Church, community: CommunityItem?) async {
+        #if DEBUG
         print("회원가입 name: \(name), nickname: \(nickname), email: \(email), church: \(church.name)")
+        #endif
 
         if name.isEmpty {
             signUpAlertType = .fieldEmpty(fieldName: "이름")
