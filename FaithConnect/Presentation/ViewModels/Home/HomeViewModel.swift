@@ -40,12 +40,8 @@ class HomeViewModel: ObservableObject {
         hasInitialized = true
 
         if isManna {
+            await loadCommunitiesIfNeeded()
             do {
-                communities = try await prayerUseCase.loadCommunities()
-                // 목록에 없는 공동체면 어느 버튼도 켜지지 않으므로 전체로 둔다.
-                if let userCommunity, communities.contains(where: { $0.community == userCommunity }) {
-                    selectedCommunity = userCommunity
-                }
                 try await loadPrayers(reset: true)
             } catch {
                 alertType = .error(message: error.localizedDescription)
@@ -59,6 +55,17 @@ class HomeViewModel: ObservableObject {
             } catch {
                 alertType = .error(message: error.localizedDescription)
             }
+        }
+    }
+
+    // 공동체 목록이 실패해도 전체 기도는 보여 주고, 새로고침 때 다시 받는다.
+    private func loadCommunitiesIfNeeded() async {
+        guard communities.isEmpty else { return }
+        guard let loaded = try? await prayerUseCase.loadCommunities() else { return }
+        communities = loaded
+        // 목록에 없는 공동체면 어느 버튼도 켜지지 않으므로 전체로 둔다.
+        if let userCommunity, loaded.contains(where: { $0.community == userCommunity }) {
+            selectedCommunity = userCommunity
         }
     }
 
@@ -138,6 +145,9 @@ class HomeViewModel: ObservableObject {
         guard !isRefreshing else { return }
         isRefreshing = true
         defer { isRefreshing = false }
+        if isManna {
+            await loadCommunitiesIfNeeded()
+        }
         do {
             try await loadPrayers(reset: true)
         } catch {
